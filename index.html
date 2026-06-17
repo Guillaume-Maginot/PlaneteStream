@@ -18,7 +18,7 @@
         <a href="#catalogue" data-nav-filter="film">Films</a>
         <a href="#catalogue" data-nav-filter="serie">Séries</a>
         <a href="#catalogue" data-nav-filter="manga">Manga</a>
-        <a href="admin.html">Admin PoC</a>
+        <a href="admin.html">Administration</a>
       </nav>
       <div class="nav-actions"><input id="searchInput" class="search-input" placeholder="Rechercher un titre..." /></div>
       <button class="hamb">☰</button>
@@ -28,13 +28,13 @@
   <main>
     <section class="hero">
       <div class="container hero-content">
-        <p class="eyebrow">Prototype propre, catalogue vivant</p>
-        <h1>Tout un univers de <strong>divertissement</strong></h1>
-        <p>Films, séries et animés affichés depuis un fichier catalogue. Les affiches se changent à la main pour la maquette, les infos restent prêtes pour Airtable ou TMDb.</p>
+        <p class="eyebrow">Votre univers de divertissement, entièrement personnalisable</p>
+        <h1>Toute votre bibliothèque de <strong>divertissement</strong></h1>
+        <p>Découvrez vos films, séries et mangas au sein d'une interface moderne, rapide et entièrement administrable. Le catalogue évolue facilement grâce à l'intégration des données TMDb.</p>
         <a class="primary play" href="#catalogue">Explorer le catalogue</a>
         <div class="badges">
-          <div class="badge"><i>JSON</i> Catalogue modifiable</div>
-          <div class="badge"><i>TMDb</i> Enrichissement prévu</div>
+          <div class="badge"><i>JSON</i> Catalogue dynamique</div>
+          <div class="badge"><i>TMDb</i> Métadonnées enrichies</div>
           <div class="badge"><i>▣</i> Responsive</div>
         </div>
       </div>
@@ -54,18 +54,18 @@
 
 </div>
 
-      <section id="featuredSection"><div class="section-head"><h2 class="section-title">À la une</h2><p>Les titres mis en avant pour donner du coffre à l’accueil.</p></div><div class="grid" id="featuredGrid"></div></section>
+      <section id="featuredSection"><div class="section-head"><h2 class="section-title">À la une</h2><p>Une sélection éditoriale des contenus à ne pas manquer.</p></div><div class="grid" id="featuredGrid"></div></section>
       <section><div class="section-head"><h2 class="section-title">Catalogue complet</h2><p id="countLabel"></p></div><div class="grid" id="catalogueGrid"></div></section>
 
       <aside class="cta">
-        <div class="cta-copy"><div class="circle">▶</div><div><h2>PoC prêt à évoluer</h2><p>Étape suivante : brancher TMDb pour récupérer affiches, résumés et métadonnées depuis une fonction Netlify.</p></div></div>
-        <a class="primary" href="admin.html">Ouvrir l’admin</a>
+        <div class="cta-copy"><div class="circle">▶</div><div><h2>Administration du catalogue</h2><p>Ajoutez de nouveaux films, séries ou mangas en quelques clics. Les informations sont enrichies automatiquement grâce à TMDb pour constituer un catalogue homogène.</p></div></div>
+        <a class="primary" href="admin.html">Gérer le catalogue</a>
       </aside>
     </div>
   </main>
 
   <dialog id="detailModal" class="modal"><button class="modal-close" data-close>×</button><div id="modalContent"></div></dialog>
-  <footer><div class="container footer-grid"><div><div class="logo">PLANÈTE<span>STREAM</span></div><p>© 2026 Planète Stream. PoC catalogue.</p></div><div><h4>Navigation</h4><ul><li>Accueil</li><li>Films</li><li>Séries</li><li>Manga</li></ul></div><div><h4>Données</h4><ul><li>catalogue.json</li><li>TMDb API</li><li>Airtable possible</li></ul></div></div></footer>
+  <footer><div class="container footer-grid"><div><div class="logo">PLANÈTE<span>STREAM</span></div><p>© 2026 Planète Stream. Une plateforme pensée pour valoriser votre catalogue de contenus.</p></div><div><h4>Navigation</h4><ul><li>Accueil</li><li>Films</li><li>Séries</li><li>Manga</li></ul></div><div><h4>Données</h4><ul><li>catalogue.json</li><li>TMDb API</li><li>Airtable possible</li></ul></div></div></footer>
   <script src="assets/app.js"></script>
 </body>
 </html>
