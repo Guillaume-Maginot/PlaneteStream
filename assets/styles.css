@@ -1089,3 +1089,75 @@ transition:
   height:100%;
   border:0;
 }
+/* === Correctif admin : résultats + aperçu === */
+
+.admin-layout{
+  display:grid;
+  grid-template-columns:minmax(0, 1.15fr) minmax(320px, .85fr);
+  gap:22px;
+  align-items:start;
+}
+
+.tmdb-result{
+  width:100%;
+  max-width:100%;
+  overflow:hidden;
+}
+
+.tmdb-result div{
+  min-width:0;
+}
+
+.tmdb-result h3,
+.tmdb-result p{
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.tmdb-result p{
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+}
+
+.admin-preview{
+  position:sticky;
+  top:100px;
+  min-width:0;
+}
+
+.preview-card{
+  max-width:100%;
+}
+
+.preview-poster{
+  min-height:0;
+  height:420px;
+  overflow:hidden;
+}
+
+.preview-poster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.preview-body{
+  max-height:260px;
+  overflow:auto;
+}
+
+@media(max-width:900px){
+  .admin-layout{
+    grid-template-columns:1fr;
+  }
+
+  .admin-preview{
+    position:static;
+  }
+
+  .preview-poster{
+    height:360px;
+  }
+}
