@@ -377,5 +377,56 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/7NKfxJrQn053UJeLftlx4m4NTzo.jpg",
     "overview": "Mi-homme mi-vampire, possédant toutes les qualités des goules et aucune de leur faiblesse, capable de vivre en plein jour, Blade traque sans pitié les suceurs de sang. Aidé de Whistler, son mentor et armurier, il est le cauchemar de la Nation Secrète des Vampires, dont les membres infiltrent toutes les couches de la société. L'un d'eux, Deacon Frost, avide de pouvoir, souhaite asservir le monde et la race humaine en invoquant le Dieu du sang. Un seul homme peut se mettre en travers de son chemin : Blade...",
     "featured": true
+  },
+  {
+    "title": "Interstellar",
+    "slug": "interstellar",
+    "type": "film",
+    "category": "nouveautes",
+    "genres": [
+      "Science-Fiction"
+    ],
+    "director": "À compléter",
+    "cast": [],
+    "poster": "https://image.tmdb.org/t/p/w500/1pnigkWWy8W032o9TKDneBa3eVK.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/2ssWTSVklAEc98frZUQhgtGHx7s.jpg",
+    "overview": "Dans un futur proche, face à une Terre exsangue, un groupe d’explorateurs utilise un vaisseau interstellaire pour franchir un trou de ver permettant de parcourir des distances jusque‐là infranchissables. Leur but : trouver un nouveau foyer pour l’humanité.",
+    "featured": true
+  },
+  {
+    "title": "E.T. l'extra-terrestre",
+    "slug": "e-t-l-extra-terrestre",
+    "originalTitle": "E.T. the Extra-Terrestrial",
+    "year": "1982",
+    "releaseDate": "1982-06-11",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "nouveautes",
+    "genres": [
+      "Aventure",
+      "Science-Fiction",
+      "Familial"
+    ],
+    "director": "Steven Spielberg",
+    "cast": [
+      "Henry Thomas",
+      "Drew Barrymore",
+      "Robert MacNaughton",
+      "Peter Coyote",
+      "Dee Wallace",
+      "Erika Eleniak"
+    ],
+    "runtime": 115,
+    "seasons": 0,
+    "episodes": 0,
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.516,
+    "popularity": 12.2461,
+    "tmdbId": 601,
+    "poster": "https://image.tmdb.org/t/p/w500/5jl5sfhTeAlp60rM9GxoDA2dmX9.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/mXLVA0YL6tcXi6SJSuAh9ONXFj5.jpg",
+    "overview": "Une soucoupe volante atterrit en pleine nuit près de Los Angeles. Quelques extraterrestres, envoyés sur Terre en mission d’exploration botanique, sortent de l’engin, mais un des leurs s’aventure au-delà de la clairière où se trouve la navette. Celui-ci se dirige alors vers la ville. C’est sa première découverte de la civilisation humaine. Bientôt traquée par des militaires et abandonnée par les siens, cette petite créature apeurée se nommant E.T. se réfugie dans une résidence de banlieue. Elliot, un garçon de dix ans, le découvre et lui construit un abri dans son armoire. Rapprochés par un échange télépathique, les deux êtres ne tardent pas à devenir amis. Aidé par sa sœur Gertie et son frère aîné Michael, Elliot va alors tenter de garder la présence d'E.T. secrète.",
+    "featured": true
   }
 ]
