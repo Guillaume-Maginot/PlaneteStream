@@ -63,20 +63,144 @@ function mount(selector, list){
 }
 
 function openDetail(item){
+
   const modal = document.querySelector('#detailModal');
-  document.querySelector('#modalContent').innerHTML = `
-    <div class="modal-hero" style="background-image:url('${item.backdrop}'), url('${item.poster}'), ${posterFallback}"></div>
-    <div class="modal-body">
-      <h2>${escapeHtml(item.title)}</h2>
-      <div class="chips">
-        <span class="chip">${escapeHtml(item.category || item.type)}</span>
-        ${(item.genres || []).map(g => `<span class="chip">${escapeHtml(g)}</span>`).join('')}
-      </div>
-      <p><strong>Réalisation / création :</strong> ${escapeHtml(item.director || 'À compléter')}</p>
-      <p><strong>Casting :</strong> ${escapeHtml((item.cast || []).join(', ') || 'À compléter')}</p>
-      <p class="hint">Résumé, bande-annonce et lecteur pourront être branchés ici plus tard. Pour la maquette, cette fiche prouve déjà la navigation titre → détail.</p>
-    </div>`;
+
+  const year =
+      item.year ||
+      (item.releaseDate ? item.releaseDate.substring(0,4) : '') ||
+      '';
+
+  const runtime =
+      item.runtime
+      ? `${item.runtime} min`
+      : '';
+
+  const rating =
+      item.rating
+      ? `⭐ ${Number(item.rating).toFixed(1)}`
+      : '';
+
+  const poster =
+      item.poster || '';
+
+  const backdrop =
+      item.backdrop || poster;
+
+  modal.querySelector('#modalContent').innerHTML = `
+
+<div class="movie-header">
+
+    <div class="movie-backdrop"
+         style="background-image:url('${backdrop}')">
+
+        <div class="movie-overlay">
+
+            <div class="movie-poster">
+
+                <img src="${poster}" alt="${escapeHtml(item.title)}">
+
+            </div>
+
+            <div class="movie-main">
+
+                <h1>${escapeHtml(item.title)}</h1>
+
+                <div class="movie-infos">
+
+                    ${year ? `<span>${year}</span>` : ''}
+                    ${item.type ? `<span>${escapeHtml(item.type)}</span>` : ''}
+                    ${runtime ? `<span>${runtime}</span>` : ''}
+                    ${rating ? `<span>${rating}</span>` : ''}
+
+                </div>
+
+                <div class="movie-genres">
+
+                    ${(item.genres || [])
+                      .map(g=>`<span>${escapeHtml(g)}</span>`)
+                      .join('')}
+
+                </div>
+
+                <div class="movie-buttons">
+
+                    <button class="primary">
+                        ▶ Regarder
+                    </button>
+
+                    <button class="ghost">
+                        + Ma liste
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="movie-content">
+
+    <section>
+
+        <h2>Synopsis</h2>
+
+        <p>
+
+            ${escapeHtml(item.overview || "Aucun synopsis disponible.")}
+
+        </p>
+
+    </section>
+
+    <section class="movie-grid">
+
+        <div>
+
+            <h3>Réalisation</h3>
+
+            <p>${escapeHtml(item.director || "Inconnu")}</p>
+
+        </div>
+
+        <div>
+
+            <h3>Casting</h3>
+
+            <p>${escapeHtml(
+                (item.cast || []).join(", ") || "Non renseigné"
+            )}</p>
+
+        </div>
+
+        <div>
+
+            <h3>Catégorie</h3>
+
+            <p>${escapeHtml(item.category || item.type || "")}</p>
+
+        </div>
+
+        <div>
+
+            <h3>Popularité TMDb</h3>
+
+            <p>${item.popularity || "-"}</p>
+
+        </div>
+
+    </section>
+
+</div>
+
+`;
+
   modal.showModal();
+
 }
 
 function escapeHtml(str=''){
