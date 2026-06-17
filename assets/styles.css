@@ -244,12 +244,25 @@ footer{
 }
 
 .movie-backdrop::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(90deg, rgba(5,6,14,.96) 0%, rgba(5,6,14,.72) 44%, rgba(5,6,14,.22) 100%),
-    linear-gradient(to top, #090713 0%, transparent 45%);
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(4,5,12,.96) 0%,
+            rgba(4,5,12,.82) 28%,
+            rgba(4,5,12,.55) 55%,
+            rgba(4,5,12,.35) 100%
+        ),
+
+        linear-gradient(
+            to top,
+            #090713 0%,
+            rgba(9,7,19,.85) 30%,
+            transparent 80%
+        );
 }
 
 .movie-overlay{
@@ -263,8 +276,8 @@ footer{
 }
 
 .movie-poster{
-  flex:0 0 210px;
-  height:315px;
+  flex:0 0 250px;
+  height:375px;
   border-radius:16px;
   overflow:hidden;
   border:1px solid rgba(255,45,85,.55);
@@ -282,11 +295,12 @@ footer{
 }
 
 .movie-main{
-  max-width:650px;
-  padding-bottom:12px;
+   max-width:700px;
+    margin-left:8px;
 }
 
 .movie-main h1{
+  margin-bottom:26px;
   font-size:clamp(36px, 6vw, 72px);
   line-height:.95;
   text-transform:uppercase;
