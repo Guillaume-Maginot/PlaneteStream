@@ -103,7 +103,10 @@ function resultCard(item, mediaType) {
 
 });
 
-
+el.addEventListener('click', (e) => {
+  if (e.target.closest('button')) return;
+  updatePreview(item);
+});
   el.querySelector('button').addEventListener('click', () => {
 
     updatePreview(item);
@@ -200,4 +203,30 @@ function slugify(str) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+}
+
+function updatePreview(item) {
+  const preview = document.querySelector('#selectedPreview');
+  if (!preview) return;
+
+  const title = item.title || item.name || 'Titre inconnu';
+  const year = item.year || 'Année inconnue';
+  const poster = item.poster || '';
+  const overview = item.overview || 'Résumé absent';
+  const type = item.type === 'serie' || item.mediaType === 'tv' ? 'Série' : 'Film';
+
+  preview.innerHTML = `
+    <div class="preview-poster">
+      ${poster ? `<img src="${poster}" alt="${title}" style="width:100%;height:100%;object-fit:cover;">` : 'Aucune affiche'}
+    </div>
+    <div class="preview-body">
+      <h3>${title}</h3>
+      <div class="preview-meta">
+        <span>${type}</span>
+        <span>${year}</span>
+        <span>TMDb</span>
+      </div>
+      <p>${overview}</p>
+    </div>
+  `;
 }
