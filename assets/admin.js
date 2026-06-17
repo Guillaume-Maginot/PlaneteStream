@@ -93,15 +93,28 @@ function resultCard(item, mediaType) {
   `;
 
   el.querySelector('button').addEventListener('click', () => {
-    const alreadyExists = draft.some(entry =>
-      entry.tmdbId === item.id ||
-      entry.slug === slug
-    );
+    const alreadyExists = draft.some(entry => {
+  const sameTmdbId =
+    entry.tmdbId &&
+    item.id &&
+    String(entry.tmdbId) === String(item.id);
 
-    if (alreadyExists) {
-      alert('Cet élément est déjà dans le catalogue.');
-      return;
-    }
+  const sameSlug =
+    entry.slug &&
+    slug &&
+    entry.slug === slug &&
+    entry.type === (mediaType === 'tv' ? 'serie' : 'film');
+
+  return sameTmdbId || sameSlug;
+});
+
+if (alreadyExists) {
+  const confirmAdd = confirm(
+    'Un élément similaire semble déjà exister. Tu veux quand même l’ajouter ?'
+  );
+
+  if (!confirmAdd) return;
+}
 
     draft.push({
       title,
