@@ -43,7 +43,9 @@ function createCard(item){
         ${(item.genres || []).slice(0,2).map(g => `<span>${escapeHtml(g)}</span>`).join('')}
       </div>
     </div>`;
-  card.addEventListener('click', () => openDetail(item));
+  card.addEventListener('click', () => {
+  window.location.href = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+});
   return card;
 }
 

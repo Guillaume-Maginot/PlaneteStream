@@ -415,3 +415,352 @@ footer{
     grid-template-columns:1fr;
   }
 }
+
+/* ===========================================================
+   DETAIL.HTML
+   =========================================================== */
+
+.detail-loading,
+.detail-error{
+    min-height:70vh;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    font-size:22px;
+}
+
+.detail-error{
+    gap:25px;
+}
+
+/* ---------- HERO ---------- */
+
+.detail-hero{
+
+    position:relative;
+    min-height:720px;
+
+    background-size:cover;
+    background-position:center;
+
+}
+
+.detail-hero::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(3,4,11,.96) 0%,
+            rgba(3,4,11,.86) 30%,
+            rgba(3,4,11,.45) 62%,
+            rgba(3,4,11,.22) 100%
+        ),
+
+        linear-gradient(
+            to top,
+            #03040b,
+            rgba(3,4,11,.65),
+            transparent 70%
+        );
+
+}
+
+.detail-hero-overlay{
+
+    position:relative;
+    z-index:2;
+
+    min-height:720px;
+
+    display:flex;
+    align-items:flex-end;
+
+}
+
+.detail-hero-content{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:42px;
+
+    padding-bottom:70px;
+
+}
+
+/* ---------- POSTER ---------- */
+
+.detail-poster{
+
+    width:280px;
+
+    flex-shrink:0;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    border:1px solid rgba(255,45,85,.45);
+
+    box-shadow:
+
+        0 0 30px rgba(255,45,85,.18),
+
+        0 35px 70px rgba(0,0,0,.70);
+
+}
+
+.detail-poster img{
+
+    width:100%;
+
+    display:block;
+
+}
+
+/* ---------- TITRE ---------- */
+
+.detail-main{
+
+    max-width:760px;
+
+}
+
+.detail-main h1{
+
+    font-size:clamp(52px,7vw,88px);
+
+    line-height:.92;
+
+    text-transform:uppercase;
+
+    letter-spacing:-.06em;
+
+    margin:12px 0 24px;
+
+    text-shadow:
+
+        0 5px 18px #000,
+
+        0 0 20px rgba(255,45,85,.20);
+
+}
+
+.detail-overview{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#e6e1f3;
+
+    margin:26px 0;
+
+}
+
+/* ---------- BADGES ---------- */
+
+.detail-meta,
+
+.detail-genres{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin:18px 0;
+
+}
+
+.detail-meta span,
+
+.detail-genres span{
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.07);
+
+    border:1px solid rgba(255,45,85,.35);
+
+    font-size:13px;
+
+    font-weight:700;
+
+    backdrop-filter:blur(8px);
+
+}
+
+.detail-genres span{
+
+    border-color:rgba(139,44,255,.35);
+
+}
+
+/* ---------- BOUTONS ---------- */
+
+.detail-actions{
+
+    display:flex;
+
+    gap:16px;
+
+    flex-wrap:wrap;
+
+    margin-top:30px;
+
+}
+
+/* ---------- CONTENU ---------- */
+
+.detail-info{
+
+    margin-top:60px;
+
+}
+
+.detail-block{
+
+    margin-bottom:40px;
+
+}
+
+.detail-block h2{
+
+    margin-bottom:18px;
+
+}
+
+.detail-block p{
+
+    line-height:1.9;
+
+    color:#ddd;
+
+}
+
+/* ---------- GRILLE ---------- */
+
+.detail-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:22px;
+
+}
+
+.detail-grid article{
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,45,85,.18);
+
+    border-radius:18px;
+
+    padding:24px;
+
+    transition:.25s;
+
+}
+
+.detail-grid article:hover{
+
+    transform:translateY(-4px);
+
+    border-color:rgba(255,45,85,.45);
+
+    box-shadow:
+
+        0 0 18px rgba(255,45,85,.16);
+
+}
+
+.detail-grid h3{
+
+    margin-bottom:12px;
+
+    font-size:14px;
+
+    text-transform:uppercase;
+
+    color:#fff;
+
+}
+
+.detail-grid p{
+
+    color:#cfc9dd;
+
+    line-height:1.7;
+
+}
+
+/* ---------- FILMS SIMILAIRES ---------- */
+
+.detail-related{
+
+    margin:70px auto;
+
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media(max-width:1000px){
+
+    .detail-hero{
+
+        min-height:auto;
+
+    }
+
+    .detail-hero-overlay{
+
+        min-height:auto;
+
+    }
+
+    .detail-hero-content{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        padding:50px 0;
+
+    }
+
+    .detail-poster{
+
+        width:220px;
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .detail-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .detail-main h1{
+
+        font-size:46px;
+
+    }
+
+}
