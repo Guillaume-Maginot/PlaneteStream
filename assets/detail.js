@@ -31,7 +31,7 @@ async function initDetail() {
 
 function renderDetail(item, catalogue) {
   const poster = item.poster || '';
-  const backdrop = item.backdrop || poster || '';
+ const backdrop = item.backdrop || '';
   const genres = item.genres || [];
 
   const year =
@@ -64,7 +64,7 @@ if (rating) badges.push(rating);
     .slice(0, 5);
 
   detailPage.innerHTML = `
-    <section class="detail-hero" style="background-image:url('${backdrop}')">
+    <section class="detail-hero ${backdrop ? '' : 'no-backdrop'}" style="${backdrop ? `background-image:url('${backdrop}')` : ''}">
       <div class="detail-hero-overlay">
         <div class="container detail-hero-content">
 

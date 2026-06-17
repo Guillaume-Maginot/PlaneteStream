@@ -815,3 +815,10 @@ footer{
     background-size:106%;
   }
 }
+
+.detail-hero.no-backdrop{
+  background:
+    radial-gradient(circle at 70% 25%, rgba(139,44,255,.28), transparent 32%),
+    radial-gradient(circle at 30% 35%, rgba(255,45,85,.18), transparent 28%),
+    linear-gradient(135deg,#05060f,#15091f 55%,#03040b);
+}
