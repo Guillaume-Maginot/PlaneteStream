@@ -170,6 +170,13 @@ console.log('backdrop_path :', item.backdrop_path);
   rating: item.rating || 0,
   popularity: item.popularity || 0,
 
+  trailer: item.trailer || '',
+  tagline: item.tagline || '',
+  status: item.status || '',
+  homepage: item.homepage || '',
+  collection: item.collection || '',
+  studios: item.studios || [],
+
   tmdbId: item.tmdbId || item.id,
 
   poster: item.poster || `images/posters/${slug}.jpg`,

@@ -1056,3 +1056,36 @@ transition:
   background:rgba(255,45,85,.16);
   transform:translateY(-2px);
 }
+.detail-tagline{
+  margin:-10px 0 18px;
+  color:#d7cce8;
+  font-size:18px;
+  font-style:italic;
+  opacity:.9;
+  text-shadow:0 4px 18px rgba(0,0,0,.55);
+}
+
+.detail-trailer{
+  margin:40px auto 70px;
+}
+
+.trailer-frame{
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  overflow:hidden;
+  border-radius:22px;
+  border:1px solid rgba(255,45,85,.32);
+  background:#05060f;
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.55),
+    0 0 26px rgba(255,45,85,.16);
+}
+
+.trailer-frame iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}

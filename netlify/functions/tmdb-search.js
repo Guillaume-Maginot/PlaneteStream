@@ -55,10 +55,15 @@ async function enrichTmdbResult(item) {
     `https://api.themoviedb.org/3/${endpoint}/${item.id}/credits` +
     "?language=fr-FR";
 
-  const [details, credits] = await Promise.all([
-    tmdbFetch(detailsUrl),
-    tmdbFetch(creditsUrl)
-  ]);
+    const videosUrl =
+  `https://api.themoviedb.org/3/${endpoint}/${item.id}/videos` +
+  "?language=fr-FR";
+
+  const [details, credits, videos] = await Promise.all([
+  tmdbFetch(detailsUrl),
+  tmdbFetch(creditsUrl),
+  tmdbFetch(videosUrl)
+]);
 
   const title = isMovie ? details.title : details.name;
   const originalTitle = isMovie ? details.original_title : details.original_name;
@@ -73,6 +78,14 @@ async function enrichTmdbResult(item) {
     .slice(0, 6)
     .map(actor => actor.name)
     .filter(Boolean);
+
+  const trailer = (videos.results || []).find(video =>
+    video.site === "YouTube" &&
+    (
+        video.type === "Trailer" ||
+        video.type === "Teaser"
+    )
+);
 
   return {
     tmdbId: item.id,
@@ -108,7 +121,21 @@ async function enrichTmdbResult(item) {
     popularity: details.popularity || 0,
 
     poster: buildImageUrl(details.poster_path || item.poster_path, "w500"),
-    backdrop: buildImageUrl(details.backdrop_path || item.backdrop_path, "w1280")
+    backdrop: buildImageUrl(details.backdrop_path || item.backdrop_path, "w1280"),
+    trailer: trailer?.key || "",
+    tagline: details.tagline || "",
+    status: details.status || "",
+    homepage: details.homepage || "",
+
+    collection: details.belongs_to_collection
+  ? details.belongs_to_collection.name
+  : "",
+
+studios: (details.production_companies || [])
+  .slice(0, 4)
+  .map(company => company.name)
+
+
   };
 }
 

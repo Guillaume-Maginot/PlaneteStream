@@ -75,6 +75,7 @@ if (rating) badges.push(rating);
           <div class="detail-main">
             <p class="eyebrow">Fiche catalogue</p>
             <h1>${escapeHtml(item.title)}</h1>
+            ${item.tagline ? `<p class="detail-tagline">“${escapeHtml(item.tagline)}”</p>` : ''}
 
             <div class="detail-meta">
   ${badges.map(b => `<span>${escapeHtml(b)}</span>`).join('')}
@@ -162,11 +163,43 @@ if (rating) badges.push(rating);
                 <strong>${escapeHtml((item.genres || []).join(' • '))}</strong>
             </li>
 
+            ${
+  (item.studios || []).length
+    ? `
+      <li>
+        <span>🏛️ Studios</span>
+        <strong>${escapeHtml(item.studios.join(' • '))}</strong>
+      </li>
+    `
+    : ''
+}
+
         </ul>
 
     </aside>
 
 </section>
+
+${
+  item.trailer
+    ? `
+      <section class="container detail-trailer" id="trailer">
+        <div class="section-head">
+          <h2 class="section-title">Bande-annonce</h2>
+        </div>
+
+        <div class="trailer-frame">
+          <iframe
+            src="https://www.youtube.com/embed/${escapeHtml(item.trailer)}"
+            title="Bande-annonce ${escapeHtml(item.title)}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </section>
+    `
+    : ''
+}
 
     ${
       related.length
