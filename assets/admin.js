@@ -94,7 +94,20 @@ function resultCard(item, mediaType) {
     </div>
   `;
 
+  el.addEventListener('click', (e) => {
+
+  // On évite que le clic sur le bouton déclenche aussi l'aperçu
+  if (e.target.closest('button')) return;
+
+  updatePreview(item);
+
+});
+
+
   el.querySelector('button').addEventListener('click', () => {
+
+    updatePreview(item);
+
     const alreadyExists = draft.some(entry => {
   const sameTmdbId =
     entry.tmdbId &&
