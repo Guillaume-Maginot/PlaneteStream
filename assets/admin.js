@@ -81,7 +81,7 @@ function resultCard(item, mediaType) {
   const el = document.createElement('div');
   el.className = 'tmdb-result';
 
-  const poster = item.poster_path ? imageBase + item.poster_path : '';
+  const poster = item.poster || '';
 
   el.innerHTML = `
     <img src="${poster}" alt="">
@@ -131,12 +131,8 @@ console.log('backdrop_path :', item.backdrop_path);
       director: 'À compléter',
       cast: [],
       tmdbId: item.id,
-      poster: item.poster_path
-  ? imageBase + item.poster_path
-  : `images/posters/${slug}.jpg`,
-backdrop: item.backdrop_path
-  ? backdropBase + item.backdrop_path
-  : `images/backdrops/${slug}.jpg`,
+      poster: item.poster || `images/posters/${slug}.jpg`,
+      backdrop: item.backdrop || `images/backdrops/${slug}.jpg`,
       overview: item.overview || '',
       featured: false
     });
