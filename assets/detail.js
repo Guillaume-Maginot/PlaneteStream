@@ -42,6 +42,17 @@ function renderDetail(item, catalogue) {
   const runtime = item.runtime ? `${item.runtime} min` : '';
   const rating = item.rating ? `⭐ ${Number(item.rating).toFixed(1)} / 10` : '';
 
+  const badges = [];
+
+if (year) badges.push(year);
+
+if (item.type) {
+  badges.push(item.type === 'serie' ? 'Série' : 'Film');
+}
+
+if (runtime) badges.push(runtime);
+if (rating) badges.push(rating);
+
   const related = catalogue
     .filter(entry =>
       entry.slug !== item.slug &&
@@ -66,12 +77,8 @@ function renderDetail(item, catalogue) {
             <h1>${escapeHtml(item.title)}</h1>
 
             <div class="detail-meta">
-              ${year ? `<span>${escapeHtml(year)}</span>` : ''}
-              ${item.type ? `<span>${escapeHtml(item.type === 'serie' ? 'Série' : 'Film')}</span>` : ''}
-${item.category && item.category.toLowerCase() !== item.type ? `<span>${escapeHtml(item.category)}</span>` : ''}
-              ${runtime ? `<span>${runtime}</span>` : ''}
-              ${rating ? `<span>${rating}</span>` : ''}
-            </div>
+  ${badges.map(b => `<span>${escapeHtml(b)}</span>`).join('')}
+</div>
 
             <div class="detail-genres">
               ${genres.map(g => `<span>${escapeHtml(g)}</span>`).join('')}

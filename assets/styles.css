@@ -799,3 +799,19 @@ footer{
   font-size:14px;
   border-radius:9px;
 }
+
+/* === Détail : fond vivant très subtil === */
+
+.detail-hero{
+  animation:detailBackdropZoom 28s ease-in-out infinite alternate;
+}
+
+@keyframes detailBackdropZoom{
+  from{
+    background-size:100%;
+  }
+
+  to{
+    background-size:106%;
+  }
+}
