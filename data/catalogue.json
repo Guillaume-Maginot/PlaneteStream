@@ -509,5 +509,52 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/oMsxZEvz9a708d49b6UdZK1KAo5.jpg",
     "overview": "Programmeur anonyme dans un service administratif le jour, Thomas Anderson devient Neo la nuit venue. Sous ce pseudonyme, il est l'un des pirates les plus recherchés du cyber‐espace. À cheval entre deux mondes, Neo est assailli par d'étranges songes et des messages cryptés provenant d'un certain Morpheus. Celui‐ci l'exhorte à aller au‐delà des apparences et à trouver la réponse à la question qui hante constamment ses pensées : qu'est‐ce que la Matrice ? Nul ne le sait, et aucun homme n'est encore parvenu à en percer les défenses. Mais Morpheus est persuadé que Neo est l'Élu, le libérateur mythique de l'humanité annoncé selon la prophétie. Ensemble, ils se lancent dans une lutte sans retour contre la Matrice et ses terribles agents…",
     "featured": true
+  },
+  {
+    "title": "Avatar",
+    "slug": "avatar",
+    "originalTitle": "Avatar",
+    "year": "2009",
+    "releaseDate": "2009-12-16",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "nouveautes",
+    "genres": [
+      "Science-Fiction",
+      "Action",
+      "Aventure"
+    ],
+    "director": "James Cameron",
+    "cast": [
+      "Sam Worthington",
+      "Zoe Saldaña",
+      "Sigourney Weaver",
+      "Stephen Lang",
+      "Michelle Rodriguez",
+      "Giovanni Ribisi"
+    ],
+    "runtime": 166,
+    "seasons": 0,
+    "episodes": 0,
+    "country": "United States of America, United Kingdom",
+    "language": "en",
+    "rating": 7.606,
+    "popularity": 36.5027,
+    "trailer": "MJ3Up7By5cw",
+    "tagline": "Entrez dans le monde de Pandora.",
+    "status": "Released",
+    "homepage": "https://www.avatar.com/",
+    "collection": "Avatar - Saga",
+    "studios": [
+      "Dune Entertainment",
+      "Lightstorm Entertainment",
+      "20th Century Fox",
+      "Ingenious Film Partners"
+    ],
+    "tmdbId": 19995,
+    "poster": "https://image.tmdb.org/t/p/w500/7N8L80OaG8EBTDdRBjGqT8PBzCM.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/vL5LR6WdxWPjLPFRLe133jXWsh5.jpg",
+    "overview": "Un marine paraplégique, envoyé sur la lune Pandora pour une mission unique, est tiraillé entre suivre ses ordres et protéger le monde qu'il considère dorénavant comme le sien.",
+    "featured": false
   }
 ]
