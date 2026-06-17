@@ -118,6 +118,10 @@ if (alreadyExists) {
   if (!confirmAdd) return;
 }
 
+console.log('TMDB item complet :', item);
+console.log('poster_path :', item.poster_path);
+console.log('backdrop_path :', item.backdrop_path);
+
     draft.push({
       title,
       slug,
