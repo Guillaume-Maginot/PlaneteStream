@@ -129,10 +129,10 @@ if (alreadyExists) {
       tmdbId: item.id,
       poster: item.poster_path
   ? imageBase + item.poster_path
-  : '',
+  : `images/posters/${slug}.jpg`,
 backdrop: item.backdrop_path
   ? backdropBase + item.backdrop_path
-  : '',
+  : `images/backdrops/${slug}.jpg`,
       overview: item.overview || '',
       featured: false
     });
