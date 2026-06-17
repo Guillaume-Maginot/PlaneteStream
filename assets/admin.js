@@ -128,11 +128,11 @@ if (alreadyExists) {
       cast: [],
       tmdbId: item.id,
       poster: item.poster_path
-        ? imageBase + item.poster_path
-        : `images/posters/${slug}.jpg`,
-      backdrop: item.backdrop_path
-        ? backdropBase + item.backdrop_path
-        : `images/backdrops/${slug}.jpg`,
+  ? imageBase + item.poster_path
+  : '',
+backdrop: item.backdrop_path
+  ? backdropBase + item.backdrop_path
+  : '',
       overview: item.overview || '',
       featured: false
     });
