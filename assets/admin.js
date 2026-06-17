@@ -10,6 +10,9 @@ const searchBtn = document.querySelector('#searchBtn');
 const downloadBtn = document.querySelector('#downloadBtn');
 const copyBtn = document.querySelector('#copyBtn');
 const resetBtn = document.querySelector('#resetBtn');
+const sectionSelect = document.querySelector('#sectionSelect');
+const featuredSelect = document.querySelector('#featuredSelect');
+const genreSelect = document.querySelector('#genreSelect');
 
 init();
 
@@ -142,15 +145,15 @@ console.log('backdrop_path :', item.backdrop_path);
       title,
       slug,
       type: mediaType === 'tv' ? 'serie' : 'film',
-      category: mediaType === 'tv' ? 'Série' : 'Film',
-      genres: [],
+      category: sectionSelect?.value || (mediaType === 'tv' ? 'Série' : 'Film'),
+genres: genreSelect?.value ? [genreSelect.value] : [],
       director: 'À compléter',
       cast: [],
       tmdbId: item.id,
       poster: item.poster || `images/posters/${slug}.jpg`,
       backdrop: item.backdrop || `images/backdrops/${slug}.jpg`,
       overview: item.overview || '',
-      featured: false
+      featured: featuredSelect?.value === 'true'
     });
 
     syncOutput();
