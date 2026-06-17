@@ -556,5 +556,51 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/vL5LR6WdxWPjLPFRLe133jXWsh5.jpg",
     "overview": "Un marine paraplégique, envoyé sur la lune Pandora pour une mission unique, est tiraillé entre suivre ses ordres et protéger le monde qu'il considère dorénavant comme le sien.",
     "featured": false
+  },
+  {
+    "title": "Rambo",
+    "slug": "rambo",
+    "originalTitle": "First Blood",
+    "year": "1982",
+    "releaseDate": "1982-10-22",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Action",
+      "Thriller",
+      "Drame"
+    ],
+    "director": "Ted Kotcheff",
+    "cast": [
+      "Sylvester Stallone",
+      "Richard Crenna",
+      "Brian Dennehy",
+      "Bill McKinney",
+      "Jack Starrett",
+      "Michael Talbott"
+    ],
+    "runtime": 97,
+    "seasons": 0,
+    "episodes": 0,
+    "country": "United States of America, Netherlands Antilles",
+    "language": "en",
+    "rating": 7.51,
+    "popularity": 12.2687,
+    "trailer": "81x6XKy8p6Q",
+    "tagline": "« Eux ont versé le premier sang, pas moi ! »",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Rambo - Saga",
+    "studios": [
+      "Carolco Pictures",
+      "Anabasis",
+      "Elcajo Productions"
+    ],
+    "tmdbId": 1368,
+    "poster": "https://image.tmdb.org/t/p/w500/gjb4xVMld19M5IS4EmgVeX7HuHv.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/teCZlGivejMw4rVzyxBSYQNr6XI.jpg",
+    "overview": "Après la guerre du Viêt Nam à l'issue humiliante pour les États Unis, les vétérans envoyés au combat et salués en héros par l'Amérique de Kennedy sûrs de leur bon droit, pour retrouver une Amérique hippie et moralisatrice sous Johnson et les traités d'assassins, sont laissés pour compte, devenus des indésirables qu'il faut cacher, enfermer. John Rambo est l'un d'eux, médaillé par le Congrès, dernier survivant d'un commando des Bérets Verts. Il est arrêté à Hope, une petite ville par le shérif Will Teasle pour vagabondage parce qu'il voulait trouver un restaurant pour s'alimenter. Jeté en cellule, maltraité, battu par les hommes du shérif, il se défend en appliquant ce qui lui a permis de survivre à la guerre, mets ces hommes à terre et s'évade du commissariat. La chasse à l’homme contre Rambo commence...",
+    "featured": false
   }
 ]
