@@ -78,7 +78,7 @@ async function searchTmdb() {
 
 function resultCard(item, mediaType) {
   const title = item.title || item.name || 'Titre inconnu';
-  const year = (item.release_date || item.first_air_date || '').slice(0, 4);
+  const year = item.year || (item.release_date || item.first_air_date || '').slice(0, 4);
   const slug = slugify(title);
 
   const el = document.createElement('div');
@@ -114,17 +114,20 @@ el.addEventListener('click', (e) => {
 
     updatePreview(item);
 
-    const alreadyExists = draft.some(entry => {
+  const currentTmdbId = item.tmdbId || item.id;
+const currentType = item.type || (mediaType === 'tv' ? 'serie' : 'film');
+
+const alreadyExists = draft.some(entry => {
   const sameTmdbId =
     entry.tmdbId &&
-    item.id &&
-    String(entry.tmdbId) === String(item.id);
+    currentTmdbId &&
+    String(entry.tmdbId) === String(currentTmdbId);
 
   const sameSlug =
     entry.slug &&
     slug &&
     entry.slug === slug &&
-    entry.type === (mediaType === 'tv' ? 'serie' : 'film');
+    entry.type === currentType;
 
   return sameTmdbId || sameSlug;
 });
@@ -141,20 +144,40 @@ console.log('TMDB item complet :', item);
 console.log('poster_path :', item.poster_path);
 console.log('backdrop_path :', item.backdrop_path);
 
-    draft.push({
-      title,
-      slug,
-      type: mediaType === 'tv' ? 'serie' : 'film',
-      category: sectionSelect?.value || (mediaType === 'tv' ? 'Série' : 'Film'),
-genres: genreSelect?.value ? [genreSelect.value] : [],
-      director: 'À compléter',
-      cast: [],
-      tmdbId: item.id,
-      poster: item.poster || `images/posters/${slug}.jpg`,
-      backdrop: item.backdrop || `images/backdrops/${slug}.jpg`,
-      overview: item.overview || '',
-      featured: featuredSelect?.value === 'true'
-    });
+ draft.push({
+  title,
+  slug,
+
+  originalTitle: item.originalTitle || '',
+  year: item.year || '',
+  releaseDate: item.releaseDate || '',
+
+  type: item.type || (mediaType === 'tv' ? 'serie' : 'film'),
+  mediaType: item.mediaType || mediaType,
+  category: sectionSelect?.value || (mediaType === 'tv' ? 'Série' : 'Film'),
+
+  genres: item.genres || [],
+  director: item.director || 'À compléter',
+  cast: item.cast || [],
+
+  runtime: item.runtime || 0,
+  seasons: item.seasons || 0,
+  episodes: item.episodes || 0,
+
+  country: item.country || '',
+  language: item.language || '',
+
+  rating: item.rating || 0,
+  popularity: item.popularity || 0,
+
+  tmdbId: item.tmdbId || item.id,
+
+  poster: item.poster || `images/posters/${slug}.jpg`,
+  backdrop: item.backdrop || `images/backdrops/${slug}.jpg`,
+
+  overview: item.overview || '',
+  featured: featuredSelect?.value === 'true'
+});
 
     syncOutput();
     alert(`${title} ajouté au JSON.`);
