@@ -1161,3 +1161,24 @@ transition:
     height:360px;
   }
 }
+.genre-filter{
+
+margin-left:auto;
+
+padding:12px 18px;
+
+background:#222036;
+
+border:1px solid rgba(255,255,255,.12);
+
+color:white;
+
+border-radius:999px;
+
+font:inherit;
+
+cursor:pointer;
+
+min-width:220px;
+
+}

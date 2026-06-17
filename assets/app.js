@@ -4,7 +4,49 @@ const posterFallback = 'linear-gradient(145deg,#3b1c70,#111), radial-gradient(ci
 async function init(){
   const res = await fetch('data/catalogue.json');
   state.catalogue = await res.json();
+  buildGenreFilter();
+
+function buildGenreFilter(){
+
+    const select=document.querySelector("#genreFilter");
+
+    if(!select) return;
+
+    const genres=[
+        ...new Set(
+            state.catalogue.flatMap(movie=>movie.genres||[])
+        )
+    ].sort();
+
+    genres.forEach(genre=>{
+
+        const option=document.createElement("option");
+
+        option.value=genre.toLowerCase();
+
+        option.textContent=genre;
+
+        select.appendChild(option);
+
+    });
+
+}
+
   bindEvents();
+
+  const genre=document.querySelector("#genreFilter");
+
+genre?.addEventListener("change",e=>{
+
+    state.filter=e.target.value || "all";
+
+    document.querySelectorAll("[data-filter]")
+        .forEach(b=>b.classList.remove("active"));
+
+    render();
+
+});
+
   render();
 }
 
