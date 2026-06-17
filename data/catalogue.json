@@ -1,0 +1,535 @@
+[
+  {
+    "title": "Crime 101",
+    "director": "Bart Layton",
+    "cast": [
+      "Chris Hemsworth",
+      "Mark Ruffalo",
+      "Halle Berry",
+      "Barry Keoghan"
+    ],
+    "category": "Film",
+    "genres": [
+      "Policier",
+      "Thriller",
+      "Braquage"
+    ],
+    "slug": "crime-101",
+    "poster": "images/posters/crime-101.jpg",
+    "backdrop": "images/backdrops/crime-101.jpg",
+    "type": "film",
+    "featured": true
+  },
+  {
+    "title": "Deepwater Horizon",
+    "director": "Peter Berg",
+    "cast": [
+      "Mark Wahlberg",
+      "Kurt Russell",
+      "John Malkovich"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Catastrophe",
+      "Drame"
+    ],
+    "slug": "deepwater-horizon",
+    "poster": "images/posters/deepwater-horizon.jpg",
+    "backdrop": "images/backdrops/deepwater-horizon.jpg",
+    "type": "film",
+    "featured": true
+  },
+  {
+    "title": "Dirty Dancing",
+    "director": "Emile Ardolino",
+    "cast": [
+      "Patrick Swayze",
+      "Jennifer Grey"
+    ],
+    "category": "Film",
+    "genres": [
+      "Romance",
+      "Comédie Musicale"
+    ],
+    "slug": "dirty-dancing",
+    "poster": "images/posters/dirty-dancing.jpg",
+    "backdrop": "images/backdrops/dirty-dancing.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Fire Island : La grande éruption",
+    "director": "Jared Cohn",
+    "cast": [
+      "William Baldwin",
+      "McKenzie Westmore"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Catastrophe"
+    ],
+    "slug": "fire-island-la-grande-eruption",
+    "poster": "images/posters/fire-island-la-grande-eruption.jpg",
+    "backdrop": "images/backdrops/fire-island-la-grande-eruption.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Gonger - La malédiction",
+    "director": "Christian Theede",
+    "cast": [
+      "Sebastian Ströbel",
+      "Teresa Weißbach"
+    ],
+    "category": "Film (Téléfilm)",
+    "genres": [
+      "Épouvante",
+      "Fantastique"
+    ],
+    "slug": "gonger-la-malediction",
+    "poster": "images/posters/gonger-la-malediction.jpg",
+    "backdrop": "images/backdrops/gonger-la-malediction.jpg",
+    "type": "telefilm",
+    "featured": false
+  },
+  {
+    "title": "Gonger 2 - Le maudit",
+    "director": "Philipp Osthus",
+    "cast": [
+      "Sebastian Ströbel",
+      "Daniela Wutte"
+    ],
+    "category": "Film (Téléfilm)",
+    "genres": [
+      "Épouvante",
+      "Fantastique"
+    ],
+    "slug": "gonger-2-le-maudit",
+    "poster": "images/posters/gonger-2-le-maudit.jpg",
+    "backdrop": "images/backdrops/gonger-2-le-maudit.jpg",
+    "type": "telefilm",
+    "featured": false
+  },
+  {
+    "title": "Gonjiam : Haunted Asylum",
+    "director": "Jung Bum-shik",
+    "cast": [
+      "Wi Ha-joon",
+      "Park Ji-hyun"
+    ],
+    "category": "Film",
+    "genres": [
+      "Horreur",
+      "Found Footage"
+    ],
+    "slug": "gonjiam-haunted-asylum",
+    "poster": "images/posters/gonjiam-haunted-asylum.jpg",
+    "backdrop": "images/backdrops/gonjiam-haunted-asylum.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Gran Torino",
+    "director": "Clint Eastwood",
+    "cast": [
+      "Clint Eastwood",
+      "Bee Vang"
+    ],
+    "category": "Film",
+    "genres": [
+      "Drame"
+    ],
+    "slug": "gran-torino",
+    "poster": "images/posters/gran-torino.jpg",
+    "backdrop": "images/backdrops/gran-torino.jpg",
+    "type": "film",
+    "featured": true
+  },
+  {
+    "title": "Gran Turismo",
+    "director": "Neill Blomkamp",
+    "cast": [
+      "Archie Madekwe",
+      "David Harbour",
+      "Orlando Bloom"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Biopic Sportif"
+    ],
+    "slug": "gran-turismo",
+    "poster": "images/posters/gran-turismo.jpg",
+    "backdrop": "images/backdrops/gran-turismo.jpg",
+    "type": "film",
+    "featured": true
+  },
+  {
+    "title": "Grave Encounters",
+    "director": "The Vicious Brothers (Colin Minihan, Stuart Ortiz)",
+    "cast": [
+      "Sean Rogerson",
+      "Ashleigh Gryzko"
+    ],
+    "category": "Film",
+    "genres": [
+      "Horreur",
+      "Found Footage"
+    ],
+    "slug": "grave-encounters",
+    "poster": "images/posters/grave-encounters.jpg",
+    "backdrop": "images/backdrops/grave-encounters.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Grave Encounters 2",
+    "director": "John Poliquin",
+    "cast": [
+      "Richard Harmon",
+      "Leanne Lapp"
+    ],
+    "category": "Film",
+    "genres": [
+      "Horreur",
+      "Found Footage"
+    ],
+    "slug": "grave-encounters-2",
+    "poster": "images/posters/grave-encounters-2.jpg",
+    "backdrop": "images/backdrops/grave-encounters-2.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Greenland : Migration",
+    "director": "Ric Roman Waugh",
+    "cast": [
+      "Gerard Butler",
+      "Morena Baccarin"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Science-Fiction",
+      "Thriller"
+    ],
+    "slug": "greenland-migration",
+    "poster": "images/posters/greenland-migration.jpg",
+    "backdrop": "images/backdrops/greenland-migration.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Guillaume Tell",
+    "director": "Nick Hamm",
+    "cast": [
+      "Claes Bang",
+      "Connor Swindells",
+      "Golshifteh Farahani"
+    ],
+    "category": "Film",
+    "genres": [
+      "Drame",
+      "Guerre",
+      "Historique"
+    ],
+    "slug": "guillaume-tell",
+    "poster": "images/posters/guillaume-tell.jpg",
+    "backdrop": "images/backdrops/guillaume-tell.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Kartavya : Le sens du devoir",
+    "director": "Pulkit",
+    "cast": [
+      "Saif Ali Khan",
+      "Rasika Dugal",
+      "Sanjay Mishra"
+    ],
+    "category": "Film",
+    "genres": [
+      "Crime",
+      "Drame",
+      "Thriller"
+    ],
+    "slug": "kartavya-le-sens-du-devoir",
+    "poster": "images/posters/kartavya-le-sens-du-devoir.jpg",
+    "backdrop": "images/backdrops/kartavya-le-sens-du-devoir.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "La Grande Muraille",
+    "director": "Zhang Yimou",
+    "cast": [
+      "Matt Damon",
+      "Jing Tian",
+      "Pedro Pascal"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Fantastique"
+    ],
+    "slug": "la-grande-muraille",
+    "poster": "images/posters/la-grande-muraille.jpg",
+    "backdrop": "images/backdrops/la-grande-muraille.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Le Mans 66",
+    "director": "James Mangold",
+    "cast": [
+      "Matt Damon",
+      "Christian Bale"
+    ],
+    "category": "Film",
+    "genres": [
+      "Drame",
+      "Biopic Sportif"
+    ],
+    "slug": "le-mans-66",
+    "poster": "images/posters/le-mans-66.jpg",
+    "backdrop": "images/backdrops/le-mans-66.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Le Réveil de la Momie",
+    "director": "Lee Cronin",
+    "cast": [
+      "Jack Reynor",
+      "Laia Costa",
+      "Verónica Falcón"
+    ],
+    "category": "Film",
+    "genres": [
+      "Épouvante",
+      "Horreur",
+      "Thriller"
+    ],
+    "slug": "le-reveil-de-la-momie",
+    "poster": "images/posters/le-reveil-de-la-momie.jpg",
+    "backdrop": "images/backdrops/le-reveil-de-la-momie.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Malnazidos",
+    "director": "Javier Ruiz Caldera, Alberto de Toro",
+    "cast": [
+      "Miki Esparbé",
+      "Aura Garrido"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Horreur",
+      "Zombies"
+    ],
+    "slug": "malnazidos",
+    "poster": "images/posters/malnazidos.jpg",
+    "backdrop": "images/backdrops/malnazidos.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Marche ou crève",
+    "director": "Margaux Bonhomme",
+    "cast": [
+      "Diane Rouxel",
+      "Jeanne Cohendy"
+    ],
+    "category": "Film",
+    "genres": [
+      "Drame"
+    ],
+    "slug": "marche-ou-creve",
+    "poster": "images/posters/marche-ou-creve.jpg",
+    "backdrop": "images/backdrops/marche-ou-creve.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Mortal Kombat 2 (2026)",
+    "director": "Simon McQuoid",
+    "cast": [
+      "Lewis Tan",
+      "Karl Urban",
+      "Jessica McNamee"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Arts Martiaux",
+      "Fantastique",
+      "Gore"
+    ],
+    "slug": "mortal-kombat-2-2026",
+    "poster": "images/posters/mortal-kombat-2-2026.jpg",
+    "backdrop": "images/backdrops/mortal-kombat-2-2026.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Projet Dernière Chance (Project Hail Mary)",
+    "director": "Phil Lord, Christopher Miller",
+    "cast": [
+      "Ryan Gosling",
+      "Sandra Hüller",
+      "Ken Leung"
+    ],
+    "category": "Film",
+    "genres": [
+      "Science-Fiction",
+      "Espace"
+    ],
+    "slug": "projet-derniere-chance-project-hail-mary",
+    "poster": "images/posters/projet-derniere-chance-project-hail-mary.jpg",
+    "backdrop": "images/backdrops/projet-derniere-chance-project-hail-mary.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Scarface (1983)",
+    "director": "Brian De Palma",
+    "cast": [
+      "Al Pacino",
+      "Michelle Pfeiffer",
+      "Steven Bauer"
+    ],
+    "category": "Film",
+    "genres": [
+      "Crime",
+      "Drame",
+      "Gangster"
+    ],
+    "slug": "scarface-1983",
+    "poster": "images/posters/scarface-1983.jpg",
+    "backdrop": "images/backdrops/scarface-1983.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Super Mario Galaxy, Le Film (2026)",
+    "director": "Aaron Horvath, Michael Jelenic",
+    "cast": [
+      "Chris Pratt (Voix)",
+      "Jack Black (Voix)"
+    ],
+    "category": "Film",
+    "genres": [
+      "Animation",
+      "Aventure",
+      "Famille"
+    ],
+    "slug": "super-mario-galaxy-le-film-2026",
+    "poster": "images/posters/super-mario-galaxy-le-film-2026.jpg",
+    "backdrop": "images/backdrops/super-mario-galaxy-le-film-2026.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Thandel",
+    "director": "Chandoo Mondeti",
+    "cast": [
+      "Naga Chaitanya",
+      "Sai Pallavi"
+    ],
+    "category": "Film",
+    "genres": [
+      "Action",
+      "Drame",
+      "Romance"
+    ],
+    "slug": "thandel",
+    "poster": "images/posters/thandel.jpg",
+    "backdrop": "images/backdrops/thandel.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "The Boys (Saisons 1 à 5)",
+    "director": "Eric Kripke",
+    "cast": [
+      "Karl Urban",
+      "Antony Starr",
+      "Jack Quaid",
+      "Erin Moriarty",
+      "Jensen Ackles"
+    ],
+    "category": "Série",
+    "genres": [
+      "Action",
+      "Super-héros",
+      "Satire",
+      "Gore"
+    ],
+    "slug": "the-boys-saisons-1-a-5",
+    "poster": "images/posters/the-boys-saisons-1-a-5.jpg",
+    "backdrop": "images/backdrops/the-boys-saisons-1-a-5.jpg",
+    "type": "serie",
+    "featured": true
+  },
+  {
+    "title": "The Punisher : One Last Kill",
+    "director": "Reinaldo Marcus Green",
+    "cast": [
+      "Jon Bernthal",
+      "Deborah Ann Woll",
+      "Jason R. Moore"
+    ],
+    "category": "Film (Marvel Special)",
+    "genres": [
+      "Action",
+      "Crime",
+      "Super-héros"
+    ],
+    "slug": "the-punisher-one-last-kill",
+    "poster": "images/posters/the-punisher-one-last-kill.jpg",
+    "backdrop": "images/backdrops/the-punisher-one-last-kill.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Titan (The Titan)",
+    "director": "Lennart Ruff",
+    "cast": [
+      "Sam Worthington",
+      "Taylor Schilling"
+    ],
+    "category": "Film",
+    "genres": [
+      "Science-Fiction",
+      "Thriller"
+    ],
+    "slug": "titan-the-titan",
+    "poster": "images/posters/titan-the-titan.jpg",
+    "backdrop": "images/backdrops/titan-the-titan.jpg",
+    "type": "film",
+    "featured": false
+  },
+  {
+    "title": "Titanic",
+    "director": "James Cameron",
+    "cast": [
+      "Leonardo DiCaprio",
+      "Kate Winslet"
+    ],
+    "category": "Film",
+    "genres": [
+      "Romance",
+      "Drame",
+      "Catastrophe"
+    ],
+    "slug": "titanic",
+    "poster": "images/posters/titanic.jpg",
+    "backdrop": "images/backdrops/titanic.jpg",
+    "type": "film",
+    "featured": true
+  }
+]

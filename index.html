@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planète Stream | PoC Catalogue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a class="active" href="index.html">Accueil</a>
+        <a href="#catalogue" data-nav-filter="film">Films</a>
+        <a href="#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="#catalogue" data-nav-filter="manga">Manga</a>
+        <a href="admin.html">Admin PoC</a>
+      </nav>
+      <div class="nav-actions"><input id="searchInput" class="search-input" placeholder="Rechercher un titre..." /></div>
+      <button class="hamb">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-content">
+        <p class="eyebrow">Prototype propre, catalogue vivant</p>
+        <h1>Tout un univers de <strong>divertissement</strong></h1>
+        <p>Films, séries et animés affichés depuis un fichier catalogue. Les affiches se changent à la main pour la maquette, les infos restent prêtes pour Airtable ou TMDb.</p>
+        <a class="primary play" href="#catalogue">Explorer le catalogue</a>
+        <div class="badges">
+          <div class="badge"><i>JSON</i> Catalogue modifiable</div>
+          <div class="badge"><i>TMDb</i> Enrichissement prévu</div>
+          <div class="badge"><i>▣</i> Responsive</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container" id="catalogue">
+      <div class="tabs" id="tabs">
+        <button class="active" data-filter="all">Tout</button>
+        <button data-filter="film">Films</button>
+        <button data-filter="serie">Séries</button>
+        <button data-filter="action">Action</button>
+        <button data-filter="horreur">Horreur</button>
+        <button data-filter="drame">Drame</button>
+        <button data-filter="science-fiction">Science-fiction</button>
+      </div>
+
+      <section id="featuredSection"><div class="section-head"><h2 class="section-title">À la une</h2><p>Les titres mis en avant pour donner du coffre à l’accueil.</p></div><div class="grid" id="featuredGrid"></div></section>
+      <section><div class="section-head"><h2 class="section-title">Catalogue complet</h2><p id="countLabel"></p></div><div class="grid" id="catalogueGrid"></div></section>
+
+      <aside class="cta">
+        <div class="cta-copy"><div class="circle">▶</div><div><h2>PoC prêt à évoluer</h2><p>Étape suivante : brancher TMDb pour récupérer affiches, résumés et métadonnées depuis une fonction Netlify.</p></div></div>
+        <a class="primary" href="admin.html">Ouvrir l’admin</a>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="detailModal" class="modal"><button class="modal-close" data-close>×</button><div id="modalContent"></div></dialog>
+  <footer><div class="container footer-grid"><div><div class="logo">PLANÈTE<span>STREAM</span></div><p>© 2026 Planète Stream. PoC catalogue.</p></div><div><h4>Navigation</h4><ul><li>Accueil</li><li>Films</li><li>Séries</li><li>Manga</li></ul></div><div><h4>Données</h4><ul><li>catalogue.json</li><li>TMDb API</li><li>Airtable possible</li></ul></div></div></footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>
