@@ -9,6 +9,7 @@ const results = document.querySelector('#results');
 const searchBtn = document.querySelector('#searchBtn');
 const downloadBtn = document.querySelector('#downloadBtn');
 const copyBtn = document.querySelector('#copyBtn');
+const resetBtn = document.querySelector('#resetBtn');
 
 init();
 
@@ -34,6 +35,7 @@ async function init() {
   searchBtn?.addEventListener('click', searchTmdb);
   downloadBtn?.addEventListener('click', downloadJson);
   copyBtn?.addEventListener('click', copyJson);
+  resetBtn?.addEventListener('click', resetDraft);
 }
 
 async function searchTmdb() {
@@ -140,6 +142,11 @@ if (alreadyExists) {
   });
 
   return el;
+}
+
+function resetDraft() {
+  localStorage.removeItem('catalogueDraft');
+  location.reload();
 }
 
 function syncOutput() {
