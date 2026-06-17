@@ -67,8 +67,8 @@ function renderDetail(item, catalogue) {
 
             <div class="detail-meta">
               ${year ? `<span>${escapeHtml(year)}</span>` : ''}
-              ${item.type ? `<span>${escapeHtml(item.type)}</span>` : ''}
-              ${item.category ? `<span>${escapeHtml(item.category)}</span>` : ''}
+              ${item.type ? `<span>${escapeHtml(item.type === 'serie' ? 'Série' : 'Film')}</span>` : ''}
+${item.category && item.category.toLowerCase() !== item.type ? `<span>${escapeHtml(item.category)}</span>` : ''}
               ${runtime ? `<span>${runtime}</span>` : ''}
               ${rating ? `<span>${rating}</span>` : ''}
             </div>

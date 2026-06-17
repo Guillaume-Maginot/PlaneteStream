@@ -764,3 +764,38 @@ footer{
     }
 
 }
+.detail-hero{
+  min-height:640px;
+}
+
+.detail-hero-overlay{
+  min-height:640px;
+}
+
+.detail-hero-content{
+  align-items:center;
+  padding-bottom:0;
+}
+
+.detail-poster{
+  width:255px;
+  transform:translateY(24px);
+}
+
+.detail-main h1{
+  max-width:760px;
+}
+
+.detail-overview{
+  max-width:780px;
+}
+
+.detail-info{
+  margin-top:38px;
+}
+
+.nav-actions .primary{
+  padding:10px 16px;
+  font-size:14px;
+  border-radius:9px;
+}
