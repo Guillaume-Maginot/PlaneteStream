@@ -3,9 +3,7 @@ export async function handler(event) {
     const query = event.queryStringParameters?.query?.trim();
 
     if (!query) {
-      return jsonResponse(400, {
-        error: "Paramètre query manquant."
-      });
+      return jsonResponse(400, { error: "Paramètre query manquant." });
     }
 
     if (!process.env.TMDB_BEARER_TOKEN) {
@@ -14,39 +12,29 @@ export async function handler(event) {
       });
     }
 
-    const tmdbUrl =
+    const searchUrl =
       "https://api.themoviedb.org/3/search/multi" +
       `?query=${encodeURIComponent(query)}` +
       "&language=fr-FR" +
       "&include_adult=false";
 
-    const response = await fetch(tmdbUrl, {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_BEARER_TOKEN}`,
-        accept: "application/json"
-      }
-    });
+    const searchData = await tmdbFetch(searchUrl);
 
-    if (!response.ok) {
-      return jsonResponse(response.status, {
-        error: "Erreur TMDb.",
-        status: response.status
-      });
-    }
-
-    const data = await response.json();
-
-    const results = (data.results || [])
+    const baseResults = (searchData.results || [])
       .filter(item => item.media_type === "movie" || item.media_type === "tv")
-      .map(normalizeTmdbResult)
-      .filter(item => item.title && item.tmdbId)
+      .filter(item => item.id)
       .slice(0, 12);
+
+    const results = await Promise.all(
+      baseResults.map(item => enrichTmdbResult(item))
+    );
 
     return jsonResponse(200, {
       query,
       count: results.length,
-      results
+      results: results.filter(item => item.title && item.tmdbId)
     });
+
   } catch (error) {
     return jsonResponse(500, {
       error: "Erreur serveur.",
@@ -55,32 +43,108 @@ export async function handler(event) {
   }
 }
 
-function normalizeTmdbResult(item) {
+async function enrichTmdbResult(item) {
   const isMovie = item.media_type === "movie";
+  const endpoint = isMovie ? "movie" : "tv";
 
-  const title = isMovie ? item.title : item.name;
-  const originalTitle = isMovie ? item.original_title : item.original_name;
-  const date = isMovie ? item.release_date : item.first_air_date;
+  const detailsUrl =
+    `https://api.themoviedb.org/3/${endpoint}/${item.id}` +
+    "?language=fr-FR";
+
+  const creditsUrl =
+    `https://api.themoviedb.org/3/${endpoint}/${item.id}/credits` +
+    "?language=fr-FR";
+
+  const [details, credits] = await Promise.all([
+    tmdbFetch(detailsUrl),
+    tmdbFetch(creditsUrl)
+  ]);
+
+  const title = isMovie ? details.title : details.name;
+  const originalTitle = isMovie ? details.original_title : details.original_name;
+  const date = isMovie ? details.release_date : details.first_air_date;
   const year = date ? date.slice(0, 4) : "";
+
+  const director = isMovie
+    ? getDirector(credits)
+    : getCreator(details);
+
+  const cast = (credits.cast || [])
+    .slice(0, 6)
+    .map(actor => actor.name)
+    .filter(Boolean);
 
   return {
     tmdbId: item.id,
     mediaType: item.media_type,
     type: isMovie ? "film" : "serie",
+
     title,
     originalTitle,
     year,
-    overview: item.overview || "",
-    poster: buildImageUrl(item.poster_path, "w500"),
-    backdrop: buildImageUrl(item.backdrop_path, "w1280"),
-    rating: item.vote_average || 0,
-    popularity: item.popularity || 0
+    releaseDate: date || "",
+
+    overview: details.overview || item.overview || "",
+
+    genres: (details.genres || []).map(g => g.name),
+
+    director,
+    cast,
+
+    runtime: isMovie
+      ? details.runtime || 0
+      : details.episode_run_time?.[0] || 0,
+
+    seasons: !isMovie ? details.number_of_seasons || 0 : 0,
+    episodes: !isMovie ? details.number_of_episodes || 0 : 0,
+
+    country: (details.production_countries || [])
+      .map(c => c.name)
+      .join(", "),
+
+    language: details.original_language || "",
+
+    rating: details.vote_average || 0,
+    popularity: details.popularity || 0,
+
+    poster: buildImageUrl(details.poster_path || item.poster_path, "w500"),
+    backdrop: buildImageUrl(details.backdrop_path || item.backdrop_path, "w1280")
   };
+}
+
+function getDirector(credits) {
+  const director = (credits.crew || []).find(
+    person => person.job === "Director"
+  );
+
+  return director?.name || "À compléter";
+}
+
+function getCreator(details) {
+  const creators = details.created_by || [];
+
+  if (!creators.length) return "À compléter";
+
+  return creators.map(person => person.name).join(", ");
+}
+
+async function tmdbFetch(url) {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${process.env.TMDB_BEARER_TOKEN}`,
+      accept: "application/json"
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Erreur TMDb ${response.status}`);
+  }
+
+  return response.json();
 }
 
 function buildImageUrl(path, size = "w500") {
   if (!path) return "";
-
   return `https://image.tmdb.org/t/p/${size}${path}`;
 }
 
