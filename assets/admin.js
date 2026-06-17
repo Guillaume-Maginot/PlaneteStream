@@ -103,6 +103,7 @@ function resultCard(item, mediaType) {
   if (e.target.closest('button')) return;
 
   updatePreview(item);
+  updateGenreSelect(item);
 
 });
 
@@ -113,7 +114,7 @@ el.addEventListener('click', (e) => {
   el.querySelector('button').addEventListener('click', () => {
 
     updatePreview(item);
-
+    updateGenreSelect(item);
   const currentTmdbId = item.tmdbId || item.id;
 const currentType = item.type || (mediaType === 'tv' ? 'serie' : 'film');
 
@@ -156,7 +157,9 @@ console.log('backdrop_path :', item.backdrop_path);
   mediaType: item.mediaType || mediaType,
   category: sectionSelect?.value || (mediaType === 'tv' ? 'Série' : 'Film'),
 
-  genres: item.genres || [],
+  genres: genreSelect?.value
+  ? [genreSelect.value, ...(item.genres || []).filter(g => g !== genreSelect.value)]
+  : item.genres || [],
   director: item.director || 'À compléter',
   cast: item.cast || [],
 
@@ -262,4 +265,17 @@ function updatePreview(item) {
       <p>${overview}</p>
     </div>
   `;
+}
+
+function updateGenreSelect(item) {
+  if (!genreSelect) return;
+
+  genreSelect.innerHTML = '<option value="">Auto TMDb</option>';
+
+  (item.genres || []).forEach(genre => {
+    const option = document.createElement('option');
+    option.value = genre;
+    option.textContent = genre;
+    genreSelect.appendChild(option);
+  });
 }
