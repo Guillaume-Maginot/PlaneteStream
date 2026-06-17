@@ -1,54 +1,170 @@
 let draft = [];
+
 const imageBase = 'https://image.tmdb.org/t/p/w500';
+const backdropBase = 'https://image.tmdb.org/t/p/w1280';
+
 const output = document.querySelector('#jsonOutput');
+const results = document.querySelector('#results');
 
-fetch('data/catalogue.json').then(r => r.json()).then(data => { draft = data; syncOutput(); });
+const searchBtn = document.querySelector('#searchBtn');
+const downloadBtn = document.querySelector('#downloadBtn');
+const copyBtn = document.querySelector('#copyBtn');
 
-document.querySelector('#searchBtn').addEventListener('click', searchTmdb);
-document.querySelector('#downloadBtn').addEventListener('click', downloadJson);
+init();
 
-async function searchTmdb(){
+async function init() {
+  try {
+    const saved = localStorage.getItem('catalogueDraft');
+
+    if (saved) {
+      draft = JSON.parse(saved);
+    } else {
+      const res = await fetch('data/catalogue.json');
+      draft = await res.json();
+    }
+
+    syncOutput();
+  } catch (err) {
+    console.error(err);
+    draft = [];
+    syncOutput();
+    output.value = '[]';
+  }
+
+  searchBtn?.addEventListener('click', searchTmdb);
+  downloadBtn?.addEventListener('click', downloadJson);
+  copyBtn?.addEventListener('click', copyJson);
+}
+
+async function searchTmdb() {
   const query = document.querySelector('#query').value.trim();
   const mediaType = document.querySelector('#mediaType').value;
-  if(!query) return;
-  const results = document.querySelector('#results');
+
+  if (!query) return;
+
   results.innerHTML = '<p>Recherche en cours...</p>';
-  try{
-    const res = await fetch(`/.netlify/functions/tmdb-search?query=${encodeURIComponent(query)}&type=${mediaType}`);
-    if(!res.ok) throw new Error(await res.text());
+
+  try {
+    const res = await fetch(
+      `/.netlify/functions/tmdb-search?query=${encodeURIComponent(query)}&type=${mediaType}`
+    );
+
+    if (!res.ok) throw new Error(await res.text());
+
     const data = await res.json();
     results.innerHTML = '';
-    data.results.slice(0,8).forEach(item => results.appendChild(resultCard(item, mediaType)));
-  }catch(err){
-    results.innerHTML = `<p>Impossible d’appeler TMDb. Vérifie la clé Netlify. Détail : ${err.message}</p>`;
+
+    if (!data.results || data.results.length === 0) {
+      results.innerHTML = '<p>Aucun résultat trouvé.</p>';
+      return;
+    }
+
+    data.results
+      .slice(0, 8)
+      .forEach(item => results.appendChild(resultCard(item, mediaType)));
+
+  } catch (err) {
+    results.innerHTML = `
+      <p>Impossible d’appeler TMDb. Vérifie la clé Netlify.</p>
+      <p>Détail : ${err.message}</p>
+    `;
   }
 }
 
-function resultCard(item, mediaType){
-  const title = item.title || item.name;
-  const year = (item.release_date || item.first_air_date || '').slice(0,4);
+function resultCard(item, mediaType) {
+  const title = item.title || item.name || 'Titre inconnu';
+  const year = (item.release_date || item.first_air_date || '').slice(0, 4);
+  const slug = slugify(title);
+
   const el = document.createElement('div');
   el.className = 'tmdb-result';
-  el.innerHTML = `<img src="${item.poster_path ? imageBase + item.poster_path : ''}" alt=""><div><h3>${title}</h3><p>${year || 'Année inconnue'} · ${item.overview ? item.overview.slice(0,120)+'…' : 'Résumé absent'}</p><button class="primary">Ajouter au JSON</button></div>`;
+
+  const poster = item.poster_path ? imageBase + item.poster_path : '';
+
+  el.innerHTML = `
+    <img src="${poster}" alt="">
+    <div>
+      <h3>${title}</h3>
+      <p>${year || 'Année inconnue'} · ${
+        item.overview ? item.overview.slice(0, 120) + '…' : 'Résumé absent'
+      }</p>
+      <button class="primary">Ajouter au JSON</button>
+    </div>
+  `;
+
   el.querySelector('button').addEventListener('click', () => {
+    const alreadyExists = draft.some(entry =>
+      entry.tmdbId === item.id ||
+      entry.slug === slug
+    );
+
+    if (alreadyExists) {
+      alert('Cet élément est déjà dans le catalogue.');
+      return;
+    }
+
     draft.push({
       title,
-      slug: slugify(title),
+      slug,
       type: mediaType === 'tv' ? 'serie' : 'film',
       category: mediaType === 'tv' ? 'Série' : 'Film',
       genres: [],
       director: 'À compléter',
       cast: [],
       tmdbId: item.id,
-      poster: item.poster_path ? imageBase + item.poster_path : `images/posters/${slugify(title)}.jpg`,
-      backdrop: item.backdrop_path ? `https://image.tmdb.org/t/p/w1280${item.backdrop_path}` : `images/backdrops/${slugify(title)}.jpg`,
+      poster: item.poster_path
+        ? imageBase + item.poster_path
+        : `images/posters/${slug}.jpg`,
+      backdrop: item.backdrop_path
+        ? backdropBase + item.backdrop_path
+        : `images/backdrops/${slug}.jpg`,
       overview: item.overview || '',
       featured: false
     });
+
     syncOutput();
+    alert(`${title} ajouté au JSON.`);
   });
+
   return el;
 }
-function syncOutput(){ output.value = JSON.stringify(draft, null, 2); }
-function slugify(str){return str.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
-function downloadJson(){const blob = new Blob([output.value], {type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='catalogue.json'; a.click(); URL.revokeObjectURL(a.href);}
+
+function syncOutput() {
+  const json = JSON.stringify(draft, null, 2);
+  output.value = json;
+  localStorage.setItem('catalogueDraft', json);
+}
+
+async function copyJson() {
+  try {
+    await navigator.clipboard.writeText(output.value);
+    alert('JSON copié dans le presse-papier.');
+  } catch (err) {
+    output.select();
+    document.execCommand('copy');
+    alert('JSON copié.');
+  }
+}
+
+function downloadJson() {
+  const blob = new Blob([output.value], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'catalogue.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+function slugify(str) {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
