@@ -909,3 +909,18 @@ footer{
     align-items:flex-start;
   }
 }
+.detail-cast-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.detail-cast-list span{
+  border:1px solid rgba(255,45,85,.24);
+  border-radius:999px;
+  padding:8px 12px;
+  background:rgba(255,255,255,.055);
+  color:#fff;
+  font-weight:700;
+  font-size:14px;
+}

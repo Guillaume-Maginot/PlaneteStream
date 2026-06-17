@@ -113,15 +113,13 @@ if (rating) badges.push(rating);
 
         <h2>Casting principal</h2>
 
-        <p class="detail-cast">
-
-            ${escapeHtml(
-                (item.cast || []).join(' • ') || 'Non renseigné'
-            )}
-
-        </p>
-
-    </div>
+        <div class="detail-cast-list">
+  ${
+    (item.cast || []).length
+      ? item.cast.map(actor => `<span>${escapeHtml(actor)}</span>`).join('')
+      : '<span>Non renseigné</span>'
+  }
+</div>
 
     <aside class="detail-right">
 
@@ -146,12 +144,12 @@ if (rating) badges.push(rating);
 
             <li>
                 <span>🌍 Pays</span>
-                <strong>${escapeHtml(item.country || '-')}</strong>
+                <strong>${escapeHtml(formatCountry(item.country) || '-')}</strong>
             </li>
 
             <li>
                 <span>🗣️ Langue</span>
-                <strong>${escapeHtml(item.language || '-')}</strong>
+                <strong>${escapeHtml(formatLanguage(item.language) || '-')}</strong>
             </li>
 
             <li>
@@ -240,6 +238,39 @@ function formatDate(dateString) {
     month: 'long',
     year: 'numeric'
   });
+}
+
+function formatCountry(country = '') {
+  const countries = {
+    'United States of America': '🇺🇸 États-Unis',
+    'United Kingdom': '🇬🇧 Royaume-Uni',
+    'France': '🇫🇷 France',
+    'Canada': '🇨🇦 Canada',
+    'Germany': '🇩🇪 Allemagne',
+    'Italy': '🇮🇹 Italie',
+    'Spain': '🇪🇸 Espagne',
+    'Japan': '🇯🇵 Japon',
+    'South Korea': '🇰🇷 Corée du Sud',
+    'China': '🇨🇳 Chine',
+    'Australia': '🇦🇺 Australie'
+  };
+
+  return countries[country] || country;
+}
+
+function formatLanguage(language = '') {
+  const languages = {
+    en: '🇬🇧 Anglais',
+    fr: '🇫🇷 Français',
+    ja: '🇯🇵 Japonais',
+    ko: '🇰🇷 Coréen',
+    es: '🇪🇸 Espagnol',
+    de: '🇩🇪 Allemand',
+    it: '🇮🇹 Italien',
+    zh: '🇨🇳 Chinois'
+  };
+
+  return languages[language] || language;
 }
 
 initDetail();
