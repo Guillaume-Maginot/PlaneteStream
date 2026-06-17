@@ -428,5 +428,40 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/mXLVA0YL6tcXi6SJSuAh9ONXFj5.jpg",
     "overview": "Une soucoupe volante atterrit en pleine nuit près de Los Angeles. Quelques extraterrestres, envoyés sur Terre en mission d’exploration botanique, sortent de l’engin, mais un des leurs s’aventure au-delà de la clairière où se trouve la navette. Celui-ci se dirige alors vers la ville. C’est sa première découverte de la civilisation humaine. Bientôt traquée par des militaires et abandonnée par les siens, cette petite créature apeurée se nommant E.T. se réfugie dans une résidence de banlieue. Elliot, un garçon de dix ans, le découvre et lui construit un abri dans son armoire. Rapprochés par un échange télépathique, les deux êtres ne tardent pas à devenir amis. Aidé par sa sœur Gertie et son frère aîné Michael, Elliot va alors tenter de garder la présence d'E.T. secrète.",
     "featured": true
+  },
+  {
+    "title": "Les Aventuriers de l'arche perdue",
+    "slug": "les-aventuriers-de-l-arche-perdue",
+    "originalTitle": "Raiders of the Lost Ark",
+    "year": "1981",
+    "releaseDate": "1981-06-12",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "nouveautes",
+    "genres": [
+      "Aventure",
+      "Action"
+    ],
+    "director": "Steven Spielberg",
+    "cast": [
+      "Harrison Ford",
+      "Karen Allen",
+      "Paul Freeman",
+      "John Rhys-Davies",
+      "Ronald Lacey",
+      "Wolf Kahler"
+    ],
+    "runtime": 115,
+    "seasons": 0,
+    "episodes": 0,
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.924,
+    "popularity": 12.6518,
+    "tmdbId": 85,
+    "poster": "https://image.tmdb.org/t/p/w500/by5xmwAUVzXc3WyIyjMYCVaL5Lj.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/zPACwR32amTNvzId9qyapCWXYDJ.jpg",
+    "overview": "L'Arche d'Alliance contenant les tables de la Loi brisées par Moïse, voici 3.000 ans, est l'objet de la convoitise des nazis. L'archéologue aventurier Indiana Jones se lance à sa recherche, poursuivi par son ennemi Belloq.",
+    "featured": true
   }
 ]
