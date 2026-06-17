@@ -106,26 +106,46 @@ if (rating) badges.push(rating);
       </div>
 
       <div class="detail-grid">
-        <article>
-          <h3>Réalisation / Création</h3>
-          <p>${escapeHtml(item.director || 'À compléter')}</p>
-        </article>
+  <article>
+    <h3>Réalisation / Création</h3>
+    <p>${escapeHtml(item.director || 'À compléter')}</p>
+  </article>
 
-        <article>
-          <h3>Casting</h3>
-          <p>${escapeHtml((item.cast || []).join(', ') || 'Non renseigné')}</p>
-        </article>
+  <article>
+    <h3>Casting</h3>
+    <p>${escapeHtml((item.cast || []).join(', ') || 'Non renseigné')}</p>
+  </article>
 
-        <article>
-          <h3>Classification</h3>
-          <p>${escapeHtml(item.category || item.type || 'Non renseignée')}</p>
-        </article>
+  <article>
+    <h3>Date de sortie</h3>
+    <p>${escapeHtml(formatDate(item.releaseDate) || item.year || 'Non renseignée')}</p>
+  </article>
 
-        <article>
-          <h3>Popularité TMDb</h3>
-          <p>${item.popularity || 'Non renseignée'}</p>
-        </article>
-      </div>
+  <article>
+    <h3>Durée</h3>
+    <p>${item.runtime ? `${item.runtime} minutes` : 'Non renseignée'}</p>
+  </article>
+
+  <article>
+    <h3>Pays</h3>
+    <p>${escapeHtml(item.country || 'Non renseigné')}</p>
+  </article>
+
+  <article>
+    <h3>Langue originale</h3>
+    <p>${escapeHtml(item.language || 'Non renseignée')}</p>
+  </article>
+
+  <article>
+    <h3>Note TMDb</h3>
+    <p>${item.rating ? `${Number(item.rating).toFixed(1)} / 10` : 'Non renseignée'}</p>
+  </article>
+
+  <article>
+    <h3>Popularité TMDb</h3>
+    <p>${item.popularity || 'Non renseignée'}</p>
+  </article>
+</div>
     </section>
 
     ${
@@ -185,6 +205,19 @@ function escapeHtml(str = '') {
     "'": '&#039;',
     '"': '&quot;'
   }[c]));
+}
+
+function formatDate(dateString) {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return dateString;
+
+  return date.toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
 }
 
 initDetail();
