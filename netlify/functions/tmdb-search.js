@@ -1,28 +1,26 @@
-exports.handler = async function(event) {
-  const token = process.env.TMDB_BEARER_TOKEN;
-  const query = event.queryStringParameters?.query;
-  const type = event.queryStringParameters?.type || 'movie';
+export async function handler(event) {
+  const query = event.queryStringParameters.query;
 
-  if (!token) return { statusCode: 500, body: 'TMDB_BEARER_TOKEN manquant dans Netlify.' };
-  if (!query) return { statusCode: 400, body: 'Paramètre query manquant.' };
-  if (!['movie', 'tv'].includes(type)) return { statusCode: 400, body: 'Type invalide.' };
+  if (!query) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Paramètre query manquant" })
+    };
+  }
 
-  const url = new URL(`https://api.themoviedb.org/3/search/${type}`);
-  url.searchParams.set('query', query);
-  url.searchParams.set('language', 'fr-FR');
-  url.searchParams.set('include_adult', 'false');
+  const url = `https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(query)}&language=fr-FR`;
 
   const response = await fetch(url, {
     headers: {
-      Authorization: `Bearer ${token}`,
-      accept: 'application/json'
+      Authorization: `Bearer ${process.env.TMDB_BEARER_TOKEN}`,
+      accept: "application/json"
     }
   });
 
-  const body = await response.text();
+  const data = await response.json();
+
   return {
-    statusCode: response.status,
-    headers: { 'Content-Type': 'application/json' },
-    body
+    statusCode: 200,
+    body: JSON.stringify(data)
   };
-};
+}
