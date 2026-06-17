@@ -924,3 +924,13 @@ footer{
   font-weight:700;
   font-size:14px;
 }
+.detail-cast-list{
+    margin-bottom:32px;
+}
+.detail-left h2{
+    margin-top:28px;
+}
+
+.detail-left h2:first-child{
+    margin-top:0;
+}
