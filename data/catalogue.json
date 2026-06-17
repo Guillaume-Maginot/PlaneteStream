@@ -531,5 +531,44 @@
     "backdrop": "images/backdrops/titanic.jpg",
     "type": "film",
     "featured": true
+  },
+  {
+    "title": "Blade",
+    "slug": "blade",
+    "type": "film",
+    "category": "Film",
+    "genres": [],
+    "director": "À compléter",
+    "cast": [],
+    "poster": "images/posters/blade.jpg",
+    "backdrop": "images/backdrops/blade.jpg",
+    "overview": "Mi-homme mi-vampire, possédant toutes les qualités des goules et aucune de leur faiblesse, capable de vivre en plein jour, Blade traque sans pitié les suceurs de sang. Aidé de Whistler, son mentor et armurier, il est le cauchemar de la Nation Secrète des Vampires, dont les membres infiltrent toutes les couches de la société. L'un d'eux, Deacon Frost, avide de pouvoir, souhaite asservir le monde et la race humaine en invoquant le Dieu du sang. Un seul homme peut se mettre en travers de son chemin : Blade...",
+    "featured": false
+  },
+  {
+    "title": "Blade",
+    "slug": "blade",
+    "type": "film",
+    "category": "Film",
+    "genres": [],
+    "director": "À compléter",
+    "cast": [],
+    "poster": "https://image.tmdb.org/t/p/w500/1E1y8stLqgLEdvT3bEQscL1kiFf.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/7NKfxJrQn053UJeLftlx4m4NTzo.jpg",
+    "overview": "Mi-homme mi-vampire, possédant toutes les qualités des goules et aucune de leur faiblesse, capable de vivre en plein jour, Blade traque sans pitié les suceurs de sang. Aidé de Whistler, son mentor et armurier, il est le cauchemar de la Nation Secrète des Vampires, dont les membres infiltrent toutes les couches de la société. L'un d'eux, Deacon Frost, avide de pouvoir, souhaite asservir le monde et la race humaine en invoquant le Dieu du sang. Un seul homme peut se mettre en travers de son chemin : Blade...",
+    "featured": false
+  },
+  {
+    "title": "Blade Runner",
+    "slug": "blade-runner",
+    "type": "film",
+    "category": "Film",
+    "genres": [],
+    "director": "À compléter",
+    "cast": [],
+    "poster": "https://image.tmdb.org/t/p/w500/zHKWxyG4j404HVeSYHNH4niUpkW.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/hJ5R9d6QuH3tzr8L8neZZTuzNXm.jpg",
+    "overview": "2019, Los Angeles. La Terre est surpeuplée et l’humanité est partie coloniser l’espace. Les nouveaux colons sont assistés de Replicants, androïdes que rien ne peut distinguer de l'être humain. Conçus comme de nouveaux esclaves, certains parmi les plus évolués s’affranchissent de leurs chaînes et s’enfuient. Rick Deckard, un ancien Blade Runner, catégorie spéciale de policiers chargés de \"retirer\" ces replicants, accepte une nouvelle mission consistant à retrouver quatre de ces individus qui viennent de regagner la Terre après avoir volé une navette spatiale.",
+    "featured": false
   }
 ]
