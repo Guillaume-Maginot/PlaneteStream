@@ -99,54 +99,76 @@ if (rating) badges.push(rating);
       </div>
     </section>
 
-    <section class="container detail-info">
-      <div class="detail-block">
+   <section class="container detail-layout">
+
+    <div class="detail-left">
+
         <h2>Synopsis</h2>
-        <p>${escapeHtml(item.overview || 'Aucun synopsis disponible.')}</p>
-      </div>
 
-      <div class="detail-grid">
-  <article>
-    <h3>Réalisation / Création</h3>
-    <p>${escapeHtml(item.director || 'À compléter')}</p>
-  </article>
+        <p class="detail-synopsis">
 
-  <article>
-    <h3>Casting</h3>
-    <p>${escapeHtml((item.cast || []).join(', ') || 'Non renseigné')}</p>
-  </article>
+            ${escapeHtml(item.overview || 'Aucun synopsis disponible.')}
 
-  <article>
-    <h3>Date de sortie</h3>
-    <p>${escapeHtml(formatDate(item.releaseDate) || item.year || 'Non renseignée')}</p>
-  </article>
+        </p>
 
-  <article>
-    <h3>Durée</h3>
-    <p>${item.runtime ? `${item.runtime} minutes` : 'Non renseignée'}</p>
-  </article>
+        <h2>Casting principal</h2>
 
-  <article>
-    <h3>Pays</h3>
-    <p>${escapeHtml(item.country || 'Non renseigné')}</p>
-  </article>
+        <p class="detail-cast">
 
-  <article>
-    <h3>Langue originale</h3>
-    <p>${escapeHtml(item.language || 'Non renseignée')}</p>
-  </article>
+            ${escapeHtml(
+                (item.cast || []).join(' • ') || 'Non renseigné'
+            )}
 
-  <article>
-    <h3>Note TMDb</h3>
-    <p>${item.rating ? `${Number(item.rating).toFixed(1)} / 10` : 'Non renseignée'}</p>
-  </article>
+        </p>
 
-  <article>
-    <h3>Popularité TMDb</h3>
-    <p>${item.popularity || 'Non renseignée'}</p>
-  </article>
-</div>
-    </section>
+    </div>
+
+    <aside class="detail-right">
+
+        <h2>Informations</h2>
+
+        <ul class="movie-info-list">
+
+            <li>
+                <span>🎬 Réalisation</span>
+                <strong>${escapeHtml(item.director || 'À compléter')}</strong>
+            </li>
+
+            <li>
+                <span>📅 Sortie</span>
+                <strong>${escapeHtml(formatDate(item.releaseDate) || item.year || '-')}</strong>
+            </li>
+
+            <li>
+                <span>⏱️ Durée</span>
+                <strong>${item.runtime ? item.runtime + ' min' : '-'}</strong>
+            </li>
+
+            <li>
+                <span>🌍 Pays</span>
+                <strong>${escapeHtml(item.country || '-')}</strong>
+            </li>
+
+            <li>
+                <span>🗣️ Langue</span>
+                <strong>${escapeHtml(item.language || '-')}</strong>
+            </li>
+
+            <li>
+                <span>⭐ TMDb</span>
+                <strong>${item.rating ? Number(item.rating).toFixed(1) + '/10' : '-'}</strong>
+            </li>
+
+            <li>
+                <span>🎭 Genres</span>
+                <strong>${escapeHtml((item.genres || []).join(' • '))}</strong>
+            </li>
+
+        </ul>
+
+    </aside>
+
+</section>
 
     ${
       related.length
