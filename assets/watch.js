@@ -12,6 +12,7 @@ const dbTables = {
 
 let currentItem = null;
 let currentCatalogue = [];
+const pendingRatingByMovie = new Map();
 
 async function initWatch(){
   const params = new URLSearchParams(window.location.search);
@@ -91,23 +92,6 @@ async function renderWatch(item, catalogue){
             <span class="rating-label">Planète Stream</span>
             <strong id="communityRatingLabel">Chargement...</strong>
           </div>
-          <div>
-            <span class="rating-label">Votre note</span>
-            <strong id="userRatingLabel">${localRating ? localRating + '/10' : 'Non noté'}</strong>
-          </div>
-        </div>
-        <div class="rating-display" aria-label="Votre note actuelle">
-          <span id="userStarsLabel">${renderStars(localRating)}</span>
-          <small id="userRatingText">${localRating ? localRating + '/10' : 'Aucune note enregistrée'}</small>
-        </div>
-
-        <div class="rating-editor">
-          <label for="userRatingRange">Modifier votre note</label>
-          <div class="rating-range-row">
-            <input id="userRatingRange" type="range" min="1" max="10" step="1" value="${localRating || 5}">
-            <strong id="userRatingPreview">${localRating || 5}/10</strong>
-          </div>
-          <button class="secondary small-action" id="saveUserRating" type="button">Enregistrer ma note</button>
         </div>
         <p class="soft-note" id="supabaseStatus">Connexion à Supabase...</p>
       </article>
@@ -136,7 +120,8 @@ async function renderWatch(item, catalogue){
           </select>
         </div>
         <textarea id="commentText" placeholder="Votre avis sur le film..." maxlength="700" required></textarea>
-        <button class="primary" type="submit">Publier l’avis</button>
+        <p class="soft-note form-help">La note est liée à votre avis. Pas de deuxième bouton planqué dans les conduits.</p>
+        <button class="primary" type="submit">Publier mon avis</button>
       </form>
 
       <div class="comments-list" id="commentsList">
@@ -178,29 +163,6 @@ function bindWatchEvents(item){
     frame?.scrollIntoView({behavior:'smooth', block:'center'});
   });
 
-  document.querySelector('#userRatingRange')?.addEventListener('input', event => {
-    const rating = Number(event.target.value);
-    document.querySelector('#userRatingPreview').textContent = `${rating}/10`;
-    document.querySelector('#userStarsLabel').textContent = renderStars(rating);
-    document.querySelector('#userRatingText').textContent = `${rating}/10 en préparation`;
-  });
-
-  document.querySelector('#saveUserRating')?.addEventListener('click', async () => {
-    const rating = Number(document.querySelector('#userRatingRange')?.value || 0);
-    if(!rating) return;
-    saveLocalRating(item.slug, rating);
-    setUserRatingUI(rating);
-    setStatus('Enregistrement de votre note...', 'pending');
-
-    const ok = await saveRating(item.slug, rating);
-    if(ok){
-      setStatus('Note enregistrée dans Supabase.', 'ok');
-      await refreshCommunity(item);
-    }else{
-      setStatus('Note gardée en local. Supabase a refusé l’entrée du cinéma.', 'error');
-    }
-  });
-
   document.querySelector('#commentForm')?.addEventListener('submit', async event => {
     event.preventDefault();
     const name = document.querySelector('#commentName').value.trim();
@@ -239,8 +201,10 @@ async function refreshCommunity(item){
   }
 
   if(ratings.online){
-    const average = getAverageRating(ratings.data);
-    document.querySelector('#communityRatingLabel').textContent = average ? `${average}/10` : 'Pas encore';
+    const ratingRows = mergePendingRating(item.slug, ratings.data);
+    const average = getAverageRating(ratingRows);
+    const count = getRatingCount(ratingRows);
+    document.querySelector('#communityRatingLabel').textContent = average ? `${average}/10 (${count} vote${count > 1 ? 's' : ''})` : 'Pas encore';
   }else{
     document.querySelector('#communityRatingLabel').textContent = 'Hors ligne';
   }
@@ -279,14 +243,24 @@ async function saveRating(slug, rating){
   // On tente d'abord une vraie mise à jour de la ligne existante.
   // C'est plus fiable que l'upsert quand la contrainte unique Supabase/PostgREST fait son cinéma.
   const updated = await supabaseUpdateRating(slug, userId, { rating, created_at: payload.created_at });
-  if(updated === true) return true;
+  if(updated === true){
+    rememberPendingRating(slug, userId, rating);
+    return true;
+  }
 
   // Si aucune ligne n'existe encore pour ce visiteur et ce film, on insère la première note.
   const inserted = await supabaseInsert('ratings', payload);
-  if(inserted) return true;
+  if(inserted){
+    rememberPendingRating(slug, userId, rating);
+    return true;
+  }
 
   // Dernier filet de sécurité : upsert si la contrainte unique movie_id + user_id est bien active.
-  return supabaseUpsertRating(payload);
+  const upserted = await supabaseUpsertRating(payload);
+  if(upserted){
+    rememberPendingRating(slug, userId, rating);
+  }
+  return upserted;
 }
 
 async function fetchComments(slug){
@@ -470,16 +444,35 @@ function getAverageRating(rows){
   return avg.toFixed(1);
 }
 
+function getRatingCount(rows){
+  return (rows || []).map(row => Number(row.rating)).filter(Boolean).length;
+}
+
+function rememberPendingRating(slug, userId, rating){
+  pendingRatingByMovie.set(slug, {
+    user_id: userId,
+    rating: Number(rating),
+    created_at: new Date().toISOString()
+  });
+}
+
+function mergePendingRating(slug, rows){
+  const pending = pendingRatingByMovie.get(slug);
+  if(!pending) return rows || [];
+
+  const list = Array.isArray(rows) ? [...rows] : [];
+  const index = list.findIndex(row => row.user_id === pending.user_id);
+  if(index >= 0){
+    list[index] = {...list[index], rating: pending.rating, created_at: pending.created_at};
+  }else{
+    list.push(pending);
+  }
+  return list;
+}
+
 function setUserRatingUI(rating){
-  document.querySelector('#userRatingLabel').textContent = `${rating}/10`;
-  const range = document.querySelector('#userRatingRange');
-  if(range) range.value = rating;
-  const preview = document.querySelector('#userRatingPreview');
-  if(preview) preview.textContent = `${rating}/10`;
-  const text = document.querySelector('#userRatingText');
-  if(text) text.textContent = `${rating}/10`;
-  const stars = document.querySelector('#userStarsLabel');
-  if(stars) stars.textContent = renderStars(rating);
+  const label = document.querySelector('#userRatingLabel');
+  if(label) label.textContent = `${rating}/10`;
 }
 
 function renderStars(rating=0){
