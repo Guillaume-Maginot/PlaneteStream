@@ -1492,3 +1492,17 @@ min-width:220px;
   .planet-logo-wrap::after{width:220px;height:52px;}
   .compact-hero{min-height:auto !important;padding:34px 0 30px !important;}
 }
+
+/* Aperçus compacts : la fiche garde le synopsis, les cartes vont droit au pop-corn. */
+.compact-hero .hero-dynamic-content > p:not(.eyebrow):not(.hero-meta){display:none}
+.compact-hero{min-height:360px;padding:46px 0 38px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.secondary{display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);padding:13px 18px;font-weight:800;color:#fff;backdrop-filter:blur(10px)}
+.poster-link{display:block;color:inherit;text-decoration:none}
+.card{display:flex;flex-direction:column}
+.card-actions{display:flex;gap:8px;margin-top:12px}
+.card-actions a{flex:1;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;padding:9px 8px;font-size:12px;font-weight:800;text-decoration:none}
+.card-play{background:linear-gradient(135deg,var(--purple),#651cff);box-shadow:0 0 18px rgba(139,44,255,.32);color:#fff}
+.card-detail{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#eee}
+.card-actions a:hover{filter:brightness(1.12)}
+@media(max-width:620px){.compact-hero{min-height:320px}.card-actions{flex-direction:column}.hero-actions .secondary,.hero-actions .primary{width:auto;min-width:140px}}

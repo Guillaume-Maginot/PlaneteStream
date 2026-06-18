@@ -139,8 +139,14 @@ function renderHero(){
   hero.querySelector('#heroEyebrow').textContent = item.featured ? 'À la une' : 'Sélection Planète Stream';
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';
   hero.querySelector('#heroMeta').textContent = [year, formatType(item.type), genres, item._rating ? `⭐ ${item._rating.toFixed(1)}` : ''].filter(Boolean).join('   ');
-  hero.querySelector('#heroOverview').textContent = item.overview || 'Un contenu à découvrir dans votre catalogue.';
-  hero.querySelector('#heroWatch').href = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  const detailHref = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  const watchHref = getWatchHref(item);
+  const heroWatch = hero.querySelector('#heroWatch');
+  heroWatch.href = watchHref;
+  heroWatch.target = isExternalHref(watchHref) ? '_blank' : '_self';
+  heroWatch.rel = isExternalHref(watchHref) ? 'noopener noreferrer' : '';
+  const heroDetail = hero.querySelector('#heroDetail');
+  if(heroDetail) heroDetail.href = detailHref;
 }
 
 function startHeroRotation(){
@@ -175,11 +181,14 @@ function setText(selector, value){
 }
 
 function createCard(item){
-  const card = document.createElement('button');
+  const card = document.createElement('article');
   card.className = 'card';
   const year = item.year || (item.releaseDate || '').slice(0,4);
+  const detailHref = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  const watchHref = getWatchHref(item);
+  const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
   card.innerHTML = `
-    <div class="poster" data-title="${escapeHtml(item.title)}" style="background-image:url('${item.poster || ''}'), ${posterFallback}"></div>
+    <a class="poster poster-link" href="${detailHref}" data-title="${escapeHtml(item.title)}" style="background-image:url('${item.poster || ''}'), ${posterFallback}" aria-label="Voir la fiche ${escapeHtml(item.title)}"></a>
     <div class="info">
       <h3>${escapeHtml(item.title)}</h3>
       <div class="meta">
@@ -187,10 +196,11 @@ function createCard(item){
         ${year ? `<span>${escapeHtml(year)}</span>` : ''}
         ${(item.genres || []).slice(0,2).map(g => `<span>${escapeHtml(g)}</span>`).join('')}
       </div>
+      <div class="card-actions">
+        <a class="card-play" href="${watchHref}"${watchTarget}>▶ Lecture</a>
+        <a class="card-detail" href="${detailHref}">Fiche</a>
+      </div>
     </div>`;
-  card.addEventListener('click', () => {
-    window.location.href = `detail.html?slug=${encodeURIComponent(item.slug)}`;
-  });
   return card;
 }
 
@@ -211,6 +221,20 @@ function openRandomTitle(){
   if(!list.length) return;
   const item = list[Math.floor(Math.random() * list.length)];
   window.location.href = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+}
+
+
+function getWatchHref(item){
+  if(item.watchUrl) return item.watchUrl;
+  if(item.videoUrl) return item.videoUrl;
+  if(item.streamUrl) return item.streamUrl;
+  if(item.homepage) return item.homepage;
+  if(item.trailer) return `https://www.youtube.com/watch?v=${encodeURIComponent(item.trailer)}`;
+  return `detail.html?slug=${encodeURIComponent(item.slug)}`;
+}
+
+function isExternalHref(href=''){
+  return /^https?:\/\//i.test(String(href));
 }
 
 function formatType(type=''){
