@@ -46,6 +46,7 @@ function bindEvents(){
 
   document.querySelectorAll('[data-nav-filter]').forEach(link => link.addEventListener('click', () => {
     state.filter = link.dataset.navFilter;
+    setActiveMenuLink(link);
     syncActiveTabs();
     resetGenreFilter();
     render();
@@ -71,6 +72,12 @@ function bindEvents(){
   hero?.addEventListener('mouseenter', pauseHeroRotation);
   hero?.addEventListener('mouseleave', resumeHeroRotation);
   hero?.addEventListener('mousemove', handleHeroParallax);
+}
+
+
+function setActiveMenuLink(activeLink){
+  document.querySelectorAll('.menu a').forEach(link => link.classList.remove('active'));
+  activeLink?.classList.add('active');
 }
 
 function syncActiveTabs(){
