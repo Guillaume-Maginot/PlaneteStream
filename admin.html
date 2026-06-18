@@ -264,14 +264,20 @@
       <nav class="menu">
         <a href="index.html">Accueil</a>
         <a class="active" href="admin.html">Administration</a>
-        <a class="discord-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">💬 Discord</a>
+        <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
+          <span class="discord-icon-wrap" aria-hidden="true">
+            <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
+            <img class="discord-icon discord-icon-violet" src="assets/icons/discord_violet.png" alt="" />
+          </span>
+          <span>Discord</span>
+        </a>
       </nav>
     </div>
   </header>
 
   <main class="container admin-panel">
     <section class="admin-hero">
-      <p class="eyebrow">Centre de contrôle · v0.9.1</p>
+      <p class="eyebrow">Centre de contrôle · v0.9.2</p>
       <h1>Ajouter un contenu simplement</h1>
       <p>
         Recherche un film ou une série, choisis le bon résultat, classe-le dans une section,
@@ -375,7 +381,7 @@
       <p>Le Discord servira de point de ralliement pour les suggestions, les retours de lancement et les discussions autour des films, séries, mangas et anime.</p>
       <a class="primary" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Ouvrir le serveur Discord</a>
     </section>
-    <p class="admin-version">Planète Stream v0.9.1 · Pré-lancement</p>
+    <p class="admin-version">Planète Stream v0.9.2 · Pré-lancement</p>
   </main>
 
   <script src="assets/admin.js"></script>

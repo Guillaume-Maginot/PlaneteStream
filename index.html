@@ -20,7 +20,13 @@
         <a href="#catalogue" data-nav-filter="serie">Séries</a>
         <a href="#catalogue" data-nav-filter="manga">Manga</a>
         <a href="admin.html">Administration</a>
-        <a class="discord-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">💬 Discord</a>
+        <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
+          <span class="discord-icon-wrap" aria-hidden="true">
+            <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
+            <img class="discord-icon discord-icon-violet" src="assets/icons/discord_violet.png" alt="" />
+          </span>
+          <span>Discord</span>
+        </a>
       </nav>
       <div class="nav-actions"><input id="searchInput" class="search-input" placeholder="Rechercher un titre..." /></div>
       <button class="hamb">☰</button>
@@ -110,7 +116,7 @@
   </main>
 
   <dialog id="detailModal" class="modal"><button class="modal-close" data-close>×</button><div id="modalContent"></div></dialog>
-  <footer><div class="container footer-grid"><div><div class="logo">PLANÈTE<span>STREAM</span></div><p>© 2026 Planète Stream · v0.9.1. Une plateforme pensée pour découvrir, noter et commenter les contenus qui méritent le détour.</p></div><div><h4>Navigation</h4><ul><li>Accueil</li><li>Films</li><li>Séries</li><li>Manga</li></ul></div><div><h4>Communauté</h4><ul><li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le Discord</a></li><li>Suggestions de titres</li><li>Retours et signalements</li></ul></div><div><h4>Projet</h4><ul><li>Catalogue éditorial</li><li>Notes des spectateurs</li><li>Critiques évolutives</li></ul></div></div></footer>
+  <footer><div class="container footer-grid"><div><div class="logo">PLANÈTE<span>STREAM</span></div><p>© 2026 Planète Stream · v0.9.2. Une plateforme pensée pour découvrir, noter et commenter les contenus qui méritent le détour.</p></div><div><h4>Navigation</h4><ul><li>Accueil</li><li>Films</li><li>Séries</li><li>Manga</li></ul></div><div><h4>Communauté</h4><ul><li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le Discord</a></li><li>Suggestions de titres</li><li>Retours et signalements</li></ul></div><div><h4>Projet</h4><ul><li>Catalogue éditorial</li><li>Notes des spectateurs</li><li>Critiques évolutives</li></ul></div></div></footer>
   <script src="assets/app.js"></script>
 </body>
 </html>
