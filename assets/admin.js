@@ -1,5 +1,6 @@
 let draft = [];
 let selectedItem = null;
+let editingIndex = -1;
 
 const output = document.querySelector('#jsonOutput');
 const results = document.querySelector('#results');
@@ -15,6 +16,27 @@ const clearBtn = document.querySelector('#clearBtn');
 const sectionSelect = document.querySelector('#sectionSelect');
 const featuredSelect = document.querySelector('#featuredSelect');
 const genreSelect = document.querySelector('#genreSelect');
+const catalogueSearch = document.querySelector('#catalogueSearch');
+const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
+const catalogueSort = document.querySelector('#catalogueSort');
+const catalogueList = document.querySelector('#catalogueList');
+const catalogueCount = document.querySelector('#catalogueCount');
+const editPanel = document.querySelector('#editPanel');
+const saveEditBtn = document.querySelector('#saveEditBtn');
+const cancelEditBtn = document.querySelector('#cancelEditBtn');
+const editFields = {
+  title: document.querySelector('#editTitle'),
+  year: document.querySelector('#editYear'),
+  category: document.querySelector('#editCategory'),
+  featured: document.querySelector('#editFeatured'),
+  genres: document.querySelector('#editGenres'),
+  rating: document.querySelector('#editRating'),
+  poster: document.querySelector('#editPoster'),
+  backdrop: document.querySelector('#editBackdrop'),
+  trailer: document.querySelector('#editTrailer'),
+  slug: document.querySelector('#editSlug'),
+  overview: document.querySelector('#editOverview')
+};
 
 init();
 
@@ -45,6 +67,13 @@ async function init() {
   copyBtn?.addEventListener('click', copyJson);
   resetBtn?.addEventListener('click', resetDraft);
   clearBtn?.addEventListener('click', clearSelection);
+  catalogueSearch?.addEventListener('input', renderCatalogueList);
+  catalogueTypeFilter?.addEventListener('change', renderCatalogueList);
+  catalogueSort?.addEventListener('change', renderCatalogueList);
+  saveEditBtn?.addEventListener('click', saveEditedItem);
+  cancelEditBtn?.addEventListener('click', closeEditor);
+
+  renderCatalogueList();
 }
 
 async function searchTmdb() {
@@ -153,6 +182,7 @@ function addItem(item) {
   draft.push(entry);
   sortDraft();
   syncOutput();
+  renderCatalogueList();
   showMessage(`“${entry.title}” ajouté au JSON. Le catalogue grossit, mais sans grogner.`);
   refreshVisibleResults();
 }
@@ -258,6 +288,158 @@ function updatePreview(item) {
       <p><strong>TMDb ID :</strong> ${escapeHtml(String(item.tmdbId || 'absent'))}</p>
     </div>
   `;
+}
+
+
+function renderCatalogueList() {
+  if (!catalogueList) return;
+
+  const query = (catalogueSearch?.value || '').trim().toLowerCase();
+  const type = catalogueTypeFilter?.value || 'all';
+  const sortMode = catalogueSort?.value || 'recent';
+
+  let items = draft.map((entry, index) => ({ entry, index }));
+
+  if (type !== 'all') {
+    items = items.filter(({ entry }) => (entry.mediaType || (entry.type === 'serie' ? 'tv' : 'movie')) === type);
+  }
+
+  if (query) {
+    items = items.filter(({ entry }) => {
+      const haystack = [
+        entry.title,
+        entry.originalTitle,
+        entry.year,
+        entry.category,
+        ...(Array.isArray(entry.genres) ? entry.genres : []),
+        entry.director,
+        ...(Array.isArray(entry.cast) ? entry.cast : [])
+      ].join(' ').toLowerCase();
+      return haystack.includes(query);
+    });
+  }
+
+  items.sort((a, b) => compareCatalogueItems(a.entry, b.entry, sortMode));
+
+  if (catalogueCount) {
+    catalogueCount.textContent = `${draft.length} contenu${draft.length > 1 ? 's' : ''}`;
+  }
+
+  if (!items.length) {
+    catalogueList.innerHTML = '<div class="admin-empty">Aucun contenu ne correspond aux filtres. Le catalogue boude dans son coin.</div>';
+    return;
+  }
+
+  catalogueList.innerHTML = '';
+  items.forEach(({ entry, index }) => catalogueList.appendChild(catalogueRow(entry, index)));
+}
+
+function compareCatalogueItems(a, b, sortMode) {
+  if (sortMode === 'title') return String(a.title || '').localeCompare(String(b.title || ''), 'fr');
+  if (sortMode === 'year-desc') return String(b.year || '').localeCompare(String(a.year || '')) || String(a.title || '').localeCompare(String(b.title || ''), 'fr');
+  if (sortMode === 'year-asc') return String(a.year || '').localeCompare(String(b.year || '')) || String(a.title || '').localeCompare(String(b.title || ''), 'fr');
+  if (sortMode === 'rating-desc') return Number(b.rating || 0) - Number(a.rating || 0) || String(a.title || '').localeCompare(String(b.title || ''), 'fr');
+  if (sortMode === 'category') return String(a.category || '').localeCompare(String(b.category || ''), 'fr') || String(a.title || '').localeCompare(String(b.title || ''), 'fr');
+  return 0;
+}
+
+function catalogueRow(entry, index) {
+  const el = document.createElement('article');
+  el.className = 'catalogue-item';
+  const poster = entry.poster || '';
+  const genres = Array.isArray(entry.genres) ? entry.genres.slice(0, 3).join(', ') : '';
+  const typeLabel = (entry.mediaType || '').toLowerCase() === 'tv' || entry.type === 'serie' ? 'Série' : 'Film';
+  const featured = entry.featured ? ' · À la une' : '';
+
+  el.innerHTML = `
+    ${poster ? `<img src="${escapeAttr(poster)}" alt="Affiche ${escapeAttr(entry.title || '')}">` : '<div class="catalogue-thumb">Sans affiche</div>'}
+    <div>
+      <h3>${escapeHtml(entry.title || 'Sans titre')}</h3>
+      <p>${escapeHtml(typeLabel)} · ${escapeHtml(entry.year || 'Année ?')} · ${escapeHtml(entry.category || 'section ?')}${escapeHtml(featured)}</p>
+      <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
+    </div>
+    <div class="catalogue-buttons">
+      <button class="ghost" type="button" data-action="edit">Modifier</button>
+      <button class="danger" type="button" data-action="delete">Supprimer</button>
+    </div>
+  `;
+
+  el.querySelector('[data-action="edit"]')?.addEventListener('click', () => openEditor(index));
+  el.querySelector('[data-action="delete"]')?.addEventListener('click', () => deleteCatalogueItem(index));
+  return el;
+}
+
+function openEditor(index) {
+  const entry = draft[index];
+  if (!entry || !editPanel) return;
+  editingIndex = index;
+  editPanel.classList.remove('is-hidden');
+
+  editFields.title.value = entry.title || '';
+  editFields.year.value = entry.year || '';
+  editFields.category.value = entry.category || '';
+  editFields.featured.value = entry.featured ? 'true' : 'false';
+  editFields.genres.value = Array.isArray(entry.genres) ? entry.genres.join(', ') : '';
+  editFields.rating.value = entry.rating ?? 0;
+  editFields.poster.value = entry.poster || '';
+  editFields.backdrop.value = entry.backdrop || '';
+  editFields.trailer.value = entry.trailer || '';
+  editFields.slug.value = entry.slug || slugify(entry.title || 'contenu');
+  editFields.overview.value = entry.overview || '';
+
+  editPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function saveEditedItem() {
+  if (editingIndex < 0 || !draft[editingIndex]) return;
+  const current = draft[editingIndex];
+  const newSlug = slugify(editFields.slug.value || editFields.title.value || current.title || 'contenu');
+  const slugAlreadyUsed = draft.some((entry, index) => index !== editingIndex && entry.slug === newSlug);
+
+  if (slugAlreadyUsed) {
+    showMessage('Ce slug existe déjà. Deux contenus avec le même passeport, ça finit toujours au guichet.' );
+    editFields.slug.focus();
+    return;
+  }
+
+  draft[editingIndex] = {
+    ...current,
+    title: editFields.title.value.trim() || current.title,
+    slug: newSlug,
+    year: editFields.year.value.trim(),
+    category: editFields.category.value || current.category || 'films',
+    featured: editFields.featured.value === 'true',
+    genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
+    rating: Number(editFields.rating.value || 0),
+    poster: editFields.poster.value.trim(),
+    backdrop: editFields.backdrop.value.trim(),
+    trailer: editFields.trailer.value.trim(),
+    overview: editFields.overview.value.trim()
+  };
+
+  sortDraft();
+  syncOutput();
+  renderCatalogueList();
+  closeEditor();
+  showMessage('Fiche modifiée et JSON mis à jour. Le petit CMS commence à se tenir droit.');
+}
+
+function closeEditor() {
+  editingIndex = -1;
+  editPanel?.classList.add('is-hidden');
+}
+
+function deleteCatalogueItem(index) {
+  const entry = draft[index];
+  if (!entry) return;
+  const ok = confirm(`Supprimer “${entry.title || 'ce contenu'}” du brouillon ?`);
+  if (!ok) return;
+
+  draft.splice(index, 1);
+  syncOutput();
+  renderCatalogueList();
+  closeEditor();
+  showMessage('Contenu supprimé du brouillon. Paix à son affiche.');
 }
 
 function updateGenreSelect(item) {

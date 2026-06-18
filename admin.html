@@ -248,11 +248,167 @@
       line-height:1.5;
     }
 
+
+
+    .catalogue-manager{
+      margin-top:22px;
+    }
+
+    .manager-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .manager-head strong{
+      color:#fff;
+    }
+
+    .manager-tools{
+      display:grid;
+      grid-template-columns:minmax(220px,1fr) 170px 160px;
+      gap:12px;
+      margin:16px 0;
+    }
+
+    .manager-tools input,
+    .manager-tools select,
+    .edit-grid input,
+    .edit-grid select,
+    .edit-grid textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      color:#fff;
+      background:#10111f;
+      padding:12px 13px;
+      outline:none;
+      font:inherit;
+    }
+
+    .catalogue-list{
+      display:grid;
+      gap:10px;
+      max-height:560px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .catalogue-item{
+      display:grid;
+      grid-template-columns:54px minmax(0,1fr) auto;
+      gap:12px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:rgba(255,255,255,.035);
+      padding:10px;
+    }
+
+    .catalogue-item img,
+    .catalogue-thumb{
+      width:54px;
+      height:76px;
+      border-radius:8px;
+      object-fit:cover;
+      background:#171827;
+    }
+
+    .catalogue-thumb{
+      display:grid;
+      place-items:center;
+      color:var(--muted);
+      font-size:10px;
+      text-align:center;
+      padding:5px;
+    }
+
+    .catalogue-item h3{
+      font-size:15px;
+      margin-bottom:6px;
+    }
+
+    .catalogue-item p{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .catalogue-buttons{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .catalogue-buttons button,
+    .ghost,
+    #resetBtn{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      padding:10px 12px;
+      font-weight:800;
+    }
+
+    .danger{
+      border-color:rgba(255,92,124,.35)!important;
+      background:rgba(255,92,124,.10)!important;
+    }
+
+    .editor-card{
+      margin-top:18px;
+      border:1px solid rgba(195,77,255,.24);
+      border-radius:16px;
+      padding:16px;
+      background:rgba(139,44,255,.08);
+    }
+
+    .editor-card.is-hidden{
+      display:none;
+    }
+
+    .edit-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .edit-grid .full{
+      grid-column:1 / -1;
+    }
+
+    .edit-grid label{
+      display:block;
+      margin-bottom:7px;
+      color:#fff;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .edit-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
     @media (max-width:900px){
       .admin-layout{grid-template-columns:1fr}
       .admin-preview{position:static}
       .admin-row{grid-template-columns:1fr}
       .admin-tools{grid-template-columns:1fr}
+      .manager-tools{grid-template-columns:1fr}
+      .catalogue-item{grid-template-columns:48px 1fr}
+      .catalogue-buttons{grid-column:1 / -1;justify-content:flex-start}
+      .edit-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -354,8 +510,112 @@
       </aside>
     </div>
 
+
+
+    <section class="admin-box catalogue-manager">
+      <div class="manager-head">
+        <div>
+          <h2>2. Gérer le catalogue</h2>
+          <p>
+            Recherche, tri, modification et suppression des contenus déjà présents dans le brouillon.
+            Ici, on arrête de piloter le vaisseau avec une fourchette.
+          </p>
+        </div>
+        <strong id="catalogueCount">0 contenu</strong>
+      </div>
+
+      <div class="manager-tools">
+        <input id="catalogueSearch" placeholder="Rechercher dans le catalogue…" autocomplete="off">
+        <select id="catalogueTypeFilter">
+          <option value="all">Tous les types</option>
+          <option value="movie">Films</option>
+          <option value="tv">Séries</option>
+        </select>
+        <select id="catalogueSort">
+          <option value="recent">Tri actuel</option>
+          <option value="title">Titre A-Z</option>
+          <option value="year-desc">Année ↓</option>
+          <option value="year-asc">Année ↑</option>
+          <option value="rating-desc">Note ↓</option>
+          <option value="category">Section</option>
+        </select>
+      </div>
+
+      <div id="catalogueList" class="catalogue-list"></div>
+
+      <div id="editPanel" class="editor-card is-hidden">
+        <h2>Modifier une fiche</h2>
+        <p id="editHint">Sélectionne un contenu avec le bouton Modifier.</p>
+
+        <div class="edit-grid">
+          <div>
+            <label for="editTitle">Titre</label>
+            <input id="editTitle">
+          </div>
+          <div>
+            <label for="editYear">Année</label>
+            <input id="editYear">
+          </div>
+          <div>
+            <label for="editCategory">Section</label>
+            <select id="editCategory">
+              <option value="a-la-une">À la une</option>
+              <option value="nouveautes">Nouveautés</option>
+              <option value="films">Films</option>
+              <option value="series">Séries</option>
+              <option value="manga">Manga</option>
+              <option value="frissons">Frissons</option>
+              <option value="action">Action</option>
+              <option value="drames">Drames</option>
+              <option value="science-fiction">Science-fiction</option>
+            </select>
+          </div>
+          <div>
+            <label for="editFeatured">Mise en avant</label>
+            <select id="editFeatured">
+              <option value="false">Standard</option>
+              <option value="true">Mis en avant</option>
+            </select>
+          </div>
+          <div>
+            <label for="editGenres">Genres</label>
+            <input id="editGenres" placeholder="Action, Thriller, Drame">
+          </div>
+          <div>
+            <label for="editRating">Note TMDb</label>
+            <input id="editRating" type="number" step="0.1" min="0" max="10">
+          </div>
+          <div>
+            <label for="editPoster">Affiche</label>
+            <input id="editPoster">
+          </div>
+          <div>
+            <label for="editBackdrop">Backdrop</label>
+            <input id="editBackdrop">
+          </div>
+          <div>
+            <label for="editTrailer">Trailer YouTube</label>
+            <input id="editTrailer" placeholder="ID YouTube">
+          </div>
+          <div>
+            <label for="editSlug">Slug</label>
+            <input id="editSlug">
+          </div>
+          <div class="full">
+            <label for="editOverview">Résumé</label>
+            <textarea id="editOverview"></textarea>
+          </div>
+        </div>
+
+        <div class="edit-actions">
+          <button class="primary" id="saveEditBtn" type="button">Enregistrer les modifications</button>
+          <button class="ghost" id="cancelEditBtn" type="button">Annuler</button>
+        </div>
+      </div>
+    </section>
+
     <section class="admin-box" style="margin-top:22px">
-      <h2>2. Catalogue exportable</h2>
+      <h2>3. Catalogue exportable</h2>
       <p>
         Les éléments ajoutés ici restent dans le navigateur pour le PoC.
         Tu peux exporter le JSON et remplacer <code>data/catalogue.json</code>.
