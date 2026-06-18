@@ -296,8 +296,7 @@ async function fetchComments(slug){
 }
 
 async function fetchRatings(slug){
-  const cacheBuster = Date.now();
-  const result = await supabaseSelect('ratings', `movie_id=eq.${encodeURIComponent(slug)}&select=rating,user_id,created_at&limit=1000&_cb=${cacheBuster}`);
+  const result = await supabaseSelect('ratings', `movie_id=eq.${encodeURIComponent(slug)}&select=rating,user_id,created_at&limit=1000`);
   if(!result.ok) return {online:false, data:[]};
   return {online:true, data:result.data || []};
 }
@@ -309,7 +308,11 @@ async function supabaseSelect(kind, query){
   const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?${query}`;
   try{
     const response = await fetch(url, {
-      headers: supabaseHeaders()
+      headers: {
+        ...supabaseHeaders(),
+        'Cache-Control':'no-cache'
+      },
+      cache:'no-store'
     });
     const data = await response.json().catch(() => null);
     if(!response.ok){
