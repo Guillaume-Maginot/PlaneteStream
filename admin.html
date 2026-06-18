@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin PoC | Planète Stream</title>
+  <title>Administration | Planète Stream</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -263,28 +263,26 @@
       <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
       <nav class="menu">
         <a href="index.html">Accueil</a>
-        <a class="active" href="admin.html">Admin PoC</a>
+        <a class="active" href="admin.html">Administration</a>
       </nav>
     </div>
   </header>
 
   <main class="container admin-panel">
     <section class="admin-hero">
-      <p class="eyebrow">Administration prototype</p>
-      <h1>Ajouter un contenu sans nourrir le monstre à la main</h1>
+      <p class="eyebrow">Centre de contrôle · v0.9.0</p>
+      <h1>Ajouter un contenu simplement</h1>
       <p>
-        Recherche un film ou une série via TMDb, choisis le bon résultat, classe-le dans une section,
-        puis génère une entrée prête pour le catalogue. Le moteur est encore jeune, mais il a déjà cessé
-        de baver du JSON brut sur la moquette.
+        Recherche un film ou une série, choisis le bon résultat, classe-le dans une section,
+        puis prépare son ajout au catalogue. L’objectif : garder des fiches propres, cohérentes et rapides à publier.
       </p>
     </section>
 
     <div class="admin-layout">
       <section class="admin-box">
-        <h2>1. Rechercher dans TMDb</h2>
+        <h2>1. Rechercher un contenu</h2>
         <p>
-          Cette page appelle <code>/.netlify/functions/tmdb-search</code>.
-          La clé reste protégée côté Netlify via <code>TMDB_BEARER_TOKEN</code>.
+          Recherche les informations principales d’un titre, puis prépare une fiche prête à intégrer au catalogue Planète Stream.
         </p>
 
         <div class="admin-row">
@@ -316,7 +314,7 @@
           <div class="admin-field">
             <label for="genreSelect">Genre principal</label>
             <select id="genreSelect">
-              <option value="">Auto TMDb</option>
+              <option value="">Automatique</option>
             </select>
           </div>
 
@@ -331,7 +329,7 @@
 
         <div class="result-list" id="results">
           <div class="admin-empty">
-            Lance une recherche pour afficher les résultats propres renvoyés par notre fonction Netlify.
+            Lance une recherche pour afficher les contenus trouvés et préparer leur import.
           </div>
         </div>
       </section>
@@ -343,33 +341,34 @@
         <div class="preview-card" id="selectedPreview">
           <div class="preview-poster">Aucun contenu sélectionné</div>
           <div class="preview-body">
-            <h3>En attente de recherche</h3>
+            <h3>Prêt pour la sélection</h3>
             <div class="preview-meta">
-              <span>TMDb</span>
-              <span>PoC</span>
+              <span>Source enrichie</span>
+              <span>Prévisualisation</span>
             </div>
-            <p>Sélectionne un résultat pour préparer son import dans le catalogue.</p>
+            <p>Sélectionne un résultat pour vérifier l’affiche, le résumé et les informations principales.</p>
           </div>
         </div>
       </aside>
     </div>
 
     <section class="admin-box" style="margin-top:22px">
-      <h2>2. Catalogue exportable</h2>
+      <h2>2. Catalogue prêt à publier</h2>
       <p>
-        Les éléments ajoutés ici restent dans le navigateur pour le PoC.
-        Tu peux exporter le JSON et remplacer <code>data/catalogue.json</code>.
+        Les contenus ajoutés ici sont conservés dans ton navigateur pendant la session de travail.
+        Quand la sélection est prête, télécharge le catalogue et remplace le fichier de données du site.
       </p>
 
       <div class="catalogue-actions">
-        <button id="resetBtn">Recharger le catalogue original</button>
-        <button class="primary" id="downloadBtn">Télécharger catalogue.json</button>
-        <button class="ghost" id="copyBtn" type="button">Copier le JSON</button>
+        <button class="ghost" id="resetBtn" type="button">Recharger le catalogue d’origine</button>
+        <button class="primary" id="downloadBtn">Télécharger le catalogue</button>
+        <button class="ghost" id="copyBtn" type="button">Copier le catalogue</button>
         <button class="ghost" id="clearBtn" type="button">Vider la sélection</button>
       </div>
 
       <textarea id="jsonOutput" spellcheck="false" placeholder="Les contenus importés apparaîtront ici."></textarea>
     </section>
+    <p class="admin-version">Planète Stream v0.9.0 · Pré-lancement</p>
   </main>
 
   <script src="assets/admin.js"></script>

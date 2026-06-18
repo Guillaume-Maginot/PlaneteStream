@@ -22,7 +22,7 @@ async function init(){
     startHeroRotation();
   }catch(error){
     console.error(error);
-    document.querySelector('#catalogueGrid').innerHTML = '<p class="empty-state">Impossible de charger le catalogue. Le vaisseau JSON a probablement raté son saut hyperspatial.</p>';
+    document.querySelector('#catalogueGrid').innerHTML = '<p class="empty-state">Impossible de charger le catalogue pour le moment. Réessaie dans quelques instants.</p>';
   }
 }
 

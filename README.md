@@ -1,4 +1,4 @@
-# Planète Stream PoC
+# Planète Stream · v0.9.0
 
 Prototype propre pour l’accueil catalogue.
 

@@ -1836,3 +1836,13 @@ min-width:220px;
   .form-row{grid-template-columns:1fr}
   .watch-controls .primary,.watch-controls .ghost{width:100%}
 }
+
+
+/* === Finition v0.9.0 : boutons, admin et version === */
+.secondary:hover,.ghost:hover,.primary:hover{transform:translateY(-1px)}
+.catalogue-actions button,.catalogue-actions .primary,.catalogue-actions .ghost{min-height:48px;white-space:nowrap}
+.catalogue-actions #resetBtn{background:rgba(255,255,255,.08)!important;color:#eee!important;border:1px solid rgba(255,255,255,.16)!important}
+.catalogue-actions #resetBtn:hover{border-color:rgba(195,77,255,.55)!important;box-shadow:0 0 18px rgba(139,44,255,.24)!important}
+.admin-version{margin:26px 0 0;color:var(--muted);font-size:12px;text-align:center;letter-spacing:.04em}
+.version-pill{display:inline-flex;align-items:center;border:1px solid rgba(195,77,255,.28);background:rgba(139,44,255,.10);color:#ddd;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}
+.preview-meta span{max-width:100%;}

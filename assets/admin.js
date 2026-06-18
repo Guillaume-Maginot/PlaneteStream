@@ -81,12 +81,12 @@ async function searchTmdb() {
   const mediaType = mediaTypeSelect?.value || 'all';
 
   if (!query) {
-    showMessage('Entre un titre avant de lancer la chasse au trésor TMDb.');
+    showMessage('Entre un titre avant de lancer la recherche.');
     queryInput?.focus();
     return;
   }
 
-  results.innerHTML = '<div class="admin-empty">Recherche en cours… Le hamster TMDb pédale.</div>';
+  results.innerHTML = '<div class="admin-empty">Recherche en cours… Exploration du catalogue.</div>';
 
   try {
     const res = await fetch(
@@ -103,7 +103,7 @@ async function searchTmdb() {
     results.innerHTML = '';
 
     if (!filteredResults.length) {
-      results.innerHTML = '<div class="admin-empty">Aucun résultat trouvé. TMDb a regardé sous le canapé, rien.</div>';
+      results.innerHTML = '<div class="admin-empty">Aucun résultat trouvé. Essaie avec un autre titre ou une orthographe différente.</div>';
       return;
     }
 
@@ -114,8 +114,8 @@ async function searchTmdb() {
     console.error(err);
     results.innerHTML = `
       <div class="admin-empty">
-        <strong>Impossible d’appeler TMDb.</strong><br>
-        Vérifie la variable Netlify <code>TMDB_BEARER_TOKEN</code>.<br>
+        <strong>La recherche n’a pas répondu.</strong><br>
+        Vérifie la configuration de la recherche côté hébergement, puis réessaie.<br>
         <small>${escapeHtml(err.message)}</small>
       </div>
     `;
@@ -144,7 +144,7 @@ function resultCard(item) {
       <p>${escapeHtml(overview)}</p>
       <div class="tmdb-actions">
         <button class="ghost" type="button" data-action="preview">Aperçu</button>
-        <button class="primary" type="button" data-action="add">${exists ? 'Déjà présent' : 'Ajouter au JSON'}</button>
+        <button class="primary" type="button" data-action="add">${exists ? 'Déjà présent' : 'Ajouter au catalogue'}</button>
       </div>
     </div>
   `;
@@ -183,7 +183,7 @@ function addItem(item) {
   sortDraft();
   syncOutput();
   renderCatalogueList();
-  showMessage(`“${entry.title}” ajouté au JSON. Le catalogue grossit, mais sans grogner.`);
+  showMessage(`“${entry.title}” ajouté au catalogue.`);
   refreshVisibleResults();
 }
 
@@ -421,7 +421,7 @@ function saveEditedItem() {
   syncOutput();
   renderCatalogueList();
   closeEditor();
-  showMessage('Fiche modifiée et JSON mis à jour. Le petit CMS commence à se tenir droit.');
+  showMessage('Fiche modifiée. Le catalogue est prêt à être exporté.');
 }
 
 function closeEditor() {
@@ -454,7 +454,7 @@ function updateGenreSelect(item) {
 
 function resetGenreSelect() {
   if (!genreSelect) return;
-  genreSelect.innerHTML = '<option value="">Auto TMDb</option>';
+  genreSelect.innerHTML = '<option value="">Automatique</option>';
 }
 
 function resetDraft() {
@@ -473,8 +473,8 @@ function clearSelection() {
       <div class="preview-poster">Aucun contenu sélectionné</div>
       <div class="preview-body">
         <h3>En attente de recherche</h3>
-        <div class="preview-meta"><span>TMDb</span><span>PoC</span></div>
-        <p>Sélectionne un résultat pour préparer son import dans le catalogue.</p>
+        <div class="preview-meta"><span>Source enrichie</span><span>Prévisualisation</span></div>
+        <p>Sélectionne un résultat pour vérifier l’affiche, le résumé et les informations principales.</p>
       </div>
     `;
   }
@@ -490,11 +490,11 @@ async function copyJson() {
   if (!output) return;
   try {
     await navigator.clipboard.writeText(output.value);
-    showMessage('JSON copié dans le presse-papier. Le presse-papier porte désormais une petite cape.');
+    showMessage('Catalogue copié dans le presse-papier.');
   } catch (err) {
     output.select();
     document.execCommand('copy');
-    showMessage('JSON copié.');
+    showMessage('Catalogue copié.');
   }
 }
 

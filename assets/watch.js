@@ -41,7 +41,7 @@ async function initWatch(){
     document.title = `${item.title} | Salle de projection`;
   }catch(error){
     console.error('Planete Stream watch init error:', error);
-    showWatchError('Impossible de charger le catalogue. Le projectionniste JSON est coincé dans l’ascenseur.');
+    showWatchError('Impossible d’ouvrir la salle pour le moment. Réessaie dans quelques instants.');
   }
 }
 
@@ -92,7 +92,7 @@ async function renderWatch(item, catalogue){
             <strong id="communityRatingLabel">Chargement...</strong>
           </div>
         </div>
-        <p class="soft-note" id="supabaseStatus">Connexion à Supabase...</p>
+        <p class="soft-note" id="supabaseStatus">Connexion aux avis des spectateurs...</p>
       </article>
 
       <article class="watch-panel viewer-panel">
@@ -187,10 +187,10 @@ function bindWatchEvents(item){
 
     if(ok){
       event.target.reset();
-      setStatus('Critique publiée dans Supabase.', 'ok');
+      setStatus('Critique publiée. Merci pour la trace laissée en orbite.', 'ok');
       await refreshCommunity(item);
     }else{
-      setStatus('Critique gardée en local. Vérifie la console et les policies Supabase.', 'error');
+      setStatus('La critique est gardée sur cet appareil. La publication en ligne n’a pas répondu.', 'error');
     }
   });
 }
@@ -224,9 +224,9 @@ async function refreshCommunity(item){
   document.querySelector('#moodLine').textContent = getMoodLine(item, moodComments);
 
   if(comments.online || stats.online){
-    setStatus('Connecté à Supabase. Les critiques vivent maintenant dans le cloud.', 'ok');
+    setStatus('Avis synchronisés. Les critiques vivent maintenant en ligne.', 'ok');
   }else{
-    setStatus('Mode local. Supabase ne répond pas encore.', 'error');
+    setStatus('Mode local. Les avis en ligne ne répondent pas encore.', 'error');
   }
 }
 
@@ -314,7 +314,6 @@ async function supabaseSelect(kind, query){
       console.error(`Supabase SELECT ${table} failed`, response.status, data);
       return {ok:false, data:null};
     }
-    console.info(`✅ Supabase SELECT ${table}`, data);
     return {ok:true, data};
   }catch(error){
     console.error(`Supabase SELECT ${table} network error`, error);
@@ -343,7 +342,6 @@ async function supabaseInsert(kind, payload){
       console.error(`Supabase INSERT ${table} failed`, response.status, data, payload);
       return false;
     }
-    console.info(`✅ Supabase INSERT ${table}`, data);
     return true;
   }catch(error){
     console.error(`Supabase INSERT ${table} network error`, error);
@@ -372,7 +370,6 @@ async function supabaseUpdate(kind, filter, payload){
       console.error(`Supabase UPDATE ${table} failed`, response.status, data, payload);
       return false;
     }
-    console.info(`✅ Supabase UPDATE ${table}`, data);
     return true;
   }catch(error){
     console.error(`Supabase UPDATE ${table} network error`, error);
@@ -398,7 +395,6 @@ async function resolveTable(kind){
       });
       if(response.ok){
         dbTables[kind] = table;
-        console.info(`✅ Ressource Supabase détectée: ${table}`);
         return table;
       }
       const data = await response.json().catch(() => null);
