@@ -1,4 +1,4 @@
-# Planète Stream - v0.9.3
+# Planète Stream - v0.9.2
 
 ## Ajustement Discord
 
