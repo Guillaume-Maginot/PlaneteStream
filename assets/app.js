@@ -6,6 +6,7 @@ const state = {
   heroTimer: null,
   heroDirection: 1,
   heroSlideTimeout: null,
+  heroPaused: false,
 };
 
 const posterFallback = 'linear-gradient(145deg,#3b1c70,#111), radial-gradient(circle at 60% 35%,rgba(255,255,255,.25),transparent 18%)';
@@ -65,6 +66,11 @@ function bindEvents(){
   document.querySelector('#surpriseBtn')?.addEventListener('click', () => openRandomTitle());
   document.querySelector('#heroPrev')?.addEventListener('click', () => moveHero(-1));
   document.querySelector('#heroNext')?.addEventListener('click', () => moveHero(1));
+
+  const hero = document.querySelector('#dynamicHero');
+  hero?.addEventListener('mouseenter', pauseHeroRotation);
+  hero?.addEventListener('mouseleave', resumeHeroRotation);
+  hero?.addEventListener('mousemove', handleHeroParallax);
 }
 
 function syncActiveTabs(){
@@ -141,7 +147,7 @@ function renderHero(animate = true){
     clearTimeout(state.heroSlideTimeout);
     void hero.offsetWidth;
     hero.classList.add(directionClass);
-    state.heroSlideTimeout = setTimeout(() => hero.classList.remove(directionClass), 720);
+    state.heroSlideTimeout = setTimeout(() => hero.classList.remove(directionClass), 520);
   }
   const year = item.year || (item.releaseDate || '').slice(0,4);
   const genres = (item.genres || []).slice(0,3).join(' • ');
@@ -158,13 +164,53 @@ function renderHero(animate = true){
   heroWatch.rel = isExternalHref(watchHref) ? 'noopener noreferrer' : '';
   const heroDetail = hero.querySelector('#heroDetail');
   if(heroDetail) heroDetail.href = detailHref;
+
+  const counter = hero.querySelector('#heroCounter');
+  if(counter) counter.textContent = `${String(state.heroIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+  resetHeroProgress();
 }
 
 function startHeroRotation(){
   const items = getHeroItems();
-  if(items.length < 2) return;
+  const hero = document.querySelector('#dynamicHero');
   clearInterval(state.heroTimer);
-  state.heroTimer = setInterval(() => moveHero(1), 15000);
+  if(!hero || items.length < 2) return;
+  if(state.heroPaused) return;
+  hero.classList.add('hero-progress-running');
+  state.heroTimer = setInterval(() => moveHero(1), 5000);
+}
+
+function pauseHeroRotation(){
+  state.heroPaused = true;
+  clearInterval(state.heroTimer);
+  document.querySelector('#dynamicHero')?.classList.add('hero-paused');
+}
+
+function resumeHeroRotation(){
+  state.heroPaused = false;
+  const hero = document.querySelector('#dynamicHero');
+  if(hero){
+    hero.classList.remove('hero-paused');
+    hero.style.backgroundPosition = state.heroDirection >= 0 ? 'center center' : 'right center';
+  }
+  startHeroRotation();
+}
+
+function resetHeroProgress(){
+  const hero = document.querySelector('#dynamicHero');
+  if(!hero) return;
+  hero.classList.remove('hero-progress-running');
+  void hero.offsetWidth;
+  if(!state.heroPaused && getHeroItems().length > 1) hero.classList.add('hero-progress-running');
+}
+
+function handleHeroParallax(event){
+  const hero = event.currentTarget;
+  if(!hero) return;
+  const rect = hero.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / rect.width - .5) * 4;
+  const y = ((event.clientY - rect.top) / rect.height - .5) * 3;
+  hero.style.backgroundPosition = `${50 + x}% ${50 + y}%`;
 }
 
 function moveHero(direction){

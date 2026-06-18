@@ -1576,3 +1576,130 @@ min-width:220px;
   .dynamic-hero.hero-slide-next::after,
   .dynamic-hero.hero-slide-prev::after{animation:none}
 }
+
+/* Carrousel plus vif : 5 secondes, barre de progression et indicateur. */
+.hero-carousel-status{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:min(390px,100%);
+  margin-top:16px;
+}
+.hero-progress{
+  position:relative;
+  flex:1;
+  height:4px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.hero-progress span{
+  position:absolute;
+  inset:0 auto 0 0;
+  width:0%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--purple),var(--purple-2),var(--red));
+  box-shadow:0 0 18px rgba(195,77,255,.7),0 0 20px rgba(255,45,85,.25);
+}
+.hero-progress-running .hero-progress span{
+  animation:heroProgressFill 5s linear forwards;
+}
+.hero-paused .hero-progress span{
+  animation-play-state:paused;
+}
+.hero-counter{
+  min-width:58px;
+  color:#f2dcff;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-align:right;
+  text-shadow:0 0 14px rgba(195,77,255,.35);
+}
+@keyframes heroProgressFill{
+  from{width:0%}
+  to{width:100%}
+}
+
+/* Transitions du hero un peu plus nerveuses. */
+.dynamic-hero{
+  transition:background-image .32s ease, background-position .45s cubic-bezier(.2,.8,.2,1);
+}
+.dynamic-hero.hero-slide-next::before{
+  animation:heroLightSweepNext .48s ease both;
+}
+.dynamic-hero.hero-slide-prev::before{
+  animation:heroLightSweepPrev .48s ease both;
+}
+.dynamic-hero.hero-slide-next .hero-dynamic-content{
+  animation:heroContentNext .45s cubic-bezier(.2,.8,.2,1) both;
+}
+.dynamic-hero.hero-slide-prev .hero-dynamic-content{
+  animation:heroContentPrev .45s cubic-bezier(.2,.8,.2,1) both;
+}
+.dynamic-hero.hero-slide-next::after,
+.dynamic-hero.hero-slide-prev::after{
+  animation:heroBackdropPulse .48s ease both;
+}
+
+/* Planète plus vivante : rotation lente, scintillement et étoile filante rare. */
+.planet-logo{
+  animation:planetLiving 150s linear infinite, planetGlowPulse 8s ease-in-out infinite;
+}
+.brand-stars::after{
+  content:"";
+  position:absolute;
+  width:140px;
+  height:1px;
+  left:-18%;
+  top:24%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);
+  box-shadow:0 0 18px rgba(195,77,255,.65);
+  transform:rotate(-17deg);
+  opacity:0;
+  animation:shootingStar 18s ease-in-out infinite;
+}
+.brand-orbit::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.42;
+  background-image:
+    radial-gradient(circle at 18% 34%,rgba(255,255,255,.9) 0 1px,transparent 1px),
+    radial-gradient(circle at 62% 20%,rgba(195,77,255,.9) 0 1px,transparent 1px),
+    radial-gradient(circle at 84% 76%,rgba(255,255,255,.75) 0 1px,transparent 1px);
+  background-size:260px 260px,340px 340px,420px 420px;
+  animation:starTwinkle 4.8s ease-in-out infinite alternate;
+}
+@keyframes planetLiving{
+  from{background-position:0% center; transform:rotate(0deg)}
+  to{background-position:200% center; transform:rotate(360deg)}
+}
+@keyframes planetGlowPulse{
+  0%,100%{filter:saturate(1.08) brightness(1); box-shadow:inset -24px -18px 42px rgba(0,0,0,.38),inset 14px 12px 22px rgba(255,255,255,.06),0 0 34px rgba(139,44,255,.56),0 0 70px rgba(255,45,85,.16)}
+  50%{filter:saturate(1.26) brightness(1.05); box-shadow:inset -24px -18px 42px rgba(0,0,0,.38),inset 14px 12px 22px rgba(255,255,255,.08),0 0 46px rgba(139,44,255,.74),0 0 90px rgba(255,45,85,.22)}
+}
+@keyframes shootingStar{
+  0%,72%{opacity:0; transform:translateX(0) translateY(0) rotate(-17deg)}
+  76%{opacity:.85}
+  84%{opacity:0; transform:translateX(145vw) translateY(40vh) rotate(-17deg)}
+  100%{opacity:0; transform:translateX(145vw) translateY(40vh) rotate(-17deg)}
+}
+@keyframes starTwinkle{
+  from{opacity:.25; filter:brightness(.9)}
+  to{opacity:.58; filter:brightness(1.35)}
+}
+
+@media(max-width:620px){
+  .hero-carousel-status{width:100%;}
+  .hero-counter{min-width:54px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-progress-running .hero-progress span,
+  .planet-logo,
+  .brand-stars,
+  .brand-stars::after,
+  .brand-orbit::after{animation:none!important}
+}
