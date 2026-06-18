@@ -1,4 +1,4 @@
-# Planète Stream · v0.9.5
+# Planète Stream · v0.9.6
 
 Prototype propre pour l’accueil catalogue.
 
