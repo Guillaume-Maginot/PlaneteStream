@@ -96,8 +96,18 @@ async function renderWatch(item, catalogue){
             <strong id="userRatingLabel">${localRating ? localRating + '/10' : 'Non noté'}</strong>
           </div>
         </div>
-        <div class="star-rating" id="starRating" aria-label="Noter ce film">
-          ${Array.from({length:10}, (_,i) => `<button data-rate="${i+1}" class="${localRating >= i+1 ? 'active' : ''}">★</button>`).join('')}
+        <div class="rating-display" aria-label="Votre note actuelle">
+          <span id="userStarsLabel">${renderStars(localRating)}</span>
+          <small id="userRatingText">${localRating ? localRating + '/10' : 'Aucune note enregistrée'}</small>
+        </div>
+
+        <div class="rating-editor">
+          <label for="userRatingRange">Modifier votre note</label>
+          <div class="rating-range-row">
+            <input id="userRatingRange" type="range" min="1" max="10" step="1" value="${localRating || 5}">
+            <strong id="userRatingPreview">${localRating || 5}/10</strong>
+          </div>
+          <button class="secondary small-action" id="saveUserRating" type="button">Enregistrer ma note</button>
         </div>
         <p class="soft-note" id="supabaseStatus">Connexion à Supabase...</p>
       </article>
@@ -168,10 +178,16 @@ function bindWatchEvents(item){
     frame?.scrollIntoView({behavior:'smooth', block:'center'});
   });
 
-  document.querySelector('#starRating')?.addEventListener('click', async event => {
-    const btn = event.target.closest('[data-rate]');
-    if(!btn) return;
-    const rating = Number(btn.dataset.rate);
+  document.querySelector('#userRatingRange')?.addEventListener('input', event => {
+    const rating = Number(event.target.value);
+    document.querySelector('#userRatingPreview').textContent = `${rating}/10`;
+    document.querySelector('#userStarsLabel').textContent = renderStars(rating);
+    document.querySelector('#userRatingText').textContent = `${rating}/10 en préparation`;
+  });
+
+  document.querySelector('#saveUserRating')?.addEventListener('click', async () => {
+    const rating = Number(document.querySelector('#userRatingRange')?.value || 0);
+    if(!rating) return;
     saveLocalRating(item.slug, rating);
     setUserRatingUI(rating);
     setStatus('Enregistrement de votre note...', 'pending');
@@ -200,6 +216,9 @@ function bindWatchEvents(item){
 
     const ok = await addComment(item.slug, name, rating, text);
     if(ok){
+      await addRating(item.slug, rating);
+      saveLocalRating(item.slug, rating);
+      setUserRatingUI(rating);
       event.target.reset();
       setStatus('Avis publié dans Supabase.', 'ok');
       await refreshCommunity(item);
@@ -369,9 +388,19 @@ function getAverageRating(rows){
 
 function setUserRatingUI(rating){
   document.querySelector('#userRatingLabel').textContent = `${rating}/10`;
-  document.querySelectorAll('#starRating button').forEach(star => {
-    star.classList.toggle('active', Number(star.dataset.rate) <= rating);
-  });
+  const range = document.querySelector('#userRatingRange');
+  if(range) range.value = rating;
+  const preview = document.querySelector('#userRatingPreview');
+  if(preview) preview.textContent = `${rating}/10`;
+  const text = document.querySelector('#userRatingText');
+  if(text) text.textContent = `${rating}/10`;
+  const stars = document.querySelector('#userStarsLabel');
+  if(stars) stars.textContent = renderStars(rating);
+}
+
+function renderStars(rating=0){
+  const value = Math.max(0, Math.min(10, Number(rating) || 0));
+  return '★'.repeat(value) + '☆'.repeat(10 - value);
 }
 
 function setStatus(message, type=''){
