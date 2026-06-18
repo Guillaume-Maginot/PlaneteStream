@@ -189,6 +189,57 @@
       margin-bottom:14px;
     }
 
+
+    .tmdb-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .tmdb-result.is-duplicate{
+      border-color:rgba(195,77,255,.55);
+      background:rgba(139,44,255,.10);
+    }
+
+    .tmdb-poster-placeholder{
+      width:72px;
+      height:108px;
+      border-radius:8px;
+      background:#171827;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      color:var(--muted);
+      font-size:11px;
+      padding:8px;
+      flex:0 0 auto;
+    }
+
+    .admin-toast{
+      position:fixed;
+      left:50%;
+      bottom:26px;
+      z-index:50;
+      max-width:min(560px, calc(100% - 32px));
+      transform:translate(-50%, 18px);
+      opacity:0;
+      border:1px solid rgba(195,77,255,.45);
+      border-radius:999px;
+      background:rgba(7,8,19,.94);
+      box-shadow:var(--glow);
+      color:#fff;
+      padding:13px 18px;
+      transition:.25s ease;
+      text-align:center;
+      font-size:14px;
+    }
+
+    .admin-toast.is-visible{
+      transform:translate(-50%, 0);
+      opacity:1;
+    }
+
     textarea{
       min-height:260px;
       resize:vertical;
@@ -263,19 +314,20 @@
           </div>
 
           <div class="admin-field">
-  <label for="genreSelect">Genre principal</label>
-  <select id="genreSelect">
-    <option value="">Auto TMDb</option>
-  </select>
-</div>
+            <label for="genreSelect">Genre principal</label>
+            <select id="genreSelect">
+              <option value="">Auto TMDb</option>
+            </select>
+          </div>
 
-<div class="admin-field">
-  <label for="featuredSelect">Mise en avant</label>
-  <select id="featuredSelect">
-    <option value="false">Standard</option>
-    <option value="true">Mis en avant</option>
-  </select>
-</div>
+          <div class="admin-field">
+            <label for="featuredSelect">Mise en avant</label>
+            <select id="featuredSelect">
+              <option value="false">Standard</option>
+              <option value="true">Mis en avant</option>
+            </select>
+          </div>
+        </div>
 
         <div class="result-list" id="results">
           <div class="admin-empty">
