@@ -1506,3 +1506,73 @@ min-width:220px;
 .card-detail{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#eee}
 .card-actions a:hover{filter:brightness(1.12)}
 @media(max-width:620px){.compact-hero{min-height:320px}.card-actions{flex-direction:column}.hero-actions .secondary,.hero-actions .primary{width:auto;min-width:140px}}
+
+
+/* Hero dynamique : effet de carrousel horizontal pour la sélection à la une. */
+.dynamic-hero{
+  isolation:isolate;
+  transition:background-image .45s ease, background-position .72s cubic-bezier(.2,.8,.2,1);
+}
+.dynamic-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.10),rgba(255,255,255,0));
+  opacity:0;
+  transform:translateX(-120%);
+}
+.dynamic-hero.hero-slide-next::before{
+  animation:heroLightSweepNext .72s ease both;
+}
+.dynamic-hero.hero-slide-prev::before{
+  animation:heroLightSweepPrev .72s ease both;
+}
+.dynamic-hero.hero-slide-next .hero-dynamic-content{
+  animation:heroContentNext .58s cubic-bezier(.2,.8,.2,1) both;
+}
+.dynamic-hero.hero-slide-prev .hero-dynamic-content{
+  animation:heroContentPrev .58s cubic-bezier(.2,.8,.2,1) both;
+}
+.dynamic-hero.hero-slide-next::after,
+.dynamic-hero.hero-slide-prev::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 80% 50%,rgba(195,77,255,.22),transparent 34%);
+  animation:heroBackdropPulse .72s ease both;
+}
+@keyframes heroContentNext{
+  0%{opacity:0;transform:translateX(42px);filter:blur(4px)}
+  100%{opacity:1;transform:translateX(0);filter:blur(0)}
+}
+@keyframes heroContentPrev{
+  0%{opacity:0;transform:translateX(-42px);filter:blur(4px)}
+  100%{opacity:1;transform:translateX(0);filter:blur(0)}
+}
+@keyframes heroLightSweepNext{
+  0%{opacity:0;transform:translateX(-120%)}
+  30%{opacity:.42}
+  100%{opacity:0;transform:translateX(120%)}
+}
+@keyframes heroLightSweepPrev{
+  0%{opacity:0;transform:translateX(120%)}
+  30%{opacity:.42}
+  100%{opacity:0;transform:translateX(-120%)}
+}
+@keyframes heroBackdropPulse{
+  0%{opacity:.08;transform:scale(1)}
+  50%{opacity:.45;transform:scale(1.02)}
+  100%{opacity:0;transform:scale(1.05)}
+}
+@media(prefers-reduced-motion:reduce){
+  .dynamic-hero.hero-slide-next .hero-dynamic-content,
+  .dynamic-hero.hero-slide-prev .hero-dynamic-content,
+  .dynamic-hero.hero-slide-next::before,
+  .dynamic-hero.hero-slide-prev::before,
+  .dynamic-hero.hero-slide-next::after,
+  .dynamic-hero.hero-slide-prev::after{animation:none}
+}

@@ -4,6 +4,8 @@ const state = {
   search: '',
   heroIndex: 0,
   heroTimer: null,
+  heroDirection: 1,
+  heroSlideTimeout: null,
 };
 
 const posterFallback = 'linear-gradient(145deg,#3b1c70,#111), radial-gradient(circle at 60% 35%,rgba(255,255,255,.25),transparent 18%)';
@@ -97,7 +99,7 @@ function matches(item){
 }
 
 function render(){
-  renderHero();
+  renderHero(false);
   renderStats();
 
   const filtered = state.catalogue.filter(matches);
@@ -126,16 +128,25 @@ function getHeroItems(){
   return (source.length ? source : state.catalogue).slice(0, 8);
 }
 
-function renderHero(){
+function renderHero(animate = true){
   const hero = document.querySelector('#dynamicHero');
   if(!hero || !state.catalogue.length) return;
   const items = getHeroItems();
   if(!items.length) return;
   state.heroIndex = Math.min(state.heroIndex, items.length - 1);
   const item = items[state.heroIndex];
+  const directionClass = state.heroDirection >= 0 ? 'hero-slide-next' : 'hero-slide-prev';
+  hero.classList.remove('hero-slide-next', 'hero-slide-prev');
+  if(animate){
+    clearTimeout(state.heroSlideTimeout);
+    void hero.offsetWidth;
+    hero.classList.add(directionClass);
+    state.heroSlideTimeout = setTimeout(() => hero.classList.remove(directionClass), 720);
+  }
   const year = item.year || (item.releaseDate || '').slice(0,4);
   const genres = (item.genres || []).slice(0,3).join(' • ');
   hero.style.backgroundImage = `linear-gradient(90deg, rgba(2,3,10,.97) 0%, rgba(2,3,10,.78) 35%, rgba(2,3,10,.25) 78%), url('${item.backdrop || item.poster || ''}')`;
+  hero.style.backgroundPosition = state.heroDirection >= 0 ? 'center center' : 'right center';
   hero.querySelector('#heroEyebrow').textContent = item.featured ? 'À la une' : 'Sélection Planète Stream';
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';
   hero.querySelector('#heroMeta').textContent = [year, formatType(item.type), genres, item._rating ? `⭐ ${item._rating.toFixed(1)}` : ''].filter(Boolean).join('   ');
@@ -159,8 +170,9 @@ function startHeroRotation(){
 function moveHero(direction){
   const items = getHeroItems();
   if(!items.length) return;
+  state.heroDirection = direction >= 0 ? 1 : -1;
   state.heroIndex = (state.heroIndex + direction + items.length) % items.length;
-  renderHero();
+  renderHero(true);
   startHeroRotation();
 }
 
