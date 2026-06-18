@@ -1838,7 +1838,7 @@ min-width:220px;
 }
 
 
-/* === Finition v0.9.0 : boutons, admin et version === */
+/* === Finition v0.9.1 : boutons, admin et version === */
 .secondary:hover,.ghost:hover,.primary:hover{transform:translateY(-1px)}
 .catalogue-actions button,.catalogue-actions .primary,.catalogue-actions .ghost{min-height:48px;white-space:nowrap}
 .catalogue-actions #resetBtn{background:rgba(255,255,255,.08)!important;color:#eee!important;border:1px solid rgba(255,255,255,.16)!important}
@@ -1846,3 +1846,39 @@ min-width:220px;
 .admin-version{margin:26px 0 0;color:var(--muted);font-size:12px;text-align:center;letter-spacing:.04em}
 .version-pill{display:inline-flex;align-items:center;border:1px solid rgba(195,77,255,.28);background:rgba(139,44,255,.10);color:#ddd;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}
 .preview-meta span{max-width:100%;}
+
+
+/* === Communauté Discord v0.9.1 === */
+.discord-link{
+  color:#fff!important;
+  opacity:1!important;
+  padding:8px 13px;
+  border-radius:999px;
+  background:linear-gradient(135deg,rgba(88,101,242,.25),rgba(139,44,255,.18));
+  border:1px solid rgba(88,101,242,.42);
+  box-shadow:0 0 16px rgba(88,101,242,.18);
+  white-space:nowrap;
+}
+.discord-link:hover{
+  border-color:rgba(195,77,255,.72);
+  box-shadow:0 0 22px rgba(139,44,255,.28),0 0 18px rgba(88,101,242,.24);
+}
+.discord-cta{
+  background:
+    radial-gradient(circle at 10% 20%,rgba(88,101,242,.28),transparent 32%),
+    linear-gradient(135deg,rgba(255,45,85,.14),transparent 30%),
+    linear-gradient(135deg,rgba(139,44,255,.25),rgba(12,10,30,.92));
+}
+.discord-cta .eyebrow{margin-bottom:6px}
+.discord-admin-box{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.discord-admin-box p{max-width:760px}
+.footer-grid a{color:#fff}
+.footer-grid a:hover{color:var(--purple-2);text-shadow:var(--glow)}
+@media(max-width:900px){
+  .discord-admin-box{align-items:flex-start;flex-direction:column}
+}
