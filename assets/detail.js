@@ -47,7 +47,7 @@ function renderDetail(item, catalogue) {
 if (year) badges.push(year);
 
 if (item.type) {
-  badges.push(item.type === 'serie' ? 'Série' : 'Film');
+  badges.push(formatType(item.type));
 }
 
 if (runtime) badges.push(runtime);
@@ -91,7 +91,6 @@ if (rating) badges.push(rating);
 
             <div class="detail-actions">
               <a class="primary" href="watch.html?slug=${encodeURIComponent(item.slug)}">▶ Regarder</a>
-              <button class="ghost">+ Ma liste</button>
               <a class="ghost" href="index.html#catalogue">Retour catalogue</a>
             </div>
           </div>
@@ -121,6 +120,8 @@ if (rating) badges.push(rating);
       : '<span>Non renseigné</span>'
   }
 </div>
+
+    </div>
 
     <aside class="detail-right">
 
@@ -289,6 +290,11 @@ function formatCountry(country = '') {
   };
 
   return countries[country] || country;
+}
+
+function formatType(type = '') {
+  const value = String(type).toLowerCase();
+  return {movie:'Film', film:'Film', tv:'Série', serie:'Série', series:'Série', manga:'Manga', anime:'Anime'}[value] || type;
 }
 
 function formatLanguage(language = '') {

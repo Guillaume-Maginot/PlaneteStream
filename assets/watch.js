@@ -7,7 +7,8 @@ const SUPABASE_ENABLED = Boolean(SUPABASE_URL && SUPABASE_KEY);
 
 const dbTables = {
   comments: null,
-  movie_stats: null
+  movie_stats: null,
+  movie_views: null
 };
 
 let currentItem = null;
@@ -95,8 +96,8 @@ async function renderWatch(item, catalogue){
       </article>
 
       <article class="watch-panel viewer-panel">
-        <p class="eyebrow">Ambiance</p>
-        <strong>${getViewerCount(item)} spectateurs</strong>
+        <p class="eyebrow">Audience</p>
+        <strong id="viewCountLabel">${getEstimatedViews(item)} vues totales</strong>
         <p id="moodLine">${getMoodLine(item, localComments)}</p>
       </article>
     </section>
@@ -195,9 +196,10 @@ function bindWatchEvents(item){
 }
 
 async function refreshCommunity(item){
-  const [comments, stats] = await Promise.all([
+  const [comments, stats, views] = await Promise.all([
     fetchComments(item.slug),
-    fetchMovieStats(item.slug)
+    fetchMovieStats(item.slug),
+    recordAndFetchMovieViews(item.slug)
   ]);
 
   if(comments.online){
@@ -212,6 +214,10 @@ async function refreshCommunity(item){
         : 'Pas encore';
   }else{
     document.querySelector('#communityRatingLabel').textContent = 'Hors ligne';
+  }
+
+  if(views.online && views.total_views){
+    document.querySelector('#viewCountLabel').textContent = `${formatNumber(views.total_views)} vue${Number(views.total_views) > 1 ? 's' : ''} totale${Number(views.total_views) > 1 ? 's' : ''}`;
   }
 
   const moodComments = comments.online ? comments.data : getLocalComments(item.slug);
@@ -257,6 +263,36 @@ async function fetchMovieStats(slug){
   if(!result.ok) return {online:false, data:null};
   const row = Array.isArray(result.data) ? result.data[0] : null;
   return {online:true, data:row || null};
+}
+
+async function recordAndFetchMovieViews(slug){
+  if(!SUPABASE_ENABLED) return {online:false, total_views:null};
+
+  const table = await resolveTable('movie_views');
+  if(!table) return {online:false, total_views:null};
+
+  const viewKey = `${storePrefix}:viewed:${slug}:${new Date().toISOString().slice(0,10)}`;
+  const alreadyCountedToday = localStorage.getItem(viewKey) === '1';
+
+  const current = await supabaseSelect('movie_views', `movie_id=eq.${encodeURIComponent(slug)}&select=movie_id,total_views&limit=1`);
+  if(!current.ok) return {online:false, total_views:null};
+
+  const row = Array.isArray(current.data) ? current.data[0] : null;
+  let total = Number(row?.total_views) || 0;
+
+  if(!alreadyCountedToday){
+    const nextTotal = total + 1;
+    const saved = row
+      ? await supabaseUpdate('movie_views', `movie_id=eq.${encodeURIComponent(slug)}`, {total_views: nextTotal, updated_at: new Date().toISOString()})
+      : await supabaseInsert('movie_views', {movie_id: slug, total_views: nextTotal, updated_at: new Date().toISOString()});
+
+    if(saved){
+      total = nextTotal;
+      localStorage.setItem(viewKey, '1');
+    }
+  }
+
+  return {online:true, total_views:total};
 }
 
 async function supabaseSelect(kind, query){
@@ -315,12 +351,42 @@ async function supabaseInsert(kind, payload){
   }
 }
 
+async function supabaseUpdate(kind, filter, payload){
+  if(!SUPABASE_ENABLED) return false;
+  const table = await resolveTable(kind);
+  if(!table) return false;
+
+  const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?${filter}`;
+  try{
+    const response = await fetch(url, {
+      method:'PATCH',
+      headers: {
+        ...supabaseHeaders(),
+        'Content-Type':'application/json',
+        Prefer:'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json().catch(() => null);
+    if(!response.ok){
+      console.error(`Supabase UPDATE ${table} failed`, response.status, data, payload);
+      return false;
+    }
+    console.info(`✅ Supabase UPDATE ${table}`, data);
+    return true;
+  }catch(error){
+    console.error(`Supabase UPDATE ${table} network error`, error);
+    return false;
+  }
+}
+
 async function resolveTable(kind){
   if(dbTables[kind]) return dbTables[kind];
 
   const candidatesByKind = {
     comments: ['comments'],
-    movie_stats: ['movie_stats']
+    movie_stats: ['movie_stats'],
+    movie_views: ['movie_views']
   };
 
   const candidates = candidatesByKind[kind] || [kind];
@@ -437,9 +503,13 @@ function createRelatedCard(item){
   `;
 }
 
-function getViewerCount(item){
+function getEstimatedViews(item){
   const base = String(item.slug || item.title || 'planetestream').split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
-  return 120 + (base % 850);
+  return formatNumber(120 + (base % 850));
+}
+
+function formatNumber(value){
+  return Number(value || 0).toLocaleString('fr-FR');
 }
 
 function getMoodLine(item, comments){
