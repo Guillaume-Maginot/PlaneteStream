@@ -1227,5 +1227,51 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/tNkpV19YzF5jmZVG7hmKKk0Xb9H.jpg",
     "overview": "Dans un monde où toutes les ressources sont épuisées, l’avenir de l’humanité réside dans une planète lointaine. Pour l’atteindre, quelques soldats sont notre seul espoir. Mais pour réussir il faudra choisir : évoluer ou mourir..",
     "featured": false
+  },
+  {
+    "title": "Pressure",
+    "slug": "pressure",
+    "originalTitle": "Pressure",
+    "year": "2026",
+    "releaseDate": "2026-05-25",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Thriller",
+      "Histoire",
+      "Guerre"
+    ],
+    "director": "Anthony Maras",
+    "cast": [
+      "Andrew Scott",
+      "Brendan Fraser",
+      "Kerry Condon",
+      "Chris Messina",
+      "Damian Lewis",
+      "Con O'Neill"
+    ],
+    "runtime": 101,
+    "seasons": 0,
+    "episodes": 0,
+    "country": "United Kingdom, France",
+    "language": "en",
+    "rating": 7.8,
+    "popularity": 89.4928,
+    "trailer": "NLsSNhq3XW4",
+    "tagline": "Dans les heures précédant le Jour J, une décision a changé le monde.",
+    "status": "Released",
+    "homepage": "https://www.studiocanal.com/title/pressure-2025",
+    "collection": "",
+    "studios": [
+      "Working Title Films",
+      "StudioCanal UK",
+      "StudioCanal"
+    ],
+    "tmdbId": 1318413,
+    "poster": "https://image.tmdb.org/t/p/w500/czMJ6rsqJZFt01eGUT5n0DXoCEd.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/apfyLCPVFttB8oXcsLJ7q0NSFLx.jpg",
+    "overview": "Dans les 72 heures précédant le jour J, alors que le destin du monde libre est en jeu, le général Dwight D. Eisenhower et le capitaine James Stagg sont confrontés à un choix impossible : lancer la plus vaste et la plus périlleuse invasion maritime de l'histoire, ou risquer de perdre la guerre.",
+    "featured": false
   }
 ]
