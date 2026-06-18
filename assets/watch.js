@@ -7,12 +7,11 @@ const SUPABASE_ENABLED = Boolean(SUPABASE_URL && SUPABASE_KEY);
 
 const dbTables = {
   comments: null,
-  ratings: null
+  movie_stats: null
 };
 
 let currentItem = null;
 let currentCatalogue = [];
-const pendingRatingByMovie = new Map();
 
 async function initWatch(){
   const params = new URLSearchParams(window.location.search);
@@ -49,7 +48,6 @@ async function renderWatch(item, catalogue){
   const year = item.year || (item.releaseDate || '').slice(0,4) || '';
   const genres = (item.genres || []).slice(0,3).join(' • ');
   const tmdbRating = item.rating ? Number(item.rating).toFixed(1) : '-';
-  const localRating = getLocalRating(item.slug);
   const localComments = getLocalComments(item.slug);
   const related = getRelated(item, catalogue);
 
@@ -99,19 +97,20 @@ async function renderWatch(item, catalogue){
       <article class="watch-panel viewer-panel">
         <p class="eyebrow">Ambiance</p>
         <strong>${getViewerCount(item)} spectateurs</strong>
-        <p id="moodLine">${getMoodLine(item, localComments, localRating)}</p>
+        <p id="moodLine">${getMoodLine(item, localComments)}</p>
       </article>
     </section>
 
     <section class="container comments-section">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Avis des spectateurs</h2>
-          <p>Des critiques courtes, propres, sans tunnel de réponses. Le cinéma respire mieux sans mégaphone.</p>
+          <h2 class="section-title">Critiques des spectateurs</h2>
+          <p>Chaque nouvelle critique garde une trace dans le temps. La moyenne utilise seulement la dernière note de chaque spectateur.</p>
         </div>
       </div>
 
       <form class="comment-form watch-panel" id="commentForm">
+        <p class="eyebrow">Écrire une nouvelle critique</p>
         <div class="form-row">
           <input id="commentName" type="text" placeholder="Votre prénom" maxlength="40" required>
           <select id="commentRating" required>
@@ -119,9 +118,9 @@ async function renderWatch(item, catalogue){
             ${Array.from({length:10}, (_,i) => `<option value="${i+1}">${i+1}/10</option>`).join('')}
           </select>
         </div>
-        <textarea id="commentText" placeholder="Votre avis sur le film..." maxlength="700" required></textarea>
-        <p class="soft-note form-help">La note est liée à votre avis. Pas de deuxième bouton planqué dans les conduits.</p>
-        <button class="primary" type="submit">Publier mon avis</button>
+        <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
+        <p class="soft-note form-help">Aucun ancien avis n’est modifié. Planète Stream garde l’évolution de votre ressenti, comme un petit carnet de cinéma avec moins de café renversé.</p>
+        <button class="primary" type="submit">Publier ma critique</button>
       </form>
 
       <div class="comments-list" id="commentsList">
@@ -165,120 +164,106 @@ function bindWatchEvents(item){
 
   document.querySelector('#commentForm')?.addEventListener('submit', async event => {
     event.preventDefault();
+
     const name = document.querySelector('#commentName').value.trim();
     const rating = Number(document.querySelector('#commentRating').value);
     const text = document.querySelector('#commentText').value.trim();
+
     if(!name || !rating || !text) return;
 
     const localComments = getLocalComments(item.slug);
-    localComments.unshift({name, rating, text, date: new Date().toISOString()});
+    localComments.unshift({
+      name,
+      rating,
+      text,
+      date: new Date().toISOString()
+    });
     saveLocalComments(item.slug, localComments);
     document.querySelector('#commentsList').innerHTML = renderComments(localComments);
-    setStatus('Publication de l’avis...', 'pending');
+    setStatus('Publication de la critique...', 'pending');
 
-    const ok = await addComment(item.slug, name, rating, text);
+    const ok = await addReview(item.slug, name, rating, text);
+
     if(ok){
-      await saveRating(item.slug, rating);
-      saveLocalRating(item.slug, rating);
-      setUserRatingUI(rating);
       event.target.reset();
-      setStatus('Avis publié dans Supabase.', 'ok');
+      setStatus('Critique publiée dans Supabase.', 'ok');
       await refreshCommunity(item);
     }else{
-      setStatus('Avis gardé en local. Vérifie la console et les policies Supabase.', 'error');
+      setStatus('Critique gardée en local. Vérifie la console et les policies Supabase.', 'error');
     }
   });
 }
 
 async function refreshCommunity(item){
-  const [comments, ratings] = await Promise.all([
+  const [comments, stats] = await Promise.all([
     fetchComments(item.slug),
-    fetchRatings(item.slug)
+    fetchMovieStats(item.slug)
   ]);
 
   if(comments.online){
     document.querySelector('#commentsList').innerHTML = renderComments(comments.data);
   }
 
-  if(ratings.online){
-    const ratingRows = mergePendingRating(item.slug, ratings.data);
-    const average = getAverageRating(ratingRows);
-    const count = getRatingCount(ratingRows);
-    document.querySelector('#communityRatingLabel').textContent = average ? `${average}/10 (${count} vote${count > 1 ? 's' : ''})` : 'Pas encore';
+  if(stats.online){
+    const stat = stats.data;
+    document.querySelector('#communityRatingLabel').textContent =
+      stat && stat.average_rating
+        ? `${Number(stat.average_rating).toFixed(1)}/10 (${stat.total_votes} vote${Number(stat.total_votes) > 1 ? 's' : ''})`
+        : 'Pas encore';
   }else{
     document.querySelector('#communityRatingLabel').textContent = 'Hors ligne';
   }
 
-  const localRating = getLocalRating(item.slug);
   const moodComments = comments.online ? comments.data : getLocalComments(item.slug);
-  document.querySelector('#moodLine').textContent = getMoodLine(item, moodComments, localRating);
+  document.querySelector('#moodLine').textContent = getMoodLine(item, moodComments);
 
-  if(comments.online || ratings.online){
-    setStatus('Connecté à Supabase. Les avis vivent maintenant dans le cloud.', 'ok');
+  if(comments.online || stats.online){
+    setStatus('Connecté à Supabase. Les critiques vivent maintenant dans le cloud.', 'ok');
   }else{
     setStatus('Mode local. Supabase ne répond pas encore.', 'error');
   }
 }
 
-async function addComment(slug, name, rating, text){
-  const payload = {
+async function addReview(slug, name, rating, text){
+  const basePayload = {
     movie_id: slug,
-    user_id: name,
+    user_id: getAnonymousUserId(),
+    display_name: name,
     comment: text,
     rating,
     created_at: new Date().toISOString()
   };
-  return supabaseInsert('comments', payload);
-}
 
-async function saveRating(slug, rating){
-  const userId = getAnonymousUserId();
-  const payload = {
-    movie_id: slug,
-    user_id: userId,
-    rating,
-    created_at: new Date().toISOString()
-  };
+  // Version propre : nécessite la colonne comments.display_name.
+  const insertedWithName = await supabaseInsert('comments', basePayload);
+  if(insertedWithName) return true;
 
-  // On tente d'abord une vraie mise à jour de la ligne existante.
-  // C'est plus fiable que l'upsert quand la contrainte unique Supabase/PostgREST fait son cinéma.
-  const updated = await supabaseUpdateRating(slug, userId, { rating, created_at: payload.created_at });
-  if(updated === true){
-    rememberPendingRating(slug, userId, rating);
-    return true;
-  }
-
-  // Si aucune ligne n'existe encore pour ce visiteur et ce film, on insère la première note.
-  const inserted = await supabaseInsert('ratings', payload);
-  if(inserted){
-    rememberPendingRating(slug, userId, rating);
-    return true;
-  }
-
-  // Dernier filet de sécurité : upsert si la contrainte unique movie_id + user_id est bien active.
-  const upserted = await supabaseUpsertRating(payload);
-  if(upserted){
-    rememberPendingRating(slug, userId, rating);
-  }
-  return upserted;
+  // Filet de sécurité pour une base pas encore migrée : on publie quand même,
+  // mais le nom affiché sera moins joli. À éviter sur la version finale.
+  const fallbackPayload = {...basePayload};
+  delete fallbackPayload.display_name;
+  fallbackPayload.user_id = name;
+  return supabaseInsert('comments', fallbackPayload);
 }
 
 async function fetchComments(slug){
-  const result = await supabaseSelect('comments', `movie_id=eq.${encodeURIComponent(slug)}&select=*&order=created_at.desc&limit=50`);
+  const result = await supabaseSelect('comments', `movie_id=eq.${encodeURIComponent(slug)}&select=*&order=created_at.desc&limit=80`);
   if(!result.ok) return {online:false, data:getLocalComments(slug)};
   return {online:true, data:normalizeComments(result.data)};
 }
 
-async function fetchRatings(slug){
-  const result = await supabaseSelect('ratings', `movie_id=eq.${encodeURIComponent(slug)}&select=rating,user_id,created_at&limit=1000`);
-  if(!result.ok) return {online:false, data:[]};
-  return {online:true, data:result.data || []};
+async function fetchMovieStats(slug){
+  const result = await supabaseSelect('movie_stats', `movie_id=eq.${encodeURIComponent(slug)}&select=movie_id,average_rating,total_votes&limit=1`);
+  if(!result.ok) return {online:false, data:null};
+  const row = Array.isArray(result.data) ? result.data[0] : null;
+  return {online:true, data:row || null};
 }
 
 async function supabaseSelect(kind, query){
   if(!SUPABASE_ENABLED) return {ok:false, data:null};
   const table = await resolveTable(kind);
   if(!table) return {ok:false, data:null};
+
   const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?${query}`;
   try{
     const response = await fetch(url, {
@@ -301,46 +286,11 @@ async function supabaseSelect(kind, query){
   }
 }
 
-
-async function supabaseUpdateRating(slug, userId, payload){
-  if(!SUPABASE_ENABLED) return false;
-  const table = await resolveTable('ratings');
-  if(!table) return false;
-
-  const filters = `movie_id=eq.${encodeURIComponent(slug)}&user_id=eq.${encodeURIComponent(userId)}`;
-  const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?${filters}`;
-
-  try{
-    const response = await fetch(url, {
-      method:'PATCH',
-      headers: {
-        ...supabaseHeaders(),
-        'Content-Type':'application/json',
-        Prefer:'return=representation'
-      },
-      body: JSON.stringify(payload)
-    });
-    const data = await response.json().catch(() => null);
-    if(!response.ok){
-      console.error(`Supabase UPDATE ${table} failed`, response.status, data, payload);
-      return false;
-    }
-    if(Array.isArray(data) && data.length){
-      console.info(`✅ Supabase UPDATE ${table}`, data);
-      return true;
-    }
-    console.info(`ℹ️ Supabase UPDATE ${table}: aucune ligne existante, insertion à suivre.`);
-    return 'empty';
-  }catch(error){
-    console.error(`Supabase UPDATE ${table} network error`, error);
-    return false;
-  }
-}
-
 async function supabaseInsert(kind, payload){
   if(!SUPABASE_ENABLED) return false;
   const table = await resolveTable(kind);
   if(!table) return false;
+
   const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}`;
   try{
     const response = await fetch(url, {
@@ -365,41 +315,15 @@ async function supabaseInsert(kind, payload){
   }
 }
 
-async function supabaseUpsertRating(payload){
-  if(!SUPABASE_ENABLED) return false;
-  const table = await resolveTable('ratings');
-  if(!table) return false;
-
-  // La table ratings doit avoir une contrainte unique sur movie_id + user_id.
-  // Ainsi, une nouvelle note crée une ligne, et une modification remplace l'ancienne note du même visiteur.
-  const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?on_conflict=movie_id,user_id`;
-
-  try{
-    const response = await fetch(url, {
-      method:'POST',
-      headers: {
-        ...supabaseHeaders(),
-        'Content-Type':'application/json',
-        Prefer:'resolution=merge-duplicates,return=representation'
-      },
-      body: JSON.stringify(payload)
-    });
-    const data = await response.json().catch(() => null);
-    if(!response.ok){
-      console.error(`Supabase UPSERT ${table} failed`, response.status, data, payload);
-      return false;
-    }
-    console.info(`✅ Supabase UPSERT ${table}`, data);
-    return true;
-  }catch(error){
-    console.error(`Supabase UPSERT ${table} network error`, error);
-    return false;
-  }
-}
-
 async function resolveTable(kind){
   if(dbTables[kind]) return dbTables[kind];
-  const candidates = kind === 'comments' ? ['comments', 'Comments'] : ['ratings', 'Ratings'];
+
+  const candidatesByKind = {
+    comments: ['comments'],
+    movie_stats: ['movie_stats']
+  };
+
+  const candidates = candidatesByKind[kind] || [kind];
 
   for(const table of candidates){
     try{
@@ -408,16 +332,17 @@ async function resolveTable(kind){
       });
       if(response.ok){
         dbTables[kind] = table;
-        console.info(`✅ Table Supabase détectée: ${table}`);
+        console.info(`✅ Ressource Supabase détectée: ${table}`);
         return table;
       }
       const data = await response.json().catch(() => null);
-      console.warn(`Table test ${table}:`, response.status, data);
+      console.warn(`Ressource test ${table}:`, response.status, data);
     }catch(error){
-      console.error(`Impossible de tester la table ${table}`, error);
+      console.error(`Impossible de tester la ressource ${table}`, error);
     }
   }
-  console.error(`Aucune table Supabase valide trouvée pour ${kind}. Vérifie les majuscules/minuscules.`);
+
+  console.error(`Aucune ressource Supabase valide trouvée pour ${kind}.`);
   return null;
 }
 
@@ -430,49 +355,18 @@ function supabaseHeaders(){
 
 function normalizeComments(rows){
   return (rows || []).map(row => ({
-    name: row.user_id || 'Spectateur',
+    name: row.display_name || readableUserName(row.user_id),
     rating: Number(row.rating) || 0,
     text: row.comment || '',
     date: row.created_at
   })).filter(comment => comment.text);
 }
 
-function getAverageRating(rows){
-  const values = (rows || []).map(row => Number(row.rating)).filter(Boolean);
-  if(!values.length) return '';
-  const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
-  return avg.toFixed(1);
-}
-
-function getRatingCount(rows){
-  return (rows || []).map(row => Number(row.rating)).filter(Boolean).length;
-}
-
-function rememberPendingRating(slug, userId, rating){
-  pendingRatingByMovie.set(slug, {
-    user_id: userId,
-    rating: Number(rating),
-    created_at: new Date().toISOString()
-  });
-}
-
-function mergePendingRating(slug, rows){
-  const pending = pendingRatingByMovie.get(slug);
-  if(!pending) return rows || [];
-
-  const list = Array.isArray(rows) ? [...rows] : [];
-  const index = list.findIndex(row => row.user_id === pending.user_id);
-  if(index >= 0){
-    list[index] = {...list[index], rating: pending.rating, created_at: pending.created_at};
-  }else{
-    list.push(pending);
-  }
-  return list;
-}
-
-function setUserRatingUI(rating){
-  const label = document.querySelector('#userRatingLabel');
-  if(label) label.textContent = `${rating}/10`;
+function readableUserName(value=''){
+  const raw = String(value || '').trim();
+  if(!raw) return 'Spectateur';
+  if(raw.startsWith('visitor-')) return 'Spectateur';
+  return raw;
 }
 
 function renderStars(rating=0){
@@ -510,7 +404,7 @@ function renderComments(comments){
     <article class="comment-card">
       <div class="comment-head">
         <strong>${escapeHtml(comment.name)}</strong>
-        <span>${'★'.repeat(Number(comment.rating) || 0)}${'☆'.repeat(10 - (Number(comment.rating) || 0))}</span>
+        <span>${renderStars(comment.rating)}</span>
       </div>
       <p>${escapeHtml(comment.text)}</p>
       <small>${formatCommentDate(comment.date)}</small>
@@ -520,7 +414,7 @@ function renderComments(comments){
 
 function getDemoComments(){
   return [
-    {name:'Planète Stream', rating:8, text:'La zone d’avis est prête. Les vrais commentaires prendront la place de ce message dès qu’un spectateur publiera son avis.', date:new Date().toISOString()}
+    {name:'Planète Stream', rating:8, text:'La zone de critiques est prête. Les vrais avis prendront la place de ce message dès qu’un spectateur publiera sa critique.', date:new Date().toISOString()}
   ];
 }
 
@@ -548,8 +442,8 @@ function getViewerCount(item){
   return 120 + (base % 850);
 }
 
-function getMoodLine(item, comments, userRating){
-  if(userRating >= 8) return 'Vous avez visiblement passé une bonne séance. Le pop-corn approuve en silence.';
+function getMoodLine(item, comments){
+  if(comments.length > 2) return 'Cette salle commence à avoir une vraie mémoire critique.';
   if(comments.length) return 'Les spectateurs commencent à laisser leurs traces dans cette salle.';
   if((item.genres || []).some(g => /science|fiction|fantastique/i.test(g))) return 'Très apprécié par les explorateurs de mondes étranges.';
   if(Number(item.rating) >= 7) return 'Un titre solide du catalogue, recommandé par les radars TMDb.';
@@ -559,16 +453,12 @@ function getMoodLine(item, comments, userRating){
 function getStorageKey(slug, type){
   return `${storePrefix}:${type}:${slug}`;
 }
-function getLocalRating(slug){
-  return Number(localStorage.getItem(getStorageKey(slug, 'rating'))) || 0;
-}
-function saveLocalRating(slug, rating){
-  localStorage.setItem(getStorageKey(slug, 'rating'), String(rating));
-}
+
 function getLocalComments(slug){
   try{return JSON.parse(localStorage.getItem(getStorageKey(slug, 'comments')) || '[]');}
   catch{return [];}
 }
+
 function saveLocalComments(slug, comments){
   localStorage.setItem(getStorageKey(slug, 'comments'), JSON.stringify(comments.slice(0,50)));
 }
@@ -576,16 +466,19 @@ function saveLocalComments(slug, comments){
 function showWatchError(message){
   watchPage.innerHTML = `<section class="container detail-error"><h1>Salle indisponible</h1><p>${escapeHtml(message)}</p><a class="primary" href="index.html">Retour accueil</a></section>`;
 }
+
 function formatType(type=''){
   const value = String(type).toLowerCase();
   return {movie:'Film', film:'Film', tv:'Série', serie:'Série', series:'Série', manga:'Manga', anime:'Anime'}[value] || type;
 }
+
 function formatCommentDate(date){
   if(!date) return 'À l’instant';
   const parsed = new Date(date);
   if(Number.isNaN(parsed.getTime())) return 'À l’instant';
   return parsed.toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
 }
+
 function escapeHtml(str=''){
   return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 }
