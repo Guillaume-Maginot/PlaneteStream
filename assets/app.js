@@ -283,12 +283,7 @@ function openRandomTitle(){
 
 
 function getWatchHref(item){
-  if(item.watchUrl) return item.watchUrl;
-  if(item.videoUrl) return item.videoUrl;
-  if(item.streamUrl) return item.streamUrl;
-  if(item.homepage) return item.homepage;
-  if(item.trailer) return `https://www.youtube.com/watch?v=${encodeURIComponent(item.trailer)}`;
-  return `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  return `watch.html?slug=${encodeURIComponent(item.slug)}`;
 }
 
 function isExternalHref(href=''){

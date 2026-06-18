@@ -90,7 +90,7 @@ if (rating) badges.push(rating);
             </p>
 
             <div class="detail-actions">
-              <button class="primary">▶ Regarder</button>
+              <a class="primary" href="watch.html?slug=${encodeURIComponent(item.slug)}">▶ Regarder</a>
               <button class="ghost">+ Ma liste</button>
               <a class="ghost" href="index.html#catalogue">Retour catalogue</a>
             </div>
