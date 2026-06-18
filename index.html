@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planète Stream | PoC Catalogue</title>
+  <title>Planète Stream | Catalogue dynamique</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -27,16 +27,25 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-content">
-        <p class="eyebrow">Votre univers de divertissement, entièrement personnalisable</p>
-        <h1>Toute votre bibliothèque de <strong>divertissement</strong></h1>
-        <p>Découvrez vos films, séries et mangas au sein d'une interface moderne, rapide et entièrement administrable. Le catalogue évolue facilement grâce à l'intégration des données TMDb.</p>
-        <a class="primary play" href="#catalogue">Explorer le catalogue</a>
-        <div class="badges">
-          <div class="badge"><i>JSON</i> Catalogue dynamique</div>
-          <div class="badge"><i>TMDb</i> Métadonnées enrichies</div>
-          <div class="badge"><i>▣</i> Responsive</div>
+    <section class="hero dynamic-hero" id="dynamicHero">
+      <div class="container hero-content hero-dynamic-content">
+        <p class="eyebrow" id="heroEyebrow">Sélection Planète Stream</p>
+        <h1 id="heroTitle">Votre bibliothèque entre en scène</h1>
+        <p class="hero-meta" id="heroMeta">Films • Séries • Mangas</p>
+        <p id="heroOverview">Une interface vivante qui se nourrit automatiquement de votre catalogue. Les titres montent sur scène, les sections se composent toutes seules, et le JSON arrête enfin de ressembler à une cave sans lumière.</p>
+        <div class="hero-actions">
+          <a class="primary play" id="heroWatch" href="#catalogue">Voir la fiche</a>
+          <button class="secondary" id="surpriseBtn" type="button">🎲 Surprise-moi</button>
+        </div>
+        <div class="badges stats-strip">
+          <div class="badge"><i id="statTotal">0</i> titres</div>
+          <div class="badge"><i id="statFilms">0</i> films</div>
+          <div class="badge"><i id="statSeries">0</i> séries</div>
+          <div class="badge"><i id="statGenres">0</i> genres</div>
+        </div>
+        <div class="hero-controls" aria-label="Changer la sélection">
+          <button id="heroPrev" type="button">‹</button>
+          <button id="heroNext" type="button">›</button>
         </div>
       </div>
     </section>
@@ -55,7 +64,10 @@
 
 </div>
 
-      <section id="featuredSection"><div class="section-head"><h2 class="section-title">À la une</h2><p>Une sélection éditoriale des contenus à ne pas manquer.</p></div><div class="grid" id="featuredGrid"></div></section>
+      <section id="featuredSection"><div class="section-head"><h2 class="section-title">À la une</h2><p>Une sélection éditoriale des contenus à ne pas manquer.</p></div><div class="grid rail" id="featuredGrid"></div></section>
+      <section id="latestSection"><div class="section-head"><h2 class="section-title">Derniers ajouts</h2><p>Les nouveautés fraîchement posées sur l'étagère.</p></div><div class="grid rail" id="latestGrid"></div></section>
+      <section id="topRatedSection"><div class="section-head"><h2 class="section-title">Les mieux notés</h2><p>Le haut du panier, sans panier percé.</p></div><div class="grid rail" id="topRatedGrid"></div></section>
+      <section id="recentYearsSection"><div class="section-head"><h2 class="section-title">Récents et populaires</h2><p>Les titres qui gardent encore la peinture fraîche.</p></div><div class="grid rail" id="recentYearsGrid"></div></section>
       <section><div class="section-head"><h2 class="section-title">Catalogue complet</h2><p id="countLabel"></p></div><div class="grid" id="catalogueGrid"></div></section>
 
       <aside class="cta">
