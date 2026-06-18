@@ -192,7 +192,7 @@ function bindWatchEvents(item){
     setUserRatingUI(rating);
     setStatus('Enregistrement de votre note...', 'pending');
 
-    const ok = await addRating(item.slug, rating);
+    const ok = await saveRating(item.slug, rating);
     if(ok){
       setStatus('Note enregistrée dans Supabase.', 'ok');
       await refreshCommunity(item);
@@ -216,7 +216,7 @@ function bindWatchEvents(item){
 
     const ok = await addComment(item.slug, name, rating, text);
     if(ok){
-      await addRating(item.slug, rating);
+      await saveRating(item.slug, rating);
       saveLocalRating(item.slug, rating);
       setUserRatingUI(rating);
       event.target.reset();
@@ -267,13 +267,25 @@ async function addComment(slug, name, rating, text){
   return supabaseInsert('comments', payload);
 }
 
-async function addRating(slug, rating){
+async function saveRating(slug, rating){
+  const userId = getAnonymousUserId();
   const payload = {
     movie_id: slug,
-    user_id: getAnonymousUserId(),
+    user_id: userId,
     rating,
     created_at: new Date().toISOString()
   };
+
+  // On tente d'abord une vraie mise à jour de la ligne existante.
+  // C'est plus fiable que l'upsert quand la contrainte unique Supabase/PostgREST fait son cinéma.
+  const updated = await supabaseUpdateRating(slug, userId, { rating, created_at: payload.created_at });
+  if(updated === true) return true;
+
+  // Si aucune ligne n'existe encore pour ce visiteur et ce film, on insère la première note.
+  const inserted = await supabaseInsert('ratings', payload);
+  if(inserted) return true;
+
+  // Dernier filet de sécurité : upsert si la contrainte unique movie_id + user_id est bien active.
   return supabaseUpsertRating(payload);
 }
 
@@ -284,7 +296,8 @@ async function fetchComments(slug){
 }
 
 async function fetchRatings(slug){
-  const result = await supabaseSelect('ratings', `movie_id=eq.${encodeURIComponent(slug)}&select=rating&limit=1000`);
+  const cacheBuster = Date.now();
+  const result = await supabaseSelect('ratings', `movie_id=eq.${encodeURIComponent(slug)}&select=rating,user_id,created_at&limit=1000&_cb=${cacheBuster}`);
   if(!result.ok) return {online:false, data:[]};
   return {online:true, data:result.data || []};
 }
@@ -308,6 +321,42 @@ async function supabaseSelect(kind, query){
   }catch(error){
     console.error(`Supabase SELECT ${table} network error`, error);
     return {ok:false, data:null};
+  }
+}
+
+
+async function supabaseUpdateRating(slug, userId, payload){
+  if(!SUPABASE_ENABLED) return false;
+  const table = await resolveTable('ratings');
+  if(!table) return false;
+
+  const filters = `movie_id=eq.${encodeURIComponent(slug)}&user_id=eq.${encodeURIComponent(userId)}`;
+  const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?${filters}`;
+
+  try{
+    const response = await fetch(url, {
+      method:'PATCH',
+      headers: {
+        ...supabaseHeaders(),
+        'Content-Type':'application/json',
+        Prefer:'return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json().catch(() => null);
+    if(!response.ok){
+      console.error(`Supabase UPDATE ${table} failed`, response.status, data, payload);
+      return false;
+    }
+    if(Array.isArray(data) && data.length){
+      console.info(`✅ Supabase UPDATE ${table}`, data);
+      return true;
+    }
+    console.info(`ℹ️ Supabase UPDATE ${table}: aucune ligne existante, insertion à suivre.`);
+    return 'empty';
+  }catch(error){
+    console.error(`Supabase UPDATE ${table} network error`, error);
+    return false;
   }
 }
 
