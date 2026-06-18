@@ -274,7 +274,7 @@ async function addRating(slug, rating){
     rating,
     created_at: new Date().toISOString()
   };
-  return supabaseInsert('ratings', payload);
+  return supabaseUpsertRating(payload);
 }
 
 async function fetchComments(slug){
@@ -335,6 +335,38 @@ async function supabaseInsert(kind, payload){
     return true;
   }catch(error){
     console.error(`Supabase INSERT ${table} network error`, error);
+    return false;
+  }
+}
+
+async function supabaseUpsertRating(payload){
+  if(!SUPABASE_ENABLED) return false;
+  const table = await resolveTable('ratings');
+  if(!table) return false;
+
+  // La table ratings doit avoir une contrainte unique sur movie_id + user_id.
+  // Ainsi, une nouvelle note crée une ligne, et une modification remplace l'ancienne note du même visiteur.
+  const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?on_conflict=movie_id,user_id`;
+
+  try{
+    const response = await fetch(url, {
+      method:'POST',
+      headers: {
+        ...supabaseHeaders(),
+        'Content-Type':'application/json',
+        Prefer:'resolution=merge-duplicates,return=representation'
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json().catch(() => null);
+    if(!response.ok){
+      console.error(`Supabase UPSERT ${table} failed`, response.status, data, payload);
+      return false;
+    }
+    console.info(`✅ Supabase UPSERT ${table}`, data);
+    return true;
+  }catch(error){
+    console.error(`Supabase UPSERT ${table} network error`, error);
     return false;
   }
 }
