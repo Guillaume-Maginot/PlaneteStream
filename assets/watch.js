@@ -118,7 +118,7 @@ async function renderWatch(item, catalogue){
           <h2 class="section-title">Critiques des spectateurs</h2>
           <p>Chaque spectateur dispose maintenant d’une petite identité Planète Stream. Les avis peuvent recevoir des likes et des réponses.</p>
         </div>
-        <button class="ghost" id="switchViewerBtn" type="button">Changer de pseudo</button>
+        <button class="ghost" id="switchViewerBtn" type="button">Corriger mon pseudo</button>
       </div>
 
       <form class="comment-form watch-panel" id="commentForm">
@@ -131,7 +131,7 @@ async function renderWatch(item, catalogue){
           </select>
         </div>
         <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
-        <p class="soft-note form-help">Au premier avis, Planète Stream te demandera simplement un pseudo. Pas de compte usine à gaz, promis, on garde le monstre en cage.</p>
+        <p class="soft-note form-help" id="viewerHelpText">Au premier avis, Planète Stream te demandera simplement un pseudo. Pas de compte usine à gaz, promis, on garde le monstre en cage.</p>
         <button class="primary" type="submit">Publier ma critique</button>
       </form>
 
@@ -491,6 +491,8 @@ function saveViewer(viewer){
 function renderViewerBox(){
   const box = document.querySelector('#viewerBox');
   const label = document.querySelector('#formViewerLabel');
+  const helpText = document.querySelector('#viewerHelpText');
+  const switchBtn = document.querySelector('#switchViewerBtn');
   const viewer = currentViewer || loadViewer();
 
   if(box){
@@ -519,6 +521,16 @@ function renderViewerBox(){
     label.innerHTML = viewer?.pseudo
       ? `<span class="viewer-avatar small">${escapeHtml(viewer.avatar || '🪐')}</span> Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
       : 'Un pseudo sera demandé au moment de publier.';
+  }
+
+  if(helpText){
+    helpText.textContent = viewer?.pseudo
+      ? `Tu es connecté en tant que ${viewer.pseudo}. Le bouton ci-dessus sert seulement à corriger ton pseudo si besoin.`
+      : 'Au premier avis, Planète Stream te demandera simplement un pseudo. Pas de compte usine à gaz, promis, on garde le monstre en cage.';
+  }
+
+  if(switchBtn){
+    switchBtn.textContent = viewer?.pseudo ? 'Corriger mon pseudo' : 'Choisir mon pseudo';
   }
 }
 
