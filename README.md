@@ -34,3 +34,14 @@ Puis ouvre `admin.html`, recherche un titre et exporte le nouveau `catalogue.jso
 ## Important
 
 La clé TMDb ne doit jamais être dans le JavaScript public. Elle reste dans la fonction Netlify.
+
+## v1.3A · Auth sécurisée
+
+Cette version ajoute :
+
+- `assets/auth.js` : gestion Supabase Auth via API REST.
+- `account.html` : création de compte email/mot de passe + pseudo.
+- `assets/account.js` : inscription, connexion, déconnexion.
+- `supabase_auth_v1_3.sql` : verrouillage RLS des profils, avis, likes, favoris et historique.
+
+Avant d’exécuter `supabase_auth_v1_3.sql`, active Supabase Auth dans le dashboard.

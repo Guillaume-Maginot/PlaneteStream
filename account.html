@@ -28,12 +28,11 @@
   </header>
 
   <main class="container account-page">
-    <section class="account-hero watch-panel">
-      <p class="eyebrow">Compte spectateur</p>
-      <h1>Créer ou retrouver ton identité Planète Stream</h1>
+    <section class="account-hero watch-panel auth-hero">
+      <p class="eyebrow">Compte spectateur sécurisé</p>
+      <h1>Créer ou retrouver ton accès Planète Stream</h1>
       <p>
-        Un compte léger suffit pour signer tes critiques, retrouver ta liste et garder ton historique.
-        Pas de mot de passe pour cette première version : juste un pseudo mémorisé sur ton navigateur.
+        Les critiques et les réponses sont maintenant réservées aux comptes confirmés. Le pseudo est lié à ton compte Supabase Auth : fini les pseudos à la fenêtre ouverte, place aux douves numériques.
       </p>
     </section>
 
@@ -46,10 +45,17 @@
       <article class="watch-panel account-card">
         <p class="eyebrow">Créer un compte</p>
         <h2>Nouveau spectateur</h2>
-        <p>Choisis un pseudo public. C'est celui qui apparaîtra sur tes critiques.</p>
-        <form id="createAccountForm" class="account-form">
-          <label for="createPseudo">Pseudo</label>
+        <p>Email, mot de passe et pseudo public. Le trio d’entrée du château.</p>
+        <form id="createAccountForm" class="account-form auth-form">
+          <label for="createEmail">Email</label>
+          <input id="createEmail" type="email" required placeholder="vous@email.fr" autocomplete="email">
+
+          <label for="createPseudo">Pseudo public</label>
           <input id="createPseudo" maxlength="32" minlength="2" required placeholder="Ex : Guillaume" autocomplete="nickname">
+
+          <label for="createPassword">Mot de passe</label>
+          <input id="createPassword" type="password" minlength="8" required placeholder="8 caractères minimum" autocomplete="new-password">
+
           <label for="createAvatar">Avatar</label>
           <select id="createAvatar">
             <option value="🪐">🪐 Planète</option>
@@ -61,17 +67,20 @@
             <option value="🎬">🎬 Cinéma</option>
             <option value="🍿">🍿 Pop-corn</option>
           </select>
-          <button class="primary" type="submit">Créer mon compte</button>
+          <button class="primary" type="submit">Créer mon compte sécurisé</button>
         </form>
       </article>
 
       <article class="watch-panel account-card">
         <p class="eyebrow">Se connecter</p>
-        <h2>Retrouver un pseudo</h2>
-        <p>Tu as déjà créé ton pseudo ? Entre-le ici et le site le raccroche à ce navigateur.</p>
-        <form id="loginAccountForm" class="account-form">
-          <label for="loginPseudo">Pseudo existant</label>
-          <input id="loginPseudo" maxlength="32" minlength="2" required placeholder="Ton pseudo" autocomplete="nickname">
+        <h2>Compte existant</h2>
+        <p>Connecte-toi pour publier, répondre, retrouver ta liste et ton historique.</p>
+        <form id="loginAccountForm" class="account-form auth-form">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" required placeholder="vous@email.fr" autocomplete="email">
+
+          <label for="loginPassword">Mot de passe</label>
+          <input id="loginPassword" type="password" required placeholder="Votre mot de passe" autocomplete="current-password">
           <button class="ghost" type="submit">Me connecter</button>
         </form>
       </article>
@@ -80,6 +89,7 @@
     <p class="account-status" id="accountStatus" role="status"></p>
   </main>
 
+  <script src="assets/auth.js"></script>
   <script src="assets/account.js"></script>
 </body>
 </html>

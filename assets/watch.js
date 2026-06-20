@@ -116,7 +116,7 @@ async function renderWatch(item, catalogue){
       <div class="section-head comments-title-row">
         <div>
           <h2 class="section-title">Critiques des spectateurs</h2>
-          <p>Chaque spectateur dispose maintenant d’une petite identité Planète Stream. Les avis peuvent recevoir des likes et des réponses.</p>
+          <p>Les critiques et réponses sont réservées aux comptes connectés. Les likes peuvent rester rapides selon les réglages Supabase.</p>
         </div>
       </div>
 
@@ -130,7 +130,7 @@ async function renderWatch(item, catalogue){
           </select>
         </div>
         <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
-        <p class="soft-note form-help" id="viewerHelpText">Les likes restent silencieux. Le pseudo sert uniquement à signer une critique ou une réponse.</p>
+        <p class="soft-note form-help" id="viewerHelpText">Connexion obligatoire pour publier une critique ou une réponse.</p>
         <button class="primary" type="submit">Publier ma critique</button>
       </form>
 
@@ -388,6 +388,14 @@ async function recordAndFetchMovieViews(slug){
 }
 
 async function ensureViewer({silent=false}={}){
+  const authViewer = window.PSAuth ? await PSAuth.getCurrentViewer() : null;
+  if(authViewer?.id){
+    currentViewer = authViewer;
+    saveViewer(authViewer);
+    renderViewerBox();
+    return authViewer;
+  }
+
   if(currentViewer?.id) return currentViewer;
 
   const stored = loadViewer();
@@ -397,7 +405,7 @@ async function ensureViewer({silent=false}={}){
     return stored;
   }
 
-  const viewer = silent ? await createAutoViewer() : await askViewerPseudo(false);
+  const viewer = silent ? await createAutoViewer() : null;
   if(viewer){
     currentViewer = viewer;
     saveViewer(viewer);
@@ -407,20 +415,31 @@ async function ensureViewer({silent=false}={}){
 }
 
 async function ensureViewerForComment(){
-  const viewer = await ensureViewer({silent:false});
-  if(!viewer) return null;
-
-  if(isAutoViewer(viewer)){
-    const personalized = await askViewerPseudo(true);
-    if(personalized){
-      currentViewer = personalized;
-      saveViewer(personalized);
-      renderViewerBox();
-      return personalized;
-    }
+  const session = window.PSAuth ? PSAuth.getSession() : null;
+  if(!session?.user){
+    setStatus('Connexion obligatoire pour publier une critique ou répondre. Les marmites sont chaudes, mais la porte est par ici : account.html', 'error');
+    showAuthRequiredNotice();
+    return null;
   }
 
-  return currentViewer || viewer;
+  const viewer = window.PSAuth ? await PSAuth.getCurrentViewer() : null;
+  if(!viewer?.id){
+    setStatus('Compte connecté, mais profil spectateur introuvable. Passe par la page Compte pour finaliser ton pseudo.', 'error');
+    showAuthRequiredNotice(true);
+    return null;
+  }
+
+  currentViewer = viewer;
+  saveViewer(viewer);
+  renderViewerBox();
+  return viewer;
+}
+
+function showAuthRequiredNotice(profileOnly=false){
+  const helpText = document.querySelector('#viewerHelpText');
+  if(helpText){
+    helpText.innerHTML = `${profileOnly ? 'Profil à finaliser' : 'Connexion requise'} · <a href="account.html">Ouvrir la page compte</a>`;
+  }
 }
 
 async function createAutoViewer(){
@@ -523,6 +542,7 @@ function pickAvatar(seed=''){
 }
 
 function loadViewer(){
+  if(window.PSAuth?.loadViewer) return PSAuth.loadViewer();
   try{
     return JSON.parse(localStorage.getItem(`${storePrefix}:viewer`) || 'null');
   }catch{
@@ -531,6 +551,7 @@ function loadViewer(){
 }
 
 function saveViewer(viewer){
+  if(window.PSAuth?.saveViewer) return PSAuth.saveViewer(viewer);
   localStorage.setItem(`${storePrefix}:viewer`, JSON.stringify(viewer));
 }
 
@@ -557,7 +578,7 @@ function renderViewerBox(){
       box.innerHTML = `
         <p class="eyebrow">Spectateur</p>
         <strong id="viewCountLabel">Invité</strong>
-        <p id="moodLine">Tu peux liker sans interruption. Le pseudo n’est demandé que si tu publies une critique.</p>
+        <p id="moodLine">Lecture libre. Critiques et réponses demandent un compte sécurisé.</p>
       `;
     }
   }
@@ -565,15 +586,15 @@ function renderViewerBox(){
   if(label){
     label.innerHTML = viewer?.pseudo
       ? `<span class="viewer-avatar small">${escapeHtml(viewer.avatar || '🪐')}</span> Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
-      : 'Pseudo demandé uniquement au moment de publier.';
+      : '<a href="account.html">Se connecter pour publier</a>';
   }
 
   if(helpText){
     helpText.textContent = viewer?.pseudo
       ? isAutoViewer(viewer)
-        ? 'Tu peux liker en silence. Si tu publies une critique, tu pourras choisir un vrai pseudo.'
+        ? 'Compte temporaire : crée un compte sécurisé pour publier.'
         : `Tu es connecté en tant que ${viewer.pseudo}.`
-      : 'Les likes sont silencieux. Le pseudo sera demandé uniquement si tu publies une critique ou une réponse.';
+      : 'Pour publier, connecte-toi ou crée un compte sécurisé.';
   }
 
 }
@@ -905,6 +926,9 @@ async function resolveTable(kind){
 }
 
 function supabaseHeaders(){
+  if(window.PSAuth?.authHeaders){
+    return PSAuth.authHeaders();
+  }
   return {
     apikey: SUPABASE_KEY,
     Authorization: `Bearer ${SUPABASE_KEY}`
