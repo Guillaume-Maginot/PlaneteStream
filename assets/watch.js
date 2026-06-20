@@ -334,8 +334,9 @@ async function fetchComments(slug){
   const rows = result.data || [];
   const viewerIds = [...new Set(rows.map(row => row.viewer_uuid).filter(Boolean))];
   const viewerMap = await fetchViewersMap(viewerIds);
+  const likeCounts = await fetchCommentLikeCounts(rows.map(row => row.id).filter(Boolean));
 
-  return {online:true, data:normalizeComments(rows, viewerMap)};
+  return {online:true, data:normalizeComments(rows, viewerMap, likeCounts)};
 }
 
 async function fetchViewersMap(ids){
@@ -430,21 +431,23 @@ async function createAutoViewer(){
     const token = Math.floor(1000 + Math.random() * 9000);
     const pseudo = `Spectateur ${token}`;
     const avatar = pickAvatar(pseudo);
+    const id = makeUuid();
     lastPseudo = pseudo;
     lastAvatar = avatar;
 
-    const created = await supabaseInsertReturning('viewers', {
+    const created = await supabaseInsert('viewers', {
+      id,
       pseudo,
       avatar,
       created_at: new Date().toISOString(),
       last_seen: new Date().toISOString()
     });
 
-    if(created) return normalizeViewer(created);
+    if(created) return normalizeViewer({id, pseudo, avatar, auto:true});
   }
 
   return {
-    id: `local-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`,
+    id: `local-${makeUuid()}`,
     pseudo: lastPseudo || `Spectateur ${Date.now().toString().slice(-4)}`,
     avatar: lastAvatar,
     auto: true
@@ -475,7 +478,9 @@ async function askViewerPseudo(force=false){
     return viewer;
   }
 
-  const created = await supabaseInsertReturning('viewers', {
+  const id = makeUuid();
+  const created = await supabaseInsert('viewers', {
+    id,
     pseudo: cleanedPseudo,
     avatar,
     created_at: new Date().toISOString(),
@@ -483,12 +488,12 @@ async function askViewerPseudo(force=false){
   });
 
   if(created){
-    return normalizeViewer(created);
+    return normalizeViewer({id, pseudo: cleanedPseudo, avatar});
   }
 
   // Mode secours : utile en local si Supabase est indisponible.
   return {
-    id: `local-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`,
+    id: `local-${makeUuid()}`,
     pseudo: cleanedPseudo,
     avatar
   };
@@ -577,32 +582,49 @@ async function toggleCommentLike(commentId){
   const viewer = await ensureViewer({silent:true});
   if(!viewer || !commentId || String(commentId).startsWith('local-')) return;
 
-  const isLiked = likedCommentIds.has(commentId);
+  const wasLiked = likedCommentIds.has(commentId);
   const comment = currentComments.find(item => item.id === commentId);
   const currentCount = Number(comment?.likes_count) || 0;
+  const optimisticCount = Math.max(0, currentCount + (wasLiked ? -1 : 1));
 
-  setStatus(isLiked ? 'Retrait du like...' : 'Like envoyé...', 'pending');
+  setCommentLikeState(commentId, !wasLiked, optimisticCount);
+  setStatus(wasLiked ? 'Retrait du like...' : 'Like envoyé...', 'pending');
 
   let ok = false;
-  if(isLiked){
+  if(wasLiked){
     ok = await supabaseDelete('comment_likes', `viewer_id=eq.${encodeURIComponent(viewer.id)}&comment_id=eq.${encodeURIComponent(commentId)}`);
-    if(ok){
-      likedCommentIds.delete(commentId);
-      await supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {likes_count: Math.max(0, currentCount - 1)});
-    }
   }else{
-    ok = await supabaseInsert('comment_likes', {viewer_id: viewer.id, comment_id: commentId, created_at: new Date().toISOString()});
-    if(ok){
-      likedCommentIds.add(commentId);
-      await supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {likes_count: currentCount + 1});
-    }
+    ok = await supabaseInsert('comment_likes', {viewer_id: viewer.id, comment_id: commentId, created_at: new Date().toISOString()}, {acceptDuplicate:true});
   }
 
-  if(ok){
-    setStatus(isLiked ? 'Like retiré.' : 'Like ajouté. Petite étincelle sociale validée.', 'ok');
-    await refreshCommunity(currentItem);
-  }else{
-    setStatus('Impossible de mettre à jour ce like pour le moment.', 'error');
+  if(!ok){
+    setCommentLikeState(commentId, wasLiked, currentCount);
+    setStatus('Impossible de mettre à jour ce like pour le moment. Vérifie les policies Supabase de comment_likes.', 'error');
+    return;
+  }
+
+  const exactCount = await fetchSingleCommentLikeCount(commentId);
+  const finalCount = exactCount === null ? optimisticCount : exactCount;
+  setCommentLikeState(commentId, !wasLiked, finalCount);
+
+  // Cache de compatibilité : si la policy UPDATE de comments refuse, ce n'est pas bloquant.
+  await supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {likes_count: finalCount});
+
+  setStatus(wasLiked ? 'Like retiré.' : 'Like ajouté. Petite étincelle sociale validée.', 'ok');
+}
+
+function setCommentLikeState(commentId, liked, count){
+  const safeCount = Math.max(0, Number(count) || 0);
+  if(liked) likedCommentIds.add(commentId);
+  else likedCommentIds.delete(commentId);
+
+  const comment = currentComments.find(item => item.id === commentId);
+  if(comment) comment.likes_count = safeCount;
+
+  const button = document.querySelector(`[data-like-comment="${cssEscape(commentId)}"]`);
+  if(button){
+    button.classList.toggle('is-active', liked);
+    button.innerHTML = `${liked ? '♥' : '♡'} ${safeCount}`;
   }
 }
 
@@ -614,6 +636,28 @@ async function fetchLikedCommentIds(viewerId, commentIds){
   const result = await supabaseSelect('comment_likes', `viewer_id=eq.${encodeURIComponent(viewerId)}&comment_id=in.(${cleanIds.join(',')})&select=comment_id`);
   if(!result.ok) return new Set();
   return new Set((result.data || []).map(row => row.comment_id));
+}
+
+async function fetchCommentLikeCounts(commentIds){
+  const counts = new Map();
+  const cleanIds = [...new Set((commentIds || []).filter(id => /^[0-9a-f-]{36}$/i.test(String(id))))];
+  if(!cleanIds.length) return counts;
+
+  const result = await supabaseSelect('comment_likes', `comment_id=in.(${cleanIds.join(',')})&select=comment_id`);
+  if(!result.ok) return counts;
+
+  (result.data || []).forEach(row => {
+    counts.set(row.comment_id, (counts.get(row.comment_id) || 0) + 1);
+  });
+
+  return counts;
+}
+
+async function fetchSingleCommentLikeCount(commentId){
+  if(!commentId || !/^[0-9a-f-]{36}$/i.test(String(commentId))) return null;
+  const result = await supabaseSelect('comment_likes', `comment_id=eq.${encodeURIComponent(commentId)}&select=comment_id`);
+  if(!result.ok) return null;
+  return Array.isArray(result.data) ? result.data.length : null;
 }
 
 async function openReplyBox(commentId){
@@ -712,9 +756,35 @@ async function supabaseSelect(kind, query){
   }
 }
 
-async function supabaseInsert(kind, payload){
-  const row = await supabaseInsertReturning(kind, payload);
-  return Boolean(row);
+async function supabaseInsert(kind, payload, options={}){
+  if(!SUPABASE_ENABLED) return false;
+  const table = await resolveTable(kind);
+  if(!table) return false;
+
+  const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}`;
+  try{
+    const response = await fetch(url, {
+      method:'POST',
+      headers: {
+        ...supabaseHeaders(),
+        'Content-Type':'application/json',
+        Prefer:'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if(response.ok) return true;
+
+    const data = await response.json().catch(() => null);
+    const duplicate = response.status === 409 || String(data?.code || '').includes('23505');
+    if(options.acceptDuplicate && duplicate) return true;
+
+    console.error(`Supabase INSERT ${table} failed`, response.status, data, payload);
+    return false;
+  }catch(error){
+    console.error(`Supabase INSERT ${table} network error`, error);
+    return false;
+  }
 }
 
 async function supabaseInsertReturning(kind, payload){
@@ -841,9 +911,10 @@ function supabaseHeaders(){
   };
 }
 
-function normalizeComments(rows, viewerMap=new Map()){
+function normalizeComments(rows, viewerMap=new Map(), likeCounts=new Map()){
   return (rows || []).map(row => {
     const viewer = viewerMap.get(row.viewer_uuid);
+    const computedLikes = likeCounts.has(row.id) ? likeCounts.get(row.id) : Number(row.likes_count) || 0;
     return {
       id: row.id,
       parent_id: row.parent_id || null,
@@ -853,7 +924,7 @@ function normalizeComments(rows, viewerMap=new Map()){
       rating: row.rating === null || row.rating === undefined ? null : Number(row.rating) || 0,
       text: row.comment || '',
       date: row.created_at,
-      likes_count: Number(row.likes_count) || 0
+      likes_count: computedLikes
     };
   }).filter(comment => comment.text);
 }
@@ -997,6 +1068,15 @@ function formatCommentDate(date){
 function cssEscape(value=''){
   if(window.CSS?.escape) return CSS.escape(value);
   return String(value).replace(/"/g, '\\"');
+}
+
+function makeUuid(){
+  if(window.crypto?.randomUUID) return window.crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, char => {
+    const random = Math.random() * 16 | 0;
+    const value = char === 'x' ? random : (random & 0x3 | 0x8);
+    return value.toString(16);
+  });
 }
 
 function escapeHtml(str=''){
