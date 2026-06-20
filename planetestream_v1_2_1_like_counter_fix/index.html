@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planète Stream | Catalogue dynamique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a class="active" href="index.html">Accueil</a>
+        <a href="#catalogue" data-nav-filter="film">Films</a>
+        <a href="#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="#catalogue" data-nav-filter="manga">Manga</a>
+        <a href="admin.html">Administration</a>
+        <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
+          <span class="discord-icon-wrap" aria-hidden="true">
+            <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
+            <img class="discord-icon discord-icon-violet" src="assets/icons/discord_violet.png" alt="" />
+          </span>
+          <span>Discord</span>
+        </a>
+      </nav>
+      <div class="nav-actions"><a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a><input id="searchInput" class="search-input" placeholder="Rechercher un titre..." /></div>
+      <button class="hamb">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="brand-orbit" aria-label="Identité Planète Stream">
+      <div class="brand-stars"></div>
+      <div class="container brand-orbit-inner">
+        <div class="planet-logo-wrap">
+          <div class="planet-logo" aria-hidden="true"></div>
+        </div>
+        <div class="brand-copy">
+          <p class="eyebrow">Bienvenue sur l'orbite</p>
+          <h1>PLANÈTE <span>STREAM</span></h1>
+          <p>Tous les mondes du cinéma réunis en un seul catalogue.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero dynamic-hero compact-hero" id="dynamicHero">
+      <div class="container hero-content hero-dynamic-content">
+        <p class="eyebrow" id="heroEyebrow">Sélection Planète Stream</p>
+        <h1 id="heroTitle">Votre bibliothèque entre en scène</h1>
+        <p class="hero-meta" id="heroMeta">Films • Séries • Mangas</p>
+        <div class="hero-actions">
+          <a class="primary play" id="heroWatch" href="#catalogue">Lecture</a>
+          <a class="secondary" id="heroDetail" href="#catalogue">Voir la fiche</a>
+          <button class="secondary" id="surpriseBtn" type="button">🎲 Surprise</button>
+        </div>
+        <div class="badges stats-strip">
+          <div class="badge"><i id="statTotal">0</i> titres</div>
+          <div class="badge"><i id="statFilms">0</i> films</div>
+          <div class="badge"><i id="statSeries">0</i> séries</div>
+          <div class="badge"><i id="statGenres">0</i> genres</div>
+        </div>
+        <div class="hero-carousel-status" aria-label="Progression du carrousel">
+          <div class="hero-progress" aria-hidden="true"><span id="heroProgressBar"></span></div>
+          <div class="hero-counter" id="heroCounter">01 / 01</div>
+        </div>
+        <div class="hero-controls" aria-label="Changer la sélection">
+          <button id="heroPrev" type="button" aria-label="Titre précédent">‹</button>
+          <button id="heroNext" type="button" aria-label="Titre suivant">›</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="container" id="catalogue">
+      <div class="tabs" id="tabs">
+
+    <button class="active" data-filter="all">Tout</button>
+    <button data-filter="film">Films</button>
+    <button data-filter="serie">Séries</button>
+    <button data-filter="manga">Manga</button>
+
+    <select id="genreFilter" class="genre-filter">
+        <option value="">Tous les genres</option>
+    </select>
+
+</div>
+
+      <section id="featuredSection"><div class="section-head"><h2 class="section-title">À la une</h2><p>Une sélection éditoriale des contenus à ne pas manquer.</p></div><div class="grid rail" id="featuredGrid"></div></section>
+      <section id="latestSection"><div class="section-head"><h2 class="section-title">Derniers ajouts</h2><p>Les nouveautés fraîchement posées sur l'étagère.</p></div><div class="grid rail" id="latestGrid"></div></section>
+      <section id="topRatedSection"><div class="section-head"><h2 class="section-title">Les mieux notés</h2><p>Le haut du panier, sans panier percé.</p></div><div class="grid rail" id="topRatedGrid"></div></section>
+      <section id="recentYearsSection"><div class="section-head"><h2 class="section-title">Récents et populaires</h2><p>Les titres qui gardent encore la peinture fraîche.</p></div><div class="grid rail" id="recentYearsGrid"></div></section>
+      <section><div class="section-head"><h2 class="section-title">Catalogue complet</h2><p id="countLabel"></p></div><div class="grid" id="catalogueGrid"></div></section>
+
+
+      <aside class="cta discord-cta" id="communaute">
+        <div class="cta-copy">
+          <div class="circle">💬</div>
+          <div>
+            <p class="eyebrow">Communauté</p>
+            <h2>Rejoignez le Discord Planète Stream</h2>
+            <p>Proposez des titres, partagez vos avis, signalez les petits bugs rescapés et participez aux prochaines évolutions du site. Le QG est ouvert, sans videur à l’entrée.</p>
+          </div>
+        </div>
+        <a class="primary" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le serveur</a>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="detailModal" class="modal"><button class="modal-close" data-close>×</button><div id="modalContent"></div></dialog>
+  <footer class="site-footer footer-redesign" aria-label="Pied de page Planète Stream">
+    <div class="container footer-shell">
+      <section class="footer-brand-block" aria-label="Présentation">
+        <a class="logo footer-logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+        <p class="footer-tagline">Chaque œuvre a une histoire. Chaque spectateur aussi.</p>
+        <p class="footer-description">Découvrez, notez et partagez les films, séries et mangas qui méritent d’être vus.</p>
+        <p class="footer-meta">© 2026 Planète Stream · v0.9.6</p>
+      </section>
+
+      <nav class="footer-links-grid" aria-label="Navigation secondaire">
+        <section class="footer-col">
+          <h4>Explorer</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="index.html#catalogue" data-footer-filter="film">Films</a></li>
+            <li><a href="index.html#catalogue" data-footer-filter="serie">Séries</a></li>
+            <li><a href="index.html#catalogue" data-footer-filter="manga">Manga</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Communauté</h4>
+          <ul>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le Discord</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Suggestions de titres</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Retours et signalements</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Actualités du projet</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Planète Stream</h4>
+          <ul>
+            <li>Catalogue éditorial</li>
+            <li>Notes des spectateurs</li>
+            <li>Critiques évolutives</li>
+            <li>Découvertes communautaires</li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
+      <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
+      <span class="footer-version">Build v0.9.6</span>
+    </div>
+  </footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>

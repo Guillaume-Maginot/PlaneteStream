@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compte spectateur | Planète Stream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#catalogue" data-nav-filter="film">Films</a>
+        <a href="index.html#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="index.html#catalogue" data-nav-filter="manga">Manga</a>
+        <a class="active" href="account.html">Compte</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="primary" href="index.html#catalogue">Retour catalogue</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container account-page">
+    <section class="account-hero watch-panel">
+      <p class="eyebrow">Compte spectateur</p>
+      <h1>Créer ou retrouver ton identité Planète Stream</h1>
+      <p>
+        Un compte léger suffit pour signer tes critiques, retrouver ta liste et garder ton historique.
+        Pas de mot de passe pour cette première version : juste un pseudo mémorisé sur ton navigateur.
+      </p>
+    </section>
+
+    <section class="account-grid">
+      <article class="watch-panel account-card" id="currentAccountCard">
+        <p class="eyebrow">État actuel</p>
+        <div id="currentViewerState" class="account-state">Chargement...</div>
+      </article>
+
+      <article class="watch-panel account-card">
+        <p class="eyebrow">Créer un compte</p>
+        <h2>Nouveau spectateur</h2>
+        <p>Choisis un pseudo public. C'est celui qui apparaîtra sur tes critiques.</p>
+        <form id="createAccountForm" class="account-form">
+          <label for="createPseudo">Pseudo</label>
+          <input id="createPseudo" maxlength="32" minlength="2" required placeholder="Ex : Guillaume" autocomplete="nickname">
+          <label for="createAvatar">Avatar</label>
+          <select id="createAvatar">
+            <option value="🪐">🪐 Planète</option>
+            <option value="🚀">🚀 Fusée</option>
+            <option value="👾">👾 Alien</option>
+            <option value="🤖">🤖 Robot</option>
+            <option value="🦊">🦊 Renard</option>
+            <option value="🐼">🐼 Panda</option>
+            <option value="🎬">🎬 Cinéma</option>
+            <option value="🍿">🍿 Pop-corn</option>
+          </select>
+          <button class="primary" type="submit">Créer mon compte</button>
+        </form>
+      </article>
+
+      <article class="watch-panel account-card">
+        <p class="eyebrow">Se connecter</p>
+        <h2>Retrouver un pseudo</h2>
+        <p>Tu as déjà créé ton pseudo ? Entre-le ici et le site le raccroche à ce navigateur.</p>
+        <form id="loginAccountForm" class="account-form">
+          <label for="loginPseudo">Pseudo existant</label>
+          <input id="loginPseudo" maxlength="32" minlength="2" required placeholder="Ton pseudo" autocomplete="nickname">
+          <button class="ghost" type="submit">Me connecter</button>
+        </form>
+      </article>
+    </section>
+
+    <p class="account-status" id="accountStatus" role="status"></p>
+  </main>
+
+  <script src="assets/account.js"></script>
+</body>
+</html>
