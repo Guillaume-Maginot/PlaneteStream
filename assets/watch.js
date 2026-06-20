@@ -8,11 +8,18 @@ const SUPABASE_ENABLED = Boolean(SUPABASE_URL && SUPABASE_KEY);
 const dbTables = {
   comments: null,
   movie_stats: null,
-  movie_views: null
+  movie_views: null,
+  viewers: null,
+  comment_likes: null,
+  movie_favorites: null,
+  viewer_history: null
 };
 
 let currentItem = null;
 let currentCatalogue = [];
+let currentViewer = null;
+let currentComments = [];
+let likedCommentIds = new Set();
 
 async function initWatch(){
   const params = new URLSearchParams(window.location.search);
@@ -24,6 +31,7 @@ async function initWatch(){
   }
 
   try{
+    currentViewer = loadViewer();
     const res = await fetch('data/catalogue.json');
     const catalogue = await res.json();
     const item = catalogue.find(entry => entry.slug === slug);
@@ -37,7 +45,9 @@ async function initWatch(){
     currentCatalogue = catalogue;
     await renderWatch(item, catalogue);
     bindWatchEvents(item);
+    renderViewerBox();
     await refreshCommunity(item);
+    await saveViewerHistory(item.slug, 0);
     document.title = `${item.title} | Salle de projection`;
   }catch(error){
     console.error('Planete Stream watch init error:', error);
@@ -72,6 +82,7 @@ async function renderWatch(item, catalogue){
 
           <div class="watch-controls">
             <button class="primary" id="startCinema">▶ Lancer la projection</button>
+            <button class="ghost" id="favoriteBtn" type="button">♡ Ajouter à ma liste</button>
             <a class="ghost" href="detail.html?slug=${encodeURIComponent(item.slug)}">Voir la fiche</a>
             <a class="ghost" href="index.html#catalogue">Retour</a>
           </div>
@@ -95,32 +106,32 @@ async function renderWatch(item, catalogue){
         <p class="soft-note" id="supabaseStatus">Connexion aux avis des spectateurs...</p>
       </article>
 
-      <article class="watch-panel viewer-panel">
-        <p class="eyebrow">Audience</p>
-        <strong id="viewCountLabel">${getEstimatedViews(item)} vues totales</strong>
-        <p id="moodLine">${getMoodLine(item, localComments)}</p>
+      <article class="watch-panel viewer-panel" id="viewerBox">
+        <p class="eyebrow">Spectateur</p>
+        <strong>Chargement...</strong>
       </article>
     </section>
 
     <section class="container comments-section">
-      <div class="section-head">
+      <div class="section-head comments-title-row">
         <div>
           <h2 class="section-title">Critiques des spectateurs</h2>
-          <p>Chaque nouvelle critique garde une trace dans le temps. La moyenne utilise seulement la dernière note de chaque spectateur.</p>
+          <p>Chaque spectateur dispose maintenant d’une petite identité Planète Stream. Les avis peuvent recevoir des likes et des réponses.</p>
         </div>
+        <button class="ghost" id="switchViewerBtn" type="button">Changer de pseudo</button>
       </div>
 
       <form class="comment-form watch-panel" id="commentForm">
         <p class="eyebrow">Écrire une nouvelle critique</p>
-        <div class="form-row">
-          <input id="commentName" type="text" placeholder="Votre prénom" maxlength="40" required>
+        <div class="viewer-mini" id="formViewerLabel">Publier en tant que spectateur</div>
+        <div class="form-row one-col">
           <select id="commentRating" required>
             <option value="">Note</option>
             ${Array.from({length:10}, (_,i) => `<option value="${i+1}">${i+1}/10</option>`).join('')}
           </select>
         </div>
         <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
-        <p class="soft-note form-help">Aucun ancien avis n’est modifié. Planète Stream garde l’évolution de votre ressenti, comme un petit carnet de cinéma avec moins de café renversé.</p>
+        <p class="soft-note form-help">Au premier avis, Planète Stream te demandera simplement un pseudo. Pas de compte usine à gaz, promis, on garde le monstre en cage.</p>
         <button class="primary" type="submit">Publier ma critique</button>
       </form>
 
@@ -161,37 +172,99 @@ function bindWatchEvents(item){
     frame?.classList.add('is-playing');
     setTimeout(() => document.querySelector('#studioBumper')?.classList.add('hidden'), 1150);
     frame?.scrollIntoView({behavior:'smooth', block:'center'});
+    saveViewerHistory(item.slug, 10);
   });
 
   document.querySelector('#commentForm')?.addEventListener('submit', async event => {
     event.preventDefault();
 
-    const name = document.querySelector('#commentName').value.trim();
     const rating = Number(document.querySelector('#commentRating').value);
     const text = document.querySelector('#commentText').value.trim();
 
-    if(!name || !rating || !text) return;
+    if(!rating || !text) return;
 
-    const localComments = getLocalComments(item.slug);
-    localComments.unshift({
-      name,
-      rating,
-      text,
-      date: new Date().toISOString()
-    });
-    saveLocalComments(item.slug, localComments);
-    document.querySelector('#commentsList').innerHTML = renderComments(localComments);
+    const viewer = await ensureViewer();
+    if(!viewer) return;
+
     setStatus('Publication de la critique...', 'pending');
-
-    const ok = await addReview(item.slug, name, rating, text);
+    const ok = await addReview(item.slug, viewer, rating, text, null);
 
     if(ok){
       event.target.reset();
       setStatus('Critique publiée. Merci pour la trace laissée en orbite.', 'ok');
       await refreshCommunity(item);
     }else{
+      const localComments = getLocalComments(item.slug);
+      localComments.unshift({
+        id: `local-${Date.now()}`,
+        name: viewer.pseudo,
+        avatar: viewer.avatar,
+        rating,
+        text,
+        date: new Date().toISOString(),
+        likes_count: 0
+      });
+      saveLocalComments(item.slug, localComments);
+      document.querySelector('#commentsList').innerHTML = renderComments(localComments);
       setStatus('La critique est gardée sur cet appareil. La publication en ligne n’a pas répondu.', 'error');
     }
+  });
+
+  document.querySelector('#commentsList')?.addEventListener('click', async event => {
+    const likeBtn = event.target.closest('[data-like-comment]');
+    if(likeBtn){
+      const commentId = likeBtn.dataset.likeComment;
+      await toggleCommentLike(commentId);
+      return;
+    }
+
+    const replyBtn = event.target.closest('[data-reply-comment]');
+    if(replyBtn){
+      const commentId = replyBtn.dataset.replyComment;
+      await openReplyBox(commentId);
+      return;
+    }
+
+    const cancelBtn = event.target.closest('[data-cancel-reply]');
+    if(cancelBtn){
+      cancelBtn.closest('.reply-form')?.remove();
+    }
+  });
+
+  document.querySelector('#commentsList')?.addEventListener('submit', async event => {
+    const form = event.target.closest('.reply-form');
+    if(!form) return;
+    event.preventDefault();
+
+    const viewer = await ensureViewer();
+    if(!viewer) return;
+
+    const text = form.querySelector('textarea')?.value.trim();
+    const parentId = form.dataset.parentId;
+    if(!text || !parentId) return;
+
+    setStatus('Publication de la réponse...', 'pending');
+    const ok = await addReview(currentItem.slug, viewer, null, text, parentId);
+    if(ok){
+      setStatus('Réponse publiée. La conversation prend forme.', 'ok');
+      await refreshCommunity(currentItem);
+    }else{
+      setStatus('Impossible de publier cette réponse pour le moment.', 'error');
+    }
+  });
+
+  document.querySelector('#switchViewerBtn')?.addEventListener('click', async () => {
+    const viewer = await askViewerPseudo(true);
+    if(viewer){
+      currentViewer = viewer;
+      saveViewer(viewer);
+      renderViewerBox();
+      await refreshCommunity(currentItem);
+    }
+  });
+
+  document.querySelector('#favoriteBtn')?.addEventListener('click', async () => {
+    await toggleFavorite(item.slug);
   });
 }
 
@@ -202,9 +275,15 @@ async function refreshCommunity(item){
     recordAndFetchMovieViews(item.slug)
   ]);
 
-  if(comments.online){
-    document.querySelector('#commentsList').innerHTML = renderComments(comments.data);
+  currentComments = comments.online ? comments.data : getLocalComments(item.slug);
+
+  if(comments.online && currentViewer?.id){
+    likedCommentIds = await fetchLikedCommentIds(currentViewer.id, currentComments.map(comment => comment.id).filter(Boolean));
+  }else{
+    likedCommentIds = new Set();
   }
+
+  document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
 
   if(stats.online){
     const stat = stats.data;
@@ -217,7 +296,8 @@ async function refreshCommunity(item){
   }
 
   if(views.online && views.total_views){
-    document.querySelector('#viewCountLabel').textContent = `${formatNumber(views.total_views)} vue${Number(views.total_views) > 1 ? 's' : ''} totale${Number(views.total_views) > 1 ? 's' : ''}`;
+    const viewLabel = document.querySelector('#viewCountLabel');
+    if(viewLabel) viewLabel.textContent = `${formatNumber(views.total_views)} vue${Number(views.total_views) > 1 ? 's' : ''} totale${Number(views.total_views) > 1 ? 's' : ''}`;
   }
 
   const moodComments = comments.online ? comments.data : getLocalComments(item.slug);
@@ -228,34 +308,56 @@ async function refreshCommunity(item){
   }else{
     setStatus('Mode local. Les avis en ligne ne répondent pas encore.', 'error');
   }
+
+  await refreshFavoriteButton(item.slug);
+  renderViewerBox();
 }
 
-async function addReview(slug, name, rating, text){
+async function addReview(slug, viewer, rating, text, parentId=null){
   const basePayload = {
     movie_id: slug,
-    user_id: getAnonymousUserId(),
-    display_name: name,
+    user_id: viewer.id || viewer.pseudo,
+    viewer_uuid: viewer.id || null,
+    display_name: viewer.pseudo,
     comment: text,
     rating,
+    parent_id: parentId,
+    likes_count: 0,
     created_at: new Date().toISOString()
   };
 
-  // Version propre : nécessite la colonne comments.display_name.
-  const insertedWithName = await supabaseInsert('comments', basePayload);
-  if(insertedWithName) return true;
+  const inserted = await supabaseInsert('comments', basePayload);
+  if(inserted) return true;
 
-  // Filet de sécurité pour une base pas encore migrée : on publie quand même,
-  // mais le nom affiché sera moins joli. À éviter sur la version finale.
+  // Compatibilité si viewer_uuid ou parent_id n’existe pas sur une ancienne base.
   const fallbackPayload = {...basePayload};
-  delete fallbackPayload.display_name;
-  fallbackPayload.user_id = name;
+  delete fallbackPayload.viewer_uuid;
+  delete fallbackPayload.parent_id;
+  delete fallbackPayload.likes_count;
+  fallbackPayload.user_id = viewer.pseudo;
   return supabaseInsert('comments', fallbackPayload);
 }
 
 async function fetchComments(slug){
-  const result = await supabaseSelect('comments', `movie_id=eq.${encodeURIComponent(slug)}&select=*&order=created_at.desc&limit=80`);
+  const result = await supabaseSelect('comments', `movie_id=eq.${encodeURIComponent(slug)}&select=*&order=created_at.desc&limit=120`);
   if(!result.ok) return {online:false, data:getLocalComments(slug)};
-  return {online:true, data:normalizeComments(result.data)};
+
+  const rows = result.data || [];
+  const viewerIds = [...new Set(rows.map(row => row.viewer_uuid).filter(Boolean))];
+  const viewerMap = await fetchViewersMap(viewerIds);
+
+  return {online:true, data:normalizeComments(rows, viewerMap)};
+}
+
+async function fetchViewersMap(ids){
+  if(!ids.length) return new Map();
+  const cleanIds = ids.filter(id => /^[0-9a-f-]{36}$/i.test(String(id)));
+  if(!cleanIds.length) return new Map();
+
+  const result = await supabaseSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar`);
+  if(!result.ok) return new Map();
+
+  return new Map((result.data || []).map(viewer => [viewer.id, viewer]));
 }
 
 async function fetchMovieStats(slug){
@@ -295,6 +397,245 @@ async function recordAndFetchMovieViews(slug){
   return {online:true, total_views:total};
 }
 
+async function ensureViewer(){
+  if(currentViewer?.id) return currentViewer;
+
+  const stored = loadViewer();
+  if(stored?.id){
+    currentViewer = stored;
+    renderViewerBox();
+    return stored;
+  }
+
+  const viewer = await askViewerPseudo(false);
+  if(viewer){
+    currentViewer = viewer;
+    saveViewer(viewer);
+    renderViewerBox();
+  }
+  return viewer;
+}
+
+async function askViewerPseudo(force=false){
+  const existing = force ? currentViewer?.pseudo || '' : '';
+  const pseudo = window.prompt('Choisis ton pseudo Planète Stream :', existing)?.trim();
+  if(!pseudo) return null;
+
+  if(pseudo.length < 2){
+    alert('Le pseudo doit contenir au moins 2 caractères. Même les astéroïdes ont un nom plus long.');
+    return null;
+  }
+
+  const cleanedPseudo = pseudo.slice(0, 32);
+  const avatar = currentViewer?.avatar || pickAvatar(cleanedPseudo);
+  const existingViewer = await findViewerByPseudo(cleanedPseudo);
+
+  if(existingViewer){
+    const viewer = normalizeViewer(existingViewer);
+    await supabaseUpdate('viewers', `id=eq.${encodeURIComponent(viewer.id)}`, {last_seen: new Date().toISOString()});
+    return viewer;
+  }
+
+  const created = await supabaseInsertReturning('viewers', {
+    pseudo: cleanedPseudo,
+    avatar,
+    created_at: new Date().toISOString(),
+    last_seen: new Date().toISOString()
+  });
+
+  if(created){
+    return normalizeViewer(created);
+  }
+
+  // Mode secours : utile en local si Supabase est indisponible.
+  return {
+    id: `local-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`,
+    pseudo: cleanedPseudo,
+    avatar
+  };
+}
+
+async function findViewerByPseudo(pseudo){
+  const result = await supabaseSelect('viewers', `pseudo=eq.${encodeURIComponent(pseudo)}&select=id,pseudo,avatar,created_at,last_seen&limit=1`);
+  if(!result.ok) return null;
+  return Array.isArray(result.data) ? result.data[0] : null;
+}
+
+function normalizeViewer(row){
+  return {
+    id: row.id,
+    pseudo: row.pseudo || 'Spectateur',
+    avatar: row.avatar || pickAvatar(row.pseudo || 'Spectateur'),
+    created_at: row.created_at || null
+  };
+}
+
+function pickAvatar(seed=''){
+  const avatars = ['🪐','🚀','👾','🤖','🦊','🐼','🐙','🦉','🎬','🍿','🌙','⚡'];
+  const score = String(seed).split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return avatars[score % avatars.length];
+}
+
+function loadViewer(){
+  try{
+    return JSON.parse(localStorage.getItem(`${storePrefix}:viewer`) || 'null');
+  }catch{
+    return null;
+  }
+}
+
+function saveViewer(viewer){
+  localStorage.setItem(`${storePrefix}:viewer`, JSON.stringify(viewer));
+}
+
+function renderViewerBox(){
+  const box = document.querySelector('#viewerBox');
+  const label = document.querySelector('#formViewerLabel');
+  const viewer = currentViewer || loadViewer();
+
+  if(box){
+    if(viewer?.pseudo){
+      box.innerHTML = `
+        <p class="eyebrow">Spectateur</p>
+        <div class="viewer-card-mini">
+          <span class="viewer-avatar">${escapeHtml(viewer.avatar || '🪐')}</span>
+          <div>
+            <strong>${escapeHtml(viewer.pseudo)}</strong>
+            <small id="viewCountLabel">Audience connectée</small>
+            <p id="moodLine">${getMoodLine(currentItem || {}, currentComments)}</p>
+          </div>
+        </div>
+      `;
+    }else{
+      box.innerHTML = `
+        <p class="eyebrow">Spectateur</p>
+        <strong id="viewCountLabel">Invité</strong>
+        <p id="moodLine">Choisis un pseudo au premier avis pour liker, répondre et garder ta petite trace cosmique.</p>
+      `;
+    }
+  }
+
+  if(label){
+    label.innerHTML = viewer?.pseudo
+      ? `<span class="viewer-avatar small">${escapeHtml(viewer.avatar || '🪐')}</span> Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
+      : 'Un pseudo sera demandé au moment de publier.';
+  }
+}
+
+async function toggleCommentLike(commentId){
+  const viewer = await ensureViewer();
+  if(!viewer || !commentId || String(commentId).startsWith('local-')) return;
+
+  const isLiked = likedCommentIds.has(commentId);
+  const comment = currentComments.find(item => item.id === commentId);
+  const currentCount = Number(comment?.likes_count) || 0;
+
+  setStatus(isLiked ? 'Retrait du like...' : 'Like envoyé...', 'pending');
+
+  let ok = false;
+  if(isLiked){
+    ok = await supabaseDelete('comment_likes', `viewer_id=eq.${encodeURIComponent(viewer.id)}&comment_id=eq.${encodeURIComponent(commentId)}`);
+    if(ok){
+      likedCommentIds.delete(commentId);
+      await supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {likes_count: Math.max(0, currentCount - 1)});
+    }
+  }else{
+    ok = await supabaseInsert('comment_likes', {viewer_id: viewer.id, comment_id: commentId, created_at: new Date().toISOString()});
+    if(ok){
+      likedCommentIds.add(commentId);
+      await supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {likes_count: currentCount + 1});
+    }
+  }
+
+  if(ok){
+    setStatus(isLiked ? 'Like retiré.' : 'Like ajouté. Petite étincelle sociale validée.', 'ok');
+    await refreshCommunity(currentItem);
+  }else{
+    setStatus('Impossible de mettre à jour ce like pour le moment.', 'error');
+  }
+}
+
+async function fetchLikedCommentIds(viewerId, commentIds){
+  if(!viewerId || !commentIds.length || String(viewerId).startsWith('local-')) return new Set();
+  const cleanIds = commentIds.filter(id => /^[0-9a-f-]{36}$/i.test(String(id)));
+  if(!cleanIds.length) return new Set();
+
+  const result = await supabaseSelect('comment_likes', `viewer_id=eq.${encodeURIComponent(viewerId)}&comment_id=in.(${cleanIds.join(',')})&select=comment_id`);
+  if(!result.ok) return new Set();
+  return new Set((result.data || []).map(row => row.comment_id));
+}
+
+async function openReplyBox(commentId){
+  const card = document.querySelector(`[data-comment-id="${cssEscape(commentId)}"]`);
+  if(!card) return;
+
+  const existing = card.querySelector('.reply-form');
+  if(existing){
+    existing.querySelector('textarea')?.focus();
+    return;
+  }
+
+  await ensureViewer();
+
+  const form = document.createElement('form');
+  form.className = 'reply-form';
+  form.dataset.parentId = commentId;
+  form.innerHTML = `
+    <textarea maxlength="500" required placeholder="Répondre à cet avis..."></textarea>
+    <div class="reply-actions">
+      <button class="primary" type="submit">Publier la réponse</button>
+      <button class="ghost" type="button" data-cancel-reply>Annuler</button>
+    </div>
+  `;
+  card.appendChild(form);
+  form.querySelector('textarea')?.focus();
+}
+
+async function toggleFavorite(slug){
+  const viewer = await ensureViewer();
+  if(!viewer || String(viewer.id).startsWith('local-')) return;
+
+  const isFav = await isFavorite(viewer.id, slug);
+  const ok = isFav
+    ? await supabaseDelete('movie_favorites', `viewer_id=eq.${encodeURIComponent(viewer.id)}&movie_id=eq.${encodeURIComponent(slug)}`)
+    : await supabaseInsert('movie_favorites', {viewer_id: viewer.id, movie_id: slug, created_at: new Date().toISOString()});
+
+  if(ok){
+    setStatus(isFav ? 'Retiré de ta liste.' : 'Ajouté à ta liste.', 'ok');
+    await refreshFavoriteButton(slug);
+  }
+}
+
+async function isFavorite(viewerId, slug){
+  if(!viewerId || String(viewerId).startsWith('local-')) return false;
+  const result = await supabaseSelect('movie_favorites', `viewer_id=eq.${encodeURIComponent(viewerId)}&movie_id=eq.${encodeURIComponent(slug)}&select=viewer_id&limit=1`);
+  return result.ok && Array.isArray(result.data) && result.data.length > 0;
+}
+
+async function refreshFavoriteButton(slug){
+  const btn = document.querySelector('#favoriteBtn');
+  if(!btn) return;
+  const viewer = currentViewer || loadViewer();
+  if(!viewer?.id || String(viewer.id).startsWith('local-')){
+    btn.textContent = '♡ Ajouter à ma liste';
+    btn.classList.remove('is-active');
+    return;
+  }
+  const fav = await isFavorite(viewer.id, slug);
+  btn.textContent = fav ? '♥ Dans ma liste' : '♡ Ajouter à ma liste';
+  btn.classList.toggle('is-active', fav);
+}
+
+async function saveViewerHistory(slug, progress=0){
+  const viewer = currentViewer || loadViewer();
+  if(!viewer?.id || String(viewer.id).startsWith('local-')) return false;
+
+  const payload = {viewer_id: viewer.id, movie_id: slug, progress, updated_at: new Date().toISOString()};
+  const updated = await supabaseUpdate('viewer_history', `viewer_id=eq.${encodeURIComponent(viewer.id)}&movie_id=eq.${encodeURIComponent(slug)}`, payload);
+  if(updated) return true;
+  return supabaseInsert('viewer_history', payload);
+}
+
 async function supabaseSelect(kind, query){
   if(!SUPABASE_ENABLED) return {ok:false, data:null};
   const table = await resolveTable(kind);
@@ -322,9 +663,14 @@ async function supabaseSelect(kind, query){
 }
 
 async function supabaseInsert(kind, payload){
-  if(!SUPABASE_ENABLED) return false;
+  const row = await supabaseInsertReturning(kind, payload);
+  return Boolean(row);
+}
+
+async function supabaseInsertReturning(kind, payload){
+  if(!SUPABASE_ENABLED) return null;
   const table = await resolveTable(kind);
-  if(!table) return false;
+  if(!table) return null;
 
   const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}`;
   try{
@@ -340,12 +686,12 @@ async function supabaseInsert(kind, payload){
     const data = await response.json().catch(() => null);
     if(!response.ok){
       console.error(`Supabase INSERT ${table} failed`, response.status, data, payload);
-      return false;
+      return null;
     }
-    return true;
+    return Array.isArray(data) ? data[0] : data;
   }catch(error){
     console.error(`Supabase INSERT ${table} network error`, error);
-    return false;
+    return null;
   }
 }
 
@@ -377,13 +723,43 @@ async function supabaseUpdate(kind, filter, payload){
   }
 }
 
+async function supabaseDelete(kind, filter){
+  if(!SUPABASE_ENABLED) return false;
+  const table = await resolveTable(kind);
+  if(!table) return false;
+
+  const url = `${SUPABASE_URL}/rest/v1/${encodeURIComponent(table)}?${filter}`;
+  try{
+    const response = await fetch(url, {
+      method:'DELETE',
+      headers: {
+        ...supabaseHeaders(),
+        Prefer:'return=representation'
+      }
+    });
+    const data = await response.json().catch(() => null);
+    if(!response.ok){
+      console.error(`Supabase DELETE ${table} failed`, response.status, data);
+      return false;
+    }
+    return true;
+  }catch(error){
+    console.error(`Supabase DELETE ${table} network error`, error);
+    return false;
+  }
+}
+
 async function resolveTable(kind){
   if(dbTables[kind]) return dbTables[kind];
 
   const candidatesByKind = {
     comments: ['comments'],
     movie_stats: ['movie_stats'],
-    movie_views: ['movie_views']
+    movie_views: ['movie_views'],
+    viewers: ['viewers'],
+    comment_likes: ['comment_likes'],
+    movie_favorites: ['movie_favorites'],
+    viewer_history: ['viewer_history']
   };
 
   const candidates = candidatesByKind[kind] || [kind];
@@ -415,13 +791,21 @@ function supabaseHeaders(){
   };
 }
 
-function normalizeComments(rows){
-  return (rows || []).map(row => ({
-    name: row.display_name || readableUserName(row.user_id),
-    rating: Number(row.rating) || 0,
-    text: row.comment || '',
-    date: row.created_at
-  })).filter(comment => comment.text);
+function normalizeComments(rows, viewerMap=new Map()){
+  return (rows || []).map(row => {
+    const viewer = viewerMap.get(row.viewer_uuid);
+    return {
+      id: row.id,
+      parent_id: row.parent_id || null,
+      viewer_uuid: row.viewer_uuid || null,
+      name: viewer?.pseudo || row.display_name || readableUserName(row.user_id),
+      avatar: viewer?.avatar || pickAvatar(row.display_name || row.user_id || 'Spectateur'),
+      rating: row.rating === null || row.rating === undefined ? null : Number(row.rating) || 0,
+      text: row.comment || '',
+      date: row.created_at,
+      likes_count: Number(row.likes_count) || 0
+    };
+  }).filter(comment => comment.text);
 }
 
 function readableUserName(value=''){
@@ -443,16 +827,6 @@ function setStatus(message, type=''){
   status.dataset.status = type;
 }
 
-function getAnonymousUserId(){
-  const key = `${storePrefix}:anonymous-user`;
-  let value = localStorage.getItem(key);
-  if(!value){
-    value = `visitor-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`;
-    localStorage.setItem(key, value);
-  }
-  return value;
-}
-
 function getRelated(item, catalogue){
   const genres = item.genres || [];
   return catalogue.filter(entry => entry.slug !== item.slug && (
@@ -462,21 +836,46 @@ function getRelated(item, catalogue){
 
 function renderComments(comments){
   const list = comments.length ? comments : getDemoComments();
-  return list.map(comment => `
-    <article class="comment-card">
-      <div class="comment-head">
-        <strong>${escapeHtml(comment.name)}</strong>
-        <span>${renderStars(comment.rating)}</span>
+  const topLevel = list.filter(comment => !comment.parent_id);
+  const repliesByParent = list.reduce((map, comment) => {
+    if(comment.parent_id){
+      if(!map.has(comment.parent_id)) map.set(comment.parent_id, []);
+      map.get(comment.parent_id).push(comment);
+    }
+    return map;
+  }, new Map());
+
+  return topLevel.map(comment => renderCommentCard(comment, repliesByParent.get(comment.id) || [])).join('');
+}
+
+function renderCommentCard(comment, replies=[]){
+  const liked = likedCommentIds.has(comment.id);
+  const isReply = Boolean(comment.parent_id);
+  return `
+    <article class="comment-card ${isReply ? 'is-reply' : ''}" data-comment-id="${escapeHtml(comment.id || '')}">
+      <div class="comment-head community-head">
+        <div class="comment-author">
+          <span class="viewer-avatar">${escapeHtml(comment.avatar || '🪐')}</span>
+          <div>
+            <strong>${escapeHtml(comment.name)}</strong>
+            <small>${formatCommentDate(comment.date)}</small>
+          </div>
+        </div>
+        ${comment.rating ? `<span class="comment-stars">${renderStars(comment.rating)}</span>` : '<span class="comment-reply-pill">Réponse</span>'}
       </div>
       <p>${escapeHtml(comment.text)}</p>
-      <small>${formatCommentDate(comment.date)}</small>
+      <div class="comment-actions">
+        <button class="comment-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '♥' : '♡'} ${Number(comment.likes_count) || 0}</button>
+        ${!isReply ? `<button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">↩ Répondre</button>` : ''}
+      </div>
+      ${replies.length ? `<div class="comment-replies">${replies.reverse().map(reply => renderCommentCard(reply, [])).join('')}</div>` : ''}
     </article>
-  `).join('');
+  `;
 }
 
 function getDemoComments(){
   return [
-    {name:'Planète Stream', rating:8, text:'La zone de critiques est prête. Les vrais avis prendront la place de ce message dès qu’un spectateur publiera sa critique.', date:new Date().toISOString()}
+    {id:'demo-comment', name:'Planète Stream', avatar:'🪐', rating:8, text:'La zone de critiques est prête. Les vrais avis prendront la place de ce message dès qu’un spectateur publiera sa critique.', date:new Date().toISOString(), likes_count:0}
   ];
 }
 
@@ -543,6 +942,11 @@ function formatCommentDate(date){
   const parsed = new Date(date);
   if(Number.isNaN(parsed.getTime())) return 'À l’instant';
   return parsed.toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
+}
+
+function cssEscape(value=''){
+  if(window.CSS?.escape) return CSS.escape(value);
+  return String(value).replace(/"/g, '\\"');
 }
 
 function escapeHtml(str=''){
