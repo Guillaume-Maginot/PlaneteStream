@@ -118,7 +118,7 @@ async function renderWatch(item, catalogue){
           <h2 class="section-title">Critiques des spectateurs</h2>
           <p>Chaque spectateur dispose maintenant d’une petite identité Planète Stream. Les avis peuvent recevoir des likes et des réponses.</p>
         </div>
-        <button class="ghost" id="switchViewerBtn" type="button">Corriger mon pseudo</button>
+        <button class="ghost" id="switchViewerBtn" type="button">Modifier mon profil</button>
       </div>
 
       <form class="comment-form watch-panel" id="commentForm">
@@ -131,7 +131,7 @@ async function renderWatch(item, catalogue){
           </select>
         </div>
         <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
-        <p class="soft-note form-help" id="viewerHelpText">Au premier avis, Planète Stream te demandera simplement un pseudo. Pas de compte usine à gaz, promis, on garde le monstre en cage.</p>
+        <p class="soft-note form-help" id="viewerHelpText">Les likes restent silencieux. Le pseudo sert uniquement à signer une critique ou une réponse.</p>
         <button class="primary" type="submit">Publier ma critique</button>
       </form>
 
@@ -183,7 +183,7 @@ function bindWatchEvents(item){
 
     if(!rating || !text) return;
 
-    const viewer = await ensureViewer();
+    const viewer = await ensureViewerForComment();
     if(!viewer) return;
 
     setStatus('Publication de la critique...', 'pending');
@@ -236,7 +236,7 @@ function bindWatchEvents(item){
     if(!form) return;
     event.preventDefault();
 
-    const viewer = await ensureViewer();
+    const viewer = await ensureViewerForComment();
     if(!viewer) return;
 
     const text = form.querySelector('textarea')?.value.trim();
@@ -397,7 +397,7 @@ async function recordAndFetchMovieViews(slug){
   return {online:true, total_views:total};
 }
 
-async function ensureViewer(){
+async function ensureViewer({silent=false}={}){
   if(currentViewer?.id) return currentViewer;
 
   const stored = loadViewer();
@@ -407,13 +407,63 @@ async function ensureViewer(){
     return stored;
   }
 
-  const viewer = await askViewerPseudo(false);
+  const viewer = silent ? await createAutoViewer() : await askViewerPseudo(false);
   if(viewer){
     currentViewer = viewer;
     saveViewer(viewer);
     renderViewerBox();
   }
   return viewer;
+}
+
+async function ensureViewerForComment(){
+  const viewer = await ensureViewer({silent:false});
+  if(!viewer) return null;
+
+  if(isAutoViewer(viewer)){
+    const personalized = await askViewerPseudo(true);
+    if(personalized){
+      currentViewer = personalized;
+      saveViewer(personalized);
+      renderViewerBox();
+      return personalized;
+    }
+  }
+
+  return currentViewer || viewer;
+}
+
+async function createAutoViewer(){
+  let lastPseudo = '';
+  let lastAvatar = '🪐';
+
+  for(let attempt = 0; attempt < 5; attempt += 1){
+    const token = Math.floor(1000 + Math.random() * 9000);
+    const pseudo = `Spectateur ${token}`;
+    const avatar = pickAvatar(pseudo);
+    lastPseudo = pseudo;
+    lastAvatar = avatar;
+
+    const created = await supabaseInsertReturning('viewers', {
+      pseudo,
+      avatar,
+      created_at: new Date().toISOString(),
+      last_seen: new Date().toISOString()
+    });
+
+    if(created) return normalizeViewer(created);
+  }
+
+  return {
+    id: `local-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`,
+    pseudo: lastPseudo || `Spectateur ${Date.now().toString().slice(-4)}`,
+    avatar: lastAvatar,
+    auto: true
+  };
+}
+
+function isAutoViewer(viewer){
+  return /^Spectateur \d{4}$/.test(String(viewer?.pseudo || '')) || Boolean(viewer?.auto);
 }
 
 async function askViewerPseudo(force=false){
@@ -462,11 +512,13 @@ async function findViewerByPseudo(pseudo){
 }
 
 function normalizeViewer(row){
+  const pseudo = row.pseudo || 'Spectateur';
   return {
     id: row.id,
-    pseudo: row.pseudo || 'Spectateur',
-    avatar: row.avatar || pickAvatar(row.pseudo || 'Spectateur'),
-    created_at: row.created_at || null
+    pseudo,
+    avatar: row.avatar || pickAvatar(pseudo),
+    created_at: row.created_at || null,
+    auto: /^Spectateur \d{4}$/.test(String(pseudo))
   };
 }
 
@@ -512,7 +564,7 @@ function renderViewerBox(){
       box.innerHTML = `
         <p class="eyebrow">Spectateur</p>
         <strong id="viewCountLabel">Invité</strong>
-        <p id="moodLine">Choisis un pseudo au premier avis pour liker, répondre et garder ta petite trace cosmique.</p>
+        <p id="moodLine">Tu peux liker sans interruption. Le pseudo n’est demandé que si tu publies une critique.</p>
       `;
     }
   }
@@ -520,22 +572,24 @@ function renderViewerBox(){
   if(label){
     label.innerHTML = viewer?.pseudo
       ? `<span class="viewer-avatar small">${escapeHtml(viewer.avatar || '🪐')}</span> Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
-      : 'Un pseudo sera demandé au moment de publier.';
+      : 'Pseudo demandé uniquement au moment de publier.';
   }
 
   if(helpText){
     helpText.textContent = viewer?.pseudo
-      ? `Tu es connecté en tant que ${viewer.pseudo}. Le bouton ci-dessus sert seulement à corriger ton pseudo si besoin.`
-      : 'Au premier avis, Planète Stream te demandera simplement un pseudo. Pas de compte usine à gaz, promis, on garde le monstre en cage.';
+      ? isAutoViewer(viewer)
+        ? 'Tu peux liker en silence. Si tu publies une critique, tu pourras choisir un vrai pseudo.'
+        : `Tu es connecté en tant que ${viewer.pseudo}. Le bouton ci-dessus permet de modifier ton profil.`
+      : 'Les likes sont silencieux. Le pseudo sera demandé uniquement si tu publies une critique ou une réponse.';
   }
 
   if(switchBtn){
-    switchBtn.textContent = viewer?.pseudo ? 'Corriger mon pseudo' : 'Choisir mon pseudo';
+    switchBtn.textContent = viewer?.pseudo ? 'Modifier mon profil' : 'Choisir mon pseudo';
   }
 }
 
 async function toggleCommentLike(commentId){
-  const viewer = await ensureViewer();
+  const viewer = await ensureViewer({silent:true});
   if(!viewer || !commentId || String(commentId).startsWith('local-')) return;
 
   const isLiked = likedCommentIds.has(commentId);
@@ -587,7 +641,6 @@ async function openReplyBox(commentId){
     return;
   }
 
-  await ensureViewer();
 
   const form = document.createElement('form');
   form.className = 'reply-form';
@@ -604,7 +657,7 @@ async function openReplyBox(commentId){
 }
 
 async function toggleFavorite(slug){
-  const viewer = await ensureViewer();
+  const viewer = await ensureViewer({silent:true});
   if(!viewer || String(viewer.id).startsWith('local-')) return;
 
   const isFav = await isFavorite(viewer.id, slug);
