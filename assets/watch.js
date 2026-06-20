@@ -118,7 +118,6 @@ async function renderWatch(item, catalogue){
           <h2 class="section-title">Critiques des spectateurs</h2>
           <p>Chaque spectateur dispose maintenant d’une petite identité Planète Stream. Les avis peuvent recevoir des likes et des réponses.</p>
         </div>
-        <button class="ghost" id="switchViewerBtn" type="button">Modifier mon profil</button>
       </div>
 
       <form class="comment-form watch-panel" id="commentForm">
@@ -250,16 +249,6 @@ function bindWatchEvents(item){
       await refreshCommunity(currentItem);
     }else{
       setStatus('Impossible de publier cette réponse pour le moment.', 'error');
-    }
-  });
-
-  document.querySelector('#switchViewerBtn')?.addEventListener('click', async () => {
-    const viewer = await askViewerPseudo(true);
-    if(viewer){
-      currentViewer = viewer;
-      saveViewer(viewer);
-      renderViewerBox();
-      await refreshCommunity(currentItem);
     }
   });
 
@@ -544,7 +533,6 @@ function renderViewerBox(){
   const box = document.querySelector('#viewerBox');
   const label = document.querySelector('#formViewerLabel');
   const helpText = document.querySelector('#viewerHelpText');
-  const switchBtn = document.querySelector('#switchViewerBtn');
   const viewer = currentViewer || loadViewer();
 
   if(box){
@@ -579,13 +567,10 @@ function renderViewerBox(){
     helpText.textContent = viewer?.pseudo
       ? isAutoViewer(viewer)
         ? 'Tu peux liker en silence. Si tu publies une critique, tu pourras choisir un vrai pseudo.'
-        : `Tu es connecté en tant que ${viewer.pseudo}. Le bouton ci-dessus permet de modifier ton profil.`
+        : `Tu es connecté en tant que ${viewer.pseudo}.`
       : 'Les likes sont silencieux. Le pseudo sera demandé uniquement si tu publies une critique ou une réponse.';
   }
 
-  if(switchBtn){
-    switchBtn.textContent = viewer?.pseudo ? 'Modifier mon profil' : 'Choisir mon pseudo';
-  }
 }
 
 async function toggleCommentLike(commentId){
