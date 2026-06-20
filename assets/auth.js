@@ -282,12 +282,12 @@ const PSAuth = (() => {
   }
 
   function cleanPseudo(value=''){
-    return String(value).trim().replace(/\s+/g, ' ').slice(0, 32);
+    return String(value).normalize('NFKC').trim().replace(/\s+/g, ' ').slice(0, 32);
   }
 
   function isValidPseudo(value=''){
     const pseudo = cleanPseudo(value);
-    return pseudo.length >= 2 && pseudo.length <= 32 && /^[\p{L}0-9 _.-]+$/u.test(pseudo);
+    return /^[A-Za-zÀ-ÖØ-öø-ÿ0-9 _-]{2,32}$/.test(pseudo);
   }
 
   function pickAvatar(seed=''){

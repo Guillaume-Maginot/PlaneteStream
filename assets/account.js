@@ -115,7 +115,9 @@ function validateEmail(email){
 }
 
 function validatePseudo(pseudo){
-  if(!window.PSAuth?.isValidPseudo(pseudo)){
+  const cleaned = window.PSAuth?.cleanPseudo ? window.PSAuth.cleanPseudo(pseudo) : String(pseudo || '').normalize('NFKC').trim().replace(/\s+/g, ' ').slice(0, 32);
+  const valid = /^[A-Za-zÀ-ÖØ-öø-ÿ0-9 _-]{2,32}$/.test(cleaned);
+  if(!valid){
     setStatus('Pseudo invalide : 2 à 32 caractères, lettres, chiffres, espaces, tirets et underscores uniquement.', 'error');
     return false;
   }
