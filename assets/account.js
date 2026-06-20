@@ -115,8 +115,8 @@ function validateEmail(email){
 }
 
 function validatePseudo(pseudo){
-  if(!pseudo || pseudo.length < 2){
-    setStatus('Le pseudo doit contenir au moins 2 caractères.', 'error');
+  if(!window.PSAuth?.isValidPseudo(pseudo)){
+    setStatus('Pseudo invalide : 2 à 32 caractères, lettres, chiffres, espaces, tirets et underscores uniquement.', 'error');
     return false;
   }
   return true;

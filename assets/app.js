@@ -308,20 +308,3 @@ function escapeHtml(str=''){
 }
 
 init();
-
-// Compte viewer léger : personnalise le bouton d'accueil si un spectateur est déjà connu.
-(function syncViewerAccountLink(){
-  const link = document.querySelector('#accountNavLink');
-  if(!link) return;
-  try{
-    const viewer = JSON.parse(localStorage.getItem('planetestream:viewer') || 'null');
-    if(viewer?.pseudo){
-      link.textContent = viewer.auto || /^Spectateur \d{4}$/.test(String(viewer.pseudo))
-        ? 'Créer un compte'
-        : `👤 ${viewer.pseudo}`;
-      link.classList.add('is-connected');
-    }
-  }catch{
-    // Rien à faire : le bouton reste en mode invité.
-  }
-})();

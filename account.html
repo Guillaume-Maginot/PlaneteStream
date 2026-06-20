@@ -22,21 +22,22 @@
         <a class="active" href="account.html">Compte</a>
       </nav>
       <div class="nav-actions">
-        <a class="primary" href="index.html#catalogue">Retour catalogue</a>
+        <a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a>
       </div>
     </div>
   </header>
 
   <main class="container account-page">
-    <section class="account-hero watch-panel auth-hero">
+    <section class="account-hero watch-panel">
       <p class="eyebrow">Compte spectateur sécurisé</p>
-      <h1>Créer ou retrouver ton accès Planète Stream</h1>
+      <h1>Ton badge pour entrer dans la salle</h1>
       <p>
-        Les critiques et les réponses sont maintenant réservées aux comptes confirmés. Le pseudo est lié à ton compte Supabase Auth : fini les pseudos à la fenêtre ouverte, place aux douves numériques.
+        Crée un vrai compte avec email et mot de passe. Ton pseudo est réservé, tes critiques sont signées,
+        et les marmites de sécurité restent bien chaudes pour les visiteurs non identifiés.
       </p>
     </section>
 
-    <section class="account-grid">
+    <section class="account-grid account-grid-secure">
       <article class="watch-panel account-card" id="currentAccountCard">
         <p class="eyebrow">État actuel</p>
         <div id="currentViewerState" class="account-state">Chargement...</div>
@@ -44,14 +45,14 @@
 
       <article class="watch-panel account-card">
         <p class="eyebrow">Créer un compte</p>
-        <h2>Nouveau spectateur</h2>
-        <p>Email, mot de passe et pseudo public. Le trio d’entrée du château.</p>
-        <form id="createAccountForm" class="account-form auth-form">
+        <h2>Nouveau membre</h2>
+        <p>Choisis un pseudo public. Il ne sera pas modifié automatiquement : s'il est déjà pris, le site te le dira clairement.</p>
+        <form id="createAccountForm" class="account-form">
           <label for="createEmail">Email</label>
-          <input id="createEmail" type="email" required placeholder="vous@email.fr" autocomplete="email">
+          <input id="createEmail" type="email" required placeholder="ton@email.fr" autocomplete="email">
 
           <label for="createPseudo">Pseudo public</label>
-          <input id="createPseudo" maxlength="32" minlength="2" required placeholder="Ex : Guillaume" autocomplete="nickname">
+          <input id="createPseudo" maxlength="32" minlength="2" required placeholder="Ex : Spoofle" autocomplete="nickname">
 
           <label for="createPassword">Mot de passe</label>
           <input id="createPassword" type="password" minlength="8" required placeholder="8 caractères minimum" autocomplete="new-password">
@@ -67,20 +68,21 @@
             <option value="🎬">🎬 Cinéma</option>
             <option value="🍿">🍿 Pop-corn</option>
           </select>
-          <button class="primary" type="submit">Créer mon compte sécurisé</button>
+          <button class="primary" type="submit">Créer mon compte</button>
         </form>
       </article>
 
       <article class="watch-panel account-card">
         <p class="eyebrow">Se connecter</p>
-        <h2>Compte existant</h2>
-        <p>Connecte-toi pour publier, répondre, retrouver ta liste et ton historique.</p>
-        <form id="loginAccountForm" class="account-form auth-form">
+        <h2>Retour en orbite</h2>
+        <p>Entre ton email et ton mot de passe. Ton pseudo sera récupéré depuis Supabase, pas depuis les entrailles du navigateur.</p>
+        <form id="loginAccountForm" class="account-form">
           <label for="loginEmail">Email</label>
-          <input id="loginEmail" type="email" required placeholder="vous@email.fr" autocomplete="email">
+          <input id="loginEmail" type="email" required placeholder="ton@email.fr" autocomplete="email">
 
           <label for="loginPassword">Mot de passe</label>
-          <input id="loginPassword" type="password" required placeholder="Votre mot de passe" autocomplete="current-password">
+          <input id="loginPassword" type="password" required placeholder="Ton mot de passe" autocomplete="current-password">
+
           <button class="ghost" type="submit">Me connecter</button>
         </form>
       </article>

@@ -79,13 +79,24 @@ const PSAuth = (() => {
 
   async function signUp({email, password, pseudo, avatar}){
     if(!enabled()) return {ok:false, message:'Supabase est indisponible.'};
+
+    const wantedPseudo = cleanPseudo(pseudo);
+    if(!isValidPseudo(wantedPseudo)){
+      return {ok:false, message:'Pseudo invalide : 2 à 32 caractères, lettres, chiffres, espaces, tirets et underscores uniquement.'};
+    }
+
+    const alreadyTaken = await fetchViewerByPseudo(wantedPseudo);
+    if(alreadyTaken){
+      return {ok:false, message:`Le pseudo « ${wantedPseudo} » est déjà utilisé. Choisis-en un autre, le trône est occupé.`};
+    }
+
     const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/signup`, {
       method:'POST',
       headers:{...anonHeaders(), 'Content-Type':'application/json'},
       body: JSON.stringify({
         email,
         password,
-        data:{pseudo, avatar}
+        data:{pseudo:wantedPseudo, avatar}
       })
     });
     const data = await response.json().catch(() => null);
@@ -93,11 +104,11 @@ const PSAuth = (() => {
       return {ok:false, message: authErrorMessage(data)};
     }
 
-    localStorage.setItem(pendingKey, JSON.stringify({email, pseudo, avatar}));
+    localStorage.setItem(pendingKey, JSON.stringify({email, pseudo:wantedPseudo, avatar}));
 
     if(data?.access_token){
       saveSession(data);
-      const viewer = await ensureViewerProfile({pseudo, avatar});
+      const viewer = await ensureViewerProfile({pseudo:wantedPseudo, avatar});
       return {ok:true, session:data, viewer, needsEmailConfirmation:false};
     }
 
@@ -121,6 +132,9 @@ const PSAuth = (() => {
     const fallbackPseudo = data?.user?.user_metadata?.pseudo || pending?.pseudo || email.split('@')[0] || 'Spectateur';
     const fallbackAvatar = data?.user?.user_metadata?.avatar || pending?.avatar || pickAvatar(fallbackPseudo);
     const viewer = await ensureViewerProfile({pseudo:fallbackPseudo, avatar:fallbackAvatar});
+    if(!viewer){
+      return {ok:false, message:'Connexion réussie, mais le profil public n’a pas pu être créé. Vérifie que le pseudo choisi est disponible.'};
+    }
     return {ok:true, session:data, viewer};
   }
 
@@ -148,7 +162,16 @@ const PSAuth = (() => {
       return viewer;
     }
 
-    const safePseudo = await findAvailablePseudo(cleanPseudo(pseudo || user.email?.split('@')[0] || 'Spectateur'));
+    const safePseudo = cleanPseudo(pseudo || user.user_metadata?.pseudo || user.email?.split('@')[0] || 'Spectateur');
+    if(!isValidPseudo(safePseudo)){
+      return null;
+    }
+
+    const taken = await fetchViewerByPseudo(safePseudo);
+    if(taken){
+      return null;
+    }
+
     const payload = {
       auth_user_id: user.id,
       pseudo: safePseudo,
@@ -242,7 +265,7 @@ const PSAuth = (() => {
     const user = getAuthUser();
     if(!user?.id) return null;
     const local = loadViewer();
-    if(local?.auth_user_id === user.id || local?.id) return local;
+    if(local?.auth_user_id === user.id) return local;
     return ensureViewerProfile({});
   }
 
@@ -260,6 +283,11 @@ const PSAuth = (() => {
 
   function cleanPseudo(value=''){
     return String(value).trim().replace(/\s+/g, ' ').slice(0, 32);
+  }
+
+  function isValidPseudo(value=''){
+    const pseudo = cleanPseudo(value);
+    return pseudo.length >= 2 && pseudo.length <= 32 && /^[\p{L}0-9 _.-]+$/u.test(pseudo);
   }
 
   function pickAvatar(seed=''){
@@ -283,21 +311,99 @@ const PSAuth = (() => {
   function updateNav(){
     const link = document.querySelector('#accountNavLink');
     if(!link) return;
+
     const viewer = loadViewer();
     const user = getAuthUser();
-    if(user && viewer?.pseudo){
-      link.textContent = `${viewer.avatar || '👤'} ${viewer.pseudo}`;
+    const connected = Boolean(user && viewer?.pseudo && viewer?.auth_user_id === user.id);
+
+    if(connected){
+      link.href = '#';
+      link.innerHTML = `<span class="account-avatar">${escapeHtml(viewer.avatar || '👤')}</span><span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span>`;
       link.classList.add('is-connected');
+      link.setAttribute('aria-haspopup', 'true');
+      link.setAttribute('aria-expanded', 'false');
+      ensureAccountDropdown(link, viewer);
     }else if(user){
-      link.textContent = '👤 Mon compte';
+      link.href = 'account.html';
+      link.textContent = '👤 Finaliser mon compte';
       link.classList.add('is-connected');
+      removeAccountDropdown();
     }else{
+      link.href = 'account.html';
       link.textContent = 'Créer un compte / Se connecter';
       link.classList.remove('is-connected');
+      link.removeAttribute('aria-haspopup');
+      link.removeAttribute('aria-expanded');
+      removeAccountDropdown();
     }
   }
 
-  document.addEventListener('DOMContentLoaded', updateNav);
+  function ensureAccountDropdown(link, viewer){
+    const parent = link.parentElement;
+    if(!parent) return;
+    parent.classList.add('account-menu-wrap');
+
+    let menu = parent.querySelector('#accountDropdown');
+    if(!menu){
+      menu = document.createElement('div');
+      menu.id = 'accountDropdown';
+      menu.className = 'account-dropdown';
+      parent.insertBefore(menu, link.nextSibling);
+    }
+
+    menu.innerHTML = `
+      <div class="account-dropdown-head">
+        <span class="viewer-avatar">${escapeHtml(viewer.avatar || '👤')}</span>
+        <div>
+          <strong>${escapeHtml(viewer.pseudo)}</strong>
+          <small>${escapeHtml(viewer.role || 'viewer')}</small>
+        </div>
+      </div>
+      <a href="account.html">⭐ Mon profil</a>
+      <a href="index.html#catalogue">❤️ Mes favoris</a>
+      <a href="watch.html">🎬 Mon historique</a>
+      <a href="account.html#mes-critiques">💬 Mes critiques</a>
+      <button type="button" data-auth-logout>🚪 Déconnexion</button>
+    `;
+  }
+
+  function removeAccountDropdown(){
+    document.querySelector('#accountDropdown')?.remove();
+  }
+
+  function bindAccountMenu(){
+    if(window.__psAccountMenuBound) return;
+    window.__psAccountMenuBound = true;
+
+    document.addEventListener('click', async event => {
+      const link = event.target.closest('#accountNavLink');
+      const menu = document.querySelector('#accountDropdown');
+
+      if(link && menu){
+        event.preventDefault();
+        const open = menu.classList.toggle('is-open');
+        link.setAttribute('aria-expanded', String(open));
+        return;
+      }
+
+      if(event.target.closest('[data-auth-logout]')){
+        event.preventDefault();
+        await signOut();
+        if(location.pathname.endsWith('/account.html') || location.pathname.endsWith('account.html')){
+          location.reload();
+        }
+        return;
+      }
+
+      if(menu && !event.target.closest('.account-menu-wrap')){
+        menu.classList.remove('is-open');
+        document.querySelector('#accountNavLink')?.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+
+  document.addEventListener('DOMContentLoaded', () => { bindAccountMenu(); updateNav(); });
 
   return {
     enabled,
@@ -315,6 +421,8 @@ const PSAuth = (() => {
     anonHeaders,
     pickAvatar,
     escapeHtml,
+    cleanPseudo,
+    isValidPseudo,
     updateNav
   };
 })();
