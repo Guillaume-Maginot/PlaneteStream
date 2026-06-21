@@ -12,13 +12,16 @@ const dbTables = {
   viewers: null,
   comment_likes: null,
   movie_favorites: null,
-  viewer_history: null
+  viewer_history: null,
+  movie_ratings: null
 };
 
 let currentItem = null;
 let currentCatalogue = [];
 let currentViewer = null;
 let currentComments = [];
+let currentRatings = [];
+let currentUserRating = null;
 let likedCommentIds = new Set();
 let commentSortMode = 'recent';
 let profileStatsCache = new Map();
@@ -144,15 +147,25 @@ async function renderWatch(item, catalogue){
         </div>
       </div>
 
+      <form class="quick-rating-form watch-panel" id="quickRatingForm">
+        <div>
+          <p class="eyebrow">Votre note</p>
+          <h3>Noter ce film</h3>
+          <p class="soft-note">Un clic suffit. La critique reste optionnelle, parce que tout le monde n'a pas envie d'écrire un traité diplomatique sur les explosions.</p>
+        </div>
+        <div class="quick-rating-controls">
+          <select id="quickRating" required>
+            <option value="">Choisir une note</option>
+            ${Array.from({length:10}, (_,i) => `<option value="${i+1}">${i+1}/10</option>`).join('')}
+          </select>
+          <button class="primary" type="submit" id="quickRatingBtn">Enregistrer ma note</button>
+        </div>
+        <p class="soft-note form-help" id="quickRatingHelp">Connexion obligatoire pour noter.</p>
+      </form>
+
       <form class="comment-form watch-panel" id="commentForm">
         <p class="eyebrow" id="commentFormTitle">Écrire une nouvelle critique</p>
         <div class="viewer-mini" id="formViewerLabel">Publier en tant que spectateur</div>
-        <div class="form-row one-col">
-          <select id="commentRating" required>
-            <option value="">Note</option>
-            ${Array.from({length:10}, (_,i) => `<option value="${i+1}">${i+1}/10</option>`).join('')}
-          </select>
-        </div>
         <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
         <p class="soft-note form-help" id="viewerHelpText">Connexion obligatoire pour publier une critique ou une réponse.</p>
         <button class="primary" type="submit" id="commentSubmitBtn">Publier ma critique</button>
@@ -198,17 +211,37 @@ function bindWatchEvents(item){
     saveViewerHistory(item.slug, 10);
   });
 
-  document.querySelector('#commentForm')?.addEventListener('submit', async event => {
+  document.querySelector('#quickRatingForm')?.addEventListener('submit', async event => {
     event.preventDefault();
 
-    const rating = Number(document.querySelector('#commentRating').value);
-    const text = document.querySelector('#commentText').value.trim();
-
-    if(!rating || !text) return;
+    const rating = Number(document.querySelector('#quickRating')?.value || 0);
+    if(!rating) return;
 
     const viewer = await ensureViewerForComment();
     if(!viewer) return;
 
+    setStatus('Enregistrement de ta note...', 'pending');
+    const ok = await saveQuickRating(item.slug, viewer, rating);
+
+    if(ok){
+      currentUserRating = rating;
+      setStatus('Note enregistrée. Critique facultative, popcorn obligatoire.', 'ok');
+      await refreshCommunity(item);
+    }else{
+      setStatus('Impossible d’enregistrer la note. Vérifie la table movie_ratings.', 'error');
+    }
+  });
+
+  document.querySelector('#commentForm')?.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const text = document.querySelector('#commentText').value.trim();
+    if(!text) return;
+
+    const viewer = await ensureViewerForComment();
+    if(!viewer) return;
+
+    const rating = Number(currentUserRating || document.querySelector('#quickRating')?.value || 0) || null;
     const existingReview = findCurrentViewerMainReview(item.slug, viewer);
     setStatus(existingReview ? 'Mise à jour de ta critique...' : 'Publication de la critique...', 'pending');
     const ok = existingReview
@@ -218,7 +251,7 @@ function bindWatchEvents(item){
     if(ok){
       reviewFormDirty = false;
       reviewFormModeKey = '';
-      setStatus(existingReview ? 'Critique mise à jour. Ton vote unique est conservé.' : 'Critique publiée. Merci pour la trace laissée en orbite.', 'ok');
+      setStatus(existingReview ? 'Critique mise à jour. Ta note reste indépendante.' : 'Critique publiée. Merci pour la trace laissée en orbite.', 'ok');
       await refreshCommunity(item);
     }else{
       const localComments = getLocalComments(item.slug);
@@ -239,7 +272,7 @@ function bindWatchEvents(item){
 
   const mainForm = document.querySelector('#commentForm');
   mainForm?.addEventListener('input', event => {
-    if(event.target?.matches?.('#commentRating, #commentText')) reviewFormDirty = true;
+    if(event.target?.matches?.('#commentText')) reviewFormDirty = true;
   });
 
   document.querySelector('#commentsSort')?.addEventListener('change', event => {
@@ -334,13 +367,16 @@ function bindWatchEvents(item){
 }
 
 async function refreshCommunity(item){
-  const [comments, stats, views] = await Promise.all([
+  const [comments, ratings, stats, views] = await Promise.all([
     fetchComments(item.slug),
+    fetchMovieRatings(item.slug),
     fetchMovieStats(item.slug),
     recordAndFetchMovieViews(item.slug)
   ]);
 
   currentComments = comments.online ? comments.data : getLocalComments(item.slug);
+  currentRatings = ratings.online ? ratings.data : [];
+  currentUserRating = getCurrentViewerRating(currentRatings);
 
   if(comments.online && currentViewer?.id){
     likedCommentIds = await fetchLikedCommentIds(currentViewer.id, currentComments.map(comment => comment.id).filter(Boolean));
@@ -353,7 +389,7 @@ async function refreshCommunity(item){
   document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
   scrollToCommentFromHash();
 
-  updateCommunityRatingLabel(currentComments, stats);
+  updateCommunityRatingLabel(currentComments, stats, currentRatings);
 
   if(views.online && views.total_views){
     const viewLabel = document.querySelector('#viewCountLabel');
@@ -363,15 +399,47 @@ async function refreshCommunity(item){
   const moodComments = comments.online ? comments.data : getLocalComments(item.slug);
   document.querySelector('#moodLine').textContent = getMoodLine(item, moodComments);
 
-  if(comments.online || stats.online){
-    setStatus('Avis synchronisés. Les critiques vivent maintenant en ligne.', 'ok');
+  if(comments.online || ratings.online || stats.online){
+    setStatus('Avis synchronisés. Notes et critiques vivent maintenant en ligne.', 'ok');
   }else{
     setStatus('Mode local. Les avis en ligne ne répondent pas encore.', 'error');
   }
 
   await refreshFavoriteButton(item.slug);
   renderViewerBox();
+  updateQuickRatingForm();
   updateReviewFormMode();
+}
+
+function updateQuickRatingForm(){
+  const form = document.querySelector('#quickRatingForm');
+  if(!form) return;
+
+  const select = document.querySelector('#quickRating');
+  const button = document.querySelector('#quickRatingBtn');
+  const help = document.querySelector('#quickRatingHelp');
+  const viewer = currentViewer;
+
+  if(!viewer?.id){
+    if(select) select.disabled = true;
+    if(button) button.disabled = true;
+    if(help) help.innerHTML = 'Connexion requise pour noter · <a href="account.html">Ouvrir la page compte</a>';
+    return;
+  }
+
+  if(select){
+    select.disabled = false;
+    select.value = currentUserRating ? String(currentUserRating) : '';
+  }
+  if(button){
+    button.disabled = false;
+    button.textContent = currentUserRating ? 'Mettre à jour ma note' : 'Enregistrer ma note';
+  }
+  if(help){
+    help.textContent = currentUserRating
+      ? `Ta note actuelle : ${currentUserRating}/10. Tu peux la modifier sans toucher à ta critique.`
+      : 'Tu peux noter sans écrire de critique. Deux secondes, zéro dissertation.';
+  }
 }
 
 function updateReviewFormMode({force=false}={}){
@@ -379,7 +447,6 @@ function updateReviewFormMode({force=false}={}){
   if(!form || !currentItem) return;
 
   const title = document.querySelector('#commentFormTitle');
-  const ratingInput = document.querySelector('#commentRating');
   const textInput = document.querySelector('#commentText');
   const submitBtn = document.querySelector('#commentSubmitBtn');
   const helpText = document.querySelector('#viewerHelpText');
@@ -387,14 +454,12 @@ function updateReviewFormMode({force=false}={}){
   if(!currentViewer?.id){
     if(title) title.textContent = 'Écrire une nouvelle critique';
     if(submitBtn) submitBtn.textContent = 'Publier ma critique';
-    if(ratingInput) ratingInput.disabled = true;
     if(textInput) textInput.disabled = true;
     if(helpText) helpText.innerHTML = 'Connexion requise · <a href="account.html">Ouvrir la page compte</a>';
     reviewFormModeKey = 'guest';
     return;
   }
 
-  if(ratingInput) ratingInput.disabled = false;
   if(textInput) textInput.disabled = false;
 
   const existingReview = findCurrentViewerMainReview(currentItem.slug, currentViewer);
@@ -409,19 +474,17 @@ function updateReviewFormMode({force=false}={}){
     if(helpText){
       helpText.textContent = replyCount > 0
         ? `Tu modifies ta critique existante. ${replyCount} réponse${replyCount > 1 ? 's' : ''} rester${replyCount > 1 ? 'ont' : 'a'} attachée${replyCount > 1 ? 's' : ''} à cette discussion.`
-        : 'Tu modifies ta critique existante. Un film, un vote, pas trois bulletins dans l’urne.';
+        : 'Tu modifies ta critique existante. La note se gère séparément juste au-dessus.';
     }
     if(shouldHydrate){
-      if(ratingInput) ratingInput.value = String(Number(existingReview.rating) || '');
       if(textInput) textInput.value = existingReview.text || '';
       reviewFormDirty = false;
     }
   }else{
     if(title) title.textContent = 'Écrire une nouvelle critique';
     if(submitBtn) submitBtn.textContent = 'Publier ma critique';
-    if(helpText) helpText.textContent = `Tu es connecté en tant que ${currentViewer.pseudo}.`;
+    if(helpText) helpText.textContent = `Tu es connecté en tant que ${currentViewer.pseudo}. La critique est facultative et peut compléter ta note.`;
     if(shouldHydrate){
-      if(ratingInput) ratingInput.value = '';
       if(textInput) textInput.value = '';
       reviewFormDirty = false;
     }
@@ -497,15 +560,80 @@ async function fetchMovieStats(slug){
   return {online:true, data:row || null};
 }
 
-function updateCommunityRatingLabel(comments=[], stats={online:false, data:null}){
+
+async function fetchMovieRatings(slug){
+  const result = await supabaseSelect('movie_ratings', `movie_id=eq.${encodeURIComponent(slug)}&select=movie_id,viewer_id,auth_user_id,rating,updated_at,created_at&order=updated_at.desc&limit=500`);
+  if(!result.ok) return {online:false, data:[]};
+  return {online:true, data:(result.data || []).map(row => ({
+    movie_id: row.movie_id,
+    viewer_id: row.viewer_id || null,
+    auth_user_id: row.auth_user_id || null,
+    rating: Number(row.rating) || 0,
+    updated_at: row.updated_at || row.created_at || null
+  })).filter(row => row.rating > 0)};
+}
+
+function getCurrentViewerRating(ratings=[]){
+  const viewerId = currentViewer?.id || null;
+  const authUserId = getCurrentAuthUserId();
+  const match = (ratings || []).find(row => {
+    if(viewerId && row.viewer_id === viewerId) return true;
+    if(authUserId && row.auth_user_id === authUserId) return true;
+    return false;
+  });
+  return match ? Number(match.rating) || null : null;
+}
+
+async function saveQuickRating(slug, viewer, rating){
+  const state = window.PS?.refreshAuthState
+    ? await window.PS.refreshAuthState({force:true})
+    : await window.PSAuth?.getAuthState?.();
+
+  const authUserId = state?.user?.id || viewer?.auth_user_id || getCurrentAuthUserId();
+  const officialViewer = state?.viewer?.id ? state.viewer : viewer;
+
+  if(!authUserId || !officialViewer?.id){
+    showAuthRequiredNotice();
+    return false;
+  }
+
+  currentViewer = officialViewer;
+  const payload = {
+    movie_id: slug,
+    viewer_id: officialViewer.id,
+    auth_user_id: authUserId,
+    rating: Number(rating),
+    updated_at: new Date().toISOString()
+  };
+
+  const filter = `movie_id=eq.${encodeURIComponent(slug)}&viewer_id=eq.${encodeURIComponent(officialViewer.id)}`;
+  const existing = await supabaseSelect('movie_ratings', `${filter}&select=movie_id,viewer_id&limit=1`);
+  const hasExisting = existing.ok && Array.isArray(existing.data) && existing.data.length > 0;
+  const saved = hasExisting
+    ? await supabaseUpdate('movie_ratings', filter, payload)
+    : await supabaseInsert('movie_ratings', {...payload, created_at: new Date().toISOString()}, {acceptDuplicate:true});
+
+  if(saved){
+    const ownReview = findCurrentViewerMainReview(slug, officialViewer);
+    if(ownReview?.id && canManageComment(ownReview)){
+      await supabaseUpdate('comments', `id=eq.${encodeURIComponent(ownReview.id)}`, {rating:Number(rating), edited_at: ownReview.edited_at || new Date().toISOString()});
+    }
+  }
+
+  return saved;
+}
+
+function updateCommunityRatingLabel(comments=[], stats={online:false, data:null}, ratings=[]){
   const label = document.querySelector('#communityRatingLabel');
   if(!label) return;
 
-  const rootRatings = getUniqueViewerRatings(comments);
+  const officialRatings = getUniqueMovieRatings(ratings);
+  const rootRatings = officialRatings.length ? officialRatings : getUniqueViewerRatings(comments);
 
   if(rootRatings.length){
     const average = rootRatings.reduce((sum, value) => sum + value, 0) / rootRatings.length;
-    label.textContent = `${average.toFixed(1)}/10 (${rootRatings.length} vote${rootRatings.length > 1 ? 's' : ''})`;
+    const reviewCount = (comments || []).filter(comment => !comment.parent_id && String(comment.text || '').trim()).length;
+    label.textContent = `${average.toFixed(1)}/10 (${rootRatings.length} note${rootRatings.length > 1 ? 's' : ''}${reviewCount ? ` · ${reviewCount} critique${reviewCount > 1 ? 's' : ''}` : ''})`;
     return;
   }
 
@@ -519,6 +647,25 @@ function updateCommunityRatingLabel(comments=[], stats={online:false, data:null}
   }
 
   label.textContent = stats?.online ? 'Pas encore' : 'Hors ligne';
+}
+
+
+function getUniqueMovieRatings(ratings=[]){
+  const latestByViewer = new Map();
+
+  (ratings || []).forEach(row => {
+    const rating = Number(row.rating);
+    if(!Number.isFinite(rating) || rating <= 0) return;
+    const key = row.viewer_id || row.auth_user_id;
+    if(!key) return;
+    const date = dateScore(row.updated_at || row.created_at);
+    const previous = latestByViewer.get(key);
+    if(!previous || date >= previous.date){
+      latestByViewer.set(key, {rating, date});
+    }
+  });
+
+  return [...latestByViewer.values()].map(entry => entry.rating);
 }
 
 function getUniqueViewerRatings(comments=[]){
@@ -562,7 +709,7 @@ async function updateOwnMainReview(commentId, rating, text){
 
   return supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {
     comment: text,
-    rating: Number(rating) || null,
+    rating: rating === null || rating === undefined ? null : Number(rating) || null,
     edited_at: new Date().toISOString()
   });
 }
@@ -1367,7 +1514,8 @@ async function resolveTable(kind){
     viewers: ['viewers'],
     comment_likes: ['comment_likes'],
     movie_favorites: ['movie_favorites'],
-    viewer_history: ['viewer_history']
+    viewer_history: ['viewer_history'],
+    movie_ratings: ['movie_ratings', 'ratings']
   };
 
   const candidates = candidatesByKind[kind] || [kind];

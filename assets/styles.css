@@ -3411,3 +3411,50 @@ min-width:220px;
   .planetiens-head h2{font-size:24px}
   .reputation-panel>div:first-child{align-items:flex-start;flex-direction:column;gap:4px}
 }
+
+/* === Planète Stream V2.5.1 : note rapide indépendante === */
+.quick-rating-form{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(220px,320px);
+  gap:18px;
+  align-items:center;
+  margin-bottom:16px;
+  border-color:rgba(255,214,107,.22);
+  background:
+    radial-gradient(circle at 90% 18%, rgba(255,214,107,.12), transparent 30%),
+    linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));
+}
+.quick-rating-form h3{
+  margin:4px 0 0;
+  font-size:22px;
+  color:#fff;
+}
+.quick-rating-controls{
+  display:grid;
+  gap:10px;
+}
+.quick-rating-controls select{
+  width:100%;
+  background:#0d0d1a;
+  border:1px solid rgba(255,214,107,.32);
+  color:#fff;
+  border-radius:12px;
+  padding:13px;
+  outline:none;
+}
+.quick-rating-controls select:focus{
+  border-color:#ffd66b;
+  box-shadow:0 0 20px rgba(255,214,107,.18);
+}
+.quick-rating-form .form-help{
+  grid-column:1 / -1;
+  margin-top:0;
+}
+.quick-rating-form button:disabled,
+.quick-rating-form select:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+@media(max-width:800px){
+  .quick-rating-form{grid-template-columns:1fr}
+}
