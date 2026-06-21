@@ -30,7 +30,7 @@ let communityPollSignature = '';
 let communityPollBusy = false;
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
-const COMMENT_MAX_VISUAL_DEPTH = 3;
+const COMMENT_MAX_VISUAL_DEPTH = 2;
 
 async function initWatch(){
   if(window.PS?.ready){
@@ -1657,7 +1657,7 @@ function dateScore(date){
   return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
 }
 
-function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new Map(), depth=0, parentComment=null){
+function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new Map(), depth=0, parentComment=null, options={}){
   const liked = likedCommentIds.has(comment.id);
   const isReply = Boolean(comment.parent_id);
   const visualDepth = Math.min(Number(depth) || 0, COMMENT_MAX_VISUAL_DEPTH);
@@ -1669,6 +1669,11 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
   const profileAttr = comment.viewer_uuid ? `data-profile-viewer="${escapeHtml(comment.viewer_uuid)}"` : '';
   const count = Number(comment.likes_count) || 0;
   const replyLabel = isReply ? 'Répondre à cette réponse' : 'Répondre';
+  const flatMode = Boolean(options.flatMode);
+  const replyMarkup = (!flatMode && childReplies.length)
+    ? `<div class="comment-replies is-flat-thread">${flattenThreadReplies(comment.id, repliesByParent, commentsById, depth + 1).map(item => renderCommentCard(item.comment, repliesByParent, commentsById, item.depth, item.parent, {flatMode:true})).join('')}</div>`
+    : '';
+
   return `
     <article class="comment-card ${isReply ? 'is-reply' : ''} depth-${visualDepth} ${depth >= COMMENT_MAX_VISUAL_DEPTH ? 'is-flat-depth' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${visualDepth}" data-actual-depth="${Math.min(Number(depth) || 0, 20)}">
       <div class="comment-head community-head">
@@ -1689,9 +1694,21 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
         <button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">💬 ${replyLabel}${replyCount ? ` · ${replyCount}` : ''}</button>
         ${owner ? `<button class="comment-action" type="button" data-edit-comment="${escapeHtml(comment.id || '')}">✏ Modifier</button><button class="comment-action danger" type="button" data-delete-comment="${escapeHtml(comment.id || '')}">🗑 Supprimer</button>` : ''}
       </div>
-      ${childReplies.length ? `<div class="comment-replies ${depth >= COMMENT_MAX_VISUAL_DEPTH - 1 ? 'is-flat-thread' : ''}">${childReplies.map(reply => renderCommentCard(reply, repliesByParent, commentsById, depth + 1, comment)).join('')}</div>` : ''}
+      ${replyMarkup}
     </article>
   `;
+}
+
+function flattenThreadReplies(parentId, repliesByParent=new Map(), commentsById=new Map(), depth=1){
+  const children = (repliesByParent.get(String(parentId)) || []).sort((a,b) => dateScore(a.date) - dateScore(b.date));
+  return children.flatMap(child => {
+    const parent = commentsById.get(String(child.parent_id || '')) || null;
+    const cappedDepth = Math.min(Number(depth) || 1, COMMENT_MAX_VISUAL_DEPTH);
+    return [
+      {comment: child, parent, depth: cappedDepth},
+      ...flattenThreadReplies(child.id, repliesByParent, commentsById, depth + 1)
+    ];
+  });
 }
 
 function getDemoComments(){

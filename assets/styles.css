@@ -3572,3 +3572,30 @@ min-width:220px;
   .comment-replies.is-flat-thread{padding-left:10px}
   .comment-card.is-flat-depth .comment-replies{padding-left:0}
 }
+
+/* V2.5.5 - Discussions compactes : on garde le fil lisible même avec beaucoup de réponses */
+.comment-replies.is-flat-thread{
+  display:grid;
+  gap:10px;
+  padding-left:22px;
+  margin-top:14px;
+}
+.comment-replies.is-flat-thread .comment-card{
+  margin-left:0!important;
+}
+.comment-replies.is-flat-thread .comment-card .comment-replies{
+  display:none!important;
+}
+.comment-card[data-depth="2"],
+.comment-card[data-depth="3"],
+.comment-card[data-depth="4"],
+.comment-card[data-depth="5"],
+.comment-card[data-depth="6"]{
+  background:rgba(139,44,255,.045);
+}
+.comment-card.is-flat-depth::after{
+  opacity:.22;
+}
+@media(max-width:700px){
+  .comment-replies.is-flat-thread{padding-left:12px}
+}
