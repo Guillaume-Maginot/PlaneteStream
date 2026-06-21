@@ -1700,15 +1700,27 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
 }
 
 function flattenThreadReplies(parentId, repliesByParent=new Map(), commentsById=new Map(), depth=1){
-  const children = (repliesByParent.get(String(parentId)) || []).sort((a,b) => dateScore(a.date) - dateScore(b.date));
-  return children.flatMap(child => {
-    const parent = commentsById.get(String(child.parent_id || '')) || null;
-    const cappedDepth = Math.min(Number(depth) || 1, COMMENT_MAX_VISUAL_DEPTH);
-    return [
-      {comment: child, parent, depth: cappedDepth},
-      ...flattenThreadReplies(child.id, repliesByParent, commentsById, depth + 1)
-    ];
-  });
+  // V2.5.6 : la base conserve l'arborescence complète, mais l'affichage reste plat
+  // dans un même fil sous la critique principale. Cela évite l'effet escalier lorsqu'une
+  // discussion part en ping-pong sur une sous-réponse.
+  const collected = [];
+
+  function walk(sourceId, currentDepth){
+    const children = (repliesByParent.get(String(sourceId)) || []).sort((a,b) => dateScore(a.date) - dateScore(b.date));
+    children.forEach(child => {
+      const parent = commentsById.get(String(child.parent_id || '')) || null;
+      collected.push({
+        comment: child,
+        parent,
+        depth: Math.min(Number(currentDepth) || 1, COMMENT_MAX_VISUAL_DEPTH)
+      });
+      walk(child.id, currentDepth + 1);
+    });
+  }
+
+  walk(parentId, depth);
+
+  return collected.sort((a,b) => dateScore(a.comment?.date) - dateScore(b.comment?.date));
 }
 
 function getDemoComments(){
