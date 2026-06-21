@@ -27,6 +27,9 @@ const PS_AUTH_CONFIG = {
   };
 
   const listeners = new Map();
+  let realtimeClient = null;
+  let realtimeNotificationChannel = null;
+  let realtimeNotificationViewerId = null;
 
   const AVATAR_CATALOG = [
     {id:'orbiteur', label:"L'Orbiteur", public:true},
@@ -113,6 +116,7 @@ const PS_AUTH_CONFIG = {
     state.accessToken = null;
     state.notificationsUnread = 0;
     state.error = null;
+    stopRealtimeNotifications();
     updateNav();
     emit('logout', snapshot());
     emit('state', snapshot());
@@ -353,6 +357,7 @@ const PS_AUTH_CONFIG = {
       state.accessToken = null;
       state.viewer = null;
       localStorage.removeItem(viewerKey);
+      stopRealtimeNotifications();
       updateNav();
       emit('state', snapshot());
       return snapshot();
@@ -364,7 +369,10 @@ const PS_AUTH_CONFIG = {
     state.viewer = await ensureViewerProfile({});
 
     updateNav();
-    if(state.viewer?.id) await refreshNotificationsCount();
+    if(state.viewer?.id){
+      await refreshNotificationsCount();
+      startRealtimeNotifications();
+    }
     emit('state', snapshot());
     return snapshot();
   }
@@ -756,12 +764,71 @@ const PS_AUTH_CONFIG = {
   }
 
 
+
+  function getRealtimeClient(){
+    if(!enabled() || !window.supabase?.createClient) return null;
+    if(!realtimeClient){
+      realtimeClient = window.supabase.createClient(PS_AUTH_CONFIG.supabaseUrl, PS_AUTH_CONFIG.supabaseKey, {
+        auth:{persistSession:false, autoRefreshToken:false, detectSessionInUrl:false},
+        realtime:{params:{eventsPerSecond:5}}
+      });
+    }
+    const token = state.accessToken || readSession()?.access_token || null;
+    if(token && realtimeClient?.realtime?.setAuth){
+      try{ realtimeClient.realtime.setAuth(token); }catch(error){ console.warn('PS realtime setAuth warning', error); }
+    }
+    return realtimeClient;
+  }
+
+  async function stopRealtimeNotifications(){
+    if(realtimeNotificationChannel && realtimeClient){
+      try{ await realtimeClient.removeChannel(realtimeNotificationChannel); }catch(error){ console.warn('PS realtime remove warning', error); }
+    }
+    realtimeNotificationChannel = null;
+    realtimeNotificationViewerId = null;
+  }
+
+  function startRealtimeNotifications(){
+    const viewer = state.viewer || loadViewer();
+    if(!viewer?.id || !state.accessToken) return false;
+    const client = getRealtimeClient();
+    if(!client) return false;
+    if(realtimeNotificationChannel && realtimeNotificationViewerId === viewer.id) return true;
+
+    stopRealtimeNotifications();
+    realtimeNotificationViewerId = viewer.id;
+
+    realtimeNotificationChannel = client
+      .channel(`ps-notifications-${viewer.id}`)
+      .on('postgres_changes', {
+        event:'*',
+        schema:'public',
+        table:'notifications',
+        filter:`recipient_viewer_id=eq.${viewer.id}`
+      }, async payload => {
+        try{
+          await refreshNotificationsCount();
+          emit('notification-realtime', {payload, state:snapshot()});
+        }catch(error){
+          console.warn('PS realtime notification refresh error', error);
+        }
+      })
+      .subscribe(status => {
+        emit('realtime-notifications', {status, viewerId:viewer.id, state:snapshot()});
+      });
+
+    return true;
+  }
+
   function startNotificationPolling(){
     if(window.__psNotificationPollingBound) return;
     window.__psNotificationPollingBound = true;
 
     const refreshIfConnected = () => {
-      if(state.viewer?.id && state.accessToken) refreshNotificationsCount().catch(() => {});
+      if(state.viewer?.id && state.accessToken){
+        startRealtimeNotifications();
+        refreshNotificationsCount().catch(() => {});
+      }
     };
 
     window.addEventListener('focus', refreshIfConnected);
@@ -771,7 +838,7 @@ const PS_AUTH_CONFIG = {
 
     window.__psNotificationPollingTimer = setInterval(() => {
       if(!document.hidden) refreshIfConnected();
-    }, 20000);
+    }, 60000);
   }
 
   function whenDomReady(){
@@ -789,6 +856,7 @@ const PS_AUTH_CONFIG = {
     updateNav();
     updateNotificationBadges();
     startNotificationPolling();
+    startRealtimeNotifications();
     emit('ready', snapshot());
     emit('state', snapshot());
     return snapshot();
@@ -836,7 +904,9 @@ const PS_AUTH_CONFIG = {
     badgeDefinitions,
     createNotification,
     refreshNotificationsCount,
-    fetchUnreadNotificationsCount
+    fetchUnreadNotificationsCount,
+    startRealtimeNotifications,
+    stopRealtimeNotifications
   };
 
   window.PS = PS;
@@ -881,6 +951,8 @@ const PS_AUTH_CONFIG = {
     badgeDefinitions,
     createNotification,
     refreshNotificationsCount,
-    fetchUnreadNotificationsCount
+    fetchUnreadNotificationsCount,
+    startRealtimeNotifications,
+    stopRealtimeNotifications
   };
 })();

@@ -7,6 +7,7 @@ const createAvatarGallery = document.querySelector('#createAvatarGallery');
 const currentAccountCard = document.querySelector('#currentAccountCard');
 const createAccountCard = document.querySelector('#createAccountCard');
 const loginAccountCard = document.querySelector('#loginAccountCard');
+let realtimeAccountRefreshTimer = null;
 
 function initAccount(){
   initPasswordToggles();
@@ -103,6 +104,19 @@ function initAccount(){
       const nextAvatar = choice.dataset.avatarChoice;
       await updateCurrentAvatar(nextAvatar);
     }
+  });
+
+  window.addEventListener('ps:notification-realtime', () => {
+    clearTimeout(realtimeAccountRefreshTimer);
+    realtimeAccountRefreshTimer = setTimeout(() => {
+      const active = document.activeElement;
+      const preserveFocus = active && accountState?.contains(active) && ['INPUT','TEXTAREA','SELECT'].includes(active.tagName);
+      const scrollY = window.scrollY;
+      renderCurrentViewer().then(() => {
+        window.scrollTo({top:scrollY});
+        if(preserveFocus && active?.focus) active.focus({preventScroll:true});
+      }).catch(() => null);
+    }, 250);
   });
 }
 
