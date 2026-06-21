@@ -61,6 +61,74 @@ const PSAuth = (() => {
     return getSession()?.user || null;
   }
 
+  async function fetchAuthUser(accessToken=getAccessToken()){
+    if(!enabled() || !accessToken) return null;
+    try{
+      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/user`, {
+        headers:{apikey: PS_AUTH_CONFIG.supabaseKey, Authorization:`Bearer ${accessToken}`},
+        cache:'no-store'
+      });
+      const data = await response.json().catch(() => null);
+      return response.ok ? data : null;
+    }catch(error){
+      console.error('PSAuth user fetch error', error);
+      return null;
+    }
+  }
+
+  async function hydrateStoredSessionUser(){
+    const session = getSession();
+    if(!session?.access_token) return null;
+    if(session.user?.id) return session;
+
+    const user = await fetchAuthUser(session.access_token);
+    if(!user?.id) return session;
+
+    return saveSession({...session, user});
+  }
+
+  function readAuthParamsFromUrl(){
+    const sources = [window.location.hash, window.location.search]
+      .filter(Boolean)
+      .map(value => value.replace(/^[#?]/, ''));
+
+    for(const source of sources){
+      const params = new URLSearchParams(source);
+      const access_token = params.get('access_token');
+      if(access_token){
+        return {
+          access_token,
+          refresh_token: params.get('refresh_token'),
+          expires_at: params.get('expires_at') || (params.get('expires_in') ? Math.floor(Date.now()/1000) + Number(params.get('expires_in')) : null),
+          type: params.get('type')
+        };
+      }
+    }
+    return null;
+  }
+
+  async function hydrateFromAuthRedirect(){
+    const authParams = readAuthParamsFromUrl();
+    if(!authParams?.access_token) return null;
+
+    const user = await fetchAuthUser(authParams.access_token);
+    const session = saveSession({...authParams, user});
+
+    if(user?.id){
+      const pending = getPendingProfile(user.email);
+      const pseudo = user.user_metadata?.pseudo || pending?.pseudo || user.email?.split('@')[0] || 'Spectateur';
+      const avatar = user.user_metadata?.avatar || pending?.avatar || pickAvatar(pseudo);
+      await ensureViewerProfile({pseudo, avatar});
+    }
+
+    if(window.history?.replaceState){
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/[?&](access_token|refresh_token|expires_at|expires_in|token_type|type)=[^&]*/g, ''));
+      if(window.location.hash) window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+    }
+
+    return session;
+  }
+
   function loadViewer(){
     try{return JSON.parse(localStorage.getItem(viewerKey) || 'null');}
     catch{return null;}
@@ -262,7 +330,9 @@ const PSAuth = (() => {
   }
 
   async function getCurrentViewer(){
-    const user = getAuthUser();
+    await hydrateFromAuthRedirect();
+    const session = await hydrateStoredSessionUser();
+    const user = session?.user || getAuthUser();
     if(!user?.id) return null;
     const local = loadViewer();
     if(local?.auth_user_id === user.id) return local;
@@ -403,7 +473,12 @@ const PSAuth = (() => {
   }
 
 
-  document.addEventListener('DOMContentLoaded', () => { bindAccountMenu(); updateNav(); });
+  document.addEventListener('DOMContentLoaded', async () => {
+    bindAccountMenu();
+    await hydrateFromAuthRedirect();
+    await hydrateStoredSessionUser();
+    updateNav();
+  });
 
   return {
     enabled,
@@ -411,6 +486,8 @@ const PSAuth = (() => {
     signIn,
     signOut,
     getSession,
+    hydrateFromAuthRedirect,
+    hydrateStoredSessionUser,
     getAccessToken,
     getAuthUser,
     getCurrentViewer,
