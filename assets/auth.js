@@ -611,6 +611,7 @@ const PS_AUTH_CONFIG = {
   function updateNotificationBadges(){
     const count = Number(state.notificationsUnread || 0);
     document.querySelectorAll('[data-notification-count]').forEach(node => {
+      // Badge indépendant : ne jamais remplacer le libellé/pseudo du bouton compte.
       node.textContent = String(count);
       node.classList.toggle('has-notifications', count > 0);
       node.hidden = count <= 0;
@@ -651,7 +652,7 @@ const PS_AUTH_CONFIG = {
 
     if(connected){
       link.href = '#';
-      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden>0</b>`;
+      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
       link.classList.add('is-connected');
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-expanded', 'false');
@@ -695,7 +696,7 @@ const PS_AUTH_CONFIG = {
         </div>
       </div>
       <a href="account.html#mon-espace">🪐 Mon Espace</a>
-      <a href="account.html#mes-notifications">📬 Messages du Hall <b class="menu-notification-pill" data-notification-count hidden>0</b></a>
+      <a href="account.html#mes-notifications">📬 Messages du Hall <b class="menu-notification-pill" data-notification-count hidden aria-label="Messages non lus">0</b></a>
       <a href="account.html#mon-profil">👤 Mon profil</a>
       <a href="account.html#mes-critiques">💬 Mes critiques</a>
       <a href="account.html#mes-avatars">🎭 Mes avatars</a>

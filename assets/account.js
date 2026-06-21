@@ -80,6 +80,24 @@ function initAccount(){
       return;
     }
 
+    if(event.target.closest('[data-delete-read-notifications]')){
+      await deleteReadNotifications();
+      return;
+    }
+
+    const deleteOne = event.target.closest('[data-delete-notification]');
+    if(deleteOne){
+      await deleteNotification(deleteOne.dataset.deleteNotification);
+      return;
+    }
+
+    const notificationLink = event.target.closest('[data-notification-link]');
+    if(notificationLink){
+      event.preventDefault();
+      await openNotification(notificationLink.dataset.notificationId, notificationLink.getAttribute('href'));
+      return;
+    }
+
     const choice = event.target.closest('[data-avatar-choice]');
     if(choice){
       const nextAvatar = choice.dataset.avatarChoice;
@@ -165,7 +183,10 @@ async function renderCurrentViewer(){
         <div class="space-notification-panel">
           <div class="space-notification-actions">
             <p class="soft-note">Les réponses à vos critiques et messages apparaissent ici. Discret, mais fidèle au poste.</p>
-            <button class="ghost" type="button" data-mark-notifications-read ${notifications.unread ? '' : 'disabled'}>Tout marquer comme lu</button>
+            <div class="space-notification-buttons">
+              <button class="ghost" type="button" data-mark-notifications-read ${notifications.unread ? '' : 'disabled'}>Tout marquer comme lu</button>
+              <button class="ghost" type="button" data-delete-read-notifications ${notifications.read ? '' : 'disabled'}>Supprimer les messages lus</button>
+            </div>
           </div>
           ${notifications.items.length ? `<div class="space-notification-list">${notifications.items.map(renderNotificationItem).join('')}</div>` : '<p class="soft-note">Aucun message pour le moment. Le Hall est calme, presque suspect.</p>'}
         </div>
@@ -461,6 +482,7 @@ async function fetchMyNotifications(viewerId, limit=12){
   const [actors, catalogue] = await Promise.all([fetchNotificationActors(actorIds), loadCatalogueTitles()]);
   return {
     unread: rows.filter(row => !row.read_at).length,
+    read: rows.filter(row => row.read_at).length,
     items: rows.map(row => ({
       ...row,
       actor: actors.get(row.actor_viewer_id) || null,
@@ -486,14 +508,17 @@ function renderNotificationItem(item){
     : (item.message || 'Nouvelle activité dans le Hall');
 
   return `
-    <a class="space-notification-item ${unread ? 'is-unread' : ''}" href="${href}">
-      ${PSAuth.avatarHtml(actor.avatar || 'orbiteur', 'viewer-avatar')}
-      <span>
-        <strong>${PSAuth.escapeHtml(label)}</strong>
-        <small>${PSAuth.escapeHtml(item.movie_title)} · ${formatAccountDate(item.created_at)}</small>
-        ${unread ? '<em>Nouveau</em>' : ''}
-      </span>
-    </a>
+    <div class="space-notification-item ${unread ? 'is-unread' : ''}" data-notification-card="${PSAuth.escapeHtml(item.id)}">
+      <a class="space-notification-main" href="${href}" data-notification-link data-notification-id="${PSAuth.escapeHtml(item.id)}">
+        ${PSAuth.avatarHtml(actor.avatar || 'orbiteur', 'viewer-avatar')}
+        <span>
+          <strong>${PSAuth.escapeHtml(label)}</strong>
+          <small>${PSAuth.escapeHtml(item.movie_title)} · ${formatAccountDate(item.created_at)}</small>
+          ${unread ? '<em>Nouveau</em>' : ''}
+        </span>
+      </a>
+      <button class="notification-delete" type="button" data-delete-notification="${PSAuth.escapeHtml(item.id)}" aria-label="Supprimer ce message">×</button>
+    </div>
   `;
 }
 
@@ -509,6 +534,50 @@ async function markMyNotificationsRead(){
   }
   await window.PS.refreshNotificationsCount?.();
   setStatus('Messages marqués comme lus.', 'ok');
+  renderCurrentViewer();
+}
+
+
+async function markNotificationRead(notificationId){
+  const id = String(notificationId || '');
+  if(!/^[0-9a-f-]{36}$/i.test(id)) return false;
+  const result = await window.PS.restWrite('notifications', 'PATCH', `id=eq.${encodeURIComponent(id)}&read_at=is.null`, {read_at:new Date().toISOString()}, {auth:true, prefer:'return=minimal'});
+  await window.PS.refreshNotificationsCount?.();
+  return result.ok;
+}
+
+async function openNotification(notificationId, href){
+  await markNotificationRead(notificationId);
+  if(href && href !== '#') window.location.href = href;
+  else renderCurrentViewer();
+}
+
+async function deleteNotification(notificationId){
+  const id = String(notificationId || '');
+  if(!/^[0-9a-f-]{36}$/i.test(id)) return;
+  setStatus('Suppression du message...', 'pending');
+  const result = await window.PS.restWrite('notifications', 'DELETE', `id=eq.${encodeURIComponent(id)}`, {}, {auth:true, prefer:'return=minimal'});
+  if(!result.ok){
+    setStatus('Impossible de supprimer ce message.', 'error');
+    return;
+  }
+  await window.PS.refreshNotificationsCount?.();
+  setStatus('Message supprimé.', 'ok');
+  renderCurrentViewer();
+}
+
+async function deleteReadNotifications(){
+  const state = await PSAuth.getAuthState();
+  const viewer = state.viewer;
+  if(!viewer?.id) return;
+  setStatus('Nettoyage des messages lus...', 'pending');
+  const result = await window.PS.restWrite('notifications', 'DELETE', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&read_at=not.is.null`, {}, {auth:true, prefer:'return=minimal'});
+  if(!result.ok){
+    setStatus('Impossible de supprimer les messages lus.', 'error');
+    return;
+  }
+  await window.PS.refreshNotificationsCount?.();
+  setStatus('Messages lus supprimés.', 'ok');
   renderCurrentViewer();
 }
 
