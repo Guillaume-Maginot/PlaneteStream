@@ -53,6 +53,50 @@ const PSAuth = (() => {
     return normalized;
   }
 
+
+  async function refreshSession(){
+    const session = getSession();
+    if(!enabled() || !session?.refresh_token) return null;
+
+    try{
+      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/token?grant_type=refresh_token`, {
+        method:'POST',
+        headers:{...anonHeaders(), 'Content-Type':'application/json'},
+        body: JSON.stringify({refresh_token: session.refresh_token}),
+        cache:'no-store'
+      });
+      const data = await response.json().catch(() => null);
+      if(!response.ok || !data?.access_token){
+        console.warn('PSAuth refresh refused', response.status, data);
+        return null;
+      }
+      return saveSession(data);
+    }catch(error){
+      console.error('PSAuth refresh error', error);
+      return null;
+    }
+  }
+
+  async function getVerifiedSession(){
+    let session = getSession();
+    if(!session?.access_token) return null;
+
+    let user = await fetchAuthUser(session.access_token);
+    if(user?.id){
+      return saveSession({...session, user});
+    }
+
+    session = await refreshSession();
+    if(!session?.access_token) return null;
+
+    user = await fetchAuthUser(session.access_token);
+    if(user?.id){
+      return saveSession({...session, user});
+    }
+
+    return null;
+  }
+
   function getAccessToken(){
     return getSession()?.access_token || null;
   }
@@ -331,8 +375,8 @@ const PSAuth = (() => {
 
   async function getCurrentViewer(){
     await hydrateFromAuthRedirect();
-    const session = await hydrateStoredSessionUser();
-    const user = session?.user || getAuthUser();
+    const session = await getVerifiedSession();
+    const user = session?.user || null;
     if(!user?.id) return null;
     const local = loadViewer();
     if(local?.auth_user_id === user.id) return local;
@@ -341,19 +385,19 @@ const PSAuth = (() => {
 
   async function getAuthState(){
     await hydrateFromAuthRedirect();
-    await hydrateStoredSessionUser();
 
-    let session = getSession();
-    let user = session?.user || null;
+    const session = await getVerifiedSession();
+    const user = session?.user || null;
+    let viewer = null;
 
-    if(session?.access_token && !user?.id){
-      user = await fetchAuthUser(session.access_token);
-      if(user?.id){
-        session = saveSession({...session, user});
+    if(user?.id){
+      const local = loadViewer();
+      if(local?.auth_user_id === user.id){
+        viewer = local;
+      }else{
+        viewer = await ensureViewerProfile({});
       }
     }
-
-    const viewer = user?.id ? await getCurrentViewer() : null;
 
     return {
       session,
@@ -362,6 +406,12 @@ const PSAuth = (() => {
       accessToken: session?.access_token || null,
       isAuthenticated: Boolean(session?.access_token && user?.id)
     };
+  }
+
+  async function requireAuthenticatedViewer(){
+    const state = await getAuthState();
+    if(!state?.isAuthenticated || !state?.viewer?.id) return null;
+    return state.viewer;
   }
 
   function normalizeViewer(row){
@@ -517,6 +567,9 @@ const PSAuth = (() => {
     getAuthUser,
     getCurrentViewer,
     getAuthState,
+    refreshSession,
+    getVerifiedSession,
+    requireAuthenticatedViewer,
     loadViewer,
     saveViewer,
     clearLocal,

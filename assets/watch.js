@@ -415,35 +415,19 @@ async function ensureViewer({silent=false}={}){
 }
 
 async function ensureViewerForComment(){
-  let authState = null;
-
-  if(window.PSAuth?.getAuthState){
-    authState = await PSAuth.getAuthState();
-  }else if(window.PSAuth){
-    await PSAuth.hydrateFromAuthRedirect?.();
-    await PSAuth.hydrateStoredSessionUser?.();
-    authState = {
-      session: PSAuth.getSession?.(),
-      user: PSAuth.getAuthUser?.(),
-      viewer: await PSAuth.getCurrentViewer?.(),
-      accessToken: PSAuth.getAccessToken?.()
-    };
-    authState.isAuthenticated = Boolean(authState.accessToken && authState.user?.id);
-  }
-
-  if(!authState?.isAuthenticated){
-    console.warn('Planète Stream Auth manquant au moment de publier', authState);
-    setStatus('Connexion obligatoire pour publier une critique ou répondre. Les marmites sont chaudes, mais la porte est par ici : account.html', 'error');
+  if(!window.PSAuth){
+    setStatus('Module Auth introuvable. Recharge la page, le sas a oublié ses clés.', 'error');
     showAuthRequiredNotice();
     return null;
   }
 
-  const viewer = authState.viewer || (window.PSAuth ? await PSAuth.getCurrentViewer() : null);
+  const viewer = await PSAuth.requireAuthenticatedViewer?.() || null;
 
   if(!viewer?.id){
-    console.warn('Planète Stream profil viewer introuvable au moment de publier', authState);
-    setStatus('Compte connecté, mais profil spectateur introuvable. Passe par la page Compte pour finaliser ton pseudo.', 'error');
-    showAuthRequiredNotice(true);
+    const state = await PSAuth.getAuthState?.();
+    console.warn('Planète Stream Auth refusé au moment de publier', state);
+    setStatus('Connexion active non vérifiée. Retourne sur la page Compte puis reconnecte-toi.', 'error');
+    showAuthRequiredNotice(!state?.isAuthenticated);
     return null;
   }
 
