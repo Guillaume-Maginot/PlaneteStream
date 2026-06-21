@@ -3599,3 +3599,57 @@ min-width:220px;
 @media(max-width:700px){
   .comment-replies.is-flat-thread{padding-left:12px}
 }
+
+/* V2.5.7 - Alternance de teintes par discussion
+   Chaque critique principale alterne clair/sombre et toutes ses réponses héritent
+   de la même ambiance pour que le fil soit lisible d'un seul regard. */
+.comment-card.thread-tone-light{
+  --thread-bg:linear-gradient(135deg,rgba(157,100,255,.215),rgba(139,44,255,.135));
+  --thread-bg-reply:linear-gradient(135deg,rgba(157,100,255,.145),rgba(139,44,255,.085));
+  --thread-border:rgba(184,120,255,.34);
+  --thread-border-soft:rgba(184,120,255,.24);
+  --thread-line:rgba(198,87,255,.72);
+  --thread-glow:rgba(164,86,255,.18);
+}
+.comment-card.thread-tone-dark{
+  --thread-bg:linear-gradient(135deg,rgba(54,23,94,.74),rgba(36,17,65,.52));
+  --thread-bg-reply:linear-gradient(135deg,rgba(61,27,104,.58),rgba(31,16,56,.48));
+  --thread-border:rgba(116,63,210,.30);
+  --thread-border-soft:rgba(116,63,210,.22);
+  --thread-line:rgba(122,65,215,.68);
+  --thread-glow:rgba(87,44,180,.16);
+}
+.comment-card.is-root-review.thread-tone-light,
+.comment-card.is-root-review.thread-tone-dark{
+  background:var(--thread-bg)!important;
+  border-color:var(--thread-border)!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.20), inset 0 0 0 1px rgba(255,255,255,.035), 0 0 28px var(--thread-glow);
+}
+.comment-card.is-reply.thread-tone-light,
+.comment-card.is-reply.thread-tone-dark,
+.comment-replies.is-flat-thread .comment-card.thread-tone-light,
+.comment-replies.is-flat-thread .comment-card.thread-tone-dark{
+  background:var(--thread-bg-reply)!important;
+  border-color:var(--thread-border-soft)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
+}
+.comment-card.thread-tone-light .comment-replies.is-flat-thread,
+.comment-card.thread-tone-dark .comment-replies.is-flat-thread{
+  border-left-color:var(--thread-line)!important;
+}
+.comment-card.thread-tone-light .reply-target,
+.comment-card.thread-tone-dark .reply-target{
+  border-color:var(--thread-border-soft);
+}
+.comment-card.is-root-review.thread-tone-light:hover,
+.comment-card.is-root-review.thread-tone-dark:hover{
+  filter:brightness(1.035);
+}
+.comment-card.is-root-review.thread-tone-light:hover .comment-card.is-reply,
+.comment-card.is-root-review.thread-tone-dark:hover .comment-card.is-reply{
+  filter:brightness(1.025);
+}
+@media(max-width:700px){
+  .comment-card.is-root-review.thread-tone-light,
+  .comment-card.is-root-review.thread-tone-dark{box-shadow:0 12px 30px rgba(0,0,0,.18)}
+}

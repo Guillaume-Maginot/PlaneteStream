@@ -1619,7 +1619,10 @@ function renderComments(comments){
     .map(comment => ({...comment, replies_count: countNestedReplies(comment.id, repliesByParent)}))
     .sort((a,b) => sortTopLevelComments(a,b));
 
-  return topLevel.map(comment => renderCommentCard(comment, repliesByParent, commentsById, 0, null)).join('');
+  return topLevel.map((comment, index) => {
+    const threadTone = index % 2 === 0 ? 'light' : 'dark';
+    return renderCommentCard(comment, repliesByParent, commentsById, 0, null, {threadTone});
+  }).join('');
 }
 
 function buildRepliesTree(list=[]){
@@ -1670,12 +1673,13 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
   const count = Number(comment.likes_count) || 0;
   const replyLabel = isReply ? 'Répondre à cette réponse' : 'Répondre';
   const flatMode = Boolean(options.flatMode);
+  const threadTone = options.threadTone || 'light';
   const replyMarkup = (!flatMode && childReplies.length)
-    ? `<div class="comment-replies is-flat-thread">${flattenThreadReplies(comment.id, repliesByParent, commentsById, depth + 1).map(item => renderCommentCard(item.comment, repliesByParent, commentsById, item.depth, item.parent, {flatMode:true})).join('')}</div>`
+    ? `<div class="comment-replies is-flat-thread">${flattenThreadReplies(comment.id, repliesByParent, commentsById, depth + 1).map(item => renderCommentCard(item.comment, repliesByParent, commentsById, item.depth, item.parent, {flatMode:true, threadTone})).join('')}</div>`
     : '';
 
   return `
-    <article class="comment-card ${isReply ? 'is-reply' : ''} depth-${visualDepth} ${depth >= COMMENT_MAX_VISUAL_DEPTH ? 'is-flat-depth' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${visualDepth}" data-actual-depth="${Math.min(Number(depth) || 0, 20)}">
+    <article class="comment-card thread-tone-${threadTone} ${isReply ? 'is-reply' : 'is-root-review'} depth-${visualDepth} ${depth >= COMMENT_MAX_VISUAL_DEPTH ? 'is-flat-depth' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${visualDepth}" data-actual-depth="${Math.min(Number(depth) || 0, 20)}">
       <div class="comment-head community-head">
         <button class="comment-author profile-trigger" type="button" ${profileAttr} ${comment.viewer_uuid ? '' : 'disabled'}>
           ${PSAuth.avatarHtml(comment.avatar || 'orbiteur', 'viewer-avatar')}
