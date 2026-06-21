@@ -2574,3 +2574,148 @@ min-width:220px;
     width:min(280px, calc(100vw - 28px));
   }
 }
+
+/* === Planète Stream V2.1 : avis et interactions === */
+.comments-toolbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgba(195,77,255,.22);
+  border-radius:16px;
+  background:rgba(139,44,255,.08);
+}
+.comments-toolbar label{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  white-space:nowrap;
+}
+.comments-toolbar select,
+.edit-form select{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  color:#fff;
+  background:#0d0d1a;
+  padding:10px 12px;
+  outline:none;
+  font:inherit;
+}
+.profile-trigger{
+  appearance:none;
+  border:0;
+  background:transparent;
+  padding:0;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+.profile-trigger:disabled{cursor:default}
+.comment-author-copy{min-width:0;display:block}
+.comment-action.danger:hover{
+  border-color:rgba(255,96,121,.72);
+  box-shadow:0 0 18px rgba(255,96,121,.22);
+}
+.edit-form{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(0,0,0,.24);
+  border:1px solid rgba(255,214,107,.22);
+}
+.edit-form textarea{
+  width:100%;
+  min-height:110px;
+  resize:vertical;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  color:#fff;
+  background:#0d0d1a;
+  padding:13px;
+  outline:none;
+  font:inherit;
+}
+.edit-form textarea:focus,
+.edit-form select:focus,
+.comments-toolbar select:focus{
+  border-color:var(--purple-2);
+  box-shadow:var(--glow);
+}
+.profile-mini-modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  place-items:center;
+  padding:22px;
+  background:rgba(0,0,0,.58);
+  backdrop-filter:blur(10px);
+}
+.profile-mini-card{
+  width:min(460px,100%);
+  position:relative;
+  border:1px solid rgba(195,77,255,.32);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 90% 12%,rgba(195,77,255,.20),transparent 28%),
+    linear-gradient(180deg,rgba(18,15,37,.98),rgba(7,8,19,.98));
+  box-shadow:0 24px 80px rgba(0,0,0,.48), var(--glow);
+  padding:24px;
+}
+.profile-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:22px;
+}
+.profile-mini-head{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+}
+.viewer-avatar.big{
+  width:62px;
+  height:62px;
+  flex-basis:62px;
+  font-size:30px;
+}
+.profile-mini-head h3{
+  margin:4px 0 4px;
+  font-size:28px;
+  line-height:1;
+}
+.profile-mini-head small,
+.profile-mini-card p{color:var(--muted);line-height:1.55}
+.profile-mini-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:18px 0;
+}
+.profile-mini-stats span{
+  display:grid;
+  gap:4px;
+  padding:13px 10px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.055);
+  text-align:center;
+}
+.profile-mini-stats strong{font-size:24px;color:#fff;line-height:1}
+.profile-mini-stats small{color:var(--muted);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:800px){
+  .comments-toolbar{align-items:stretch;flex-direction:column}
+  .comments-toolbar select{width:100%}
+  .profile-mini-stats{grid-template-columns:1fr}
+}

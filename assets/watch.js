@@ -20,6 +20,8 @@ let currentCatalogue = [];
 let currentViewer = null;
 let currentComments = [];
 let likedCommentIds = new Set();
+let commentSortMode = 'recent';
+let profileStatsCache = new Map();
 
 async function initWatch(){
   if(window.PS?.ready){
@@ -123,7 +125,16 @@ async function renderWatch(item, catalogue){
       <div class="section-head comments-title-row">
         <div>
           <h2 class="section-title">Critiques des spectateurs</h2>
-          <p>Les critiques et réponses sont réservées aux comptes connectés. Les likes peuvent rester rapides selon les réglages Supabase.</p>
+          <p>Critiques, réponses, édition et suppression passent par le compte connecté. Le club devient sérieux, les pantoufles restent acceptées.</p>
+        </div>
+        <div class="comments-toolbar" aria-label="Tri des critiques">
+          <label for="commentsSort">Trier par</label>
+          <select id="commentsSort">
+            <option value="recent">Plus récentes</option>
+            <option value="popular">Plus likées</option>
+            <option value="rated">Mieux notées</option>
+            <option value="replies">Plus commentées</option>
+          </select>
         </div>
       </div>
 
@@ -216,7 +227,42 @@ function bindWatchEvents(item){
     }
   });
 
+  document.querySelector('#commentsSort')?.addEventListener('change', event => {
+    commentSortMode = event.target.value || 'recent';
+    document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
+  });
+
   document.querySelector('#commentsList')?.addEventListener('click', async event => {
+    const profileBtn = event.target.closest('[data-profile-viewer]');
+    if(profileBtn){
+      await openMiniProfile(profileBtn.dataset.profileViewer);
+      return;
+    }
+
+    const editBtn = event.target.closest('[data-edit-comment]');
+    if(editBtn){
+      openEditBox(editBtn.dataset.editComment);
+      return;
+    }
+
+    const deleteBtn = event.target.closest('[data-delete-comment]');
+    if(deleteBtn){
+      await deleteComment(deleteBtn.dataset.deleteComment);
+      return;
+    }
+
+    const cancelEditBtn = event.target.closest('[data-cancel-edit]');
+    if(cancelEditBtn){
+      cancelEditBtn.closest('.edit-form')?.remove();
+      return;
+    }
+
+    const closeProfileBtn = event.target.closest('[data-close-profile]');
+    if(closeProfileBtn){
+      document.querySelector('#profileMiniModal')?.remove();
+      return;
+    }
+
     const likeBtn = event.target.closest('[data-like-comment]');
     if(likeBtn){
       const commentId = likeBtn.dataset.likeComment;
@@ -238,6 +284,13 @@ function bindWatchEvents(item){
   });
 
   document.querySelector('#commentsList')?.addEventListener('submit', async event => {
+    const editForm = event.target.closest('.edit-form');
+    if(editForm){
+      event.preventDefault();
+      await submitEditComment(editForm);
+      return;
+    }
+
     const form = event.target.closest('.reply-form');
     if(!form) return;
     event.preventDefault();
@@ -279,6 +332,8 @@ async function refreshCommunity(item){
     likedCommentIds = new Set();
   }
 
+  const sortSelect = document.querySelector('#commentsSort');
+  if(sortSelect) sortSelect.value = commentSortMode;
   document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
 
   if(stats.online){
@@ -359,7 +414,7 @@ async function fetchViewersMap(ids){
   const cleanIds = ids.filter(id => /^[0-9a-f-]{36}$/i.test(String(id)));
   if(!cleanIds.length) return new Map();
 
-  const result = await supabaseSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar`);
+  const result = await supabaseSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,created_at,last_seen,role`);
   if(!result.ok) return new Map();
 
   return new Map((result.data || []).map(viewer => [viewer.id, viewer]));
@@ -546,6 +601,8 @@ function normalizeViewer(row){
     pseudo,
     avatar: row.avatar || pickAvatar(pseudo),
     created_at: row.created_at || null,
+    last_seen: row.last_seen || null,
+    role: row.role || 'viewer',
     auto: /^Spectateur \d{4}$/.test(String(pseudo))
   };
 }
@@ -612,6 +669,164 @@ function renderViewerBox(){
       : 'Pour publier, connecte-toi ou crée un compte sécurisé.';
   }
 
+}
+
+
+function getCurrentAuthUserId(){
+  return window.PS?.state?.user?.id || window.PS?.getState?.()?.user?.id || null;
+}
+
+function canManageComment(comment){
+  const authUserId = getCurrentAuthUserId();
+  if(!comment || !authUserId) return false;
+  if(comment.auth_user_id && comment.auth_user_id === authUserId) return true;
+  if(currentViewer?.id && comment.viewer_uuid && comment.viewer_uuid === currentViewer.id) return true;
+  const role = window.PS?.state?.viewer?.role || currentViewer?.role || 'viewer';
+  return ['admin','moderator'].includes(role);
+}
+
+function findCommentById(commentId){
+  return currentComments.find(comment => String(comment.id) === String(commentId));
+}
+
+function openEditBox(commentId){
+  const comment = findCommentById(commentId);
+  const card = document.querySelector(`[data-comment-id="${cssEscape(commentId)}"]`);
+  if(!comment || !card || !canManageComment(comment)) return;
+
+  const existing = card.querySelector('.edit-form');
+  if(existing){
+    existing.querySelector('textarea')?.focus();
+    return;
+  }
+
+  const form = document.createElement('form');
+  form.className = 'edit-form';
+  form.dataset.commentId = commentId;
+  form.innerHTML = `
+    <p class="eyebrow">Modifier ${comment.parent_id ? 'la réponse' : 'la critique'}</p>
+    ${comment.parent_id ? '' : `
+      <select name="rating" required>
+        ${Array.from({length:10}, (_,i) => `<option value="${i+1}" ${Number(comment.rating) === i+1 ? 'selected' : ''}>${i+1}/10</option>`).join('')}
+      </select>
+    `}
+    <textarea maxlength="700" required>${escapeHtml(comment.text || '')}</textarea>
+    <div class="reply-actions">
+      <button class="primary" type="submit">Enregistrer</button>
+      <button class="ghost" type="button" data-cancel-edit>Annuler</button>
+    </div>
+  `;
+  card.appendChild(form);
+  form.querySelector('textarea')?.focus();
+}
+
+async function submitEditComment(form){
+  const commentId = form.dataset.commentId;
+  const comment = findCommentById(commentId);
+  if(!comment || !canManageComment(comment)){
+    setStatus('Impossible de modifier cette critique avec ce compte.', 'error');
+    return;
+  }
+
+  const text = form.querySelector('textarea')?.value.trim();
+  if(!text) return;
+
+  const payload = {
+    comment: text,
+    edited_at: new Date().toISOString()
+  };
+
+  if(!comment.parent_id){
+    payload.rating = Number(form.querySelector('select[name="rating"]')?.value || comment.rating || 0) || null;
+  }
+
+  setStatus('Modification de la critique...', 'pending');
+  const ok = await supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, payload);
+  if(ok){
+    setStatus('Critique modifiée. Le parchemin est à jour.', 'ok');
+    await refreshCommunity(currentItem);
+  }else{
+    setStatus('Modification refusée. Vérifie les policies UPDATE de comments.', 'error');
+  }
+}
+
+async function deleteComment(commentId){
+  const comment = findCommentById(commentId);
+  if(!comment || !canManageComment(comment)){
+    setStatus('Impossible de supprimer cette critique avec ce compte.', 'error');
+    return;
+  }
+
+  const label = comment.parent_id ? 'cette réponse' : 'cette critique et ses réponses';
+  if(!window.confirm(`Supprimer ${label} ?`)) return;
+
+  setStatus('Suppression en cours...', 'pending');
+  const ok = await supabaseDelete('comments', `id=eq.${encodeURIComponent(commentId)}`);
+  if(ok){
+    setStatus('Critique supprimée. Le balai cosmique a fait son œuvre.', 'ok');
+    await refreshCommunity(currentItem);
+  }else{
+    setStatus('Suppression refusée. Vérifie les policies DELETE de comments.', 'error');
+  }
+}
+
+async function openMiniProfile(viewerId){
+  if(!viewerId) return;
+  const viewer = await fetchSingleViewer(viewerId);
+  if(!viewer) return;
+  const stats = await fetchViewerStats(viewerId);
+
+  document.querySelector('#profileMiniModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = 'profileMiniModal';
+  modal.className = 'profile-mini-modal';
+  modal.innerHTML = `
+    <div class="profile-mini-card" role="dialog" aria-label="Mini profil ${escapeHtml(viewer.pseudo)}">
+      <button class="profile-close" type="button" data-close-profile>×</button>
+      <div class="profile-mini-head">
+        <span class="viewer-avatar big">${escapeHtml(viewer.avatar || '🪐')}</span>
+        <div>
+          <p class="eyebrow">Profil spectateur</p>
+          <h3>${escapeHtml(viewer.pseudo || 'Spectateur')}</h3>
+          <small>${viewer.created_at ? `Membre depuis ${formatCommentDate(viewer.created_at)}` : 'Membre Planète Stream'}</small>
+        </div>
+      </div>
+      <div class="profile-mini-stats">
+        <span><strong>${stats.comments}</strong><small>critiques</small></span>
+        <span><strong>${stats.replies}</strong><small>réponses</small></span>
+        <span><strong>${stats.likes}</strong><small>likes reçus</small></span>
+      </div>
+      <p>${stats.comments ? 'Ce spectateur a déjà laissé une trace dans le catalogue.' : 'Ce spectateur observe encore l’orbite avant de graver sa première critique.'}</p>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', event => {
+    if(event.target === modal || event.target.closest('[data-close-profile]')) modal.remove();
+  });
+}
+
+async function fetchSingleViewer(viewerId){
+  if(!viewerId || !/^[0-9a-f-]{36}$/i.test(String(viewerId))) return null;
+  const result = await supabaseSelect('viewers', `id=eq.${encodeURIComponent(viewerId)}&select=id,pseudo,avatar,created_at,last_seen,role&limit=1`);
+  if(!result.ok) return null;
+  const row = Array.isArray(result.data) ? result.data[0] : null;
+  return row ? normalizeViewer(row) : null;
+}
+
+async function fetchViewerStats(viewerId){
+  if(profileStatsCache.has(viewerId)) return profileStatsCache.get(viewerId);
+
+  const result = await supabaseSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&select=id,parent_id`);
+  const rows = result.ok && Array.isArray(result.data) ? result.data : [];
+  const commentIds = rows.map(row => row.id).filter(Boolean);
+  const likeCounts = await fetchCommentLikeCounts(commentIds);
+  const stats = {
+    comments: rows.filter(row => !row.parent_id).length,
+    replies: rows.filter(row => row.parent_id).length,
+    likes: [...likeCounts.values()].reduce((sum, value) => sum + Number(value || 0), 0)
+  };
+  profileStatsCache.set(viewerId, stats);
+  return stats;
 }
 
 async function toggleCommentLike(commentId){
@@ -965,11 +1180,13 @@ function normalizeComments(rows, viewerMap=new Map(), likeCounts=new Map()){
       id: row.id,
       parent_id: row.parent_id || null,
       viewer_uuid: row.viewer_uuid || null,
+      auth_user_id: row.auth_user_id || null,
       name: viewer?.pseudo || row.display_name || readableUserName(row.user_id),
       avatar: viewer?.avatar || pickAvatar(row.display_name || row.user_id || 'Spectateur'),
       rating: row.rating === null || row.rating === undefined ? null : Number(row.rating) || 0,
       text: row.comment || '',
       date: row.created_at,
+      edited_at: row.edited_at || null,
       likes_count: computedLikes
     };
   }).filter(comment => comment.text);
@@ -1003,7 +1220,6 @@ function getRelated(item, catalogue){
 
 function renderComments(comments){
   const list = comments.length ? comments : getDemoComments();
-  const topLevel = list.filter(comment => !comment.parent_id);
   const repliesByParent = list.reduce((map, comment) => {
     if(comment.parent_id){
       if(!map.has(comment.parent_id)) map.set(comment.parent_id, []);
@@ -1012,30 +1228,52 @@ function renderComments(comments){
     return map;
   }, new Map());
 
+  const topLevel = list
+    .filter(comment => !comment.parent_id)
+    .map(comment => ({...comment, replies_count: (repliesByParent.get(comment.id) || []).length}))
+    .sort((a,b) => sortTopLevelComments(a,b));
+
   return topLevel.map(comment => renderCommentCard(comment, repliesByParent.get(comment.id) || [])).join('');
+}
+
+function sortTopLevelComments(a,b){
+  if(commentSortMode === 'popular') return (Number(b.likes_count)||0) - (Number(a.likes_count)||0) || dateScore(b.date) - dateScore(a.date);
+  if(commentSortMode === 'rated') return (Number(b.rating)||0) - (Number(a.rating)||0) || dateScore(b.date) - dateScore(a.date);
+  if(commentSortMode === 'replies') return (Number(b.replies_count)||0) - (Number(a.replies_count)||0) || dateScore(b.date) - dateScore(a.date);
+  return dateScore(b.date) - dateScore(a.date);
+}
+
+function dateScore(date){
+  const parsed = new Date(date);
+  return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
 }
 
 function renderCommentCard(comment, replies=[]){
   const liked = likedCommentIds.has(comment.id);
   const isReply = Boolean(comment.parent_id);
+  const owner = canManageComment(comment);
+  const sortedReplies = [...replies].sort((a,b) => dateScore(a.date) - dateScore(b.date));
+  const replyCount = sortedReplies.length;
+  const profileAttr = comment.viewer_uuid ? `data-profile-viewer="${escapeHtml(comment.viewer_uuid)}"` : '';
   return `
-    <article class="comment-card ${isReply ? 'is-reply' : ''}" data-comment-id="${escapeHtml(comment.id || '')}">
+    <article class="comment-card ${isReply ? 'is-reply' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}">
       <div class="comment-head community-head">
-        <div class="comment-author">
+        <button class="comment-author profile-trigger" type="button" ${profileAttr} ${comment.viewer_uuid ? '' : 'disabled'}>
           <span class="viewer-avatar">${escapeHtml(comment.avatar || '🪐')}</span>
-          <div>
+          <span class="comment-author-copy">
             <strong>${escapeHtml(comment.name)}</strong>
-            <small>${formatCommentDate(comment.date)}</small>
-          </div>
-        </div>
+            <small>${formatCommentDate(comment.date)}${comment.edited_at ? ' · modifié' : ''}</small>
+          </span>
+        </button>
         ${comment.rating ? `<span class="comment-stars">${renderStars(comment.rating)}</span>` : '<span class="comment-reply-pill">Réponse</span>'}
       </div>
       <p>${escapeHtml(comment.text)}</p>
       <div class="comment-actions">
         <button class="comment-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '♥' : '♡'} ${Number(comment.likes_count) || 0}</button>
-        ${!isReply ? `<button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">↩ Répondre</button>` : ''}
+        ${!isReply ? `<button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">↩ Répondre${replyCount ? ` · ${replyCount}` : ''}</button>` : ''}
+        ${owner ? `<button class="comment-action" type="button" data-edit-comment="${escapeHtml(comment.id || '')}">✏ Modifier</button><button class="comment-action danger" type="button" data-delete-comment="${escapeHtml(comment.id || '')}">🗑 Supprimer</button>` : ''}
       </div>
-      ${replies.length ? `<div class="comment-replies">${replies.reverse().map(reply => renderCommentCard(reply, [])).join('')}</div>` : ''}
+      ${sortedReplies.length ? `<div class="comment-replies">${sortedReplies.map(reply => renderCommentCard(reply, [])).join('')}</div>` : ''}
     </article>
   `;
 }
