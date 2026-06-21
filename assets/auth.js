@@ -27,6 +27,26 @@ const PS_AUTH_CONFIG = {
 
   const listeners = new Map();
 
+  const AVATAR_CATALOG = [
+    {id:'orbiteur', label:"L'Orbiteur", public:true},
+    {id:'robot', label:'Robot cinéphile', public:true},
+    {id:'explorateur', label:'Explorateur galactique', public:true},
+    {id:'renard', label:'Renard critique', public:true},
+    {id:'hibou', label:'Le Sage', public:true},
+    {id:'cosmonaute', label:'Cosmonaute', public:true},
+    {id:'masques', label:'Masques du drame', public:true},
+    {id:'projectionniste', label:'Projectionniste', public:true},
+    {id:'chat', label:'Chat noir', public:true},
+    {id:'kraken', label:'Kraken', public:true},
+    {id:'cyberpunk', label:'Cyberpunk', public:true},
+    {id:'vip', label:'VIP', public:true},
+    {id:'fondateur', label:'Fondateur', public:false, reserved:true},
+    {id:'moderateur', label:'Modérateur', public:false, reserved:true}
+  ];
+  const AVATAR_IDS = new Set(AVATAR_CATALOG.map(item => item.id));
+  const RESERVED_AVATARS = new Set(AVATAR_CATALOG.filter(item => item.reserved).map(item => item.id));
+
+
   function enabled(){
     return Boolean(PS_AUTH_CONFIG.supabaseUrl && PS_AUTH_CONFIG.supabaseKey);
   }
@@ -300,7 +320,7 @@ const PS_AUTH_CONFIG = {
     const payload = {
       auth_user_id:user.id,
       pseudo:wantedPseudo,
-      avatar:avatar || user.user_metadata?.avatar || pending?.avatar || pickAvatar(wantedPseudo),
+      avatar:normalizeAvatar(avatar || user.user_metadata?.avatar || pending?.avatar, wantedPseudo),
       role:'viewer',
       created_at:new Date().toISOString(),
       last_seen:new Date().toISOString()
@@ -364,13 +384,13 @@ const PS_AUTH_CONFIG = {
       body: JSON.stringify({
         email,
         password,
-        data:{pseudo:wantedPseudo, avatar:avatar || pickAvatar(wantedPseudo)}
+        data:{pseudo:wantedPseudo, avatar:normalizeAvatar(avatar, wantedPseudo)}
       })
     });
     const data = await response.json().catch(() => null);
     if(!response.ok) return {ok:false, message:authErrorMessage(data)};
 
-    localStorage.setItem(pendingKey, JSON.stringify({email, pseudo:wantedPseudo, avatar:avatar || pickAvatar(wantedPseudo)}));
+    localStorage.setItem(pendingKey, JSON.stringify({email, pseudo:wantedPseudo, avatar:normalizeAvatar(avatar, wantedPseudo)}));
 
     if(data?.access_token){
       persistSession(data);
@@ -434,7 +454,7 @@ const PS_AUTH_CONFIG = {
       id:row.id,
       auth_user_id:row.auth_user_id || state.user?.id || null,
       pseudo:row.pseudo || 'Spectateur',
-      avatar:row.avatar || pickAvatar(row.pseudo || 'Spectateur'),
+      avatar:normalizeAvatar(row.avatar, row.pseudo || 'Spectateur'),
       role:row.role || 'viewer',
       created_at:row.created_at || null,
       last_seen:row.last_seen || null,
@@ -450,10 +470,49 @@ const PS_AUTH_CONFIG = {
     return /^[A-Za-zÀ-ÖØ-öø-ÿ0-9 _-]{2,32}$/.test(cleanPseudo(value));
   }
 
+  function normalizeAvatar(value='', fallbackSeed=''){
+    const raw = String(value || '').trim();
+    const legacy = {'🪐':'orbiteur','🚀':'cosmonaute','👾':'explorateur','🤖':'robot','🦊':'renard','🐙':'kraken','🦉':'hibou','🎬':'projectionniste','🍿':'projectionniste','🌙':'chat','⚡':'cyberpunk','🐼':'orbiteur'};
+    const mapped = legacy[raw] || raw.toLowerCase();
+    if(isImageAvatar(mapped)) return mapped;
+    return pickAvatar(fallbackSeed || raw || 'Spectateur');
+  }
+
+  function avatarCatalog({includeReserved=false}={}){
+    return AVATAR_CATALOG.filter(item => includeReserved || item.public);
+  }
+
+  function isImageAvatar(value=''){
+    return AVATAR_IDS.has(String(value || '').toLowerCase());
+  }
+
+  function isReservedAvatar(value=''){
+    return RESERVED_AVATARS.has(String(value || '').toLowerCase());
+  }
+
+  function avatarLabel(value=''){
+    const id = normalizeAvatar(value || 'orbiteur', value || 'orbiteur');
+    return AVATAR_CATALOG.find(item => item.id === id)?.label || value || 'Orbiteur';
+  }
+
+  function avatarPath(value=''){
+    const id = normalizeAvatar(value || 'orbiteur', value || 'orbiteur');
+    if(!isImageAvatar(id)) return '';
+    return `assets/avatars/${id}.png`;
+  }
+
+  function avatarHtml(value='', className='viewer-avatar'){
+    const id = normalizeAvatar(value || 'orbiteur', value || 'orbiteur');
+    if(isImageAvatar(id)){
+      return `<span class="${className}"><img src="${avatarPath(id)}" alt="${escapeHtml(avatarLabel(id))}" loading="lazy"></span>`;
+    }
+    return `<span class="${className}">${escapeHtml(value || '🪐')}</span>`;
+  }
+
   function pickAvatar(seed=''){
-    const avatars = ['🪐','🚀','👾','🤖','🦊','🐼','🐙','🦉','🎬','🍿','🌙','⚡'];
+    const avatars = avatarCatalog().map(item => item.id);
     const score = String(seed).split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
-    return avatars[score % avatars.length];
+    return avatars[score % avatars.length] || 'orbiteur';
   }
 
   function authErrorMessage(data){
@@ -478,7 +537,7 @@ const PS_AUTH_CONFIG = {
 
     if(connected){
       link.href = '#';
-      link.innerHTML = `<span class="account-avatar">${escapeHtml(viewer.avatar || '👤')}</span><span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span>`;
+      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span>`;
       link.classList.add('is-connected');
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-expanded', 'false');
@@ -515,7 +574,7 @@ const PS_AUTH_CONFIG = {
 
     menu.innerHTML = `
       <div class="account-dropdown-head">
-        <span class="viewer-avatar">${escapeHtml(viewer.avatar || '👤')}</span>
+        ${avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar')}
         <div>
           <strong>${escapeHtml(viewer.pseudo)}</strong>
           <small>${escapeHtml(viewer.role || 'viewer')}</small>
@@ -604,6 +663,13 @@ const PS_AUTH_CONFIG = {
     saveViewer,
     clearLocal:clearSession,
     pickAvatar,
+    avatarCatalog,
+    avatarPath,
+    avatarLabel,
+    avatarHtml,
+    normalizeAvatar,
+    isImageAvatar,
+    isReservedAvatar,
     escapeHtml,
     cleanPseudo,
     isValidPseudo,
@@ -634,6 +700,13 @@ const PS_AUTH_CONFIG = {
     authHeaders,
     anonHeaders,
     pickAvatar,
+    avatarCatalog,
+    avatarPath,
+    avatarLabel,
+    avatarHtml,
+    normalizeAvatar,
+    isImageAvatar,
+    isReservedAvatar,
     escapeHtml,
     cleanPseudo,
     isValidPseudo,

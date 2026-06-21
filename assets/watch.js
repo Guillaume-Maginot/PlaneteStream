@@ -748,7 +748,8 @@ function normalizeViewer(row){
 }
 
 function pickAvatar(seed=''){
-  const avatars = ['🪐','🚀','👾','🤖','🦊','🐼','🐙','🦉','🎬','🍿','🌙','⚡'];
+  if(window.PSAuth?.pickAvatar) return PSAuth.pickAvatar(seed);
+  const avatars = ['orbiteur','robot','explorateur','renard','hibou','cosmonaute','masques','projectionniste','chat','kraken','cyberpunk','vip'];
   const score = String(seed).split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
   return avatars[score % avatars.length];
 }
@@ -778,7 +779,7 @@ function renderViewerBox(){
       box.innerHTML = `
         <p class="eyebrow">Spectateur</p>
         <div class="viewer-card-mini">
-          <span class="viewer-avatar">${escapeHtml(viewer.avatar || '🪐')}</span>
+          ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar')}
           <div>
             <strong>${escapeHtml(viewer.pseudo)}</strong>
             <small id="viewCountLabel">Audience connectée</small>
@@ -797,7 +798,7 @@ function renderViewerBox(){
 
   if(label){
     label.innerHTML = viewer?.pseudo
-      ? `<span class="viewer-avatar small">${escapeHtml(viewer.avatar || '🪐')}</span> Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
+      ? `${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar small')} Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
       : '<a href="account.html">Se connecter pour publier</a>';
   }
 
@@ -928,7 +929,7 @@ async function openMiniProfile(viewerId){
     <div class="profile-mini-card profile-mini-card-wide" role="dialog" aria-label="Mini profil ${escapeHtml(viewer.pseudo)}">
       <button class="profile-close" type="button" data-close-profile>×</button>
       <div class="profile-mini-head">
-        <span class="viewer-avatar big">${escapeHtml(viewer.avatar || '🪐')}</span>
+        ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar big')}
         <div>
           <p class="eyebrow">Profil spectateur</p>
           <h3>${escapeHtml(viewer.pseudo || 'Spectateur')}</h3>
@@ -1499,7 +1500,7 @@ function renderCommentCard(comment, replies=[]){
     <article class="comment-card ${isReply ? 'is-reply' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}">
       <div class="comment-head community-head">
         <button class="comment-author profile-trigger" type="button" ${profileAttr} ${comment.viewer_uuid ? '' : 'disabled'}>
-          <span class="viewer-avatar">${escapeHtml(comment.avatar || '🪐')}</span>
+          ${PSAuth.avatarHtml(comment.avatar || 'orbiteur', 'viewer-avatar')}
           <span class="comment-author-copy">
             <strong>${escapeHtml(comment.name)}</strong>
             <small>${formatCommentDate(comment.date)}${comment.edited_at ? ' · modifié' : ''}</small>
@@ -1521,7 +1522,7 @@ function renderCommentCard(comment, replies=[]){
 
 function getDemoComments(){
   return [
-    {id:'demo-comment', name:'Planète Stream', avatar:'🪐', rating:8, text:'La zone de critiques est prête. Les vrais avis prendront la place de ce message dès qu’un spectateur publiera sa critique.', date:new Date().toISOString(), likes_count:0}
+    {id:'demo-comment', name:'Planète Stream', avatar:'orbiteur', rating:8, text:'La zone de critiques est prête. Les vrais avis prendront la place de ce message dès qu’un spectateur publiera sa critique.', date:new Date().toISOString(), likes_count:0}
   ];
 }
 

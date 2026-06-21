@@ -2,8 +2,11 @@ const accountState = document.querySelector('#currentViewerState');
 const accountStatus = document.querySelector('#accountStatus');
 const createForm = document.querySelector('#createAccountForm');
 const loginForm = document.querySelector('#loginAccountForm');
+const createAvatarInput = document.querySelector('#createAvatar');
+const createAvatarGallery = document.querySelector('#createAvatarGallery');
 
 function initAccount(){
+  renderAvatarGallery(createAvatarGallery, createAvatarInput, createAvatarInput?.value || 'orbiteur');
   renderCurrentViewer();
 
   createForm?.addEventListener('submit', async event => {
@@ -12,7 +15,7 @@ function initAccount(){
     const email = document.querySelector('#createEmail')?.value.trim();
     const pseudo = document.querySelector('#createPseudo')?.value.trim();
     const password = document.querySelector('#createPassword')?.value;
-    const avatar = document.querySelector('#createAvatar')?.value || PSAuth.pickAvatar(pseudo);
+    const avatar = createAvatarInput?.value || PSAuth.pickAvatar(pseudo);
 
     if(!validateEmail(email) || !validatePseudo(pseudo) || !validatePassword(password)) return;
 
@@ -31,6 +34,8 @@ function initAccount(){
     }
 
     createForm.reset();
+    if(createAvatarInput) createAvatarInput.value = 'orbiteur';
+    renderAvatarGallery(createAvatarGallery, createAvatarInput, 'orbiteur');
     renderCurrentViewer();
   });
 
@@ -63,6 +68,13 @@ function initAccount(){
       await PSAuth.signOut();
       setStatus('Déconnexion effectuée sur ce navigateur.', 'ok');
       renderCurrentViewer();
+      return;
+    }
+
+    const choice = event.target.closest('[data-avatar-choice]');
+    if(choice){
+      const nextAvatar = choice.dataset.avatarChoice;
+      await updateCurrentAvatar(nextAvatar);
     }
   });
 }
@@ -75,16 +87,27 @@ async function renderCurrentViewer(){
   const viewer = state.viewer;
 
   if(state.isAuthenticated && viewer?.pseudo){
+    const reserved = PSAuth.isReservedAvatar?.(viewer.avatar) || ['admin','moderator','moderateur','fondateur','founder'].includes(String(viewer.role || '').toLowerCase());
+    const avatarChooser = reserved
+      ? `<div class="avatar-reserved-note">Avatar spécial attribué par l’équipe Planète Stream.</div>`
+      : `<div class="account-avatar-editor">
+          <label>Changer d'avatar</label>
+          <div class="avatar-gallery compact" aria-label="Changer d'avatar">
+            ${avatarButtons(viewer.avatar || 'orbiteur')}
+          </div>
+        </div>`;
+
     accountState.innerHTML = `
       <div class="viewer-card-mini account-viewer-line">
-        <span class="viewer-avatar">${PSAuth.escapeHtml(viewer.avatar || '🪐')}</span>
+        ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar')}
         <div>
           <strong>${PSAuth.escapeHtml(viewer.pseudo)}</strong>
-          <small>Compte sécurisé actif</small>
+          <small>${PSAuth.escapeHtml(PSAuth.avatarLabel?.(viewer.avatar) || viewer.role || 'viewer')}</small>
         </div>
       </div>
       <p class="soft-note">Email connecté : ${PSAuth.escapeHtml(session?.user?.email || '')}</p>
       <p class="soft-note">Tes critiques, réponses, favoris et historiques sont rattachés à ton vrai compte.</p>
+      ${avatarChooser}
       <button class="ghost" type="button" data-logout>Déconnexion</button>
     `;
     PSAuth.updateNav();
@@ -106,6 +129,52 @@ async function renderCurrentViewer(){
     <p class="soft-note">Tu peux parcourir le catalogue. Pour publier une critique, répondre, liker ou gérer tes favoris, il faudra créer un compte sécurisé.</p>
   `;
   PSAuth.updateNav();
+}
+
+function renderAvatarGallery(container, input, selected='orbiteur'){
+  if(!container || !input) return;
+  input.value = selected;
+  container.innerHTML = avatarButtons(selected);
+  container.addEventListener('click', event => {
+    const button = event.target.closest('[data-avatar-choice]');
+    if(!button) return;
+    input.value = button.dataset.avatarChoice;
+    renderAvatarGallery(container, input, input.value);
+  }, {once:true});
+}
+
+function avatarButtons(selected='orbiteur'){
+  selected = PSAuth.normalizeAvatar ? PSAuth.normalizeAvatar(selected, 'orbiteur') : selected;
+  const catalog = PSAuth.avatarCatalog ? PSAuth.avatarCatalog() : [];
+  return catalog.map(item => `
+    <button class="avatar-choice ${item.id === selected ? 'is-selected' : ''}" type="button" data-avatar-choice="${PSAuth.escapeHtml(item.id)}" aria-label="${PSAuth.escapeHtml(item.label)}">
+      ${PSAuth.avatarHtml(item.id, 'avatar-choice-img')}
+      <span>${PSAuth.escapeHtml(item.label)}</span>
+    </button>
+  `).join('');
+}
+
+async function updateCurrentAvatar(nextAvatar){
+  if(!nextAvatar || PSAuth.isReservedAvatar?.(nextAvatar)) return;
+  const state = await PSAuth.getAuthState();
+  const viewer = state.viewer;
+  if(!viewer?.id){
+    setStatus('Connecte-toi pour changer ton avatar.', 'error');
+    return;
+  }
+
+  setStatus('Mise à jour de l’avatar...', 'pending');
+  const result = await window.PS.restWrite('viewers', 'PATCH', `id=eq.${encodeURIComponent(viewer.id)}`, {avatar:nextAvatar, last_seen:new Date().toISOString()}, {auth:true, prefer:'return=minimal'});
+  if(!result.ok){
+    setStatus('Impossible de changer l’avatar pour le moment.', 'error');
+    return;
+  }
+
+  const updated = {...viewer, avatar:nextAvatar};
+  PSAuth.saveViewer(updated);
+  await PSAuth.getAuthState();
+  setStatus(`Avatar changé : ${PSAuth.avatarLabel(nextAvatar)}.`, 'ok');
+  renderCurrentViewer();
 }
 
 function validateEmail(email){

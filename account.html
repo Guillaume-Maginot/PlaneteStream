@@ -57,17 +57,9 @@
           <label for="createPassword">Mot de passe</label>
           <input id="createPassword" type="password" minlength="8" required placeholder="8 caractères minimum" autocomplete="new-password">
 
-          <label for="createAvatar">Avatar</label>
-          <select id="createAvatar">
-            <option value="🪐">🪐 Planète</option>
-            <option value="🚀">🚀 Fusée</option>
-            <option value="👾">👾 Alien</option>
-            <option value="🤖">🤖 Robot</option>
-            <option value="🦊">🦊 Renard</option>
-            <option value="🐼">🐼 Panda</option>
-            <option value="🎬">🎬 Cinéma</option>
-            <option value="🍿">🍿 Pop-corn</option>
-          </select>
+          <label>Avatar</label>
+          <input id="createAvatar" type="hidden" value="orbiteur">
+          <div id="createAvatarGallery" class="avatar-gallery" aria-label="Choisir un avatar"></div>
           <button class="primary" type="submit">Créer mon compte</button>
         </form>
       </article>

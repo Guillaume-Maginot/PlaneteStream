@@ -133,7 +133,7 @@
     container.innerHTML = `
       <h3>❤️ Critique populaire</h3>
       <a class="hall-feature-review" href="watch.html?slug=${encodeURIComponent(item.movie.slug)}#comment-${encodeURIComponent(item.comment.id)}">
-        <span class="viewer-avatar">${escape(item.viewer?.avatar || '🍿')}</span>
+        ${PSAuth.avatarHtml(item.viewer?.avatar || 'orbiteur', 'viewer-avatar')}
         <strong>${escape(item.viewer?.pseudo || 'Spectateur')}</strong>
         <small>sur ${escape(item.movie.title)}</small>
         <p>${escape(shorten(item.comment.comment, 150))}</p>
@@ -154,7 +154,7 @@
     container.innerHTML = `
       <h3>🆕 Bienvenue</h3>
       <div class="hall-welcome-card">
-        <span class="viewer-avatar big">${escape(latest.avatar || '🪐')}</span>
+        ${PSAuth.avatarHtml(latest.avatar || 'orbiteur', 'viewer-avatar big')}
         <strong>${escape(latest.pseudo || 'Nouveau membre')}</strong>
         <small>${relativeDate(latest.created_at)}</small>
         <p>${stats.roots ? 'Premier avis publié, entrée réussie dans l’orbite.' : 'Nouveau Planétien arrivé dans le hall.'}</p>
@@ -175,7 +175,7 @@
     container.innerHTML = `<h3>🏆 Membres actifs</h3>${rows.length ? rows.map((row, index) => `
       <div class="hall-member-row">
         <span>${['🥇','🥈','🥉','⭐'][index] || '⭐'}</span>
-        <strong>${escape(row.viewer.avatar || '🍿')} ${escape(row.viewer.pseudo)}</strong>
+        <span class="hall-member-avatar">${PSAuth.avatarHtml(row.viewer.avatar || 'orbiteur', 'viewer-avatar small')}</span><strong>${escape(row.viewer.pseudo)}</strong>
         <small>${row.stats.roots} critique${row.stats.roots > 1 ? 's' : ''} · ${row.stats.likesReceived} like${row.stats.likesReceived > 1 ? 's' : ''}</small>
       </div>
     `).join('') : empty('Les membres actifs s’échauffent encore en coulisses.')}`;
