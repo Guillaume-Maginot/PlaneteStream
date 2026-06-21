@@ -1299,18 +1299,20 @@ async function openReplyBox(commentId){
   const card = document.querySelector(`[data-comment-id="${cssEscape(commentId)}"]`);
   if(!card) return;
 
-  const existing = card.querySelector('.reply-form');
+  const existing = card.querySelector(':scope > .reply-form');
   if(existing){
     existing.querySelector('textarea')?.focus();
     return;
   }
 
+  const targetComment = (currentComments || []).find(comment => String(comment.id) === String(commentId));
+  const targetName = targetComment?.name ? ` à ${targetComment.name}` : '';
 
   const form = document.createElement('form');
   form.className = 'reply-form';
   form.dataset.parentId = commentId;
   form.innerHTML = `
-    <textarea maxlength="500" required placeholder="Répondre à cet avis..."></textarea>
+    <textarea maxlength="500" required placeholder="Répondre${escapeHtml(targetName)}..."></textarea>
     <div class="reply-actions">
       <button class="primary" type="submit">Publier la réponse</button>
       <button class="ghost" type="button" data-cancel-reply>Annuler</button>
@@ -1608,20 +1610,30 @@ function getRelated(item, catalogue){
 
 function renderComments(comments){
   const list = comments.length ? comments : getDemoComments();
-  const repliesByParent = list.reduce((map, comment) => {
-    if(comment.parent_id){
-      if(!map.has(comment.parent_id)) map.set(comment.parent_id, []);
-      map.get(comment.parent_id).push(comment);
-    }
-    return map;
-  }, new Map());
+  const repliesByParent = buildRepliesTree(list);
 
   const topLevel = list
     .filter(comment => !comment.parent_id)
-    .map(comment => ({...comment, replies_count: (repliesByParent.get(comment.id) || []).length}))
+    .map(comment => ({...comment, replies_count: countNestedReplies(comment.id, repliesByParent)}))
     .sort((a,b) => sortTopLevelComments(a,b));
 
-  return topLevel.map(comment => renderCommentCard(comment, repliesByParent.get(comment.id) || [])).join('');
+  return topLevel.map(comment => renderCommentCard(comment, repliesByParent, 0)).join('');
+}
+
+function buildRepliesTree(list=[]){
+  return list.reduce((map, comment) => {
+    if(comment.parent_id){
+      const key = String(comment.parent_id);
+      if(!map.has(key)) map.set(key, []);
+      map.get(key).push(comment);
+    }
+    return map;
+  }, new Map());
+}
+
+function countNestedReplies(commentId, repliesByParent){
+  const replies = repliesByParent.get(String(commentId)) || [];
+  return replies.reduce((total, reply) => total + 1 + countNestedReplies(reply.id, repliesByParent), 0);
 }
 
 function sortTopLevelComments(a,b){
@@ -1636,16 +1648,17 @@ function dateScore(date){
   return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
 }
 
-function renderCommentCard(comment, replies=[]){
+function renderCommentCard(comment, repliesByParent=new Map(), depth=0){
   const liked = likedCommentIds.has(comment.id);
   const isReply = Boolean(comment.parent_id);
   const owner = canManageComment(comment);
-  const sortedReplies = [...replies].sort((a,b) => dateScore(a.date) - dateScore(b.date));
-  const replyCount = sortedReplies.length;
+  const childReplies = (repliesByParent.get(String(comment.id)) || []).sort((a,b) => dateScore(a.date) - dateScore(b.date));
+  const replyCount = countNestedReplies(comment.id, repliesByParent);
   const profileAttr = comment.viewer_uuid ? `data-profile-viewer="${escapeHtml(comment.viewer_uuid)}"` : '';
   const count = Number(comment.likes_count) || 0;
+  const replyLabel = isReply ? 'Répondre à cette réponse' : 'Répondre';
   return `
-    <article class="comment-card ${isReply ? 'is-reply' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}">
+    <article class="comment-card ${isReply ? 'is-reply' : ''} depth-${Math.min(Number(depth) || 0, 3)}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${Math.min(Number(depth) || 0, 6)}">
       <div class="comment-head community-head">
         <button class="comment-author profile-trigger" type="button" ${profileAttr} ${comment.viewer_uuid ? '' : 'disabled'}>
           ${PSAuth.avatarHtml(comment.avatar || 'orbiteur', 'viewer-avatar')}
@@ -1660,10 +1673,10 @@ function renderCommentCard(comment, replies=[]){
       <p>${escapeHtml(comment.text)}</p>
       <div class="comment-actions">
         <button class="comment-action like-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '❤️' : '🤍'} <span>${count}</span>${liked ? '<small>Aimé par vous</small>' : ''}</button>
-        ${!isReply ? `<button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">💬 Répondre${replyCount ? ` · ${replyCount}` : ''}</button>` : ''}
+        <button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">💬 ${replyLabel}${replyCount ? ` · ${replyCount}` : ''}</button>
         ${owner ? `<button class="comment-action" type="button" data-edit-comment="${escapeHtml(comment.id || '')}">✏ Modifier</button><button class="comment-action danger" type="button" data-delete-comment="${escapeHtml(comment.id || '')}">🗑 Supprimer</button>` : ''}
       </div>
-      ${sortedReplies.length ? `<div class="comment-replies">${sortedReplies.map(reply => renderCommentCard(reply, [])).join('')}</div>` : ''}
+      ${childReplies.length ? `<div class="comment-replies">${childReplies.map(reply => renderCommentCard(reply, repliesByParent, depth + 1)).join('')}</div>` : ''}
     </article>
   `;
 }

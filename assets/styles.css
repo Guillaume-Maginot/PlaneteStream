@@ -3507,3 +3507,29 @@ min-width:220px;
   transform:rotate(-38deg);
   box-shadow:0 0 8px rgba(255,255,255,.7);
 }
+
+/* V2.5.3 - fils de réponses imbriqués */
+.comment-card.is-reply .comment-action[data-reply-comment]{
+  border-color:rgba(139,44,255,.34);
+}
+.comment-card[data-depth="2"]{background:rgba(139,44,255,.055)}
+.comment-card[data-depth="3"],
+.comment-card[data-depth="4"],
+.comment-card[data-depth="5"],
+.comment-card[data-depth="6"]{background:rgba(139,44,255,.04)}
+.comment-card[data-depth="3"] .comment-replies,
+.comment-card[data-depth="4"] .comment-replies,
+.comment-card[data-depth="5"] .comment-replies,
+.comment-card[data-depth="6"] .comment-replies{
+  padding-left:18px;
+}
+.comment-card[data-depth="3"] .comment-replies::before,
+.comment-card[data-depth="4"] .comment-replies::before,
+.comment-card[data-depth="5"] .comment-replies::before,
+.comment-card[data-depth="6"] .comment-replies::before{
+  opacity:.55;
+}
+@media (max-width:700px){
+  .comment-replies{padding-left:14px}
+  .comment-card.is-reply::after{left:-10px;width:10px}
+}
