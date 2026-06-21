@@ -610,17 +610,31 @@ const PS_AUTH_CONFIG = {
 
   function updateNotificationBadges(){
     const count = Number(state.notificationsUnread || 0);
+    const link = document.querySelector('#accountNavLink');
+
+    // Sécurité V2.6.3 : une ancienne version plaçait data-notification-count
+    // directement sur le bouton compte. La boucle remplaçait alors tout le pseudo
+    // par "0" ou "3". On nettoie l'attribut et on ne met à jour que les vrais badges.
+    if(link){
+      link.removeAttribute('data-notification-count');
+      link.classList.toggle('has-notifications', count > 0);
+      link.dataset.notificationsUnread = String(count);
+
+      const viewer = state.viewer || loadViewer();
+      if(viewer?.pseudo && (!link.querySelector('.account-user-name') || /^\d+$/.test((link.textContent || '').trim()))){
+        link.href = '#';
+        link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
+        link.classList.add('is-connected');
+        ensureAccountDropdown(link, viewer);
+      }
+    }
+
     document.querySelectorAll('[data-notification-count]').forEach(node => {
-      // Badge indépendant : ne jamais remplacer le libellé/pseudo du bouton compte.
+      if(node.id === 'accountNavLink') return;
       node.textContent = String(count);
       node.classList.toggle('has-notifications', count > 0);
       node.hidden = count <= 0;
     });
-    const link = document.querySelector('#accountNavLink');
-    if(link){
-      link.classList.toggle('has-notifications', count > 0);
-      link.dataset.notificationCount = String(count);
-    }
   }
 
   async function createNotification(payload={}){
@@ -652,7 +666,7 @@ const PS_AUTH_CONFIG = {
 
     if(connected){
       link.href = '#';
-      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
+      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
       link.classList.add('is-connected');
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-expanded', 'false');
@@ -740,6 +754,25 @@ const PS_AUTH_CONFIG = {
     });
   }
 
+
+  function startNotificationPolling(){
+    if(window.__psNotificationPollingBound) return;
+    window.__psNotificationPollingBound = true;
+
+    const refreshIfConnected = () => {
+      if(state.viewer?.id && state.accessToken) refreshNotificationsCount().catch(() => {});
+    };
+
+    window.addEventListener('focus', refreshIfConnected);
+    document.addEventListener('visibilitychange', () => {
+      if(!document.hidden) refreshIfConnected();
+    });
+
+    window.__psNotificationPollingTimer = setInterval(() => {
+      if(!document.hidden) refreshIfConnected();
+    }, 20000);
+  }
+
   function whenDomReady(){
     return new Promise(resolve => {
       if(document.readyState !== 'loading') resolve();
@@ -753,6 +786,8 @@ const PS_AUTH_CONFIG = {
     state.ready = true;
     await whenDomReady();
     updateNav();
+    updateNotificationBadges();
+    startNotificationPolling();
     emit('ready', snapshot());
     emit('state', snapshot());
     return snapshot();
