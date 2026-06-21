@@ -4109,3 +4109,106 @@ a.journey-event:hover{
   .journey-timeline{padding-left:0}
   .journey-timeline::before{display:none}
 }
+
+/* === Planète Stream V2.7.1 : bandeau Parcours dans le Hall === */
+.hall-planetian-ticker{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:14px;
+  align-items:center;
+  margin:0 0 18px;
+  padding:12px 14px;
+  border:1px solid rgba(195,77,255,.22);
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 8% 50%, rgba(195,77,255,.18), transparent 30%),
+    linear-gradient(90deg, rgba(27,14,48,.86), rgba(11,10,24,.78));
+  overflow:hidden;
+  box-shadow:0 14px 36px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.hall-planetian-ticker::after{
+  content:"";
+  position:absolute;
+  inset:0 0 0 auto;
+  width:130px;
+  pointer-events:none;
+  background:linear-gradient(90deg, transparent, rgba(11,10,24,.95));
+}
+.hall-ticker-title{
+  white-space:nowrap;
+  color:#fff;
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:.01em;
+  text-shadow:0 0 18px rgba(195,77,255,.35);
+}
+.hall-ticker-viewport{
+  min-width:0;
+  overflow:hidden;
+}
+.hall-ticker-track{
+  display:flex;
+  width:max-content;
+  align-items:center;
+  gap:12px;
+  white-space:nowrap;
+  will-change:transform;
+}
+.hall-ticker-track:not(:has(.hall-ticker-empty)){
+  animation:hallTickerScroll 38s linear infinite;
+}
+.hall-planetian-ticker:hover .hall-ticker-track{
+  animation-play-state:paused;
+}
+.hall-ticker-item{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.055);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.hall-ticker-item::after{
+  content:"•";
+  margin-left:4px;
+  color:rgba(255,255,255,.25);
+}
+.hall-ticker-item strong{
+  color:#fff;
+  font-size:13px;
+}
+.hall-ticker-item em{
+  color:#d8ccff;
+  font-style:normal;
+  font-size:12px;
+}
+.hall-ticker-empty{
+  color:var(--muted);
+  font-size:13px;
+}
+.viewer-avatar.tiny{
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  flex:0 0 24px;
+}
+@keyframes hallTickerScroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+@media (max-width:700px){
+  .hall-planetian-ticker{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  .hall-ticker-title{font-size:13px}
+  .hall-ticker-track:not(:has(.hall-ticker-empty)){
+    animation-duration:30s;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .hall-ticker-track{animation:none !important; flex-wrap:wrap; width:auto; white-space:normal}
+}

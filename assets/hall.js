@@ -249,8 +249,9 @@
 
 
   function renderJourneyMoments(){
-    const container = qs('#hallJourneyMoments');
+    const container = qs('#hallJourneyTicker');
     if(!container) return;
+
     const rows = state.viewers
       .map(viewer => ({viewer, stats:viewerStats(viewer.id)}))
       .map(row => {
@@ -259,15 +260,28 @@
       })
       .filter(row => row.moment)
       .sort((a,b) => b.rank - a.rank || new Date(b.viewer.last_seen || b.viewer.created_at || 0) - new Date(a.viewer.last_seen || a.viewer.created_at || 0))
-      .slice(0,4);
+      .slice(0,12);
 
-    container.innerHTML = `<h3>🏅 Parcours des Planétiens</h3>${rows.length ? rows.map(row => `
-      <div class="hall-member-row hall-journey-row">
-        <span class="hall-member-avatar">${PSAuth.avatarHtml(row.viewer.avatar || 'orbiteur', 'viewer-avatar small')}</span>
-        <strong>${escape(row.viewer.pseudo || 'Planétien')}</strong>
-        <small>${escape(row.moment.icon)} ${escape(row.moment.label)}</small>
-      </div>
-    `).join('') : empty('Les carnets de bord attendent leurs premières lignes.')}`;
+    const items = rows.map(row => ({
+      icon: row.moment.icon,
+      pseudo: row.viewer?.pseudo || 'Planétien',
+      label: row.moment.label,
+      avatar: row.viewer?.avatar || 'orbiteur'
+    }));
+
+    if(!items.length){
+      container.innerHTML = `<span class="hall-ticker-empty">Les carnets de bord attendent leurs premières lignes.</span>`;
+      return;
+    }
+
+    const loopItems = items.length < 6 ? [...items, ...items, ...items] : [...items, ...items];
+    container.innerHTML = loopItems.map(item => `
+      <span class="hall-ticker-item">
+        ${PSAuth.avatarHtml(item.avatar, 'viewer-avatar tiny')}
+        <strong>${escape(item.pseudo)}</strong>
+        <em>${escape(item.icon)} ${escape(item.label)}</em>
+      </span>
+    `).join('');
   }
 
   function bestJourneyMoment(viewer, stats){
@@ -292,7 +306,7 @@
   }
 
   function renderError(){
-    ['#hallHotDiscussions','#hallPopularReview','#hallWelcome','#hallActiveMembers','#hallTimeline','#hallDivisiveMovies'].forEach(selector => {
+    ['#hallHotDiscussions','#hallPopularReview','#hallWelcome','#hallActiveMembers','#hallTimeline','#hallDivisiveMovies','#hallJourneyTicker'].forEach(selector => {
       const el = qs(selector);
       if(el) el.innerHTML = empty('Impossible de charger le Hall pour le moment.');
     });
