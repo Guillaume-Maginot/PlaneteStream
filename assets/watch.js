@@ -340,6 +340,7 @@ async function refreshCommunity(item){
   const sortSelect = document.querySelector('#commentsSort');
   if(sortSelect) sortSelect.value = commentSortMode;
   document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
+  scrollToCommentFromHash();
 
   if(stats.online){
     const stat = stats.data;
@@ -779,14 +780,18 @@ async function openMiniProfile(viewerId){
   if(!viewerId) return;
   const viewer = await fetchSingleViewer(viewerId);
   if(!viewer) return;
-  const stats = await fetchViewerStats(viewerId);
+  const [stats, recentReviews] = await Promise.all([
+    fetchViewerStats(viewerId),
+    fetchViewerRecentReviews(viewerId)
+  ]);
+  const badges = buildProfileBadges(viewer, stats);
 
   document.querySelector('#profileMiniModal')?.remove();
   const modal = document.createElement('div');
   modal.id = 'profileMiniModal';
   modal.className = 'profile-mini-modal';
   modal.innerHTML = `
-    <div class="profile-mini-card" role="dialog" aria-label="Mini profil ${escapeHtml(viewer.pseudo)}">
+    <div class="profile-mini-card profile-mini-card-wide" role="dialog" aria-label="Mini profil ${escapeHtml(viewer.pseudo)}">
       <button class="profile-close" type="button" data-close-profile>×</button>
       <div class="profile-mini-head">
         <span class="viewer-avatar big">${escapeHtml(viewer.avatar || '🪐')}</span>
@@ -796,12 +801,21 @@ async function openMiniProfile(viewerId){
           <small>${viewer.created_at ? `Membre depuis ${formatCommentDate(viewer.created_at)}` : 'Membre Planète Stream'}</small>
         </div>
       </div>
+      <div class="profile-badges" aria-label="Badges du spectateur">
+        ${badges.map(badge => `<span title="${escapeHtml(badge.description)}">${escapeHtml(badge.icon)} ${escapeHtml(badge.label)}</span>`).join('') || '<span>🛰️ Observateur</span>'}
+      </div>
       <div class="profile-mini-stats">
         <span><strong>${stats.comments}</strong><small>critiques</small></span>
         <span><strong>${stats.replies}</strong><small>réponses</small></span>
         <span><strong>${stats.likes}</strong><small>likes reçus</small></span>
       </div>
       <p>${stats.comments ? 'Ce spectateur a déjà laissé une trace dans le catalogue.' : 'Ce spectateur observe encore l’orbite avant de graver sa première critique.'}</p>
+      ${recentReviews.length ? `
+        <div class="profile-recent">
+          <h4>Dernières critiques</h4>
+          ${recentReviews.map(renderProfileReviewItem).join('')}
+        </div>
+      ` : ''}
     </div>
   `;
   document.body.appendChild(modal);
@@ -819,7 +833,8 @@ async function fetchSingleViewer(viewerId){
 }
 
 async function fetchViewerStats(viewerId){
-  if(profileStatsCache.has(viewerId)) return profileStatsCache.get(viewerId);
+  const cacheKey = `stats:${viewerId}`;
+  if(profileStatsCache.has(cacheKey)) return profileStatsCache.get(cacheKey);
 
   const result = await supabaseSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&select=id,parent_id`);
   const rows = result.ok && Array.isArray(result.data) ? result.data : [];
@@ -830,8 +845,82 @@ async function fetchViewerStats(viewerId){
     replies: rows.filter(row => row.parent_id).length,
     likes: [...likeCounts.values()].reduce((sum, value) => sum + Number(value || 0), 0)
   };
-  profileStatsCache.set(viewerId, stats);
+  profileStatsCache.set(cacheKey, stats);
   return stats;
+}
+
+async function fetchViewerRecentReviews(viewerId){
+  const cacheKey = `recent:${viewerId}`;
+  if(profileStatsCache.has(cacheKey)) return profileStatsCache.get(cacheKey);
+
+  const result = await supabaseSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&parent_id=is.null&select=id,movie_id,comment,rating,created_at,edited_at&order=created_at.desc&limit=4`);
+  const rows = result.ok && Array.isArray(result.data) ? result.data : [];
+  const reviews = rows.map(row => ({
+    id: row.id,
+    movie_id: row.movie_id,
+    movie_title: getCatalogueTitle(row.movie_id),
+    comment: row.comment || '',
+    rating: Number(row.rating) || 0,
+    created_at: row.created_at,
+    edited_at: row.edited_at || null
+  }));
+  profileStatsCache.set(cacheKey, reviews);
+  return reviews;
+}
+
+function getCatalogueTitle(slug){
+  const found = currentCatalogue.find(item => item.slug === slug);
+  return found?.title || slug || 'Titre inconnu';
+}
+
+function renderProfileReviewItem(review){
+  return `
+    <a class="profile-review-item" href="watch.html?slug=${encodeURIComponent(review.movie_id)}#comment-${encodeURIComponent(review.id)}">
+      <span class="profile-review-rating">${escapeHtml(String(review.rating || '-'))}/10</span>
+      <span>
+        <strong>${escapeHtml(review.movie_title)}</strong>
+        <small>${formatCommentDate(review.created_at)}${review.edited_at ? ' · modifié' : ''}</small>
+        <em>${escapeHtml(truncateText(review.comment, 96))}</em>
+      </span>
+    </a>
+  `;
+}
+
+function buildProfileBadges(viewer, stats){
+  const badges = [];
+  const role = String(viewer?.role || 'viewer').toLowerCase();
+
+  if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Administrateur Planète Stream'});
+  if(role === 'moderator') badges.push({icon:'🛡️', label:'Modérateur', description:'Aide à garder la salle propre'});
+  if(stats.comments >= 1) badges.push({icon:'🎬', label:'Premier avis', description:'A publié au moins une critique'});
+  if(stats.comments >= 5) badges.push({icon:'🍿', label:'Cinéphile actif', description:'A publié au moins 5 critiques'});
+  if(stats.replies >= 3) badges.push({icon:'💬', label:'Conversateur', description:'Participe aux échanges'});
+  if(stats.likes >= 5) badges.push({icon:'⭐', label:'Critique appréciée', description:'Ses avis reçoivent des likes'});
+  if(stats.likes >= 25) badges.push({icon:'🏆', label:'Top critique', description:'Ses critiques sont très appréciées'});
+
+  const joined = viewer?.created_at ? new Date(viewer.created_at) : null;
+  if(joined && !Number.isNaN(joined.getTime()) && Date.now() - joined.getTime() < 1000 * 60 * 60 * 24 * 30){
+    badges.push({icon:'🌱', label:'Nouveau membre', description:'A rejoint récemment Planète Stream'});
+  }
+
+  return badges.slice(0, 6);
+}
+
+function getInlineAuthorBadges(comment){
+  const badges = [];
+  const role = String(comment.role || 'viewer').toLowerCase();
+  if(role === 'admin') badges.push('👑 Fondateur');
+  else if(role === 'moderator') badges.push('🛡️ Modérateur');
+  if(currentViewer?.id && comment.viewer_uuid === currentViewer.id) badges.push('Vous');
+  if(!comment.parent_id && Number(comment.rating) >= 9) badges.push('⭐ Coup de cœur');
+  if(Number(comment.likes_count) >= 5) badges.push('❤️ Apprécié');
+  return badges.slice(0, 2);
+}
+
+function truncateText(text='', limit=100){
+  const clean = String(text || '').trim();
+  if(clean.length <= limit) return clean;
+  return `${clean.slice(0, Math.max(0, limit - 1)).trim()}…`;
 }
 
 async function toggleCommentLike(commentId){
@@ -1192,6 +1281,8 @@ function normalizeComments(rows, viewerMap=new Map(), likeCounts=new Map()){
       auth_user_id: row.auth_user_id || null,
       name: viewer?.pseudo || row.display_name || readableUserName(row.user_id),
       avatar: viewer?.avatar || pickAvatar(row.display_name || row.user_id || 'Spectateur'),
+      role: viewer?.role || 'viewer',
+      viewer_created_at: viewer?.created_at || null,
       rating: row.rating === null || row.rating === undefined ? null : Number(row.rating) || 0,
       text: row.comment || '',
       date: row.created_at,
@@ -1278,6 +1369,7 @@ function renderCommentCard(comment, replies=[]){
           <span class="comment-author-copy">
             <strong>${escapeHtml(comment.name)}</strong>
             <small>${formatCommentDate(comment.date)}${comment.edited_at ? ' · modifié' : ''}</small>
+            ${getInlineAuthorBadges(comment).length ? `<span class="comment-inline-badges">${getInlineAuthorBadges(comment).map(badge => `<em>${escapeHtml(badge)}</em>`).join('')}</span>` : ''}
           </span>
         </button>
         ${comment.rating ? renderRatingBadge(comment.rating) : '<span class="comment-reply-pill">💬 Réponse</span>'}
@@ -1394,6 +1486,19 @@ function commentsSignature(comments=[]){
 window.addEventListener('beforeunload', () => {
   if(communityPollTimer) clearInterval(communityPollTimer);
 });
+
+
+function scrollToCommentFromHash(){
+  const hash = decodeURIComponent(window.location.hash || '');
+  if(!hash || !hash.startsWith('#comment-')) return;
+  const target = document.querySelector(hash);
+  if(!target) return;
+  setTimeout(() => {
+    target.classList.add('is-highlighted');
+    target.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(() => target.classList.remove('is-highlighted'), 2600);
+  }, 120);
+}
 
 function showWatchError(message){
   watchPage.innerHTML = `<section class="container detail-error"><h1>Salle indisponible</h1><p>${escapeHtml(message)}</p><a class="primary" href="index.html">Retour accueil</a></section>`;

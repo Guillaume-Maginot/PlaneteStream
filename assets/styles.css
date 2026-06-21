@@ -2823,3 +2823,118 @@ min-width:220px;
   .comment-replies{padding-left:18px}
   .comment-card.is-reply::after{left:-12px;width:12px}
 }
+
+/* Planète Stream V2.2 · profils & badges */
+.comment-inline-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:5px;
+}
+.comment-inline-badges em{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  border:1px solid rgba(195,77,255,.38);
+  border-radius:999px;
+  background:rgba(139,44,255,.12);
+  color:#f3dcff;
+  padding:3px 7px;
+  font-size:10px;
+  font-style:normal;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.profile-mini-card-wide{
+  width:min(620px, calc(100vw - 32px));
+}
+.profile-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:16px 0 4px;
+}
+.profile-badges span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid rgba(195,77,255,.36);
+  border-radius:999px;
+  background:linear-gradient(135deg, rgba(139,44,255,.18), rgba(255,45,120,.10));
+  color:#fff;
+  padding:7px 10px;
+  font-size:12px;
+  font-weight:900;
+  box-shadow:0 0 18px rgba(139,44,255,.10);
+}
+.profile-recent{
+  margin-top:18px;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:16px;
+}
+.profile-recent h4{
+  margin:0 0 12px;
+  color:#fff;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+.profile-review-item{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:12px;
+  align-items:start;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:15px;
+  background:rgba(255,255,255,.035);
+  padding:12px;
+  margin-top:10px;
+  transition:.2s ease;
+}
+.profile-review-item:hover{
+  transform:translateY(-2px);
+  border-color:rgba(195,77,255,.48);
+  box-shadow:0 0 22px rgba(139,44,255,.16);
+}
+.profile-review-rating{
+  display:grid;
+  place-items:center;
+  min-width:54px;
+  border:1px solid rgba(255,211,94,.34);
+  border-radius:12px;
+  background:rgba(255,211,94,.10);
+  color:#ffe38a;
+  padding:8px;
+  font-weight:900;
+}
+.profile-review-item strong{
+  display:block;
+  color:#fff;
+  margin-bottom:2px;
+}
+.profile-review-item small{
+  display:block;
+  color:var(--muted);
+  margin-bottom:7px;
+  font-size:12px;
+}
+.profile-review-item em{
+  display:block;
+  color:#e9ddff;
+  font-style:normal;
+  line-height:1.45;
+  font-size:13px;
+}
+@media(max-width:700px){
+  .profile-mini-card-wide{width:calc(100vw - 24px)}
+  .profile-review-item{grid-template-columns:1fr}
+  .profile-review-rating{width:max-content}
+}
+.comment-card.is-highlighted{
+  animation:commentTargetGlow 2.4s ease;
+}
+@keyframes commentTargetGlow{
+  0%{box-shadow:0 0 0 rgba(195,77,255,0);border-color:rgba(195,77,255,.28)}
+  25%{box-shadow:0 0 38px rgba(195,77,255,.38);border-color:rgba(255,211,94,.58)}
+  100%{box-shadow:0 0 0 rgba(195,77,255,0);border-color:rgba(255,255,255,.08)}
+}
