@@ -342,15 +342,7 @@ async function refreshCommunity(item){
   document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
   scrollToCommentFromHash();
 
-  if(stats.online){
-    const stat = stats.data;
-    document.querySelector('#communityRatingLabel').textContent =
-      stat && stat.average_rating
-        ? `${Number(stat.average_rating).toFixed(1)}/10 (${stat.total_votes} vote${Number(stat.total_votes) > 1 ? 's' : ''})`
-        : 'Pas encore';
-  }else{
-    document.querySelector('#communityRatingLabel').textContent = 'Hors ligne';
-  }
+  updateCommunityRatingLabel(currentComments, stats);
 
   if(views.online && views.total_views){
     const viewLabel = document.querySelector('#viewCountLabel');
@@ -394,7 +386,7 @@ async function addReview(slug, viewer, rating, text, parentId=null){
     viewer_uuid: officialViewer.id,
     display_name: officialViewer.pseudo,
     comment: text,
-    rating,
+    rating: parentId ? null : rating,
     parent_id: parentId,
     likes_count: 0,
     created_at: new Date().toISOString()
@@ -431,6 +423,33 @@ async function fetchMovieStats(slug){
   if(!result.ok) return {online:false, data:null};
   const row = Array.isArray(result.data) ? result.data[0] : null;
   return {online:true, data:row || null};
+}
+
+function updateCommunityRatingLabel(comments=[], stats={online:false, data:null}){
+  const label = document.querySelector('#communityRatingLabel');
+  if(!label) return;
+
+  const rootRatings = (comments || [])
+    .filter(comment => !comment.parent_id)
+    .map(comment => Number(comment.rating))
+    .filter(value => Number.isFinite(value) && value > 0);
+
+  if(rootRatings.length){
+    const average = rootRatings.reduce((sum, value) => sum + value, 0) / rootRatings.length;
+    label.textContent = `${average.toFixed(1)}/10 (${rootRatings.length} vote${rootRatings.length > 1 ? 's' : ''})`;
+    return;
+  }
+
+  const stat = stats?.data || null;
+  const statAverage = Number(stat?.average_rating);
+  const statVotes = Number(stat?.total_votes) || 0;
+
+  if(stats?.online && Number.isFinite(statAverage) && statAverage > 0 && statVotes > 0){
+    label.textContent = `${statAverage.toFixed(1)}/10 (${statVotes} vote${statVotes > 1 ? 's' : ''})`;
+    return;
+  }
+
+  label.textContent = stats?.online ? 'Pas encore' : 'Hors ligne';
 }
 
 async function recordAndFetchMovieViews(slug){
