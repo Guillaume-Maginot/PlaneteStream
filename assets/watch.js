@@ -25,6 +25,8 @@ let profileStatsCache = new Map();
 let communityPollTimer = null;
 let communityPollSignature = '';
 let communityPollBusy = false;
+let reviewFormDirty = false;
+let reviewFormModeKey = '';
 
 async function initWatch(){
   if(window.PS?.ready){
@@ -143,7 +145,7 @@ async function renderWatch(item, catalogue){
       </div>
 
       <form class="comment-form watch-panel" id="commentForm">
-        <p class="eyebrow">Écrire une nouvelle critique</p>
+        <p class="eyebrow" id="commentFormTitle">Écrire une nouvelle critique</p>
         <div class="viewer-mini" id="formViewerLabel">Publier en tant que spectateur</div>
         <div class="form-row one-col">
           <select id="commentRating" required>
@@ -153,7 +155,7 @@ async function renderWatch(item, catalogue){
         </div>
         <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
         <p class="soft-note form-help" id="viewerHelpText">Connexion obligatoire pour publier une critique ou une réponse.</p>
-        <button class="primary" type="submit">Publier ma critique</button>
+        <button class="primary" type="submit" id="commentSubmitBtn">Publier ma critique</button>
       </form>
 
       <div class="comments-list" id="commentsList">
@@ -214,7 +216,8 @@ function bindWatchEvents(item){
       : await addReview(item.slug, viewer, rating, text, null);
 
     if(ok){
-      event.target.reset();
+      reviewFormDirty = false;
+      reviewFormModeKey = '';
       setStatus(existingReview ? 'Critique mise à jour. Ton vote unique est conservé.' : 'Critique publiée. Merci pour la trace laissée en orbite.', 'ok');
       await refreshCommunity(item);
     }else{
@@ -232,6 +235,11 @@ function bindWatchEvents(item){
       document.querySelector('#commentsList').innerHTML = renderComments(localComments);
       setStatus('La critique est gardée sur cet appareil. La publication en ligne n’a pas répondu.', 'error');
     }
+  });
+
+  const mainForm = document.querySelector('#commentForm');
+  mainForm?.addEventListener('input', event => {
+    if(event.target?.matches?.('#commentRating, #commentText')) reviewFormDirty = true;
   });
 
   document.querySelector('#commentsSort')?.addEventListener('change', event => {
@@ -363,6 +371,67 @@ async function refreshCommunity(item){
 
   await refreshFavoriteButton(item.slug);
   renderViewerBox();
+  updateReviewFormMode();
+}
+
+function updateReviewFormMode({force=false}={}){
+  const form = document.querySelector('#commentForm');
+  if(!form || !currentItem) return;
+
+  const title = document.querySelector('#commentFormTitle');
+  const ratingInput = document.querySelector('#commentRating');
+  const textInput = document.querySelector('#commentText');
+  const submitBtn = document.querySelector('#commentSubmitBtn');
+  const helpText = document.querySelector('#viewerHelpText');
+
+  if(!currentViewer?.id){
+    if(title) title.textContent = 'Écrire une nouvelle critique';
+    if(submitBtn) submitBtn.textContent = 'Publier ma critique';
+    if(ratingInput) ratingInput.disabled = true;
+    if(textInput) textInput.disabled = true;
+    if(helpText) helpText.innerHTML = 'Connexion requise · <a href="account.html">Ouvrir la page compte</a>';
+    reviewFormModeKey = 'guest';
+    return;
+  }
+
+  if(ratingInput) ratingInput.disabled = false;
+  if(textInput) textInput.disabled = false;
+
+  const existingReview = findCurrentViewerMainReview(currentItem.slug, currentViewer);
+  const replyCount = existingReview ? countRepliesForComment(existingReview.id) : 0;
+  const modeKey = existingReview ? `edit:${existingReview.id}:${existingReview.edited_at || existingReview.date || ''}` : 'create';
+  const formHasFocus = form.contains(document.activeElement);
+  const shouldHydrate = force || !reviewFormDirty || reviewFormModeKey !== modeKey || !formHasFocus;
+
+  if(existingReview){
+    if(title) title.textContent = 'Modifier ma critique';
+    if(submitBtn) submitBtn.textContent = 'Mettre à jour ma critique';
+    if(helpText){
+      helpText.textContent = replyCount > 0
+        ? `Tu modifies ta critique existante. ${replyCount} réponse${replyCount > 1 ? 's' : ''} rester${replyCount > 1 ? 'ont' : 'a'} attachée${replyCount > 1 ? 's' : ''} à cette discussion.`
+        : 'Tu modifies ta critique existante. Un film, un vote, pas trois bulletins dans l’urne.';
+    }
+    if(shouldHydrate){
+      if(ratingInput) ratingInput.value = String(Number(existingReview.rating) || '');
+      if(textInput) textInput.value = existingReview.text || '';
+      reviewFormDirty = false;
+    }
+  }else{
+    if(title) title.textContent = 'Écrire une nouvelle critique';
+    if(submitBtn) submitBtn.textContent = 'Publier ma critique';
+    if(helpText) helpText.textContent = `Tu es connecté en tant que ${currentViewer.pseudo}.`;
+    if(shouldHydrate){
+      if(ratingInput) ratingInput.value = '';
+      if(textInput) textInput.value = '';
+      reviewFormDirty = false;
+    }
+  }
+
+  reviewFormModeKey = modeKey;
+}
+
+function countRepliesForComment(commentId){
+  return (currentComments || []).filter(comment => String(comment.parent_id || '') === String(commentId || '')).length;
 }
 
 async function addReview(slug, viewer, rating, text, parentId=null){
