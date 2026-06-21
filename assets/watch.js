@@ -30,6 +30,7 @@ let communityPollSignature = '';
 let communityPollBusy = false;
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
+const COMMENT_MAX_VISUAL_DEPTH = 3;
 
 async function initWatch(){
   if(window.PS?.ready){
@@ -1611,13 +1612,14 @@ function getRelated(item, catalogue){
 function renderComments(comments){
   const list = comments.length ? comments : getDemoComments();
   const repliesByParent = buildRepliesTree(list);
+  const commentsById = buildCommentsIndex(list);
 
   const topLevel = list
     .filter(comment => !comment.parent_id)
     .map(comment => ({...comment, replies_count: countNestedReplies(comment.id, repliesByParent)}))
     .sort((a,b) => sortTopLevelComments(a,b));
 
-  return topLevel.map(comment => renderCommentCard(comment, repliesByParent, 0)).join('');
+  return topLevel.map(comment => renderCommentCard(comment, repliesByParent, commentsById, 0, null)).join('');
 }
 
 function buildRepliesTree(list=[]){
@@ -1627,6 +1629,13 @@ function buildRepliesTree(list=[]){
       if(!map.has(key)) map.set(key, []);
       map.get(key).push(comment);
     }
+    return map;
+  }, new Map());
+}
+
+function buildCommentsIndex(list=[]){
+  return list.reduce((map, comment) => {
+    if(comment?.id) map.set(String(comment.id), comment);
     return map;
   }, new Map());
 }
@@ -1648,9 +1657,12 @@ function dateScore(date){
   return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
 }
 
-function renderCommentCard(comment, repliesByParent=new Map(), depth=0){
+function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new Map(), depth=0, parentComment=null){
   const liked = likedCommentIds.has(comment.id);
   const isReply = Boolean(comment.parent_id);
+  const visualDepth = Math.min(Number(depth) || 0, COMMENT_MAX_VISUAL_DEPTH);
+  const parent = parentComment || commentsById.get(String(comment.parent_id || ''));
+  const parentName = parent?.name || '';
   const owner = canManageComment(comment);
   const childReplies = (repliesByParent.get(String(comment.id)) || []).sort((a,b) => dateScore(a.date) - dateScore(b.date));
   const replyCount = countNestedReplies(comment.id, repliesByParent);
@@ -1658,7 +1670,7 @@ function renderCommentCard(comment, repliesByParent=new Map(), depth=0){
   const count = Number(comment.likes_count) || 0;
   const replyLabel = isReply ? 'Répondre à cette réponse' : 'Répondre';
   return `
-    <article class="comment-card ${isReply ? 'is-reply' : ''} depth-${Math.min(Number(depth) || 0, 3)}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${Math.min(Number(depth) || 0, 6)}">
+    <article class="comment-card ${isReply ? 'is-reply' : ''} depth-${visualDepth} ${depth >= COMMENT_MAX_VISUAL_DEPTH ? 'is-flat-depth' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${visualDepth}" data-actual-depth="${Math.min(Number(depth) || 0, 20)}">
       <div class="comment-head community-head">
         <button class="comment-author profile-trigger" type="button" ${profileAttr} ${comment.viewer_uuid ? '' : 'disabled'}>
           ${PSAuth.avatarHtml(comment.avatar || 'orbiteur', 'viewer-avatar')}
@@ -1670,13 +1682,14 @@ function renderCommentCard(comment, repliesByParent=new Map(), depth=0){
         </button>
         ${comment.rating ? renderRatingBadge(comment.rating) : '<span class="comment-reply-pill">💬 Réponse</span>'}
       </div>
+      ${isReply && parentName ? `<div class="reply-target">↳ Réponse à <strong>@${escapeHtml(parentName)}</strong></div>` : ''}
       <p>${escapeHtml(comment.text)}</p>
       <div class="comment-actions">
         <button class="comment-action like-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '❤️' : '🤍'} <span>${count}</span>${liked ? '<small>Aimé par vous</small>' : ''}</button>
         <button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">💬 ${replyLabel}${replyCount ? ` · ${replyCount}` : ''}</button>
         ${owner ? `<button class="comment-action" type="button" data-edit-comment="${escapeHtml(comment.id || '')}">✏ Modifier</button><button class="comment-action danger" type="button" data-delete-comment="${escapeHtml(comment.id || '')}">🗑 Supprimer</button>` : ''}
       </div>
-      ${childReplies.length ? `<div class="comment-replies">${childReplies.map(reply => renderCommentCard(reply, repliesByParent, depth + 1)).join('')}</div>` : ''}
+      ${childReplies.length ? `<div class="comment-replies ${depth >= COMMENT_MAX_VISUAL_DEPTH - 1 ? 'is-flat-thread' : ''}">${childReplies.map(reply => renderCommentCard(reply, repliesByParent, commentsById, depth + 1, comment)).join('')}</div>` : ''}
     </article>
   `;
 }
@@ -1752,24 +1765,57 @@ function startCommunityPolling(item){
       if(comments.online){
         const signature = commentsSignature(comments.data);
         if(signature !== communityPollSignature){
+          const shouldDefer = shouldDeferCommunityRefresh();
           currentComments = comments.data;
           communityPollSignature = signature;
           if(currentViewer?.id){
             likedCommentIds = await fetchLikedCommentIds(currentViewer.id, currentComments.map(comment => comment.id).filter(Boolean));
           }
-          const list = document.querySelector('#commentsList');
-          if(list){
-            list.classList.add('is-refreshing');
-            list.innerHTML = renderComments(currentComments);
-            setTimeout(() => list.classList.remove('is-refreshing'), 420);
+
+          if(shouldDefer){
+            setStatus('Nouveaux échanges détectés. Synchronisation en pause pendant ta saisie.', 'ok');
+          }else{
+            updateCommentsListWithoutJump();
+            setStatus('Conversation synchronisée. Les nouveaux avis arrivent sans lever le petit doigt.', 'ok');
           }
-          setStatus('Conversation synchronisée. Les nouveaux avis arrivent sans lever le petit doigt.', 'ok');
         }
       }
     }finally{
       communityPollBusy = false;
     }
   }, 12000);
+}
+
+function shouldDeferCommunityRefresh(){
+  const active = document.activeElement;
+  const commentsSection = document.querySelector('.comments-section');
+  if(reviewFormDirty) return true;
+  if(document.querySelector('.reply-form')) return true;
+  if(active && commentsSection?.contains(active) && ['TEXTAREA','INPUT','SELECT'].includes(active.tagName)) return true;
+  return false;
+}
+
+function updateCommentsListWithoutJump(){
+  const list = document.querySelector('#commentsList');
+  if(!list) return;
+
+  const active = document.activeElement;
+  const activeId = active?.id || '';
+  const activeComment = active?.closest?.('[data-comment-id]')?.dataset?.commentId || '';
+  const beforeTop = list.getBoundingClientRect().top;
+  const scrollY = window.scrollY;
+
+  list.innerHTML = renderComments(currentComments);
+
+  const afterTop = list.getBoundingClientRect().top;
+  const delta = afterTop - beforeTop;
+  if(Math.abs(delta) > 1) window.scrollTo({top:scrollY + delta, left:window.scrollX, behavior:'auto'});
+
+  if(activeId){
+    document.getElementById(activeId)?.focus?.({preventScroll:true});
+  }else if(activeComment){
+    document.querySelector(`[data-comment-id="${cssEscape(activeComment)}"]`)?.focus?.({preventScroll:true});
+  }
 }
 
 function commentsSignature(comments=[]){

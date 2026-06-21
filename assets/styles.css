@@ -3533,3 +3533,42 @@ min-width:220px;
   .comment-replies{padding-left:14px}
   .comment-card.is-reply::after{left:-10px;width:10px}
 }
+
+/* V2.5.4 - Fluidité des discussions */
+.reply-target{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  width:max-content;
+  max-width:100%;
+  margin:2px 0 9px;
+  padding:5px 9px;
+  border:1px solid rgba(195,77,255,.2);
+  border-radius:999px;
+  background:rgba(139,44,255,.10);
+  color:#d9c7ff;
+  font-size:12px;
+  font-weight:800;
+}
+.reply-target strong{color:#fff}
+.comment-replies.is-flat-thread{
+  padding-left:16px;
+}
+.comment-card.is-flat-depth .comment-replies{
+  padding-left:0;
+  margin-left:0;
+}
+.comment-card.is-flat-depth .comment-replies::before,
+.comment-card.is-flat-depth::after{
+  opacity:.35;
+}
+.comment-card[data-actual-depth="4"],
+.comment-card[data-actual-depth="5"],
+.comment-card[data-actual-depth="6"]{
+  margin-left:0;
+}
+@media(max-width:700px){
+  .reply-target{font-size:11px;width:100%;justify-content:flex-start}
+  .comment-replies.is-flat-thread{padding-left:10px}
+  .comment-card.is-flat-depth .comment-replies{padding-left:0}
+}
