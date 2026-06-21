@@ -1,16 +1,47 @@
+/* Planète Stream v2 · Auth unique
+   Une seule source de vérité : window.PS.state
+   - session Supabase Auth vérifiée
+   - profil public viewers lié à auth.users.id
+   - navigation synchronisée sur toutes les pages
+*/
+
 const PS_AUTH_CONFIG = {
   storePrefix: 'planetestream',
   supabaseUrl: 'https://bdtktrbtawalniamalcs.supabase.co',
   supabaseKey: 'sb_publishable_QLnbv7xRodnpeCXWNZ1q0w_ySaZLElI'
 };
 
-const PSAuth = (() => {
+(function bootstrapPlaneteStreamAuth(){
   const sessionKey = `${PS_AUTH_CONFIG.storePrefix}:authSession`;
   const viewerKey = `${PS_AUTH_CONFIG.storePrefix}:viewer`;
   const pendingKey = `${PS_AUTH_CONFIG.storePrefix}:pendingSignupProfile`;
 
+  const state = {
+    ready:false,
+    session:null,
+    user:null,
+    viewer:null,
+    accessToken:null,
+    error:null
+  };
+
+  const listeners = new Map();
+
   function enabled(){
     return Boolean(PS_AUTH_CONFIG.supabaseUrl && PS_AUTH_CONFIG.supabaseKey);
+  }
+
+  function emit(event, detail={}){
+    (listeners.get(event) || []).forEach(handler => {
+      try{ handler(detail); }catch(error){ console.error(`PS listener ${event} error`, error); }
+    });
+    window.dispatchEvent(new CustomEvent(`ps:${event}`, {detail}));
+  }
+
+  function on(event, handler){
+    if(!listeners.has(event)) listeners.set(event, new Set());
+    listeners.get(event).add(handler);
+    return () => listeners.get(event)?.delete(handler);
   }
 
   function anonHeaders(){
@@ -21,27 +52,23 @@ const PSAuth = (() => {
   }
 
   function authHeaders(){
-    const token = getAccessToken();
+    const token = state.accessToken || readSession()?.access_token || null;
     return {
       apikey: PS_AUTH_CONFIG.supabaseKey,
       Authorization: `Bearer ${token || PS_AUTH_CONFIG.supabaseKey}`
     };
   }
 
-  function getSession(){
+  function readSession(){
     try{
       const session = JSON.parse(localStorage.getItem(sessionKey) || 'null');
-      if(!session?.access_token) return null;
-      if(session.expires_at && Date.now() > Number(session.expires_at) * 1000){
-        return session; // on garde la session : Supabase peut encore accepter le refresh plus tard.
-      }
-      return session;
+      return session?.access_token ? session : null;
     }catch{
       return null;
     }
   }
 
-  function saveSession(session){
+  function persistSession(session){
     if(!session?.access_token) return null;
     const normalized = {
       access_token: session.access_token,
@@ -50,85 +77,50 @@ const PSAuth = (() => {
       user: session.user || null
     };
     localStorage.setItem(sessionKey, JSON.stringify(normalized));
+    state.session = normalized;
+    state.user = normalized.user || null;
+    state.accessToken = normalized.access_token;
     return normalized;
   }
 
+  function clearSession(){
+    localStorage.removeItem(sessionKey);
+    localStorage.removeItem(viewerKey);
+    state.session = null;
+    state.user = null;
+    state.viewer = null;
+    state.accessToken = null;
+    state.error = null;
+    updateNav();
+    emit('logout', snapshot());
+    emit('state', snapshot());
+  }
 
-  async function refreshSession(){
-    const session = getSession();
-    if(!enabled() || !session?.refresh_token) return null;
+  function loadViewer(){
+    try{ return JSON.parse(localStorage.getItem(viewerKey) || 'null'); }
+    catch{ return null; }
+  }
 
-    try{
-      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/token?grant_type=refresh_token`, {
-        method:'POST',
-        headers:{...anonHeaders(), 'Content-Type':'application/json'},
-        body: JSON.stringify({refresh_token: session.refresh_token}),
-        cache:'no-store'
-      });
-      const data = await response.json().catch(() => null);
-      if(!response.ok || !data?.access_token){
-        console.warn('PSAuth refresh refused', response.status, data);
-        return null;
-      }
-      return saveSession(data);
-    }catch(error){
-      console.error('PSAuth refresh error', error);
-      return null;
+  function saveViewer(viewer){
+    if(viewer?.id){
+      const normalized = normalizeViewer(viewer);
+      localStorage.setItem(viewerKey, JSON.stringify(normalized));
+      state.viewer = normalized;
     }
+    updateNav();
+    emit('viewer', snapshot());
   }
 
-  async function getVerifiedSession(){
-    let session = getSession();
-    if(!session?.access_token) return null;
-
-    let user = await fetchAuthUser(session.access_token);
-    if(user?.id){
-      return saveSession({...session, user});
-    }
-
-    session = await refreshSession();
-    if(!session?.access_token) return null;
-
-    user = await fetchAuthUser(session.access_token);
-    if(user?.id){
-      return saveSession({...session, user});
-    }
-
-    return null;
-  }
-
-  function getAccessToken(){
-    return getSession()?.access_token || null;
-  }
-
-  function getAuthUser(){
-    return getSession()?.user || null;
-  }
-
-  async function fetchAuthUser(accessToken=getAccessToken()){
-    if(!enabled() || !accessToken) return null;
-    try{
-      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/user`, {
-        headers:{apikey: PS_AUTH_CONFIG.supabaseKey, Authorization:`Bearer ${accessToken}`},
-        cache:'no-store'
-      });
-      const data = await response.json().catch(() => null);
-      return response.ok ? data : null;
-    }catch(error){
-      console.error('PSAuth user fetch error', error);
-      return null;
-    }
-  }
-
-  async function hydrateStoredSessionUser(){
-    const session = getSession();
-    if(!session?.access_token) return null;
-    if(session.user?.id) return session;
-
-    const user = await fetchAuthUser(session.access_token);
-    if(!user?.id) return session;
-
-    return saveSession({...session, user});
+  function snapshot(){
+    return {
+      ready:state.ready,
+      session:state.session,
+      user:state.user,
+      viewer:state.viewer,
+      accessToken:state.accessToken,
+      isAuthenticated:Boolean(state.user?.id && state.accessToken),
+      error:state.error
+    };
   }
 
   function readAuthParamsFromUrl(){
@@ -151,42 +143,206 @@ const PSAuth = (() => {
     return null;
   }
 
+  function cleanAuthUrl(){
+    if(!window.history?.replaceState) return;
+    const url = new URL(window.location.href);
+    ['access_token','refresh_token','expires_at','expires_in','token_type','type'].forEach(key => url.searchParams.delete(key));
+    url.hash = '';
+    window.history.replaceState({}, document.title, `${url.pathname}${url.search}${url.hash}`);
+  }
+
+  async function fetchAuthUser(accessToken=state.accessToken || readSession()?.access_token){
+    if(!enabled() || !accessToken) return null;
+    try{
+      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/user`, {
+        headers:{apikey: PS_AUTH_CONFIG.supabaseKey, Authorization:`Bearer ${accessToken}`},
+        cache:'no-store'
+      });
+      const data = await response.json().catch(() => null);
+      return response.ok ? data : null;
+    }catch(error){
+      console.error('PS auth user fetch error', error);
+      return null;
+    }
+  }
+
+  async function refreshSession(){
+    const session = readSession();
+    if(!enabled() || !session?.refresh_token) return null;
+    try{
+      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/token?grant_type=refresh_token`, {
+        method:'POST',
+        headers:{...anonHeaders(), 'Content-Type':'application/json'},
+        body: JSON.stringify({refresh_token: session.refresh_token}),
+        cache:'no-store'
+      });
+      const data = await response.json().catch(() => null);
+      if(!response.ok || !data?.access_token){
+        console.warn('PS refresh refused', response.status, data);
+        return null;
+      }
+      return persistSession(data);
+    }catch(error){
+      console.error('PS refresh error', error);
+      return null;
+    }
+  }
+
+  async function verifyStoredSession(){
+    let session = readSession();
+    if(!session?.access_token) return null;
+
+    let user = await fetchAuthUser(session.access_token);
+    if(user?.id){
+      return persistSession({...session, user});
+    }
+
+    session = await refreshSession();
+    if(!session?.access_token) return null;
+
+    user = await fetchAuthUser(session.access_token);
+    if(user?.id){
+      return persistSession({...session, user});
+    }
+
+    return null;
+  }
+
   async function hydrateFromAuthRedirect(){
     const authParams = readAuthParamsFromUrl();
     if(!authParams?.access_token) return null;
 
     const user = await fetchAuthUser(authParams.access_token);
-    const session = saveSession({...authParams, user});
-
-    if(user?.id){
-      const pending = getPendingProfile(user.email);
-      const pseudo = user.user_metadata?.pseudo || pending?.pseudo || user.email?.split('@')[0] || 'Spectateur';
-      const avatar = user.user_metadata?.avatar || pending?.avatar || pickAvatar(pseudo);
-      await ensureViewerProfile({pseudo, avatar});
-    }
-
-    if(window.history?.replaceState){
-      window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/[?&](access_token|refresh_token|expires_at|expires_in|token_type|type)=[^&]*/g, ''));
-      if(window.location.hash) window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
-    }
-
+    const session = persistSession({...authParams, user});
+    cleanAuthUrl();
     return session;
   }
 
-  function loadViewer(){
-    try{return JSON.parse(localStorage.getItem(viewerKey) || 'null');}
-    catch{return null;}
+  async function restSelect(table, query, {auth=false}={}){
+    if(!enabled()) return {ok:false, data:null, status:0};
+    try{
+      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/rest/v1/${table}?${query}`, {
+        headers:{...(auth ? authHeaders() : anonHeaders()), 'Cache-Control':'no-cache'},
+        cache:'no-store'
+      });
+      const data = await response.json().catch(() => null);
+      return {ok:response.ok, data, status:response.status};
+    }catch(error){
+      console.error(`PS REST SELECT ${table} error`, error);
+      return {ok:false, data:null, status:0};
+    }
   }
 
-  function saveViewer(viewer){
-    if(viewer?.id) localStorage.setItem(viewerKey, JSON.stringify(viewer));
-    updateNav();
+  async function restWrite(table, method, filter, payload, {auth=true, prefer='return=minimal'}={}){
+    if(!enabled()) return {ok:false, data:null, status:0};
+    const suffix = filter ? `?${filter}` : '';
+    try{
+      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/rest/v1/${table}${suffix}`, {
+        method,
+        headers:{...(auth ? authHeaders() : anonHeaders()), 'Content-Type':'application/json', Prefer:prefer},
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json().catch(() => null);
+      return {ok:response.ok, data, status:response.status};
+    }catch(error){
+      console.error(`PS REST WRITE ${table} error`, error);
+      return {ok:false, data:null, status:0};
+    }
   }
 
-  function clearLocal(){
-    localStorage.removeItem(sessionKey);
-    localStorage.removeItem(viewerKey);
+  async function fetchViewerByAuth(authUserId){
+    if(!authUserId) return null;
+    const result = await restSelect('viewers', `auth_user_id=eq.${encodeURIComponent(authUserId)}&select=id,auth_user_id,pseudo,avatar,role,created_at,last_seen&limit=1`, {auth:true});
+    return result.ok && Array.isArray(result.data) ? result.data[0] : null;
+  }
+
+  async function fetchViewerByPseudo(pseudo){
+    const result = await restSelect('viewers', `pseudo=eq.${encodeURIComponent(cleanPseudo(pseudo))}&select=id,pseudo&limit=1`, {auth:false});
+    return result.ok && Array.isArray(result.data) ? result.data[0] : null;
+  }
+
+  async function insertViewer(payload){
+    const result = await restWrite('viewers', 'POST', '', payload, {auth:true, prefer:'return=representation'});
+    return result.ok && Array.isArray(result.data) ? result.data[0] : null;
+  }
+
+  async function patchViewer(id, payload){
+    if(!id) return false;
+    const result = await restWrite('viewers', 'PATCH', `id=eq.${encodeURIComponent(id)}`, payload, {auth:true, prefer:'return=minimal'});
+    return result.ok;
+  }
+
+  async function ensureViewerProfile({pseudo, avatar}={}){
+    const user = state.user;
+    if(!user?.id) return null;
+
+    const local = loadViewer();
+    if(local?.auth_user_id === user.id && local?.id){
+      state.viewer = normalizeViewer(local);
+      return state.viewer;
+    }
+
+    const existing = await fetchViewerByAuth(user.id);
+    if(existing){
+      const viewer = normalizeViewer(existing);
+      saveViewer(viewer);
+      await patchViewer(viewer.id, {last_seen:new Date().toISOString()});
+      return viewer;
+    }
+
+    const pending = getPendingProfile(user.email);
+    const wantedPseudo = cleanPseudo(pseudo || user.user_metadata?.pseudo || pending?.pseudo || user.email?.split('@')[0] || 'Spectateur');
+    if(!isValidPseudo(wantedPseudo)) return null;
+
+    const taken = await fetchViewerByPseudo(wantedPseudo);
+    if(taken) return null;
+
+    const payload = {
+      auth_user_id:user.id,
+      pseudo:wantedPseudo,
+      avatar:avatar || user.user_metadata?.avatar || pending?.avatar || pickAvatar(wantedPseudo),
+      role:'viewer',
+      created_at:new Date().toISOString(),
+      last_seen:new Date().toISOString()
+    };
+
+    const created = await insertViewer(payload);
+    if(!created) return null;
+
+    const viewer = normalizeViewer(created);
+    saveViewer(viewer);
+    return viewer;
+  }
+
+  async function refreshAuthState({force=false}={}){
+    state.error = null;
+
+    await hydrateFromAuthRedirect();
+
+    let session = readSession();
+    if(force || session?.access_token){
+      session = await verifyStoredSession();
+    }
+
+    if(!session?.access_token || !session?.user?.id){
+      state.session = null;
+      state.user = null;
+      state.accessToken = null;
+      state.viewer = null;
+      localStorage.removeItem(viewerKey);
+      updateNav();
+      emit('state', snapshot());
+      return snapshot();
+    }
+
+    state.session = session;
+    state.user = session.user;
+    state.accessToken = session.access_token;
+    state.viewer = await ensureViewerProfile({});
+
     updateNav();
+    emit('state', snapshot());
+    return snapshot();
   }
 
   async function signUp({email, password, pseudo, avatar}){
@@ -199,7 +355,7 @@ const PSAuth = (() => {
 
     const alreadyTaken = await fetchViewerByPseudo(wantedPseudo);
     if(alreadyTaken){
-      return {ok:false, message:`Le pseudo « ${wantedPseudo} » est déjà utilisé. Choisis-en un autre, le trône est occupé.`};
+      return {ok:false, message:`Le pseudo « ${wantedPseudo} » est déjà utilisé.`};
     }
 
     const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/signup`, {
@@ -208,20 +364,18 @@ const PSAuth = (() => {
       body: JSON.stringify({
         email,
         password,
-        data:{pseudo:wantedPseudo, avatar}
+        data:{pseudo:wantedPseudo, avatar:avatar || pickAvatar(wantedPseudo)}
       })
     });
     const data = await response.json().catch(() => null);
-    if(!response.ok){
-      return {ok:false, message: authErrorMessage(data)};
-    }
+    if(!response.ok) return {ok:false, message:authErrorMessage(data)};
 
-    localStorage.setItem(pendingKey, JSON.stringify({email, pseudo:wantedPseudo, avatar}));
+    localStorage.setItem(pendingKey, JSON.stringify({email, pseudo:wantedPseudo, avatar:avatar || pickAvatar(wantedPseudo)}));
 
     if(data?.access_token){
-      saveSession(data);
-      const viewer = await ensureViewerProfile({pseudo:wantedPseudo, avatar});
-      return {ok:true, session:data, viewer, needsEmailConfirmation:false};
+      persistSession(data);
+      await refreshAuthState({force:true});
+      return {ok:true, session:state.session, viewer:state.viewer, needsEmailConfirmation:false};
     }
 
     return {ok:true, session:null, viewer:null, needsEmailConfirmation:true};
@@ -235,194 +389,56 @@ const PSAuth = (() => {
       body: JSON.stringify({email, password})
     });
     const data = await response.json().catch(() => null);
-    if(!response.ok){
-      return {ok:false, message: authErrorMessage(data)};
-    }
+    if(!response.ok) return {ok:false, message:authErrorMessage(data)};
 
-    saveSession(data);
+    persistSession(data);
     const pending = getPendingProfile(email);
-    const fallbackPseudo = data?.user?.user_metadata?.pseudo || pending?.pseudo || email.split('@')[0] || 'Spectateur';
-    const fallbackAvatar = data?.user?.user_metadata?.avatar || pending?.avatar || pickAvatar(fallbackPseudo);
-    const viewer = await ensureViewerProfile({pseudo:fallbackPseudo, avatar:fallbackAvatar});
-    if(!viewer){
+    await ensureViewerProfile({pseudo:data?.user?.user_metadata?.pseudo || pending?.pseudo, avatar:data?.user?.user_metadata?.avatar || pending?.avatar});
+    await refreshAuthState({force:true});
+
+    if(!state.viewer?.id){
       return {ok:false, message:'Connexion réussie, mais le profil public n’a pas pu être créé. Vérifie que le pseudo choisi est disponible.'};
     }
-    return {ok:true, session:data, viewer};
+    return {ok:true, session:state.session, viewer:state.viewer};
   }
 
   async function signOut(){
-    const token = getAccessToken();
+    const token = state.accessToken || readSession()?.access_token;
     if(enabled() && token){
       await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/logout`, {
         method:'POST',
-        headers:{...authHeaders(), 'Content-Type':'application/json'}
+        headers:{apikey:PS_AUTH_CONFIG.supabaseKey, Authorization:`Bearer ${token}`, 'Content-Type':'application/json'}
       }).catch(() => null);
     }
-    clearLocal();
+    clearSession();
     return true;
   }
 
-  async function ensureViewerProfile({pseudo, avatar}={}){
-    const user = getAuthUser();
-    if(!user?.id) return null;
-
-    const existing = await fetchViewerByAuth(user.id);
-    if(existing){
-      const viewer = normalizeViewer(existing);
-      saveViewer(viewer);
-      await patchViewer(viewer.id, {last_seen:new Date().toISOString()});
-      return viewer;
-    }
-
-    const safePseudo = cleanPseudo(pseudo || user.user_metadata?.pseudo || user.email?.split('@')[0] || 'Spectateur');
-    if(!isValidPseudo(safePseudo)){
-      return null;
-    }
-
-    const taken = await fetchViewerByPseudo(safePseudo);
-    if(taken){
-      return null;
-    }
-
-    const payload = {
-      auth_user_id: user.id,
-      pseudo: safePseudo,
-      avatar: avatar || pickAvatar(safePseudo),
-      role: 'viewer',
-      created_at: new Date().toISOString(),
-      last_seen: new Date().toISOString()
-    };
-
-    const created = await insertViewer(payload);
-    if(created){
-      const viewer = normalizeViewer(created);
-      saveViewer(viewer);
-      return viewer;
-    }
-
-    return null;
-  }
-
-  async function fetchViewerByAuth(authUserId){
-    const result = await restSelect('viewers', `auth_user_id=eq.${encodeURIComponent(authUserId)}&select=id,auth_user_id,pseudo,avatar,role,created_at,last_seen&limit=1`, true);
-    return result.ok && Array.isArray(result.data) ? result.data[0] : null;
-  }
-
-  async function fetchViewerByPseudo(pseudo){
-    const result = await restSelect('viewers', `pseudo=eq.${encodeURIComponent(pseudo)}&select=id,pseudo&limit=1`, false);
-    return result.ok && Array.isArray(result.data) ? result.data[0] : null;
-  }
-
-  async function insertViewer(payload){
-    const result = await restWrite('viewers', 'POST', '', payload, true, 'return=representation');
-    return result.ok && Array.isArray(result.data) ? result.data[0] : null;
-  }
-
-  async function patchViewer(id, payload){
-    if(!id) return false;
-    const result = await restWrite('viewers', 'PATCH', `id=eq.${encodeURIComponent(id)}`, payload, true, 'return=minimal');
-    return result.ok;
-  }
-
-  async function restSelect(table, query, useAuth=false){
-    if(!enabled()) return {ok:false, data:null};
-    try{
-      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/rest/v1/${table}?${query}`, {
-        headers:{...(useAuth ? authHeaders() : anonHeaders()), 'Cache-Control':'no-cache'},
-        cache:'no-store'
-      });
-      const data = await response.json().catch(() => null);
-      return {ok:response.ok, data, status:response.status};
-    }catch(error){
-      console.error('PSAuth REST SELECT error', error);
-      return {ok:false, data:null};
-    }
-  }
-
-  async function restWrite(table, method, filter, payload, useAuth=true, prefer='return=minimal'){
-    if(!enabled()) return {ok:false, data:null};
-    const suffix = filter ? `?${filter}` : '';
-    try{
-      const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/rest/v1/${table}${suffix}`, {
-        method,
-        headers:{...(useAuth ? authHeaders() : anonHeaders()), 'Content-Type':'application/json', Prefer:prefer},
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json().catch(() => null);
-      return {ok:response.ok, data, status:response.status};
-    }catch(error){
-      console.error('PSAuth REST WRITE error', error);
-      return {ok:false, data:null};
-    }
-  }
-
-  async function findAvailablePseudo(basePseudo){
-    let candidate = cleanPseudo(basePseudo) || `Spectateur ${Math.floor(1000 + Math.random() * 9000)}`;
-    for(let i = 0; i < 8; i += 1){
-      const exists = await fetchViewerByPseudo(candidate);
-      if(!exists) return candidate;
-      candidate = `${basePseudo.slice(0, 24)}-${Math.floor(1000 + Math.random() * 9000)}`;
-    }
-    return `Spectateur ${Date.now().toString().slice(-5)}`;
+  async function requireAuthenticatedViewer(){
+    const fresh = await refreshAuthState({force:true});
+    if(!fresh.isAuthenticated || !fresh.viewer?.id) return null;
+    return fresh.viewer;
   }
 
   function getPendingProfile(email){
     try{
       const pending = JSON.parse(localStorage.getItem(pendingKey) || 'null');
       return pending?.email === email ? pending : null;
-    }catch{return null;}
-  }
-
-  async function getCurrentViewer(){
-    await hydrateFromAuthRedirect();
-    const session = await getVerifiedSession();
-    const user = session?.user || null;
-    if(!user?.id) return null;
-    const local = loadViewer();
-    if(local?.auth_user_id === user.id) return local;
-    return ensureViewerProfile({});
-  }
-
-  async function getAuthState(){
-    await hydrateFromAuthRedirect();
-
-    const session = await getVerifiedSession();
-    const user = session?.user || null;
-    let viewer = null;
-
-    if(user?.id){
-      const local = loadViewer();
-      if(local?.auth_user_id === user.id){
-        viewer = local;
-      }else{
-        viewer = await ensureViewerProfile({});
-      }
+    }catch{
+      return null;
     }
-
-    return {
-      session,
-      user,
-      viewer,
-      accessToken: session?.access_token || null,
-      isAuthenticated: Boolean(session?.access_token && user?.id)
-    };
   }
 
-  async function requireAuthenticatedViewer(){
-    const state = await getAuthState();
-    if(!state?.isAuthenticated || !state?.viewer?.id) return null;
-    return state.viewer;
-  }
-
-  function normalizeViewer(row){
+  function normalizeViewer(row={}){
     return {
-      id: row.id,
-      auth_user_id: row.auth_user_id || getAuthUser()?.id || null,
-      pseudo: row.pseudo || 'Spectateur',
-      avatar: row.avatar || pickAvatar(row.pseudo || 'Spectateur'),
-      role: row.role || 'viewer',
-      created_at: row.created_at || null,
-      authenticated: Boolean(row.auth_user_id || getAuthUser()?.id)
+      id:row.id,
+      auth_user_id:row.auth_user_id || state.user?.id || null,
+      pseudo:row.pseudo || 'Spectateur',
+      avatar:row.avatar || pickAvatar(row.pseudo || 'Spectateur'),
+      role:row.role || 'viewer',
+      created_at:row.created_at || null,
+      last_seen:row.last_seen || null,
+      authenticated:Boolean(row.auth_user_id || state.user?.id)
     };
   }
 
@@ -431,8 +447,7 @@ const PSAuth = (() => {
   }
 
   function isValidPseudo(value=''){
-    const pseudo = cleanPseudo(value);
-    return /^[A-Za-zÀ-ÖØ-öø-ÿ0-9 _-]{2,32}$/.test(pseudo);
+    return /^[A-Za-zÀ-ÖØ-öø-ÿ0-9 _-]{2,32}$/.test(cleanPseudo(value));
   }
 
   function pickAvatar(seed=''){
@@ -445,6 +460,7 @@ const PSAuth = (() => {
     const message = String(data?.msg || data?.message || data?.error_description || data?.error || 'Erreur inconnue.');
     if(/invalid login/i.test(message)) return 'Identifiants incorrects.';
     if(/already registered|already been registered|user already/i.test(message)) return 'Cette adresse email possède déjà un compte.';
+    if(/email rate/i.test(message)) return 'Limite d’envoi email atteinte. Attends un peu ou confirme le compte manuellement dans Supabase.';
     if(/password/i.test(message)) return 'Mot de passe refusé. Il doit être plus solide.';
     return message;
   }
@@ -457,9 +473,8 @@ const PSAuth = (() => {
     const link = document.querySelector('#accountNavLink');
     if(!link) return;
 
-    const viewer = loadViewer();
-    const user = getAuthUser();
-    const connected = Boolean(user && viewer?.pseudo && viewer?.auth_user_id === user.id);
+    const viewer = state.viewer || loadViewer();
+    const connected = Boolean(state.user?.id && viewer?.auth_user_id === state.user.id);
 
     if(connected){
       link.href = '#';
@@ -468,10 +483,12 @@ const PSAuth = (() => {
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-expanded', 'false');
       ensureAccountDropdown(link, viewer);
-    }else if(user){
+    }else if(state.user?.id){
       link.href = 'account.html';
       link.textContent = '👤 Finaliser mon compte';
       link.classList.add('is-connected');
+      link.removeAttribute('aria-haspopup');
+      link.removeAttribute('aria-expanded');
       removeAccountDropdown();
     }else{
       link.href = 'account.html';
@@ -534,9 +551,7 @@ const PSAuth = (() => {
       if(event.target.closest('[data-auth-logout]')){
         event.preventDefault();
         await signOut();
-        if(location.pathname.endsWith('/account.html') || location.pathname.endsWith('account.html')){
-          location.reload();
-        }
+        if(location.pathname.endsWith('/account.html') || location.pathname.endsWith('account.html')) location.reload();
         return;
       }
 
@@ -547,32 +562,75 @@ const PSAuth = (() => {
     });
   }
 
+  function whenDomReady(){
+    return new Promise(resolve => {
+      if(document.readyState !== 'loading') resolve();
+      else document.addEventListener('DOMContentLoaded', resolve, {once:true});
+    });
+  }
 
-  document.addEventListener('DOMContentLoaded', async () => {
+  async function init(){
     bindAccountMenu();
-    await hydrateFromAuthRedirect();
-    await hydrateStoredSessionUser();
+    await refreshAuthState({force:false});
+    state.ready = true;
+    await whenDomReady();
     updateNav();
-  });
+    emit('ready', snapshot());
+    emit('state', snapshot());
+    return snapshot();
+  }
 
-  return {
+  const ready = init();
+
+  const PS = {
+    config:PS_AUTH_CONFIG,
+    state,
+    ready,
+    on,
+    emit,
+    getState:() => snapshot(),
+    refreshAuthState,
+    requireAuthenticatedViewer,
+    signUp,
+    signIn,
+    signOut,
+    restSelect,
+    restWrite,
+    anonHeaders,
+    authHeaders,
+    fetchAuthUser,
+    refreshSession,
+    loadViewer,
+    saveViewer,
+    clearLocal:clearSession,
+    pickAvatar,
+    escapeHtml,
+    cleanPseudo,
+    isValidPseudo,
+    updateNav
+  };
+
+  window.PS = PS;
+
+  // Compatibilité avec les scripts existants pendant la migration.
+  window.PSAuth = {
     enabled,
     signUp,
     signIn,
     signOut,
-    getSession,
+    getSession:() => state.session || readSession(),
     hydrateFromAuthRedirect,
-    hydrateStoredSessionUser,
-    getAccessToken,
-    getAuthUser,
-    getCurrentViewer,
-    getAuthState,
+    hydrateStoredSessionUser:() => refreshAuthState({force:false}),
+    getAccessToken:() => state.accessToken || readSession()?.access_token || null,
+    getAuthUser:() => state.user || readSession()?.user || null,
+    getCurrentViewer:async () => (await refreshAuthState({force:false})).viewer,
+    getAuthState:async () => refreshAuthState({force:false}),
     refreshSession,
-    getVerifiedSession,
+    getVerifiedSession:() => refreshAuthState({force:true}).then(s => s.session),
     requireAuthenticatedViewer,
     loadViewer,
     saveViewer,
-    clearLocal,
+    clearLocal:clearSession,
     authHeaders,
     anonHeaders,
     pickAvatar,

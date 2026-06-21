@@ -22,6 +22,13 @@ let currentComments = [];
 let likedCommentIds = new Set();
 
 async function initWatch(){
+  if(window.PS?.ready){
+    await window.PS.ready;
+  }
+  if(window.PS?.refreshAuthState){
+    await window.PS.refreshAuthState({force:false});
+  }
+
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
 
@@ -303,19 +310,28 @@ async function refreshCommunity(item){
 }
 
 async function addReview(slug, viewer, rating, text, parentId=null){
-  const authUserId = viewer.auth_user_id || window.PSAuth?.getAuthUser?.()?.id || null;
+  const state = window.PS?.refreshAuthState
+    ? await window.PS.refreshAuthState({force:true})
+    : await window.PSAuth?.getAuthState?.();
 
-  if(!authUserId){
-    setStatus('Connexion Auth introuvable. Reconnecte-toi depuis la page Compte.', 'error');
+  const authUserId = state?.user?.id || viewer?.auth_user_id || null;
+  const officialViewer = state?.viewer?.id ? state.viewer : viewer;
+
+  if(!authUserId || !officialViewer?.id){
+    setStatus('Session Auth introuvable. Reconnecte-toi depuis la page Compte.', 'error');
+    showAuthRequiredNotice();
     return false;
   }
+
+  currentViewer = officialViewer;
+  renderViewerBox();
 
   const basePayload = {
     movie_id: slug,
     user_id: authUserId,
     auth_user_id: authUserId,
-    viewer_uuid: viewer.id || null,
-    display_name: viewer.pseudo,
+    viewer_uuid: officialViewer.id,
+    display_name: officialViewer.pseudo,
     comment: text,
     rating,
     parent_id: parentId,
@@ -417,12 +433,16 @@ async function ensureViewerForComment(){
 }
 
 async function getAuthenticatedViewerForPage(){
-  if(!window.PSAuth){
-    return null;
+  if(window.PS?.ready){
+    await window.PS.ready;
   }
 
-  const state = await PSAuth.getAuthState?.();
+  const state = window.PS?.refreshAuthState
+    ? await window.PS.refreshAuthState({force:false})
+    : await window.PSAuth?.getAuthState?.();
+
   if(state?.isAuthenticated && state.viewer?.id){
+    currentViewer = state.viewer;
     return state.viewer;
   }
 
@@ -925,6 +945,9 @@ async function resolveTable(kind){
 }
 
 function supabaseHeaders(){
+  if(window.PS?.authHeaders){
+    return window.PS.authHeaders();
+  }
   if(window.PSAuth?.authHeaders){
     return PSAuth.authHeaders();
   }
