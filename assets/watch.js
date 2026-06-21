@@ -207,12 +207,15 @@ function bindWatchEvents(item){
     const viewer = await ensureViewerForComment();
     if(!viewer) return;
 
-    setStatus('Publication de la critique...', 'pending');
-    const ok = await addReview(item.slug, viewer, rating, text, null);
+    const existingReview = findCurrentViewerMainReview(item.slug, viewer);
+    setStatus(existingReview ? 'Mise à jour de ta critique...' : 'Publication de la critique...', 'pending');
+    const ok = existingReview
+      ? await updateOwnMainReview(existingReview.id, rating, text)
+      : await addReview(item.slug, viewer, rating, text, null);
 
     if(ok){
       event.target.reset();
-      setStatus('Critique publiée. Merci pour la trace laissée en orbite.', 'ok');
+      setStatus(existingReview ? 'Critique mise à jour. Ton vote unique est conservé.' : 'Critique publiée. Merci pour la trace laissée en orbite.', 'ok');
       await refreshCommunity(item);
     }else{
       const localComments = getLocalComments(item.slug);
@@ -429,10 +432,7 @@ function updateCommunityRatingLabel(comments=[], stats={online:false, data:null}
   const label = document.querySelector('#communityRatingLabel');
   if(!label) return;
 
-  const rootRatings = (comments || [])
-    .filter(comment => !comment.parent_id)
-    .map(comment => Number(comment.rating))
-    .filter(value => Number.isFinite(value) && value > 0);
+  const rootRatings = getUniqueViewerRatings(comments);
 
   if(rootRatings.length){
     const average = rootRatings.reduce((sum, value) => sum + value, 0) / rootRatings.length;
@@ -450,6 +450,52 @@ function updateCommunityRatingLabel(comments=[], stats={online:false, data:null}
   }
 
   label.textContent = stats?.online ? 'Pas encore' : 'Hors ligne';
+}
+
+function getUniqueViewerRatings(comments=[]){
+  const latestByViewer = new Map();
+
+  (comments || [])
+    .filter(comment => !comment.parent_id)
+    .forEach(comment => {
+      const rating = Number(comment.rating);
+      if(!Number.isFinite(rating) || rating <= 0) return;
+
+      const key = comment.viewer_uuid || comment.auth_user_id || comment.name || comment.id;
+      const date = dateScore(comment.edited_at || comment.date);
+      const previous = latestByViewer.get(key);
+
+      if(!previous || date >= previous.date){
+        latestByViewer.set(key, {rating, date});
+      }
+    });
+
+  return [...latestByViewer.values()].map(entry => entry.rating);
+}
+
+function findCurrentViewerMainReview(slug, viewer){
+  const viewerId = viewer?.id || currentViewer?.id || null;
+  const authUserId = window.PS?.user?.id || window.PS?.session?.user?.id || null;
+
+  return (currentComments || [])
+    .filter(comment => !comment.parent_id)
+    .filter(comment => {
+      if(viewerId && comment.viewer_uuid === viewerId) return true;
+      if(authUserId && comment.auth_user_id === authUserId) return true;
+      return false;
+    })
+    .sort((a,b) => dateScore(b.edited_at || b.date) - dateScore(a.edited_at || a.date))[0] || null;
+}
+
+async function updateOwnMainReview(commentId, rating, text){
+  const comment = findCommentById(commentId);
+  if(!comment || !canManageComment(comment) || comment.parent_id) return false;
+
+  return supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {
+    comment: text,
+    rating: Number(rating) || null,
+    edited_at: new Date().toISOString()
+  });
 }
 
 async function recordAndFetchMovieViews(slug){
