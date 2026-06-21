@@ -67,12 +67,14 @@ function initAccount(){
   });
 }
 
-function renderCurrentViewer(){
+async function renderCurrentViewer(){
   if(!accountState) return;
-  const session = PSAuth.getSession();
-  const viewer = PSAuth.loadViewer();
 
-  if(session?.user && viewer?.pseudo){
+  const state = await PSAuth.getAuthState();
+  const session = state.session;
+  const viewer = state.viewer;
+
+  if(state.isAuthenticated && viewer?.pseudo){
     accountState.innerHTML = `
       <div class="viewer-card-mini account-viewer-line">
         <span class="viewer-avatar">${PSAuth.escapeHtml(viewer.avatar || '🪐')}</span>
@@ -81,8 +83,8 @@ function renderCurrentViewer(){
           <small>Compte sécurisé actif</small>
         </div>
       </div>
-      <p class="soft-note">Email connecté : ${PSAuth.escapeHtml(session.user.email || '')}</p>
-      <p class="soft-note">Tes critiques, réponses, favoris et historiques peuvent maintenant être rattachés à ton vrai compte.</p>
+      <p class="soft-note">Email connecté : ${PSAuth.escapeHtml(session?.user?.email || '')}</p>
+      <p class="soft-note">Tes critiques, réponses, favoris et historiques sont rattachés à ton vrai compte.</p>
       <button class="ghost" type="button" data-logout>Déconnexion</button>
     `;
     PSAuth.updateNav();
@@ -92,7 +94,7 @@ function renderCurrentViewer(){
   if(session?.user){
     accountState.innerHTML = `
       <strong>Compte connecté</strong>
-      <p class="soft-note">Le profil spectateur est en cours de création. Recharge la page si le badge n’apparaît pas.</p>
+      <p class="soft-note">Le profil spectateur est en cours de création. Vérifie que ton pseudo est disponible, puis reconnecte-toi si besoin.</p>
       <button class="ghost" type="button" data-logout>Déconnexion</button>
     `;
     PSAuth.updateNav();
@@ -101,7 +103,7 @@ function renderCurrentViewer(){
 
   accountState.innerHTML = `
     <strong>Mode invité</strong>
-    <p class="soft-note">Tu peux parcourir le catalogue. Pour publier une critique ou répondre à un avis, il faudra créer un compte sécurisé.</p>
+    <p class="soft-note">Tu peux parcourir le catalogue. Pour publier une critique, répondre, liker ou gérer tes favoris, il faudra créer un compte sécurisé.</p>
   `;
   PSAuth.updateNav();
 }

@@ -31,7 +31,7 @@ async function initWatch(){
   }
 
   try{
-    currentViewer = loadViewer();
+    currentViewer = await getAuthenticatedViewerForPage();
     const res = await fetch('data/catalogue.json');
     const catalogue = await res.json();
     const item = catalogue.find(entry => entry.slug === slug);
@@ -303,9 +303,17 @@ async function refreshCommunity(item){
 }
 
 async function addReview(slug, viewer, rating, text, parentId=null){
+  const authUserId = viewer.auth_user_id || window.PSAuth?.getAuthUser?.()?.id || null;
+
+  if(!authUserId){
+    setStatus('Connexion Auth introuvable. Reconnecte-toi depuis la page Compte.', 'error');
+    return false;
+  }
+
   const basePayload = {
     movie_id: slug,
-    user_id: viewer.id || viewer.pseudo,
+    user_id: authUserId,
+    auth_user_id: authUserId,
     viewer_uuid: viewer.id || null,
     display_name: viewer.pseudo,
     comment: text,
@@ -315,16 +323,7 @@ async function addReview(slug, viewer, rating, text, parentId=null){
     created_at: new Date().toISOString()
   };
 
-  const inserted = await supabaseInsert('comments', basePayload);
-  if(inserted) return true;
-
-  // Compatibilité si viewer_uuid ou parent_id n’existe pas sur une ancienne base.
-  const fallbackPayload = {...basePayload};
-  delete fallbackPayload.viewer_uuid;
-  delete fallbackPayload.parent_id;
-  delete fallbackPayload.likes_count;
-  fallbackPayload.user_id = viewer.pseudo;
-  return supabaseInsert('comments', fallbackPayload);
+  return supabaseInsert('comments', basePayload);
 }
 
 async function fetchComments(slug){
@@ -388,53 +387,47 @@ async function recordAndFetchMovieViews(slug){
 }
 
 async function ensureViewer({silent=false}={}){
-  const authViewer = window.PSAuth ? await PSAuth.getCurrentViewer() : null;
-  if(authViewer?.id){
-    currentViewer = authViewer;
-    saveViewer(authViewer);
-    renderViewerBox();
-    return authViewer;
-  }
-
-  if(currentViewer?.id) return currentViewer;
-
-  const stored = loadViewer();
-  if(stored?.id){
-    currentViewer = stored;
-    renderViewerBox();
-    return stored;
-  }
-
-  const viewer = silent ? await createAutoViewer() : null;
-  if(viewer){
+  const viewer = await getAuthenticatedViewerForPage();
+  if(viewer?.id){
     currentViewer = viewer;
-    saveViewer(viewer);
     renderViewerBox();
+    return viewer;
   }
-  return viewer;
+
+  if(!silent){
+    showAuthRequiredNotice();
+    setStatus('Connexion requise pour cette action.', 'error');
+  }
+
+  return null;
 }
 
 async function ensureViewerForComment(){
-  if(!window.PSAuth){
-    setStatus('Module Auth introuvable. Recharge la page, le sas a oublié ses clés.', 'error');
+  const viewer = await getAuthenticatedViewerForPage();
+
+  if(!viewer?.id){
+    setStatus('Connexion requise : ouvre la page Compte puis reconnecte-toi.', 'error');
     showAuthRequiredNotice();
     return null;
   }
 
-  const viewer = await PSAuth.requireAuthenticatedViewer?.() || null;
+  currentViewer = viewer;
+  renderViewerBox();
+  return viewer;
+}
 
-  if(!viewer?.id){
-    const state = await PSAuth.getAuthState?.();
-    console.warn('Planète Stream Auth refusé au moment de publier', state);
-    setStatus('Connexion active non vérifiée. Retourne sur la page Compte puis reconnecte-toi.', 'error');
-    showAuthRequiredNotice(!state?.isAuthenticated);
+async function getAuthenticatedViewerForPage(){
+  if(!window.PSAuth){
     return null;
   }
 
-  currentViewer = viewer;
-  saveViewer(viewer);
-  renderViewerBox();
-  return viewer;
+  const state = await PSAuth.getAuthState?.();
+  if(state?.isAuthenticated && state.viewer?.id){
+    return state.viewer;
+  }
+
+  currentViewer = null;
+  return null;
 }
 
 function showAuthRequiredNotice(profileOnly=false){
@@ -561,7 +554,7 @@ function renderViewerBox(){
   const box = document.querySelector('#viewerBox');
   const label = document.querySelector('#formViewerLabel');
   const helpText = document.querySelector('#viewerHelpText');
-  const viewer = currentViewer || loadViewer();
+  const viewer = currentViewer;
 
   if(box){
     if(viewer?.pseudo){
@@ -603,7 +596,12 @@ function renderViewerBox(){
 
 async function toggleCommentLike(commentId){
   const viewer = await ensureViewer({silent:true});
-  if(!viewer || !commentId || String(commentId).startsWith('local-')) return;
+  if(!viewer){
+    setStatus('Connecte-toi pour liker une critique.', 'error');
+    showAuthRequiredNotice();
+    return;
+  }
+  if(!commentId || String(commentId).startsWith('local-')) return;
 
   const wasLiked = likedCommentIds.has(commentId);
   const comment = currentComments.find(item => item.id === commentId);
@@ -630,8 +628,7 @@ async function toggleCommentLike(commentId){
   const finalCount = exactCount === null ? optimisticCount : exactCount;
   setCommentLikeState(commentId, !wasLiked, finalCount);
 
-  // Cache de compatibilité : si la policy UPDATE de comments refuse, ce n'est pas bloquant.
-  await supabaseUpdate('comments', `id=eq.${encodeURIComponent(commentId)}`, {likes_count: finalCount});
+  // Le compteur visible vient de comment_likes. Pas besoin de modifier comments.likes_count côté client.
 
   setStatus(wasLiked ? 'Like retiré.' : 'Like ajouté. Petite étincelle sociale validée.', 'ok');
 }
@@ -732,7 +729,7 @@ async function isFavorite(viewerId, slug){
 async function refreshFavoriteButton(slug){
   const btn = document.querySelector('#favoriteBtn');
   if(!btn) return;
-  const viewer = currentViewer || loadViewer();
+  const viewer = currentViewer;
   if(!viewer?.id || String(viewer.id).startsWith('local-')){
     btn.textContent = '♡ Ajouter à ma liste';
     btn.classList.remove('is-active');
@@ -744,7 +741,7 @@ async function refreshFavoriteButton(slug){
 }
 
 async function saveViewerHistory(slug, progress=0){
-  const viewer = currentViewer || loadViewer();
+  const viewer = currentViewer;
   if(!viewer?.id || String(viewer.id).startsWith('local-')) return false;
 
   const payload = {viewer_id: viewer.id, movie_id: slug, progress, updated_at: new Date().toISOString()};
