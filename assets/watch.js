@@ -22,6 +22,9 @@ let currentComments = [];
 let likedCommentIds = new Set();
 let commentSortMode = 'recent';
 let profileStatsCache = new Map();
+let communityPollTimer = null;
+let communityPollSignature = '';
+let communityPollBusy = false;
 
 async function initWatch(){
   if(window.PS?.ready){
@@ -56,6 +59,7 @@ async function initWatch(){
     bindWatchEvents(item);
     renderViewerBox();
     await refreshCommunity(item);
+    startCommunityPolling(item);
     await saveViewerHistory(item.slug, 0);
     document.title = `${item.title} | Salle de projection`;
   }catch(error){
@@ -230,6 +234,7 @@ function bindWatchEvents(item){
   document.querySelector('#commentsSort')?.addEventListener('change', event => {
     commentSortMode = event.target.value || 'recent';
     document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
+  communityPollSignature = commentsSignature(currentComments);
   });
 
   document.querySelector('#commentsList')?.addEventListener('click', async event => {
@@ -845,6 +850,10 @@ async function toggleCommentLike(commentId){
 
   setCommentLikeState(commentId, !wasLiked, optimisticCount);
   setStatus(wasLiked ? 'Retrait du like...' : 'Like envoyé...', 'pending');
+  const likeButton = document.querySelector(`[data-like-comment="${cssEscape(commentId)}"]`);
+  likeButton?.classList.remove('like-pop');
+  void likeButton?.offsetWidth;
+  likeButton?.classList.add('like-pop');
 
   let ok = false;
   if(wasLiked){
@@ -879,7 +888,7 @@ function setCommentLikeState(commentId, liked, count){
   const button = document.querySelector(`[data-like-comment="${cssEscape(commentId)}"]`);
   if(button){
     button.classList.toggle('is-active', liked);
-    button.innerHTML = `${liked ? '♥' : '♡'} ${safeCount}`;
+    button.innerHTML = `${liked ? '❤️' : '🤍'} <span>${safeCount}</span>${liked ? '<small>Aimé par vous</small>' : ''}`;
   }
 }
 
@@ -1204,6 +1213,11 @@ function renderStars(rating=0){
   return '★'.repeat(value) + '☆'.repeat(10 - value);
 }
 
+function renderRatingBadge(rating=0){
+  const value = Math.max(0, Math.min(10, Number(rating) || 0));
+  return `<span class="comment-rating-badge"><span class="comment-stars">${renderStars(value)}</span><strong>${value}/10</strong></span>`;
+}
+
 function setStatus(message, type=''){
   const status = document.querySelector('#supabaseStatus');
   if(!status) return;
@@ -1255,6 +1269,7 @@ function renderCommentCard(comment, replies=[]){
   const sortedReplies = [...replies].sort((a,b) => dateScore(a.date) - dateScore(b.date));
   const replyCount = sortedReplies.length;
   const profileAttr = comment.viewer_uuid ? `data-profile-viewer="${escapeHtml(comment.viewer_uuid)}"` : '';
+  const count = Number(comment.likes_count) || 0;
   return `
     <article class="comment-card ${isReply ? 'is-reply' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}">
       <div class="comment-head community-head">
@@ -1265,12 +1280,12 @@ function renderCommentCard(comment, replies=[]){
             <small>${formatCommentDate(comment.date)}${comment.edited_at ? ' · modifié' : ''}</small>
           </span>
         </button>
-        ${comment.rating ? `<span class="comment-stars">${renderStars(comment.rating)}</span>` : '<span class="comment-reply-pill">Réponse</span>'}
+        ${comment.rating ? renderRatingBadge(comment.rating) : '<span class="comment-reply-pill">💬 Réponse</span>'}
       </div>
       <p>${escapeHtml(comment.text)}</p>
       <div class="comment-actions">
-        <button class="comment-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '♥' : '♡'} ${Number(comment.likes_count) || 0}</button>
-        ${!isReply ? `<button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">↩ Répondre${replyCount ? ` · ${replyCount}` : ''}</button>` : ''}
+        <button class="comment-action like-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '❤️' : '🤍'} <span>${count}</span>${liked ? '<small>Aimé par vous</small>' : ''}</button>
+        ${!isReply ? `<button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">💬 Répondre${replyCount ? ` · ${replyCount}` : ''}</button>` : ''}
         ${owner ? `<button class="comment-action" type="button" data-edit-comment="${escapeHtml(comment.id || '')}">✏ Modifier</button><button class="comment-action danger" type="button" data-delete-comment="${escapeHtml(comment.id || '')}">🗑 Supprimer</button>` : ''}
       </div>
       ${sortedReplies.length ? `<div class="comment-replies">${sortedReplies.map(reply => renderCommentCard(reply, [])).join('')}</div>` : ''}
@@ -1333,6 +1348,53 @@ function saveLocalComments(slug, comments){
   localStorage.setItem(getStorageKey(slug, 'comments'), JSON.stringify(comments.slice(0,50)));
 }
 
+function startCommunityPolling(item){
+  if(communityPollTimer){
+    clearInterval(communityPollTimer);
+    communityPollTimer = null;
+  }
+  if(!item?.slug || !SUPABASE_ENABLED) return;
+
+  communityPollSignature = commentsSignature(currentComments);
+  communityPollTimer = setInterval(async () => {
+    if(communityPollBusy || !currentItem?.slug) return;
+    communityPollBusy = true;
+    try{
+      const comments = await fetchComments(currentItem.slug);
+      if(comments.online){
+        const signature = commentsSignature(comments.data);
+        if(signature !== communityPollSignature){
+          currentComments = comments.data;
+          communityPollSignature = signature;
+          if(currentViewer?.id){
+            likedCommentIds = await fetchLikedCommentIds(currentViewer.id, currentComments.map(comment => comment.id).filter(Boolean));
+          }
+          const list = document.querySelector('#commentsList');
+          if(list){
+            list.classList.add('is-refreshing');
+            list.innerHTML = renderComments(currentComments);
+            setTimeout(() => list.classList.remove('is-refreshing'), 420);
+          }
+          setStatus('Conversation synchronisée. Les nouveaux avis arrivent sans lever le petit doigt.', 'ok');
+        }
+      }
+    }finally{
+      communityPollBusy = false;
+    }
+  }, 12000);
+}
+
+function commentsSignature(comments=[]){
+  return (comments || [])
+    .map(comment => [comment.id, comment.parent_id || '', comment.text, comment.likes_count || 0, comment.edited_at || '', comment.date || ''].join(':'))
+    .sort()
+    .join('|');
+}
+
+window.addEventListener('beforeunload', () => {
+  if(communityPollTimer) clearInterval(communityPollTimer);
+});
+
 function showWatchError(message){
   watchPage.innerHTML = `<section class="container detail-error"><h1>Salle indisponible</h1><p>${escapeHtml(message)}</p><a class="primary" href="index.html">Retour accueil</a></section>`;
 }
@@ -1346,6 +1408,26 @@ function formatCommentDate(date){
   if(!date) return 'À l’instant';
   const parsed = new Date(date);
   if(Number.isNaN(parsed.getTime())) return 'À l’instant';
+
+  const diff = Date.now() - parsed.getTime();
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+
+  if(diff < minute) return 'À l’instant';
+  if(diff < hour){
+    const value = Math.max(1, Math.floor(diff / minute));
+    return `Il y a ${value} minute${value > 1 ? 's' : ''}`;
+  }
+  if(diff < day){
+    const value = Math.max(1, Math.floor(diff / hour));
+    return `Il y a ${value} heure${value > 1 ? 's' : ''}`;
+  }
+  if(diff < 2 * day) return 'Hier';
+  if(diff < 7 * day){
+    const value = Math.max(2, Math.floor(diff / day));
+    return `Il y a ${value} jours`;
+  }
   return parsed.toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
 }
 

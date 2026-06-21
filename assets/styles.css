@@ -2719,3 +2719,107 @@ min-width:220px;
   .comments-toolbar select{width:100%}
   .profile-mini-stats{grid-template-columns:1fr}
 }
+
+/* === Planète Stream V2.1.1 : polish avis & interactions === */
+.comment-card{
+  position:relative;
+  overflow:hidden;
+}
+.comment-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.28;
+  background:linear-gradient(120deg, transparent 0%, rgba(195,77,255,.08) 42%, transparent 72%);
+  transform:translateX(-120%);
+  transition:transform .75s ease;
+}
+.comment-card:hover::before{transform:translateX(120%)}
+.comment-rating-badge{
+  display:inline-grid;
+  gap:3px;
+  justify-items:end;
+  min-width:132px;
+  border:1px solid rgba(255,214,107,.22);
+  border-radius:14px;
+  padding:8px 11px;
+  background:linear-gradient(135deg,rgba(255,214,107,.12),rgba(139,44,255,.08));
+  box-shadow:0 0 18px rgba(255,214,107,.08);
+}
+.comment-rating-badge strong{
+  color:#fff;
+  font-size:12px;
+  line-height:1;
+}
+.comment-rating-badge .comment-stars{
+  font-size:12px!important;
+  letter-spacing:.02em;
+}
+.like-action{
+  min-width:74px;
+}
+.like-action small{
+  color:#e9ddff!important;
+  font-size:11px!important;
+  font-weight:800;
+  margin-left:2px;
+}
+.like-action.is-active{
+  background:linear-gradient(135deg,rgba(255,45,120,.28),rgba(139,44,255,.28));
+  border-color:rgba(255,94,150,.62);
+  box-shadow:0 0 20px rgba(255,45,120,.18),0 0 22px rgba(139,44,255,.16);
+}
+.like-action.like-pop{
+  animation:likePulse .36s ease;
+}
+@keyframes likePulse{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+.comment-replies{
+  position:relative;
+  border-left:0;
+  padding-left:26px;
+}
+.comment-replies::before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:4px;
+  bottom:4px;
+  width:2px;
+  border-radius:999px;
+  background:linear-gradient(to bottom, rgba(195,77,255,.74), rgba(255,45,85,.18));
+  box-shadow:0 0 14px rgba(139,44,255,.34);
+}
+.comment-card.is-reply::after{
+  content:"";
+  position:absolute;
+  left:-18px;
+  top:28px;
+  width:18px;
+  height:2px;
+  background:rgba(195,77,255,.45);
+  box-shadow:0 0 12px rgba(139,44,255,.3);
+}
+.comments-list.is-refreshing .comment-card{
+  animation:commentRefresh .42s ease;
+}
+@keyframes commentRefresh{
+  from{opacity:.66;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.profile-mini-card{
+  animation:profilePop .22s ease;
+}
+@keyframes profilePop{
+  from{opacity:0;transform:translateY(12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(max-width:800px){
+  .comment-rating-badge{justify-items:start;min-width:0;width:max-content;max-width:100%}
+  .comment-replies{padding-left:18px}
+  .comment-card.is-reply::after{left:-12px;width:12px}
+}
