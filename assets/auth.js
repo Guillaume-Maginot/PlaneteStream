@@ -528,6 +528,65 @@ const PS_AUTH_CONFIG = {
     return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
   }
 
+
+  function roleLabel(role='viewer'){
+    const key = String(role || 'viewer').toLowerCase();
+    if(key === 'admin') return 'Fondateur';
+    if(key === 'moderator') return 'Modérateur';
+    return 'Planétien';
+  }
+
+  function avatarTitle(value=''){
+    const label = avatarLabel(value || 'orbiteur');
+    return label || 'Orbiteur';
+  }
+
+  function reputationScore(stats={}){
+    return Math.max(0,
+      Number(stats.comments || stats.roots || 0) * 12 +
+      Number(stats.replies || 0) * 5 +
+      Number(stats.likes || stats.likesReceived || 0) * 8 +
+      Number(stats.favorites || 0) * 2
+    );
+  }
+
+  function reputationLevel(score=0){
+    const value = Number(score || 0);
+    const levels = [
+      {min:0, next:50, icon:'🌱', label:'Nouveau Planétien'},
+      {min:50, next:150, icon:'🎬', label:'Spectateur actif'},
+      {min:150, next:350, icon:'🍿', label:'Cinéphile confirmé'},
+      {min:350, next:800, icon:'⭐', label:'Critique influent'},
+      {min:800, next:1500, icon:'🏆', label:'Légende de l’orbite'},
+      {min:1500, next:null, icon:'🌌', label:'Constellation vivante'}
+    ];
+    const current = [...levels].reverse().find(level => value >= level.min) || levels[0];
+    const progress = current.next ? Math.min(100, Math.round(((value - current.min) / (current.next - current.min)) * 100)) : 100;
+    return {...current, score:value, progress};
+  }
+
+  function badgeDefinitions(viewer={}, stats={}){
+    const role = String(viewer?.role || 'viewer').toLowerCase();
+    const score = reputationScore(stats);
+    const level = reputationLevel(score);
+    const badges = [];
+    if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Pilote officiel de Planète Stream', rarity:'legendary'});
+    if(role === 'moderator') badges.push({icon:'🛡️', label:'Modérateur', description:'Gardien de la salle et des popcorns civilisés', rarity:'rare'});
+    if(Number(stats.comments || stats.roots || 0) >= 1) badges.push({icon:'🎬', label:'Premier avis', description:'A publié sa première critique', rarity:'common'});
+    if(Number(stats.comments || stats.roots || 0) >= 5) badges.push({icon:'🍿', label:'Cinéphile actif', description:'A publié au moins 5 critiques', rarity:'rare'});
+    if(Number(stats.comments || stats.roots || 0) >= 25) badges.push({icon:'📽️', label:'Archiviste', description:'A publié au moins 25 critiques', rarity:'epic'});
+    if(Number(stats.replies || 0) >= 3) badges.push({icon:'💬', label:'Conversateur', description:'Participe aux échanges', rarity:'common'});
+    if(Number(stats.replies || 0) >= 20) badges.push({icon:'🗣️', label:'Débatteur', description:'Anime les discussions du Hall', rarity:'rare'});
+    if(Number(stats.likes || stats.likesReceived || 0) >= 5) badges.push({icon:'⭐', label:'Critique appréciée', description:'Ses avis reçoivent des likes', rarity:'rare'});
+    if(Number(stats.likes || stats.likesReceived || 0) >= 25) badges.push({icon:'🏆', label:'Top critique', description:'Ses critiques marquent les esprits', rarity:'epic'});
+    if(score >= 350) badges.push({icon:'🌌', label:level.label, description:'Réputation élevée dans l’orbite', rarity:'legendary'});
+    const joined = viewer?.created_at ? new Date(viewer.created_at) : null;
+    if(joined && !Number.isNaN(joined.getTime()) && Date.now() - joined.getTime() < 1000 * 60 * 60 * 24 * 30){
+      badges.push({icon:'🌱', label:'Nouveau membre', description:'A rejoint récemment Planète Stream', rarity:'common'});
+    }
+    return badges.slice(0, 8);
+  }
+
   function updateNav(){
     const link = document.querySelector('#accountNavLink');
     if(!link) return;
@@ -577,7 +636,7 @@ const PS_AUTH_CONFIG = {
         ${avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar')}
         <div>
           <strong>${escapeHtml(viewer.pseudo)}</strong>
-          <small>${escapeHtml(viewer.role || 'viewer')}</small>
+          <small>${escapeHtml(avatarTitle(viewer.avatar))} · ${escapeHtml(roleLabel(viewer.role))}</small>
         </div>
       </div>
       <a href="account.html">⭐ Mon profil</a>
@@ -673,7 +732,12 @@ const PS_AUTH_CONFIG = {
     escapeHtml,
     cleanPseudo,
     isValidPseudo,
-    updateNav
+    updateNav,
+    roleLabel,
+    avatarTitle,
+    reputationScore,
+    reputationLevel,
+    badgeDefinitions
   };
 
   window.PS = PS;
@@ -710,6 +774,11 @@ const PS_AUTH_CONFIG = {
     escapeHtml,
     cleanPseudo,
     isValidPseudo,
-    updateNav
+    updateNav,
+    roleLabel,
+    avatarTitle,
+    reputationScore,
+    reputationLevel,
+    badgeDefinitions
   };
 })();

@@ -3312,3 +3312,102 @@ min-width:220px;
   .avatar-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
   .avatar-gallery.compact{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
+/* Planète Stream V2.5 · réputation, badges et carte de Planétien */
+.planetiens-card{
+  display:grid;
+  gap:18px;
+  padding:18px;
+  border:1px solid rgba(195,77,255,.32);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(195,77,255,.28), transparent 28%),
+    linear-gradient(135deg, rgba(35,19,62,.88), rgba(8,9,22,.92));
+  box-shadow:0 18px 50px rgba(0,0,0,.28), 0 0 36px rgba(139,44,255,.16);
+}
+.planetiens-head{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.planetiens-head h2{
+  margin:3px 0 4px;
+  font-size:30px;
+  letter-spacing:-.04em;
+}
+.planetiens-head small{color:var(--muted);font-weight:800}
+.viewer-avatar.giant{
+  width:82px;
+  height:82px;
+  min-width:82px;
+  border-radius:50%;
+  padding:3px;
+  background:linear-gradient(135deg,#8b2cff,#ff2fa8);
+  box-shadow:0 0 24px rgba(195,77,255,.5);
+}
+.viewer-avatar.giant img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.reputation-panel{
+  display:grid;
+  gap:10px;
+  padding:13px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;
+  background:rgba(255,255,255,.045);
+}
+.reputation-panel>div:first-child{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+}
+.reputation-panel span{color:#f4eaff}
+.reputation-panel strong{color:#fff;text-shadow:0 0 14px rgba(195,77,255,.45)}
+.reputation-bar{
+  height:9px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+}
+.reputation-bar i{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#8b2cff,#ff2fa8,#ffcc66);
+  box-shadow:0 0 18px rgba(195,77,255,.55);
+}
+.account-stat-grid{margin:0}
+.account-badge-wall{margin-top:0}
+.profile-badges span[class*="badge-"]{
+  position:relative;
+}
+.profile-badges .badge-common{border-color:rgba(255,255,255,.16)}
+.profile-badges .badge-rare{border-color:rgba(68,179,255,.38);box-shadow:0 0 14px rgba(68,179,255,.12)}
+.profile-badges .badge-epic{border-color:rgba(195,77,255,.55);box-shadow:0 0 18px rgba(195,77,255,.16)}
+.profile-badges .badge-legendary{border-color:rgba(255,205,100,.6);box-shadow:0 0 20px rgba(255,205,100,.18);color:#ffe6a6}
+.account-recent{margin-top:18px}
+.profile-reputation{margin:14px 0 12px}
+.hall-member-row-rich{
+  display:grid;
+  grid-template-columns:auto auto 1fr;
+  align-items:center;
+  column-gap:9px;
+}
+.hall-member-row-rich small{
+  grid-column:3;
+  margin-top:2px;
+}
+.account-dropdown-head small{
+  display:block;
+  max-width:170px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+@media(max-width:620px){
+  .planetiens-head{align-items:flex-start}
+  .viewer-avatar.giant{width:68px;height:68px;min-width:68px}
+  .planetiens-head h2{font-size:24px}
+  .reputation-panel>div:first-child{align-items:flex-start;flex-direction:column;gap:4px}
+}

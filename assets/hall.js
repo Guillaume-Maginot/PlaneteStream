@@ -156,7 +156,7 @@
       <div class="hall-welcome-card">
         ${PSAuth.avatarHtml(latest.avatar || 'orbiteur', 'viewer-avatar big')}
         <strong>${escape(latest.pseudo || 'Nouveau membre')}</strong>
-        <small>${relativeDate(latest.created_at)}</small>
+        <small>${relativeDate(latest.created_at)} · ${escape(PSAuth.avatarLabel?.(latest.avatar) || 'Orbiteur')}</small>
         <p>${stats.roots ? 'Premier avis publié, entrée réussie dans l’orbite.' : 'Nouveau Planétien arrivé dans le hall.'}</p>
       </div>
     `;
@@ -167,16 +167,17 @@
     if(!container) return;
     const rows = state.viewers
       .map(viewer => ({viewer, stats:viewerStats(viewer.id)}))
-      .map(row => ({...row, score:row.stats.roots * 4 + row.stats.replies * 2 + row.stats.likesReceived}))
+      .map(row => ({...row, score:PSAuth.reputationScore ? PSAuth.reputationScore({comments:row.stats.roots, replies:row.stats.replies, likes:row.stats.likesReceived}) : row.stats.roots * 12 + row.stats.replies * 5 + row.stats.likesReceived * 8}))
       .filter(row => row.score > 0)
       .sort((a,b) => b.score - a.score)
       .slice(0,4);
 
     container.innerHTML = `<h3>🏆 Membres actifs</h3>${rows.length ? rows.map((row, index) => `
-      <div class="hall-member-row">
+      <div class="hall-member-row hall-member-row-rich">
         <span>${['🥇','🥈','🥉','⭐'][index] || '⭐'}</span>
-        <span class="hall-member-avatar">${PSAuth.avatarHtml(row.viewer.avatar || 'orbiteur', 'viewer-avatar small')}</span><strong>${escape(row.viewer.pseudo)}</strong>
-        <small>${row.stats.roots} critique${row.stats.roots > 1 ? 's' : ''} · ${row.stats.likesReceived} like${row.stats.likesReceived > 1 ? 's' : ''}</small>
+        <span class="hall-member-avatar">${PSAuth.avatarHtml(row.viewer.avatar || 'orbiteur', 'viewer-avatar small')}</span>
+        <strong>${escape(row.viewer.pseudo)}</strong>
+        <small>${escape((PSAuth.reputationLevel ? PSAuth.reputationLevel(row.score).label : 'Planétien'))} · ${row.score} pts</small>
       </div>
     `).join('') : empty('Les membres actifs s’échauffent encore en coulisses.')}`;
   }

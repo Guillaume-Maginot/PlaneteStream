@@ -920,6 +920,8 @@ async function openMiniProfile(viewerId){
     fetchViewerRecentReviews(viewerId)
   ]);
   const badges = buildProfileBadges(viewer, stats);
+  const score = PSAuth.reputationScore ? PSAuth.reputationScore(stats) : (stats.comments * 12 + stats.replies * 5 + stats.likes * 8);
+  const level = PSAuth.reputationLevel ? PSAuth.reputationLevel(score) : {icon:'🌱', label:'Nouveau Planétien', progress:0};
 
   document.querySelector('#profileMiniModal')?.remove();
   const modal = document.createElement('div');
@@ -933,11 +935,15 @@ async function openMiniProfile(viewerId){
         <div>
           <p class="eyebrow">Profil spectateur</p>
           <h3>${escapeHtml(viewer.pseudo || 'Spectateur')}</h3>
-          <small>${viewer.created_at ? `Membre depuis ${formatCommentDate(viewer.created_at)}` : 'Membre Planète Stream'}</small>
+          <small>${viewer.created_at ? `Membre depuis ${formatCommentDate(viewer.created_at)}` : 'Membre Planète Stream'} · ${escapeHtml(PSAuth.avatarLabel?.(viewer.avatar) || 'Orbiteur')}</small>
         </div>
       </div>
       <div class="profile-badges" aria-label="Badges du spectateur">
         ${badges.map(badge => `<span title="${escapeHtml(badge.description)}">${escapeHtml(badge.icon)} ${escapeHtml(badge.label)}</span>`).join('') || '<span>🛰️ Observateur</span>'}
+      </div>
+      <div class="reputation-panel profile-reputation">
+        <div><span>${escapeHtml(level.icon)} ${escapeHtml(level.label)}</span><strong>${score} pts</strong></div>
+        <div class="reputation-bar"><i style="width:${Math.max(0, Math.min(100, level.progress || 0))}%"></i></div>
       </div>
       <div class="profile-mini-stats">
         <span><strong>${stats.comments}</strong><small>critiques</small></span>
@@ -1022,9 +1028,9 @@ function renderProfileReviewItem(review){
 }
 
 function buildProfileBadges(viewer, stats){
+  if(PSAuth.badgeDefinitions) return PSAuth.badgeDefinitions(viewer, stats);
   const badges = [];
   const role = String(viewer?.role || 'viewer').toLowerCase();
-
   if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Administrateur Planète Stream'});
   if(role === 'moderator') badges.push({icon:'🛡️', label:'Modérateur', description:'Aide à garder la salle propre'});
   if(stats.comments >= 1) badges.push({icon:'🎬', label:'Premier avis', description:'A publié au moins une critique'});
@@ -1032,12 +1038,6 @@ function buildProfileBadges(viewer, stats){
   if(stats.replies >= 3) badges.push({icon:'💬', label:'Conversateur', description:'Participe aux échanges'});
   if(stats.likes >= 5) badges.push({icon:'⭐', label:'Critique appréciée', description:'Ses avis reçoivent des likes'});
   if(stats.likes >= 25) badges.push({icon:'🏆', label:'Top critique', description:'Ses critiques sont très appréciées'});
-
-  const joined = viewer?.created_at ? new Date(viewer.created_at) : null;
-  if(joined && !Number.isNaN(joined.getTime()) && Date.now() - joined.getTime() < 1000 * 60 * 60 * 24 * 30){
-    badges.push({icon:'🌱', label:'Nouveau membre', description:'A rejoint récemment Planète Stream'});
-  }
-
   return badges.slice(0, 6);
 }
 
