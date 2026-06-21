@@ -639,10 +639,13 @@ const PS_AUTH_CONFIG = {
           <small>${escapeHtml(avatarTitle(viewer.avatar))} · ${escapeHtml(roleLabel(viewer.role))}</small>
         </div>
       </div>
-      <a href="account.html">⭐ Mon profil</a>
-      <a href="index.html#catalogue">❤️ Mes favoris</a>
-      <a href="watch.html">🎬 Mon historique</a>
+      <a href="account.html#mon-espace">🪐 Mon Espace</a>
+      <a href="account.html#mon-profil">👤 Mon profil</a>
       <a href="account.html#mes-critiques">💬 Mes critiques</a>
+      <a href="account.html#mes-avatars">🎭 Mes avatars</a>
+      <a href="account.html#mes-badges">🏅 Mes badges</a>
+      <a href="account.html#mes-statistiques">📊 Mes statistiques</a>
+      <a href="account.html#parametres">⚙️ Paramètres</a>
       <button type="button" data-auth-logout>🚪 Déconnexion</button>
     `;
   }

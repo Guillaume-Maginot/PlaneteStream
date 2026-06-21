@@ -3670,3 +3670,114 @@ min-width:220px;
   .comment-card.is-root-review.thread-tone-light,
   .comment-card.is-root-review.thread-tone-dark{box-shadow:0 12px 30px rgba(0,0,0,.18)}
 }
+
+/* === Planète Stream V2.6 : Mon Espace === */
+.account-card.is-hidden{display:none!important}
+.account-card.is-space-dashboard{grid-column:1 / -1}
+.space-nav{
+  position:sticky;
+  top:86px;
+  z-index:5;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:0 0 18px;
+  padding:10px;
+  border:1px solid rgba(195,77,255,.22);
+  border-radius:18px;
+  background:rgba(9,8,20,.84);
+  backdrop-filter:blur(14px);
+  box-shadow:0 14px 36px rgba(0,0,0,.28);
+}
+.space-nav a{
+  display:inline-flex;
+  align-items:center;
+  min-height:38px;
+  padding:0 12px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:999px;
+  background:rgba(255,255,255,.04);
+  color:#eee;
+  font-size:13px;
+  font-weight:900;
+  transition:.18s ease;
+}
+.space-nav a:hover{
+  transform:translateY(-1px);
+  border-color:rgba(195,77,255,.42);
+  background:rgba(139,44,255,.16);
+  box-shadow:0 0 20px rgba(139,44,255,.16);
+}
+.space-section{
+  scroll-margin-top:116px;
+  margin:16px 0;
+  padding:20px;
+  border:1px solid rgba(195,77,255,.16);
+  border-radius:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+}
+.space-section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:14px;
+  margin-bottom:14px;
+}
+.space-section-head h2{
+  margin:4px 0 0;
+  font-size:24px;
+}
+.space-profile-card{margin:0}
+.space-joined{margin:8px 0 0!important}
+.space-stats-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:10px;
+}
+.space-stat{
+  min-height:118px;
+  display:grid;
+  align-content:center;
+  justify-items:center;
+  gap:6px;
+  padding:14px 10px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  background:radial-gradient(circle at 50% 0%, rgba(195,77,255,.15), transparent 58%), rgba(255,255,255,.035);
+  text-align:center;
+}
+.space-stat i{font-style:normal;font-size:22px}
+.space-stat strong{font-size:30px;color:#fff;line-height:1}
+.space-stat small{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:900}
+.space-list{margin-top:0!important}
+.space-badges span{
+  display:grid!important;
+  gap:3px;
+}
+.space-badges span small{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+  text-transform:none;
+  letter-spacing:0;
+}
+.space-settings{
+  display:grid;
+  gap:10px;
+}
+.space-settings .ghost{justify-self:start}
+.account-dropdown{width:285px}
+.account-dropdown a:first-of-type{
+  background:linear-gradient(135deg,rgba(139,44,255,.26),rgba(195,77,255,.10));
+  border:1px solid rgba(195,77,255,.25);
+}
+@media(max-width:1100px){
+  .space-stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .space-nav{position:static}
+  .space-section{padding:16px}
+  .space-section-head{display:block}
+  .space-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .account-dropdown{width:min(300px, calc(100vw - 28px))}
+}

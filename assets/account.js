@@ -4,6 +4,9 @@ const createForm = document.querySelector('#createAccountForm');
 const loginForm = document.querySelector('#loginAccountForm');
 const createAvatarInput = document.querySelector('#createAvatar');
 const createAvatarGallery = document.querySelector('#createAvatarGallery');
+const currentAccountCard = document.querySelector('#currentAccountCard');
+const createAccountCard = document.querySelector('#createAccountCard');
+const loginAccountCard = document.querySelector('#loginAccountCard');
 
 function initAccount(){
   initPasswordToggles();
@@ -88,9 +91,10 @@ async function renderCurrentViewer(){
   const viewer = state.viewer;
 
   if(state.isAuthenticated && viewer?.pseudo){
-    const [stats, recentReviews] = await Promise.all([
+    const [stats, recentReviews, ratedMovies] = await Promise.all([
       fetchMyCommunityStats(viewer.id),
-      fetchMyRecentReviews(viewer.id)
+      fetchMyRecentReviews(viewer.id, 8),
+      fetchMyRatedMovies(viewer.id, 8)
     ]);
     const score = PSAuth.reputationScore?.(stats) || localReputationScore(stats);
     const level = PSAuth.reputationLevel?.(score) || localReputationLevel(score);
@@ -99,47 +103,121 @@ async function renderCurrentViewer(){
     const avatarChooser = reserved
       ? `<div class="avatar-reserved-note">Avatar spécial attribué par l’équipe Planète Stream.</div>`
       : `<div class="account-avatar-editor">
-          <label>Changer d'avatar</label>
           <div class="avatar-gallery compact" aria-label="Changer d'avatar">
             ${avatarButtons(viewer.avatar || 'orbiteur')}
           </div>
         </div>`;
 
+    setAuthenticatedLayout(true);
+
     accountState.innerHTML = `
-      <div class="planetiens-card">
-        <div class="planetiens-head">
-          ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar giant')}
-          <div>
-            <p class="eyebrow">Carte de Planétien</p>
-            <h2>${PSAuth.escapeHtml(viewer.pseudo)}</h2>
-            <small>${PSAuth.escapeHtml(PSAuth.avatarLabel?.(viewer.avatar) || 'Orbiteur')} · ${PSAuth.escapeHtml(PSAuth.roleLabel?.(viewer.role) || 'Planétien')}</small>
+      <nav class="space-nav" aria-label="Navigation Mon Espace">
+        <a href="#mon-profil">👤 Profil</a>
+        <a href="#mes-statistiques">📊 Stats</a>
+        <a href="#mes-critiques">💬 Critiques</a>
+        <a href="#mes-avatars">🎭 Avatars</a>
+        <a href="#mes-badges">🏅 Badges</a>
+        <a href="#parametres">⚙️ Paramètres</a>
+      </nav>
+
+      <section class="space-section" id="mon-profil">
+        <div class="space-section-head">
+          <p class="eyebrow">Mon profil</p>
+          <h2>Carte de Planétien</h2>
+        </div>
+        <div class="planetiens-card space-profile-card">
+          <div class="planetiens-head">
+            ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar giant')}
+            <div>
+              <h2>${PSAuth.escapeHtml(viewer.pseudo)}</h2>
+              <small>${PSAuth.escapeHtml(PSAuth.avatarLabel?.(viewer.avatar) || 'Orbiteur')} · ${PSAuth.escapeHtml(PSAuth.roleLabel?.(viewer.role) || 'Planétien')}</small>
+              <p class="soft-note space-joined">Membre depuis ${formatAccountDateLong(viewer.created_at)}</p>
+            </div>
+          </div>
+          <div class="reputation-panel">
+            <div>
+              <span>${PSAuth.escapeHtml(level.icon || '🌱')} ${PSAuth.escapeHtml(level.label || 'Nouveau Planétien')}</span>
+              <strong>${score} pts</strong>
+            </div>
+            <div class="reputation-bar"><i style="width:${Math.max(0, Math.min(100, level.progress || 0))}%"></i></div>
+          </div>
+          <div class="profile-mini-stats account-stat-grid">
+            <span><strong>${stats.ratings}</strong><small>films notés</small></span>
+            <span><strong>${stats.comments}</strong><small>critiques</small></span>
+            <span><strong>${stats.replies}</strong><small>réponses</small></span>
+            <span><strong>${stats.likes}</strong><small>likes reçus</small></span>
           </div>
         </div>
-        <div class="reputation-panel">
-          <div>
-            <span>${PSAuth.escapeHtml(level.icon || '🌱')} ${PSAuth.escapeHtml(level.label || 'Nouveau Planétien')}</span>
-            <strong>${score} pts</strong>
-          </div>
-          <div class="reputation-bar"><i style="width:${Math.max(0, Math.min(100, level.progress || 0))}%"></i></div>
+      </section>
+
+      <section class="space-section" id="mes-statistiques">
+        <div class="space-section-head">
+          <p class="eyebrow">Mes statistiques</p>
+          <h2>Ce que tu as déjà accompli</h2>
         </div>
-        <div class="profile-mini-stats account-stat-grid">
-          <span><strong>${stats.comments}</strong><small>critiques</small></span>
-          <span><strong>${stats.replies}</strong><small>réponses</small></span>
-          <span><strong>${stats.likes}</strong><small>likes reçus</small></span>
+        <div class="space-stats-grid">
+          ${renderSpaceStat('⭐', stats.ratings, 'films notés')}
+          ${renderSpaceStat('💬', stats.comments, 'critiques publiées')}
+          ${renderSpaceStat('↩', stats.replies, 'réponses publiées')}
+          ${renderSpaceStat('❤️', stats.likes, 'likes reçus')}
+          ${renderSpaceStat('🤍', stats.likesGiven, 'likes donnés')}
+          ${renderSpaceStat('📌', stats.favorites, 'favoris')}
         </div>
-        <div class="profile-badges account-badge-wall">
-          ${badges.map(badge => `<span class="badge-${PSAuth.escapeHtml(badge.rarity || 'common')}" title="${PSAuth.escapeHtml(badge.description || '')}">${PSAuth.escapeHtml(badge.icon)} ${PSAuth.escapeHtml(badge.label)}</span>`).join('') || '<span>🛰️ Observateur</span>'}
+      </section>
+
+      <section class="space-section" id="mes-critiques">
+        <div class="space-section-head">
+          <p class="eyebrow">Mes critiques</p>
+          <h2>Retrouver mes avis</h2>
         </div>
-      </div>
-      <p class="soft-note">Email connecté : ${PSAuth.escapeHtml(session?.user?.email || '')}</p>
-      <p class="soft-note">Tes critiques, réponses, favoris et historiques sont rattachés à ton vrai compte.</p>
-      ${recentReviews.length ? `<div class="profile-recent account-recent"><h4>Mes dernières critiques</h4>${recentReviews.map(renderAccountReviewItem).join('')}</div>` : ''}
-      ${avatarChooser}
-      <button class="ghost" type="button" data-logout>Déconnexion</button>
+        ${recentReviews.length ? `<div class="profile-recent account-recent space-list">${recentReviews.map(renderAccountReviewItem).join('')}</div>` : '<p class="soft-note">Aucune critique publiée pour le moment. Le carnet est propre, presque trop propre.</p>'}
+      </section>
+
+      <section class="space-section" id="mes-notes">
+        <div class="space-section-head">
+          <p class="eyebrow">Mes notes</p>
+          <h2>Derniers films notés</h2>
+        </div>
+        ${ratedMovies.length ? `<div class="profile-recent account-recent space-list">${ratedMovies.map(renderAccountRatingItem).join('')}</div>` : '<p class="soft-note">Aucune note enregistrée pour le moment.</p>'}
+      </section>
+
+      <section class="space-section" id="mes-avatars">
+        <div class="space-section-head">
+          <p class="eyebrow">Mes avatars</p>
+          <h2>Choisir mon visage dans le Hall</h2>
+        </div>
+        ${avatarChooser}
+      </section>
+
+      <section class="space-section" id="mes-badges">
+        <div class="space-section-head">
+          <p class="eyebrow">Mes badges</p>
+          <h2>Badges débloqués</h2>
+        </div>
+        <div class="profile-badges account-badge-wall space-badges">
+          ${badges.map(badge => `<span class="badge-${PSAuth.escapeHtml(badge.rarity || 'common')}" title="${PSAuth.escapeHtml(badge.description || '')}">${PSAuth.escapeHtml(badge.icon)} ${PSAuth.escapeHtml(badge.label)}<small>${PSAuth.escapeHtml(badge.description || '')}</small></span>`).join('') || '<span>🛰️ Observateur<small>Commence ton parcours de Planétien.</small></span>'}
+        </div>
+      </section>
+
+      <section class="space-section" id="parametres">
+        <div class="space-section-head">
+          <p class="eyebrow">Paramètres</p>
+          <h2>Compte sécurisé</h2>
+        </div>
+        <div class="space-settings">
+          <p class="soft-note">Email connecté : <strong>${PSAuth.escapeHtml(session?.user?.email || '')}</strong></p>
+          <p class="soft-note">Pseudo public : <strong>${PSAuth.escapeHtml(viewer.pseudo)}</strong></p>
+          <p class="soft-note">Les changements de pseudo, bio et mot de passe seront regroupés ici dans une prochaine passe.</p>
+          <button class="ghost" type="button" data-logout>Déconnexion</button>
+        </div>
+      </section>
     `;
     PSAuth.updateNav();
+    scrollToAccountHash();
     return;
   }
+
+  setAuthenticatedLayout(false);
 
   if(session?.user){
     accountState.innerHTML = `
@@ -156,6 +234,25 @@ async function renderCurrentViewer(){
     <p class="soft-note">Tu peux parcourir le catalogue. Pour publier une critique, répondre, liker ou gérer tes favoris, il faudra créer un compte sécurisé.</p>
   `;
   PSAuth.updateNav();
+}
+
+function setAuthenticatedLayout(isAuthenticated){
+  currentAccountCard?.classList.toggle('is-space-dashboard', Boolean(isAuthenticated));
+  createAccountCard?.classList.toggle('is-hidden', Boolean(isAuthenticated));
+  loginAccountCard?.classList.toggle('is-hidden', Boolean(isAuthenticated));
+}
+
+function renderSpaceStat(icon, value, label){
+  return `<span class="space-stat"><i>${PSAuth.escapeHtml(icon)}</i><strong>${Number(value || 0)}</strong><small>${PSAuth.escapeHtml(label)}</small></span>`;
+}
+
+function scrollToAccountHash(){
+  const hash = decodeURIComponent(location.hash || '');
+  if(!hash || hash === '#mon-espace') return;
+  setTimeout(() => {
+    const target = document.querySelector(hash);
+    if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 80);
 }
 
 function renderAvatarGallery(container, input, selected='orbiteur'){
@@ -254,10 +351,17 @@ function setStatus(message, type=''){
 }
 
 async function fetchMyCommunityStats(viewerId){
-  if(!viewerId) return {comments:0, replies:0, likes:0};
+  if(!viewerId) return {comments:0, replies:0, likes:0, likesGiven:0, ratings:0, favorites:0};
   const commentsResult = await window.PS.restSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&select=id,parent_id`, {auth:true});
   const rows = commentsResult.ok && Array.isArray(commentsResult.data) ? commentsResult.data : [];
   const ids = rows.map(row => row.id).filter(Boolean);
+
+  const [ratingsResult, likesGivenResult, favoritesResult] = await Promise.all([
+    window.PS.restSelect('movie_ratings', `viewer_id=eq.${encodeURIComponent(viewerId)}&select=movie_id`, {auth:true}),
+    window.PS.restSelect('comment_likes', `viewer_id=eq.${encodeURIComponent(viewerId)}&select=comment_id`, {auth:true}),
+    window.PS.restSelect('movie_favorites', `viewer_id=eq.${encodeURIComponent(viewerId)}&select=movie_id`, {auth:true})
+  ]);
+
   let likes = 0;
   if(ids.length){
     const likesResult = await window.PS.restSelect('comment_likes', `comment_id=in.(${ids.map(encodeURIComponent).join(',')})&select=comment_id`, {auth:true});
@@ -266,13 +370,16 @@ async function fetchMyCommunityStats(viewerId){
   return {
     comments: rows.filter(row => !row.parent_id).length,
     replies: rows.filter(row => row.parent_id).length,
-    likes
+    likes,
+    likesGiven: likesGivenResult.ok && Array.isArray(likesGivenResult.data) ? likesGivenResult.data.length : 0,
+    ratings: ratingsResult.ok && Array.isArray(ratingsResult.data) ? new Set(ratingsResult.data.map(row => row.movie_id)).size : 0,
+    favorites: favoritesResult.ok && Array.isArray(favoritesResult.data) ? favoritesResult.data.length : 0
   };
 }
 
-async function fetchMyRecentReviews(viewerId){
+async function fetchMyRecentReviews(viewerId, limit=4){
   if(!viewerId) return [];
-  const result = await window.PS.restSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&parent_id=is.null&select=id,movie_id,comment,rating,created_at,edited_at&order=created_at.desc&limit=4`, {auth:true});
+  const result = await window.PS.restSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&parent_id=is.null&select=id,movie_id,comment,rating,created_at,edited_at&order=created_at.desc&limit=${Number(limit) || 4}`, {auth:true});
   const rows = result.ok && Array.isArray(result.data) ? result.data : [];
   const catalogue = await loadCatalogueTitles();
   return rows.map(row => ({...row, movie_title: catalogue.get(row.movie_id) || row.movie_id || 'Titre inconnu'}));
@@ -290,6 +397,27 @@ async function loadCatalogueTitles(){
   return catalogueTitleCache;
 }
 
+async function fetchMyRatedMovies(viewerId, limit=8){
+  if(!viewerId) return [];
+  const result = await window.PS.restSelect('movie_ratings', `viewer_id=eq.${encodeURIComponent(viewerId)}&select=movie_id,rating,updated_at,created_at&order=updated_at.desc&limit=${Number(limit) || 8}`, {auth:true});
+  const rows = result.ok && Array.isArray(result.data) ? result.data : [];
+  const catalogue = await loadCatalogueTitles();
+  return rows.map(row => ({...row, movie_title: catalogue.get(row.movie_id) || row.movie_id || 'Titre inconnu'}));
+}
+
+function renderAccountRatingItem(item){
+  return `
+    <a class="profile-review-item" href="watch.html?slug=${encodeURIComponent(item.movie_id)}">
+      <span class="profile-review-rating">${PSAuth.escapeHtml(String(item.rating || '-'))}/10</span>
+      <span>
+        <strong>${PSAuth.escapeHtml(item.movie_title)}</strong>
+        <small>noté ${formatAccountDate(item.updated_at || item.created_at)}</small>
+        <em>Ouvrir la fiche pour modifier la note ou écrire une critique.</em>
+      </span>
+    </a>
+  `;
+}
+
 function renderAccountReviewItem(review){
   return `
     <a class="profile-review-item" href="watch.html?slug=${encodeURIComponent(review.movie_id)}#comment-${encodeURIComponent(review.id)}">
@@ -301,6 +429,13 @@ function renderAccountReviewItem(review){
       </span>
     </a>
   `;
+}
+
+function formatAccountDateLong(value){
+  if(!value) return 'date inconnue';
+  const date = new Date(value);
+  if(Number.isNaN(date.getTime())) return 'date inconnue';
+  return new Intl.DateTimeFormat('fr-FR', {day:'2-digit', month:'long', year:'numeric'}).format(date);
 }
 
 function formatAccountDate(value){

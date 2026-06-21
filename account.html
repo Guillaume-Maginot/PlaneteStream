@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compte spectateur | Planète Stream</title>
+  <title>Mon Espace | Planète Stream</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
         <a href="index.html#catalogue" data-nav-filter="film">Films</a>
         <a href="index.html#catalogue" data-nav-filter="serie">Séries</a>
         <a href="index.html#catalogue" data-nav-filter="manga">Manga</a>
-        <a class="active" href="account.html">Compte</a>
+        <a class="active" href="account.html#mon-espace">Mon Espace</a>
       </nav>
       <div class="nav-actions">
         <a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a>
@@ -27,13 +27,13 @@
     </div>
   </header>
 
-  <main class="container account-page">
+  <main class="container account-page" id="mon-espace">
     <section class="account-hero watch-panel">
-      <p class="eyebrow">Compte spectateur sécurisé</p>
-      <h1>Ton badge pour entrer dans la salle</h1>
+      <p class="eyebrow">Mon Espace Planétien</p>
+      <h1>Ton tableau de bord dans l’orbite</h1>
       <p>
-        Crée un vrai compte avec email et mot de passe. Ton pseudo est réservé, tes critiques sont signées,
-        et les marmites de sécurité restent bien chaudes pour les visiteurs non identifiés.
+        Retrouve ton profil, tes critiques, tes badges, tes statistiques et ton avatar.
+        Le petit menu en haut à droite devient enfin ton poste de pilotage personnel.
       </p>
     </section>
 
@@ -43,7 +43,7 @@
         <div id="currentViewerState" class="account-state">Chargement...</div>
       </article>
 
-      <article class="watch-panel account-card">
+      <article class="watch-panel account-card" id="createAccountCard">
         <p class="eyebrow">Créer un compte</p>
         <h2>Nouveau membre</h2>
         <p>Choisis un pseudo public. Il ne sera pas modifié automatiquement : s'il est déjà pris, le site te le dira clairement.</p>
@@ -71,7 +71,7 @@
         </form>
       </article>
 
-      <article class="watch-panel account-card">
+      <article class="watch-panel account-card" id="loginAccountCard">
         <p class="eyebrow">Se connecter</p>
         <h2>Retour en orbite</h2>
         <p>Entre ton email et ton mot de passe. Ton pseudo sera récupéré depuis Supabase, pas depuis les entrailles du navigateur.</p>
