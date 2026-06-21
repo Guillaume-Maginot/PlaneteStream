@@ -22,6 +22,7 @@ const PS_AUTH_CONFIG = {
     user:null,
     viewer:null,
     accessToken:null,
+    notificationsUnread:0,
     error:null
   };
 
@@ -110,6 +111,7 @@ const PS_AUTH_CONFIG = {
     state.user = null;
     state.viewer = null;
     state.accessToken = null;
+    state.notificationsUnread = 0;
     state.error = null;
     updateNav();
     emit('logout', snapshot());
@@ -138,6 +140,7 @@ const PS_AUTH_CONFIG = {
       user:state.user,
       viewer:state.viewer,
       accessToken:state.accessToken,
+      notificationsUnread:state.notificationsUnread || 0,
       isAuthenticated:Boolean(state.user?.id && state.accessToken),
       error:state.error
     };
@@ -361,6 +364,7 @@ const PS_AUTH_CONFIG = {
     state.viewer = await ensureViewerProfile({});
 
     updateNav();
+    if(state.viewer?.id) await refreshNotificationsCount();
     emit('state', snapshot());
     return snapshot();
   }
@@ -587,6 +591,57 @@ const PS_AUTH_CONFIG = {
     return badges.slice(0, 8);
   }
 
+
+  async function fetchUnreadNotificationsCount(){
+    const viewer = state.viewer || loadViewer();
+    if(!viewer?.id || !state.accessToken) return 0;
+    const result = await restSelect('notifications', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&read_at=is.null&select=id`, {auth:true});
+    if(!result.ok || !Array.isArray(result.data)) return 0;
+    return result.data.length;
+  }
+
+  async function refreshNotificationsCount(){
+    const count = await fetchUnreadNotificationsCount();
+    state.notificationsUnread = Number(count || 0);
+    updateNotificationBadges();
+    emit('notifications', snapshot());
+    return state.notificationsUnread;
+  }
+
+  function updateNotificationBadges(){
+    const count = Number(state.notificationsUnread || 0);
+    document.querySelectorAll('[data-notification-count]').forEach(node => {
+      node.textContent = String(count);
+      node.classList.toggle('has-notifications', count > 0);
+      node.hidden = count <= 0;
+    });
+    const link = document.querySelector('#accountNavLink');
+    if(link){
+      link.classList.toggle('has-notifications', count > 0);
+      link.dataset.notificationCount = String(count);
+    }
+  }
+
+  async function createNotification(payload={}){
+    const actor = state.viewer || loadViewer();
+    if(!actor?.id || !payload.recipient_viewer_id) return false;
+    if(String(payload.recipient_viewer_id) === String(actor.id)) return false;
+    const body = {
+      recipient_viewer_id:payload.recipient_viewer_id,
+      actor_viewer_id:payload.actor_viewer_id || actor.id,
+      type:payload.type || 'reply',
+      movie_id:payload.movie_id || null,
+      comment_id:payload.comment_id || null,
+      parent_comment_id:payload.parent_comment_id || null,
+      message:payload.message || null,
+      read_at:null,
+      created_at:new Date().toISOString()
+    };
+    const result = await restWrite('notifications', 'POST', '', body, {auth:true, prefer:'return=minimal'});
+    return result.ok;
+  }
+
+
   function updateNav(){
     const link = document.querySelector('#accountNavLink');
     if(!link) return;
@@ -596,7 +651,7 @@ const PS_AUTH_CONFIG = {
 
     if(connected){
       link.href = '#';
-      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span>`;
+      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span>${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden>0</b>`;
       link.classList.add('is-connected');
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-expanded', 'false');
@@ -640,6 +695,7 @@ const PS_AUTH_CONFIG = {
         </div>
       </div>
       <a href="account.html#mon-espace">🪐 Mon Espace</a>
+      <a href="account.html#mes-notifications">📬 Messages du Hall <b class="menu-notification-pill" data-notification-count hidden>0</b></a>
       <a href="account.html#mon-profil">👤 Mon profil</a>
       <a href="account.html#mes-critiques">💬 Mes critiques</a>
       <a href="account.html#mes-avatars">🎭 Mes avatars</a>
@@ -740,7 +796,10 @@ const PS_AUTH_CONFIG = {
     avatarTitle,
     reputationScore,
     reputationLevel,
-    badgeDefinitions
+    badgeDefinitions,
+    createNotification,
+    refreshNotificationsCount,
+    fetchUnreadNotificationsCount
   };
 
   window.PS = PS;
@@ -782,6 +841,9 @@ const PS_AUTH_CONFIG = {
     avatarTitle,
     reputationScore,
     reputationLevel,
-    badgeDefinitions
+    badgeDefinitions,
+    createNotification,
+    refreshNotificationsCount,
+    fetchUnreadNotificationsCount
   };
 })();

@@ -75,6 +75,11 @@ function initAccount(){
       return;
     }
 
+    if(event.target.closest('[data-mark-notifications-read]')){
+      await markMyNotificationsRead();
+      return;
+    }
+
     const choice = event.target.closest('[data-avatar-choice]');
     if(choice){
       const nextAvatar = choice.dataset.avatarChoice;
@@ -91,10 +96,11 @@ async function renderCurrentViewer(){
   const viewer = state.viewer;
 
   if(state.isAuthenticated && viewer?.pseudo){
-    const [stats, recentReviews, ratedMovies] = await Promise.all([
+    const [stats, recentReviews, ratedMovies, notifications] = await Promise.all([
       fetchMyCommunityStats(viewer.id),
       fetchMyRecentReviews(viewer.id, 8),
-      fetchMyRatedMovies(viewer.id, 8)
+      fetchMyRatedMovies(viewer.id, 8),
+      fetchMyNotifications(viewer.id, 12)
     ]);
     const score = PSAuth.reputationScore?.(stats) || localReputationScore(stats);
     const level = PSAuth.reputationLevel?.(score) || localReputationLevel(score);
@@ -113,6 +119,7 @@ async function renderCurrentViewer(){
     accountState.innerHTML = `
       <nav class="space-nav" aria-label="Navigation Mon Espace">
         <a href="#mon-profil">👤 Profil</a>
+        <a href="#mes-notifications">📬 Messages</a>
         <a href="#mes-statistiques">📊 Stats</a>
         <a href="#mes-critiques">💬 Critiques</a>
         <a href="#mes-avatars">🎭 Avatars</a>
@@ -147,6 +154,20 @@ async function renderCurrentViewer(){
             <span><strong>${stats.replies}</strong><small>réponses</small></span>
             <span><strong>${stats.likes}</strong><small>likes reçus</small></span>
           </div>
+        </div>
+      </section>
+
+      <section class="space-section" id="mes-notifications">
+        <div class="space-section-head">
+          <p class="eyebrow">Messages du Hall</p>
+          <h2>Ce qui vous attend</h2>
+        </div>
+        <div class="space-notification-panel">
+          <div class="space-notification-actions">
+            <p class="soft-note">Les réponses à vos critiques et messages apparaissent ici. Discret, mais fidèle au poste.</p>
+            <button class="ghost" type="button" data-mark-notifications-read ${notifications.unread ? '' : 'disabled'}>Tout marquer comme lu</button>
+          </div>
+          ${notifications.items.length ? `<div class="space-notification-list">${notifications.items.map(renderNotificationItem).join('')}</div>` : '<p class="soft-note">Aucun message pour le moment. Le Hall est calme, presque suspect.</p>'}
         </div>
       </section>
 
@@ -430,6 +451,67 @@ function renderAccountReviewItem(review){
     </a>
   `;
 }
+
+
+async function fetchMyNotifications(viewerId, limit=12){
+  if(!viewerId) return {items:[], unread:0};
+  const result = await window.PS.restSelect('notifications', `recipient_viewer_id=eq.${encodeURIComponent(viewerId)}&select=id,type,movie_id,comment_id,parent_comment_id,actor_viewer_id,message,created_at,read_at&order=created_at.desc&limit=${Number(limit) || 12}`, {auth:true});
+  const rows = result.ok && Array.isArray(result.data) ? result.data : [];
+  const actorIds = [...new Set(rows.map(row => row.actor_viewer_id).filter(Boolean))];
+  const [actors, catalogue] = await Promise.all([fetchNotificationActors(actorIds), loadCatalogueTitles()]);
+  return {
+    unread: rows.filter(row => !row.read_at).length,
+    items: rows.map(row => ({
+      ...row,
+      actor: actors.get(row.actor_viewer_id) || null,
+      movie_title: catalogue.get(row.movie_id) || row.movie_id || 'un contenu'
+    }))
+  };
+}
+
+async function fetchNotificationActors(ids=[]){
+  const cleanIds = ids.filter(id => /^[0-9a-f-]{36}$/i.test(String(id)));
+  if(!cleanIds.length) return new Map();
+  const result = await window.PS.restSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,role,created_at`, {auth:true});
+  const rows = result.ok && Array.isArray(result.data) ? result.data : [];
+  return new Map(rows.map(row => [row.id, row]));
+}
+
+function renderNotificationItem(item){
+  const actor = item.actor || {pseudo:'Un Planétien', avatar:'orbiteur'};
+  const unread = !item.read_at;
+  const href = item.movie_id ? `watch.html?slug=${encodeURIComponent(item.movie_id)}${item.comment_id ? `#comment-${encodeURIComponent(item.comment_id)}` : ''}` : '#';
+  const label = item.type === 'reply'
+    ? `${actor.pseudo || 'Un Planétien'} vous a répondu`
+    : (item.message || 'Nouvelle activité dans le Hall');
+
+  return `
+    <a class="space-notification-item ${unread ? 'is-unread' : ''}" href="${href}">
+      ${PSAuth.avatarHtml(actor.avatar || 'orbiteur', 'viewer-avatar')}
+      <span>
+        <strong>${PSAuth.escapeHtml(label)}</strong>
+        <small>${PSAuth.escapeHtml(item.movie_title)} · ${formatAccountDate(item.created_at)}</small>
+        ${unread ? '<em>Nouveau</em>' : ''}
+      </span>
+    </a>
+  `;
+}
+
+async function markMyNotificationsRead(){
+  const state = await PSAuth.getAuthState();
+  const viewer = state.viewer;
+  if(!viewer?.id) return;
+  setStatus('Lecture des messages du Hall...', 'pending');
+  const result = await window.PS.restWrite('notifications', 'PATCH', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&read_at=is.null`, {read_at:new Date().toISOString()}, {auth:true, prefer:'return=minimal'});
+  if(!result.ok){
+    setStatus('Impossible de marquer les messages comme lus.', 'error');
+    return;
+  }
+  await window.PS.refreshNotificationsCount?.();
+  setStatus('Messages marqués comme lus.', 'ok');
+  renderCurrentViewer();
+}
+
 
 function formatAccountDateLong(value){
   if(!value) return 'date inconnue';

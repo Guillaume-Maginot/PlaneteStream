@@ -355,6 +355,7 @@ function bindWatchEvents(item){
     setStatus('Publication de la réponse...', 'pending');
     const ok = await addReview(currentItem.slug, viewer, null, text, parentId);
     if(ok){
+      await notifyReplyRecipient(parentId, viewer);
       setStatus('Réponse publiée. La conversation prend forme.', 'ok');
       await refreshCommunity(currentItem);
     }else{
@@ -530,6 +531,24 @@ async function addReview(slug, viewer, rating, text, parentId=null){
 
   return supabaseInsert('comments', basePayload);
 }
+
+
+async function notifyReplyRecipient(parentId, actorViewer){
+  if(!window.PS?.createNotification || !parentId || !actorViewer?.id || !currentItem?.slug) return false;
+  const parent = (currentComments || []).find(comment => String(comment.id) === String(parentId));
+  if(!parent?.viewer_uuid || String(parent.viewer_uuid) === String(actorViewer.id)) return false;
+
+  return window.PS.createNotification({
+    type:'reply',
+    recipient_viewer_id:parent.viewer_uuid,
+    actor_viewer_id:actorViewer.id,
+    movie_id:currentItem.slug,
+    comment_id:parentId,
+    parent_comment_id:parent.parent_id || null,
+    message:`${actorViewer.pseudo || 'Un Planétien'} vous a répondu sur ${currentItem.title || 'Planète Stream'}`
+  });
+}
+
 
 async function fetchComments(slug){
   const result = await supabaseSelect('comments', `movie_id=eq.${encodeURIComponent(slug)}&select=*&order=created_at.desc&limit=120`);
