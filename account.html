@@ -55,7 +55,14 @@
           <input id="createPseudo" maxlength="32" minlength="2" required placeholder="Ex : Spoofle" autocomplete="nickname">
 
           <label for="createPassword">Mot de passe</label>
-          <input id="createPassword" type="password" minlength="8" required placeholder="8 caractères minimum" autocomplete="new-password">
+          <div class="password-field">
+            <input id="createPassword" type="password" minlength="8" required placeholder="8 caractères minimum" autocomplete="new-password">
+            <button class="password-toggle" type="button" data-toggle-password="createPassword" aria-label="Afficher le mot de passe" aria-pressed="false">
+              <span class="password-eye password-eye-open" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><path d="M12 5c5.2 0 8.7 4.4 9.8 6-.9 1.5-4.3 6-9.8 6s-8.9-4.5-9.8-6C3.3 9.4 6.8 5 12 5Zm0 2C8.6 7 6 9.3 4.7 11c1.3 1.7 3.9 4 7.3 4s6-2.3 7.3-4C18 9.3 15.4 7 12 7Zm0 1.5A2.5 2.5 0 1 1 12 13a2.5 2.5 0 0 1 0-5Z"/></svg>
+              </span>
+            </button>
+          </div>
 
           <label>Avatar</label>
           <input id="createAvatar" type="hidden" value="orbiteur">
@@ -73,7 +80,14 @@
           <input id="loginEmail" type="email" required placeholder="ton@email.fr" autocomplete="email">
 
           <label for="loginPassword">Mot de passe</label>
-          <input id="loginPassword" type="password" required placeholder="Ton mot de passe" autocomplete="current-password">
+          <div class="password-field">
+            <input id="loginPassword" type="password" required placeholder="Ton mot de passe" autocomplete="current-password">
+            <button class="password-toggle" type="button" data-toggle-password="loginPassword" aria-label="Afficher le mot de passe" aria-pressed="false">
+              <span class="password-eye password-eye-open" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false"><path d="M12 5c5.2 0 8.7 4.4 9.8 6-.9 1.5-4.3 6-9.8 6s-8.9-4.5-9.8-6C3.3 9.4 6.8 5 12 5Zm0 2C8.6 7 6 9.3 4.7 11c1.3 1.7 3.9 4 7.3 4s6-2.3 7.3-4C18 9.3 15.4 7 12 7Zm0 1.5A2.5 2.5 0 1 1 12 13a2.5 2.5 0 0 1 0-5Z"/></svg>
+              </span>
+            </button>
+          </div>
 
           <button class="ghost" type="submit">Me connecter</button>
         </form>

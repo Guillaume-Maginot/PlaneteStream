@@ -3458,3 +3458,52 @@ min-width:220px;
 @media(max-width:800px){
   .quick-rating-form{grid-template-columns:1fr}
 }
+
+/* V2.5.2 - confort mot de passe */
+.password-field{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.password-field input{
+  width:100%;
+  padding-right:54px;
+}
+.password-toggle{
+  position:absolute;
+  right:10px;
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(195,77,255,.25);
+  color:#ded8ff;
+  transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.password-toggle:hover{
+  transform:translateY(-1px);
+  background:rgba(139,44,255,.16);
+  border-color:rgba(195,77,255,.65);
+  box-shadow:0 0 18px rgba(139,44,255,.35);
+}
+.password-toggle svg{
+  width:21px;
+  height:21px;
+  fill:currentColor;
+}
+.password-toggle.is-visible{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(139,44,255,.34),rgba(195,77,255,.18));
+}
+.password-toggle.is-visible::after{
+  content:"";
+  position:absolute;
+  width:23px;
+  height:2px;
+  border-radius:999px;
+  background:#fff;
+  transform:rotate(-38deg);
+  box-shadow:0 0 8px rgba(255,255,255,.7);
+}

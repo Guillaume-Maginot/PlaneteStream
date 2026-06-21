@@ -6,6 +6,7 @@ const createAvatarInput = document.querySelector('#createAvatar');
 const createAvatarGallery = document.querySelector('#createAvatarGallery');
 
 function initAccount(){
+  initPasswordToggles();
   renderAvatarGallery(createAvatarGallery, createAvatarInput, createAvatarInput?.value || 'orbiteur');
   renderCurrentViewer();
 
@@ -201,6 +202,23 @@ async function updateCurrentAvatar(nextAvatar){
   await PSAuth.getAuthState();
   setStatus(`Avatar changé : ${PSAuth.avatarLabel(nextAvatar)}.`, 'ok');
   renderCurrentViewer();
+}
+
+
+function initPasswordToggles(){
+  document.querySelectorAll('[data-toggle-password]').forEach(button => {
+    const inputId = button.dataset.togglePassword;
+    const input = document.getElementById(inputId);
+    if(!input) return;
+
+    button.addEventListener('click', () => {
+      const shouldShow = input.type === 'password';
+      input.type = shouldShow ? 'text' : 'password';
+      button.classList.toggle('is-visible', shouldShow);
+      button.setAttribute('aria-pressed', shouldShow ? 'true' : 'false');
+      button.setAttribute('aria-label', shouldShow ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+    });
+  });
 }
 
 function validateEmail(email){
