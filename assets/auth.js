@@ -339,6 +339,31 @@ const PSAuth = (() => {
     return ensureViewerProfile({});
   }
 
+  async function getAuthState(){
+    await hydrateFromAuthRedirect();
+    await hydrateStoredSessionUser();
+
+    let session = getSession();
+    let user = session?.user || null;
+
+    if(session?.access_token && !user?.id){
+      user = await fetchAuthUser(session.access_token);
+      if(user?.id){
+        session = saveSession({...session, user});
+      }
+    }
+
+    const viewer = user?.id ? await getCurrentViewer() : null;
+
+    return {
+      session,
+      user,
+      viewer,
+      accessToken: session?.access_token || null,
+      isAuthenticated: Boolean(session?.access_token && user?.id)
+    };
+  }
+
   function normalizeViewer(row){
     return {
       id: row.id,
@@ -491,6 +516,7 @@ const PSAuth = (() => {
     getAccessToken,
     getAuthUser,
     getCurrentViewer,
+    getAuthState,
     loadViewer,
     saveViewer,
     clearLocal,

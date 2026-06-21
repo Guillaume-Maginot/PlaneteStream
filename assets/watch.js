@@ -415,16 +415,33 @@ async function ensureViewer({silent=false}={}){
 }
 
 async function ensureViewerForComment(){
-  const viewer = window.PSAuth ? await PSAuth.getCurrentViewer() : null;
-  const session = window.PSAuth ? PSAuth.getSession() : null;
+  let authState = null;
 
-  if(!session?.user?.id){
+  if(window.PSAuth?.getAuthState){
+    authState = await PSAuth.getAuthState();
+  }else if(window.PSAuth){
+    await PSAuth.hydrateFromAuthRedirect?.();
+    await PSAuth.hydrateStoredSessionUser?.();
+    authState = {
+      session: PSAuth.getSession?.(),
+      user: PSAuth.getAuthUser?.(),
+      viewer: await PSAuth.getCurrentViewer?.(),
+      accessToken: PSAuth.getAccessToken?.()
+    };
+    authState.isAuthenticated = Boolean(authState.accessToken && authState.user?.id);
+  }
+
+  if(!authState?.isAuthenticated){
+    console.warn('Planète Stream Auth manquant au moment de publier', authState);
     setStatus('Connexion obligatoire pour publier une critique ou répondre. Les marmites sont chaudes, mais la porte est par ici : account.html', 'error');
     showAuthRequiredNotice();
     return null;
   }
 
+  const viewer = authState.viewer || (window.PSAuth ? await PSAuth.getCurrentViewer() : null);
+
   if(!viewer?.id){
+    console.warn('Planète Stream profil viewer introuvable au moment de publier', authState);
     setStatus('Compte connecté, mais profil spectateur introuvable. Passe par la page Compte pour finaliser ton pseudo.', 'error');
     showAuthRequiredNotice(true);
     return null;
