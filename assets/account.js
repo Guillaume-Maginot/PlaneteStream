@@ -120,6 +120,7 @@ async function renderCurrentViewer(){
       fetchMyRatedMovies(viewer.id, 8),
       fetchMyNotifications(viewer.id, 12)
     ]);
+    const journey = await fetchMyJourney(viewer, stats, recentReviews, ratedMovies);
     const score = PSAuth.reputationScore?.(stats) || localReputationScore(stats);
     const level = PSAuth.reputationLevel?.(score) || localReputationLevel(score);
     const badges = PSAuth.badgeDefinitions?.(viewer, stats) || [];
@@ -138,6 +139,7 @@ async function renderCurrentViewer(){
       <nav class="space-nav" aria-label="Navigation Mon Espace">
         <a href="#mon-profil">👤 Profil</a>
         <a href="#mes-notifications">📬 Messages</a>
+        <a href="#mon-parcours">🚀 Parcours</a>
         <a href="#mes-statistiques">📊 Stats</a>
         <a href="#mes-critiques">💬 Critiques</a>
         <a href="#mes-avatars">🎭 Avatars</a>
@@ -189,6 +191,33 @@ async function renderCurrentViewer(){
             </div>
           </div>
           ${notifications.items.length ? `<div class="space-notification-list">${notifications.items.map(renderNotificationItem).join('')}</div>` : '<p class="soft-note">Aucun message pour le moment. Le Hall est calme, presque suspect.</p>'}
+        </div>
+      </section>
+
+      <section class="space-section" id="mon-parcours">
+        <div class="space-section-head">
+          <p class="eyebrow">Parcours du Planétien</p>
+          <h2>Ton journal de bord</h2>
+        </div>
+        <div class="journey-shell">
+          <div class="journey-hero">
+            <div>
+              <span class="journey-orbit">🚀</span>
+              <h3>${PSAuth.escapeHtml(journey.title)}</h3>
+              <p>${PSAuth.escapeHtml(journey.subtitle)}</p>
+            </div>
+            <div class="journey-next">
+              <small>Prochain chapitre</small>
+              <strong>${PSAuth.escapeHtml(journey.next.label)}</strong>
+              <span>${PSAuth.escapeHtml(journey.next.hint)}</span>
+            </div>
+          </div>
+          <div class="journey-timeline">
+            ${journey.events.map(renderJourneyEvent).join('')}
+          </div>
+          <div class="journey-goals">
+            ${journey.goals.map(renderJourneyGoal).join('')}
+          </div>
         </div>
       </section>
 
@@ -473,6 +502,176 @@ function renderAccountReviewItem(review){
   `;
 }
 
+
+
+async function fetchMyJourney(viewer={}, stats={}, recentReviews=[], ratedMovies=[]){
+  const viewerId = viewer?.id;
+  const catalogue = await loadCatalogueTitles();
+  const events = [];
+
+  const addEvent = (event) => {
+    if(!event?.at) return;
+    events.push({
+      icon:event.icon || '✨',
+      title:event.title || 'Étape franchie',
+      text:event.text || '',
+      at:event.at,
+      href:event.href || '',
+      done:event.done !== false
+    });
+  };
+
+  addEvent({
+    icon:'🚀',
+    title:'Bienvenue sur Planète Stream',
+    text:'Tu es devenu Planétien. Le siège est réservé, le popcorn aussi.',
+    at:viewer.created_at
+  });
+
+  addEvent({
+    icon:'🎭',
+    title:'Avatar actuel',
+    text:`${PSAuth.avatarLabel?.(viewer.avatar) || 'Orbiteur'} accompagne ton parcours dans le Hall.`,
+    at:viewer.last_seen || viewer.created_at
+  });
+
+  const [firstRating, firstReview, firstReply, firstLike] = await Promise.all([
+    fetchFirstRating(viewerId),
+    fetchFirstComment(viewerId, false),
+    fetchFirstComment(viewerId, true),
+    fetchFirstLikeReceived(viewerId)
+  ]);
+
+  if(firstRating){
+    addEvent({
+      icon:'⭐',
+      title:'Première note',
+      text:`${catalogue.get(firstRating.movie_id) || firstRating.movie_id || 'Un film'} · ${firstRating.rating}/10`,
+      at:firstRating.created_at || firstRating.updated_at,
+      href:firstRating.movie_id ? `watch.html?slug=${encodeURIComponent(firstRating.movie_id)}` : ''
+    });
+  }
+
+  if(firstReview){
+    addEvent({
+      icon:'✍️',
+      title:'Première critique',
+      text:`${catalogue.get(firstReview.movie_id) || firstReview.movie_id || 'Un film'} · ${shortenAccountText(firstReview.comment, 90)}`,
+      at:firstReview.created_at,
+      href:firstReview.movie_id ? `watch.html?slug=${encodeURIComponent(firstReview.movie_id)}#comment-${encodeURIComponent(firstReview.id)}` : ''
+    });
+  }
+
+  if(firstReply){
+    addEvent({
+      icon:'💬',
+      title:'Premier échange',
+      text:`Tu as répondu sur ${catalogue.get(firstReply.movie_id) || firstReply.movie_id || 'un film'}.`,
+      at:firstReply.created_at,
+      href:firstReply.movie_id ? `watch.html?slug=${encodeURIComponent(firstReply.movie_id)}#comment-${encodeURIComponent(firstReply.id)}` : ''
+    });
+  }
+
+  if(firstLike){
+    addEvent({
+      icon:'❤️',
+      title:'Premier like reçu',
+      text:'Une de tes contributions a commencé à rayonner dans le Hall.',
+      at:firstLike.created_at,
+      href:firstLike.movie_id && firstLike.comment_id ? `watch.html?slug=${encodeURIComponent(firstLike.movie_id)}#comment-${encodeURIComponent(firstLike.comment_id)}` : ''
+    });
+  }
+
+  const sortedEvents = events.sort((a,b) => new Date(a.at) - new Date(b.at));
+  const goals = journeyGoals(stats, viewer).slice(0, 10);
+  const next = nextJourneyGoal(stats, viewer);
+  const title = sortedEvents.length > 2 ? 'Ton orbite prend forme' : 'Le voyage commence';
+  const subtitle = sortedEvents.length > 2
+    ? 'Chaque note, critique et réponse ajoute une trace à ton journal de bord.'
+    : 'Les premières étoiles du parcours attendent encore d’être allumées.';
+
+  return {title, subtitle, events:sortedEvents, goals, next};
+}
+
+async function fetchFirstRating(viewerId){
+  if(!viewerId) return null;
+  const result = await window.PS.restSelect('movie_ratings', `viewer_id=eq.${encodeURIComponent(viewerId)}&select=movie_id,rating,created_at,updated_at&order=created_at.asc&limit=1`, {auth:true});
+  return result.ok && Array.isArray(result.data) ? result.data[0] || null : null;
+}
+
+async function fetchFirstComment(viewerId, reply=false){
+  if(!viewerId) return null;
+  const parentFilter = reply ? 'parent_id=not.is.null' : 'parent_id=is.null';
+  const result = await window.PS.restSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&${parentFilter}&select=id,movie_id,comment,rating,parent_id,created_at&order=created_at.asc&limit=1`, {auth:true});
+  return result.ok && Array.isArray(result.data) ? result.data[0] || null : null;
+}
+
+async function fetchFirstLikeReceived(viewerId){
+  if(!viewerId) return null;
+  const own = await window.PS.restSelect('comments', `viewer_uuid=eq.${encodeURIComponent(viewerId)}&select=id,movie_id`, {auth:true});
+  const comments = own.ok && Array.isArray(own.data) ? own.data : [];
+  const ids = comments.map(row => row.id).filter(Boolean);
+  if(!ids.length) return null;
+  const result = await window.PS.restSelect('comment_likes', `comment_id=in.(${ids.map(encodeURIComponent).join(',')})&select=comment_id,viewer_id,created_at&order=created_at.asc&limit=1`, {auth:true});
+  const like = result.ok && Array.isArray(result.data) ? result.data[0] || null : null;
+  if(!like) return null;
+  const comment = comments.find(row => row.id === like.comment_id) || {};
+  return {...like, movie_id:comment.movie_id};
+}
+
+function journeyGoals(stats={}, viewer={}){
+  const ageDays = viewer?.created_at ? Math.max(0, Math.floor((Date.now() - new Date(viewer.created_at).getTime()) / 86400000)) : 0;
+  const definitions = [
+    {icon:'⭐', label:'Première note', value:stats.ratings, target:1, hint:'Noter son premier film'},
+    {icon:'🎬', label:'10 films notés', value:stats.ratings, target:10, hint:'Construire ses repères'},
+    {icon:'🌌', label:'50 films notés', value:stats.ratings, target:50, hint:'Dessiner sa constellation'},
+    {icon:'✍️', label:'Première critique', value:stats.comments, target:1, hint:'Laisser une trace écrite'},
+    {icon:'🍿', label:'5 critiques', value:stats.comments, target:5, hint:'Devenir un habitué du Hall'},
+    {icon:'📽️', label:'25 critiques', value:stats.comments, target:25, hint:'Remplir le carnet de projection'},
+    {icon:'💬', label:'Première réponse', value:stats.replies, target:1, hint:'Entrer dans la conversation'},
+    {icon:'🗣️', label:'25 réponses', value:stats.replies, target:25, hint:'Animer les débats'},
+    {icon:'❤️', label:'Premier like reçu', value:stats.likes, target:1, hint:'Faire réagir un autre Planétien'},
+    {icon:'🏆', label:'25 likes reçus', value:stats.likes, target:25, hint:'Marquer les esprits'},
+    {icon:'🕰️', label:'1 semaine dans l’orbite', value:ageDays, target:7, hint:'Rester dans la salle après le générique'},
+    {icon:'🌙', label:'1 mois de présence', value:ageDays, target:30, hint:'Devenir un visage connu'}
+  ];
+  return definitions.map(item => ({...item, value:Number(item.value || 0), done:Number(item.value || 0) >= item.target}));
+}
+
+function nextJourneyGoal(stats={}, viewer={}){
+  const next = journeyGoals(stats, viewer).find(goal => !goal.done);
+  if(!next) return {label:'Tous les jalons actuels sont allumés', hint:'Le prochain chapitre sera ajouté bientôt.'};
+  const missing = Math.max(0, next.target - next.value);
+  return {label:next.label, hint:`Encore ${missing} ${missing > 1 ? 'étapes' : 'étape'} pour l’atteindre.`};
+}
+
+function renderJourneyEvent(event){
+  const body = `
+    <span class="journey-event-icon">${PSAuth.escapeHtml(event.icon)}</span>
+    <div>
+      <strong>${PSAuth.escapeHtml(event.title)}</strong>
+      <small>${formatAccountDateLong(event.at)}</small>
+      <p>${PSAuth.escapeHtml(event.text)}</p>
+    </div>`;
+  return event.href
+    ? `<a class="journey-event" href="${PSAuth.escapeHtml(event.href)}">${body}</a>`
+    : `<div class="journey-event">${body}</div>`;
+}
+
+function renderJourneyGoal(goal){
+  const progress = Math.max(0, Math.min(100, Math.round((Number(goal.value || 0) / Math.max(goal.target, 1)) * 100)));
+  return `
+    <div class="journey-goal ${goal.done ? 'is-done' : ''}">
+      <span>${PSAuth.escapeHtml(goal.icon)}</span>
+      <div>
+        <strong>${PSAuth.escapeHtml(goal.label)}</strong>
+        <small>${PSAuth.escapeHtml(goal.hint)}</small>
+        <div class="journey-goal-bar"><i style="width:${progress}%"></i></div>
+      </div>
+      <em>${goal.done ? '✓' : `${Math.min(goal.value, goal.target)}/${goal.target}`}</em>
+    </div>
+  `;
+}
 
 async function fetchMyNotifications(viewerId, limit=12){
   if(!viewerId) return {items:[], unread:0};

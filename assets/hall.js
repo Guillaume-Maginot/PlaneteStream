@@ -11,6 +11,7 @@
     comments: [],
     viewers: [],
     likes: [],
+    ratings: [],
     viewerMap: new Map(),
     movieMap: new Map(),
     busy:false,
@@ -31,17 +32,19 @@
     state.busy = true;
     try{
       const cataloguePromise = state.catalogue.length ? Promise.resolve(state.catalogue) : fetch('data/catalogue.json').then(r => r.json());
-      const [catalogue, commentsResult, viewersResult, likesResult] = await Promise.all([
+      const [catalogue, commentsResult, viewersResult, likesResult, ratingsResult] = await Promise.all([
         cataloguePromise,
         select('comments', 'select=id,movie_id,viewer_uuid,parent_id,comment,rating,created_at,edited_at,likes_count&order=created_at.desc&limit=220'),
         select('viewers', 'select=id,pseudo,avatar,role,created_at,last_seen&order=created_at.desc&limit=80'),
-        select('comment_likes', 'select=comment_id,viewer_id,created_at&order=created_at.desc&limit=360')
+        select('comment_likes', 'select=comment_id,viewer_id,created_at&order=created_at.desc&limit=360'),
+        select('movie_ratings', 'select=viewer_id,movie_id,rating,created_at,updated_at&order=updated_at.desc&limit=600')
       ]);
 
       state.catalogue = Array.isArray(catalogue) ? catalogue : [];
       state.comments = Array.isArray(commentsResult.data) ? commentsResult.data : [];
       state.viewers = Array.isArray(viewersResult.data) ? viewersResult.data : [];
       state.likes = Array.isArray(likesResult.data) ? likesResult.data : [];
+      state.ratings = Array.isArray(ratingsResult.data) ? ratingsResult.data : [];
       state.viewerMap = new Map(state.viewers.map(v => [v.id, v]));
       state.movieMap = new Map(state.catalogue.map(movie => [movie.slug, movie]));
 
@@ -67,6 +70,7 @@
     renderActiveMembers();
     renderTimeline();
     renderDivisiveMovies();
+    renderJourneyMoments();
     const updated = qs('#hallUpdatedAt');
     if(updated) updated.textContent = `Mis à jour ${relativeDate(new Date().toISOString())}`;
   }
@@ -243,6 +247,50 @@
     `).join('') : empty('Pas encore assez de votes pour provoquer un débat élégant.')}`;
   }
 
+
+  function renderJourneyMoments(){
+    const container = qs('#hallJourneyMoments');
+    if(!container) return;
+    const rows = state.viewers
+      .map(viewer => ({viewer, stats:viewerStats(viewer.id)}))
+      .map(row => {
+        const moment = bestJourneyMoment(row.viewer, row.stats);
+        return {...row, moment, rank:journeyMomentScore(row.stats)};
+      })
+      .filter(row => row.moment)
+      .sort((a,b) => b.rank - a.rank || new Date(b.viewer.last_seen || b.viewer.created_at || 0) - new Date(a.viewer.last_seen || a.viewer.created_at || 0))
+      .slice(0,4);
+
+    container.innerHTML = `<h3>🏅 Parcours des Planétiens</h3>${rows.length ? rows.map(row => `
+      <div class="hall-member-row hall-journey-row">
+        <span class="hall-member-avatar">${PSAuth.avatarHtml(row.viewer.avatar || 'orbiteur', 'viewer-avatar small')}</span>
+        <strong>${escape(row.viewer.pseudo || 'Planétien')}</strong>
+        <small>${escape(row.moment.icon)} ${escape(row.moment.label)}</small>
+      </div>
+    `).join('') : empty('Les carnets de bord attendent leurs premières lignes.')}`;
+  }
+
+  function bestJourneyMoment(viewer, stats){
+    const role = String(viewer?.role || '').toLowerCase();
+    if(role === 'admin') return {icon:'👑', label:'Fondateur de l’orbite'};
+    if(role === 'moderator') return {icon:'🛡️', label:'Gardien du Hall'};
+    if(stats.likesReceived >= 100) return {icon:'🏆', label:'100 likes reçus'};
+    if(stats.roots >= 50) return {icon:'📽️', label:'50 critiques publiées'};
+    if(stats.ratings >= 100) return {icon:'🌌', label:'100 films notés'};
+    if(stats.likesReceived >= 25) return {icon:'⭐', label:'Critique appréciée'};
+    if(stats.replies >= 25) return {icon:'🗣️', label:'Débatteur du Hall'};
+    if(stats.roots >= 10) return {icon:'🍿', label:'10 critiques publiées'};
+    if(stats.ratings >= 10) return {icon:'🎬', label:'10 films notés'};
+    if(stats.replies >= 1) return {icon:'💬', label:'Premier échange'};
+    if(stats.roots >= 1) return {icon:'✍️', label:'Premier avis'};
+    if(stats.ratings >= 1) return {icon:'⭐', label:'Première note'};
+    return {icon:'🚀', label:'Nouveau Planétien'};
+  }
+
+  function journeyMomentScore(stats){
+    return Number(stats.ratings || 0) * 2 + Number(stats.roots || 0) * 12 + Number(stats.replies || 0) * 5 + Number(stats.likesReceived || 0) * 8;
+  }
+
   function renderError(){
     ['#hallHotDiscussions','#hallPopularReview','#hallWelcome','#hallActiveMembers','#hallTimeline','#hallDivisiveMovies'].forEach(selector => {
       const el = qs(selector);
@@ -259,7 +307,8 @@
     return {
       roots: own.filter(comment => !comment.parent_id).length,
       replies: own.filter(comment => comment.parent_id).length,
-      likesReceived: state.likes.filter(like => ids.has(like.comment_id)).length
+      likesReceived: state.likes.filter(like => ids.has(like.comment_id)).length,
+      ratings: new Set(state.ratings.filter(rating => rating.viewer_id === viewerId).map(rating => rating.movie_id)).size
     };
   }
 

@@ -3921,3 +3921,191 @@ min-width:220px;
   .space-notification-buttons{width:100%;justify-content:stretch}
   .space-notification-buttons .ghost{flex:1 1 100%}
 }
+
+/* === Planète Stream V2.7 : Parcours du Planétien === */
+.journey-shell{
+  display:grid;
+  gap:18px;
+}
+
+.journey-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(240px,.35fr);
+  gap:18px;
+  align-items:stretch;
+  padding:22px;
+  border:1px solid rgba(195,77,255,.26);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(195,77,255,.22), transparent 36%),
+    linear-gradient(135deg, rgba(22,13,43,.96), rgba(8,7,18,.94));
+  box-shadow:0 18px 46px rgba(0,0,0,.28);
+}
+
+.journey-hero h3{
+  margin:8px 0 8px;
+  font-size:clamp(24px,3.4vw,38px);
+  line-height:1;
+  letter-spacing:-.04em;
+}
+
+.journey-hero p,
+.journey-next span{
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.journey-orbit{
+  display:inline-grid;
+  width:52px;
+  height:52px;
+  place-items:center;
+  border-radius:18px;
+  background:linear-gradient(135deg, rgba(139,44,255,.5), rgba(195,77,255,.26));
+  box-shadow:var(--glow);
+  font-size:26px;
+}
+
+.journey-next{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+  padding:18px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+}
+
+.journey-next small,
+.journey-event small,
+.journey-goal small{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.journey-next strong{
+  font-size:18px;
+}
+
+.journey-timeline{
+  position:relative;
+  display:grid;
+  gap:12px;
+  padding-left:18px;
+}
+
+.journey-timeline::before{
+  content:"";
+  position:absolute;
+  left:21px;
+  top:8px;
+  bottom:8px;
+  width:2px;
+  background:linear-gradient(to bottom, rgba(195,77,255,.72), rgba(139,44,255,.12));
+}
+
+.journey-event{
+  position:relative;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr);
+  gap:13px;
+  padding:16px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  color:#fff;
+  background:linear-gradient(135deg, rgba(22,14,44,.82), rgba(10,9,23,.78));
+  transition:.2s ease;
+}
+
+a.journey-event:hover{
+  transform:translateX(4px);
+  border-color:rgba(195,77,255,.32);
+  box-shadow:0 0 24px rgba(139,44,255,.16);
+}
+
+.journey-event-icon{
+  position:relative;
+  z-index:1;
+  display:grid;
+  width:42px;
+  height:42px;
+  place-items:center;
+  border-radius:50%;
+  background:#20153f;
+  box-shadow:0 0 0 4px rgba(6,5,15,.9), 0 0 18px rgba(195,77,255,.35);
+}
+
+.journey-event p{
+  margin-top:6px;
+  color:#d8d1ef;
+  line-height:1.45;
+}
+
+.journey-goals{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.journey-goal{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  padding:14px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.035);
+}
+
+.journey-goal > span{
+  display:grid;
+  width:38px;
+  height:38px;
+  place-items:center;
+  border-radius:14px;
+  background:rgba(139,44,255,.16);
+}
+
+.journey-goal.is-done{
+  border-color:rgba(195,77,255,.28);
+  background:rgba(139,44,255,.10);
+}
+
+.journey-goal em{
+  color:#fff;
+  font-style:normal;
+  font-weight:900;
+}
+
+.journey-goal-bar{
+  height:6px;
+  overflow:hidden;
+  margin-top:9px;
+  border-radius:99px;
+  background:rgba(255,255,255,.08);
+}
+
+.journey-goal-bar i{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg, var(--purple), var(--purple-2));
+  box-shadow:var(--glow);
+}
+
+.hall-journey-row{
+  grid-template-columns:34px 1fr;
+}
+
+.hall-journey-row .hall-member-avatar{
+  grid-row:1 / span 2;
+}
+
+@media (max-width:760px){
+  .journey-hero,
+  .journey-goals{grid-template-columns:1fr}
+  .journey-timeline{padding-left:0}
+  .journey-timeline::before{display:none}
+}

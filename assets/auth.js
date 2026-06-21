@@ -711,6 +711,7 @@ const PS_AUTH_CONFIG = {
       </div>
       <a href="account.html#mon-espace">🪐 Mon Espace</a>
       <a href="account.html#mes-notifications">📬 Messages du Hall <b class="menu-notification-pill" data-notification-count hidden aria-label="Messages non lus">0</b></a>
+      <a href="account.html#mon-parcours">🚀 Mon parcours</a>
       <a href="account.html#mon-profil">👤 Mon profil</a>
       <a href="account.html#mes-critiques">💬 Mes critiques</a>
       <a href="account.html#mes-avatars">🎭 Mes avatars</a>
