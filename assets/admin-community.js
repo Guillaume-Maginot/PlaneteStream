@@ -1,5 +1,5 @@
 /* Planète Stream · Administration communauté
-   Phase 1 : hall de lecture. Aucune action destructive, aucun bouton rouge.
+   Phase 2 : première commande douce. Modification du badge public uniquement.
 */
 (function initAdminCommunity(){
   const state = {
@@ -7,7 +7,9 @@
     filtered: [],
     selectedId: null,
     loaded: false,
-    loading: false
+    loading: false,
+    savingBadge: false,
+    notice: ''
   };
 
   const els = {
@@ -20,6 +22,15 @@
     banned: document.querySelector('#communityBanned'),
     activeToday: document.querySelector('#communityActiveToday')
   };
+
+  const BADGE_OPTIONS = [
+    {value:'none', label:'Aucun badge'},
+    {value:'founder', label:'Fondateur'},
+    {value:'moderator', label:'Modérateur'},
+    {value:'vip', label:'VIP'},
+    {value:'supporter', label:'Supporter'},
+    {value:'beta', label:'Bêta testeur'}
+  ];
 
   if(!els.module || !els.list) return;
 
@@ -177,11 +188,110 @@
         ${field('Dernière activité', formatDate(viewer.last_seen))}
       </div>
 
+      ${renderBadgeEditor(viewer)}
+      ${state.notice ? `<div class="community-notice">${escapeHtml(state.notice)}</div>` : ''}
+
       <div class="community-note">
-        Phase 1 : consultation uniquement. Les actions de rôle, badge et bannissement arriveront à la prochaine passe,
-        avec protections contre les clics météorites.
+        Phase 2 : première commande active. Seul le badge public est modifiable pour valider l’écriture Supabase sans toucher aux rôles ni aux bannissements.
       </div>
     `;
+
+    bindBadgeEditor(viewer);
+  }
+
+  function renderBadgeEditor(viewer){
+    if(!canManageBadges()){
+      return `
+        <div class="community-action-panel is-disabled">
+          <div>
+            <span>Badge public</span>
+            <strong>${escapeHtml(badgeLabel(viewer.badge))}</strong>
+          </div>
+          <p>Connecte-toi avec un compte staff pour modifier les badges.</p>
+        </div>
+      `;
+    }
+
+    const options = BADGE_OPTIONS.map(option => `
+      <option value="${escapeAttr(option.value)}" ${option.value === viewer.badge ? 'selected' : ''}>${escapeHtml(option.label)}</option>
+    `).join('');
+
+    return `
+      <div class="community-action-panel">
+        <label for="viewerBadgeSelect">
+          <span>Badge public</span>
+          <strong>Première commande de la station</strong>
+        </label>
+        <div class="community-action-row">
+          <select id="viewerBadgeSelect" ${state.savingBadge ? 'disabled' : ''}>${options}</select>
+          <button class="primary" id="saveViewerBadge" type="button" ${state.savingBadge ? 'disabled' : ''}>
+            ${state.savingBadge ? 'Enregistrement…' : 'Enregistrer le badge'}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindBadgeEditor(viewer){
+    const button = document.querySelector('#saveViewerBadge');
+    const select = document.querySelector('#viewerBadgeSelect');
+    if(!button || !select || !viewer) return;
+
+    button.addEventListener('click', async () => {
+      const nextBadge = String(select.value || 'none').toLowerCase();
+      if(nextBadge === viewer.badge){
+        state.notice = 'Badge inchangé. Le bouton a cliqué dans le vide spatial, mais avec dignité.';
+        renderDetail(viewer);
+        return;
+      }
+      await saveBadge(viewer, nextBadge);
+    });
+  }
+
+  async function saveBadge(viewer, nextBadge){
+    if(!viewer?.id || state.savingBadge) return;
+    state.savingBadge = true;
+    state.notice = '';
+    renderDetail(viewer);
+
+    try{
+      await waitForPS();
+      const ps = getPS();
+      if(!ps.restWrite) throw new Error('restWrite indisponible dans auth.js.');
+
+      const result = await ps.restWrite(
+        'viewers',
+        'PATCH',
+        `id=eq.${encodeURIComponent(viewer.id)}`,
+        {badge: nextBadge},
+        {auth:true, prefer:'return=minimal'}
+      );
+
+      if(!result.ok){
+        throw new Error(`Supabase a refusé la mise à jour du badge (${result.status || 'statut inconnu'}).`);
+      }
+
+      state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, badge: nextBadge} : item);
+      filterViewers();
+      state.selectedId = viewer.id;
+      state.notice = `Badge mis à jour : ${badgeLabel(nextBadge)}.`;
+      renderStats();
+      renderList();
+      renderDetail(getSelectedViewer());
+    }catch(error){
+      console.error('Admin community badge update error', error);
+      state.notice = `${error.message || 'Impossible de mettre à jour le badge.'} Vérifie que le compte connecté possède un rôle autorisé par les policies Supabase.`;
+      renderDetail(getSelectedViewer() || viewer);
+    }finally{
+      state.savingBadge = false;
+      renderDetail(getSelectedViewer() || viewer);
+    }
+  }
+
+  function canManageBadges(){
+    const ps = getPS(false);
+    const role = String(ps?.getState?.().viewer?.role || ps?.state?.viewer?.role || '').toLowerCase();
+    return ['admin','founder','moderator'].includes(role);
   }
 
   function getSelectedViewer(){
