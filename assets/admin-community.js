@@ -1,5 +1,5 @@
 /* Planète Stream · Administration communauté
-   Phase 3 : badges et rôles avec garde-fous doux.
+   Phase 3.5 : rôles avec avatars officiels staff.
 */
 (function initAdminCommunity(){
   const state = {
@@ -148,7 +148,7 @@
 
     els.list.innerHTML = state.filtered.map(viewer => `
       <button class="viewer-item ${viewer.id === state.selectedId ? 'is-active' : ''}" type="button" data-viewer-id="${escapeAttr(viewer.id)}">
-        ${avatarHtml(viewer.avatar)}
+        ${avatarHtml(visibleAvatar(viewer))}
         <span class="viewer-main">
           <strong>${escapeHtml(viewer.pseudo)}</strong>
           <span>${escapeHtml(roleLabel(viewer.role))} · ${escapeHtml(badgeLabel(viewer.badge))}</span>
@@ -179,7 +179,7 @@
 
     els.detail.innerHTML = `
       <div class="viewer-detail-head">
-        ${avatarHtml(viewer.avatar)}
+        ${avatarHtml(visibleAvatar(viewer))}
         <span class="viewer-detail-title">
           <strong>${escapeHtml(viewer.pseudo)}</strong>
           <span>${escapeHtml(roleLabel(viewer.role))} · ${escapeHtml(badgeLabel(viewer.badge))}</span>
@@ -189,7 +189,7 @@
       <div class="viewer-detail-grid">
         ${field('Rôle', roleLabel(viewer.role))}
         ${field('Badge public', badgeLabel(viewer.badge))}
-        ${field('Avatar', avatarLabel(viewer.avatar))}
+        ${field('Avatar affiché', avatarLabel(visibleAvatar(viewer)))}
         ${field('État', statusLabel(viewer))}
         ${field('Inscription', formatDate(viewer.created_at))}
         ${field('Dernière activité', formatDate(viewer.last_seen))}
@@ -200,7 +200,7 @@
       ${state.notice ? `<div class="community-notice">${escapeHtml(state.notice)}</div>` : ''}
 
       <div class="community-note">
-        Phase 3 : badges et rôles sont actifs. Les bannissements restent désarmés jusqu’à la prochaine passe.
+        Phase 3.5 : les rôles staff attribuent automatiquement leur avatar officiel. Les bannissements restent désarmés jusqu’à la prochaine passe.
       </div>
     `;
 
@@ -232,7 +232,7 @@
       <div class="community-action-panel">
         <label for="viewerRoleSelect">
           <span>Rôle</span>
-          <strong>Accès et permissions</strong>
+          <strong>Accès, permissions et avatar officiel</strong>
         </label>
         <div class="community-action-row">
           <select id="viewerRoleSelect" ${state.savingRole ? 'disabled' : ''}>${options}</select>
@@ -344,6 +344,15 @@
 
       const payload = {role: nextRole};
       const nextBadge = badgeForRole(nextRole);
+      const nextAvatar = officialAvatarForRole(nextRole);
+
+      if(nextAvatar){
+        payload.avatar = nextAvatar;
+      }else if(isReservedAvatar(viewer.avatar)){
+        // Si un ancien staff redevient Planétien, on évite de conserver un emblème réservé.
+        payload.avatar = 'orbiteur';
+      }
+
       if(syncBadge && nextBadge && ['none', badgeForRole(viewer.role), viewer.badge].includes(viewer.badge)){
         payload.badge = nextBadge;
       }
@@ -363,7 +372,8 @@
       state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, ...payload} : item);
       filterViewers();
       state.selectedId = viewer.id;
-      state.notice = `${escapePlain(viewer.pseudo)} est désormais ${roleLabel(nextRole)}${payload.badge ? `, avec le badge ${badgeLabel(payload.badge)}` : ''}.`;
+      const avatarNotice = payload.avatar ? ` Avatar officiel : ${avatarLabel(payload.avatar)}.` : '';
+      state.notice = `${escapePlain(viewer.pseudo)} est désormais ${roleLabel(nextRole)}${payload.badge ? `, avec le badge ${badgeLabel(payload.badge)}` : ''}.${avatarNotice}`;
       renderStats();
       renderList();
       renderDetail(getSelectedViewer());
@@ -469,12 +479,12 @@
     const name = viewer?.pseudo || 'ce viewer';
     const role = technicalRoleValue(nextRole);
     if(role === 'admin'){
-      return `Promouvoir ${name} au rang de Fondateur ?\n\nCette personne obtiendra un accès complet à l’administration Planetestream.`;
+      return `Promouvoir ${name} au rang de Fondateur ?\n\nCette personne obtiendra un accès complet à l’administration Planetestream et recevra l’avatar officiel Fondateur.`;
     }
     if(role === 'moderator'){
-      return `Promouvoir ${name} au rang de Modérateur ?\n\nCette personne pourra accéder à la Communauté de l’Anneau Orbital et gérer les viewers simples, sans modifier les Fondateurs.`;
+      return `Promouvoir ${name} au rang de Modérateur ?\n\nCette personne pourra accéder à la Communauté de l’Anneau Orbital, gérer les viewers simples et recevra l’avatar officiel Modérateur.`;
     }
-    return `Repasser ${name} en Planétien ?\n\nCette personne perdra les permissions de staff, mais gardera son badge public sauf si tu le changes séparément.`;
+    return `Repasser ${name} en Planétien ?\n\nCette personne perdra les permissions de staff. Si elle avait un avatar officiel réservé, il sera remplacé par un avatar Planétien par défaut.`;
   }
 
   function badgeForRole(role){
@@ -482,6 +492,18 @@
     if(key === 'admin') return 'founder';
     if(key === 'moderator') return 'moderator';
     return '';
+  }
+
+  function officialAvatarForRole(role){
+    const key = technicalRoleValue(role);
+    if(key === 'admin') return 'fondateur';
+    if(key === 'moderator') return 'moderateur';
+    return '';
+  }
+
+  function isReservedAvatar(avatar){
+    const key = String(avatar || '').toLowerCase();
+    return key === 'fondateur' || key === 'founder' || key === 'moderateur' || key === 'moderator';
   }
 
   function canManageBadges(){
@@ -530,6 +552,10 @@
       beta: 'Bêta testeur'
     };
     return labels[key] || key;
+  }
+
+  function visibleAvatar(viewer){
+    return officialAvatarForRole(viewer?.role) || viewer?.avatar || 'orbiteur';
   }
 
   function avatarLabel(avatar){
