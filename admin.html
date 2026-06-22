@@ -369,6 +369,208 @@
       line-height:1.5;
     }
 
+
+
+    .community-dashboard{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:14px;
+      margin:0 0 18px;
+    }
+
+    .community-stat{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      background:radial-gradient(circle at 80% 20%, rgba(139,44,255,.18), transparent 36%), rgba(255,255,255,.035);
+      padding:17px;
+      min-height:110px;
+    }
+
+    .community-stat span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .community-stat strong{
+      display:block;
+      font-size:30px;
+      line-height:1;
+    }
+
+    .community-stage{
+      display:grid;
+      grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .community-toolbar{
+      display:flex;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .community-toolbar input{
+      width:100%;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      color:#fff;
+      background:#10111f;
+      padding:13px 14px;
+      outline:none;
+      font:inherit;
+    }
+
+    .viewer-list{
+      display:grid;
+      gap:10px;
+      max-height:560px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .viewer-item{
+      width:100%;
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      gap:12px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:rgba(255,255,255,.035);
+      color:#fff;
+      padding:12px;
+      font:inherit;
+      text-align:left;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .viewer-item:hover,
+    .viewer-item.is-active{
+      border-color:rgba(195,77,255,.48);
+      background:rgba(139,44,255,.14);
+      box-shadow:0 0 24px rgba(139,44,255,.12);
+      transform:translateY(-1px);
+    }
+
+    .viewer-avatar-admin{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      background:rgba(195,77,255,.12);
+      border:1px solid rgba(195,77,255,.24);
+      flex:0 0 auto;
+    }
+
+    .viewer-avatar-admin img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .viewer-main strong,
+    .viewer-detail-title strong{
+      display:block;
+      color:#fff;
+      font-size:15px;
+    }
+
+    .viewer-main span,
+    .viewer-detail-title span{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:3px;
+    }
+
+    .viewer-chip{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      color:#f4e7ff;
+      padding:6px 9px;
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      white-space:nowrap;
+    }
+
+    .viewer-chip.is-danger{
+      border-color:rgba(255,92,122,.35);
+      background:rgba(255,92,122,.12);
+      color:#ffd6de;
+    }
+
+    .viewer-detail-card{
+      min-height:360px;
+    }
+
+    .viewer-detail-head{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:18px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .viewer-detail-head .viewer-avatar-admin{
+      width:64px;
+      height:64px;
+      border-radius:18px;
+    }
+
+    .viewer-detail-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .viewer-detail-field{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:15px;
+      background:rgba(255,255,255,.035);
+      padding:14px;
+    }
+
+    .viewer-detail-field span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+
+    .viewer-detail-field strong{
+      display:block;
+      color:#fff;
+      font-size:14px;
+      word-break:break-word;
+    }
+
+    .community-note{
+      margin-top:16px;
+      border:1px dashed rgba(195,77,255,.28);
+      border-radius:16px;
+      background:rgba(139,44,255,.08);
+      color:var(--muted);
+      padding:14px;
+      font-size:13px;
+      line-height:1.55;
+    }
+
     @media (max-width:900px){
       .admin-shell{grid-template-columns:1fr}
       .admin-sidebar{position:static}
@@ -377,6 +579,8 @@
       .admin-row{grid-template-columns:1fr}
       .admin-tools{grid-template-columns:1fr}
       .admin-placeholder-grid{grid-template-columns:1fr}
+      .community-dashboard{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .community-stage{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -419,7 +623,7 @@
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="communaute">
             <span>👥 Communauté</span>
-            <small>Bientôt</small>
+            <small>Lecture</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="stats">
             <span>📊 Statistiques</span>
@@ -540,19 +744,32 @@
 
         <section class="admin-module" id="admin-module-communaute" data-admin-module="communaute" hidden>
           <div class="admin-module-kicker">👥 Communauté de l’Anneau Orbital</div>
-          <section class="admin-box">
-            <h2>Gestion des viewers</h2>
-            <p>
-              Ce module accueillera la liste des viewers, les rôles, les badges et les bannissements.
-              Les fondations Supabase sont prêtes, mais le moteur reste séparé du catalogue.
-            </p>
-            <div class="admin-placeholder-grid">
-              <div class="admin-placeholder-card"><strong>Viewers</strong><span>Liste des membres, recherche, fiche détaillée et dernière activité.</span></div>
-              <div class="admin-placeholder-card"><strong>Rôles</strong><span>Viewer, moderator et admin, avec affichage public via les badges.</span></div>
-              <div class="admin-placeholder-card"><strong>Modération</strong><span>Bannir, débannir et protéger le fondateur des clics kamikazes.</span></div>
-              <div class="admin-placeholder-card"><strong>Historique</strong><span>Plus tard : journal des actions, raisons de sanction et signalements.</span></div>
-            </div>
-          </section>
+
+          <div class="community-dashboard" aria-label="Résumé communauté">
+            <div class="community-stat"><span>Viewers</span><strong id="communityTotal">—</strong></div>
+            <div class="community-stat"><span>Staff</span><strong id="communityStaff">—</strong></div>
+            <div class="community-stat"><span>Bannis</span><strong id="communityBanned">—</strong></div>
+            <div class="community-stat"><span>Actifs aujourd’hui</span><strong id="communityActiveToday">—</strong></div>
+          </div>
+
+          <div class="community-stage">
+            <section class="admin-box">
+              <h2>Viewers</h2>
+              <p>Lecture seule pour cette première passe : on observe la station avant d’installer les leviers rouges.</p>
+              <div class="community-toolbar">
+                <input id="viewerSearch" type="search" placeholder="Rechercher un pseudo, rôle, badge…" autocomplete="off">
+              </div>
+              <div class="viewer-list" id="viewerList">
+                <div class="admin-empty">Chargement des membres de l’Anneau Orbital…</div>
+              </div>
+            </section>
+
+            <aside class="admin-box viewer-detail-card" id="viewerDetail">
+              <h2>Fiche viewer</h2>
+              <p>Sélectionne un membre pour afficher son profil d’administration.</p>
+              <div class="admin-empty">Aucun viewer sélectionné pour le moment.</div>
+            </aside>
+          </div>
         </section>
 
         <section class="admin-module" id="admin-module-stats" data-admin-module="stats" hidden>
@@ -575,7 +792,9 @@
     <p class="admin-version">Planète Stream v3.0 · Back-office modulaire</p>
   </main>
 
+  <script src="assets/auth.js"></script>
   <script src="assets/admin.js"></script>
+  <script src="assets/admin-community.js"></script>
   <script>
     (() => {
       const tabs = [...document.querySelectorAll('[data-admin-tab]')];
