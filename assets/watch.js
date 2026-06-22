@@ -249,6 +249,17 @@ function bindWatchEvents(item){
 
     const rating = Number(currentUserRating || document.querySelector('#quickRating')?.value || 0) || null;
     const existingReview = findCurrentViewerMainReview(item.slug, viewer);
+
+    if(rating){
+      setStatus('Synchronisation de ta note...', 'pending');
+      const ratingSaved = await saveQuickRating(item.slug, viewer, rating);
+      if(!ratingSaved){
+        setStatus('Impossible d’enregistrer la note. La critique n’a pas été publiée pour éviter une note fantôme.', 'error');
+        return;
+      }
+      currentUserRating = rating;
+    }
+
     setStatus(existingReview ? 'Mise à jour de ta critique...' : 'Publication de la critique...', 'pending');
     const ok = existingReview
       ? await updateOwnMainReview(existingReview.id, rating, text)
@@ -652,8 +663,7 @@ function updateCommunityRatingLabel(comments=[], stats={online:false, data:null}
   const label = document.querySelector('#communityRatingLabel');
   if(!label) return;
 
-  const officialRatings = getUniqueMovieRatings(ratings);
-  const rootRatings = officialRatings.length ? officialRatings : getUniqueViewerRatings(comments);
+  const rootRatings = getCombinedMovieRatings(comments, ratings);
 
   if(rootRatings.length){
     const average = rootRatings.reduce((sum, value) => sum + value, 0) / rootRatings.length;
@@ -689,6 +699,35 @@ function getUniqueMovieRatings(ratings=[]){
       latestByViewer.set(key, {rating, date});
     }
   });
+
+  return [...latestByViewer.values()].map(entry => entry.rating);
+}
+
+function getCombinedMovieRatings(comments=[], ratings=[]){
+  const latestByViewer = new Map();
+
+  (ratings || []).forEach(row => {
+    const rating = Number(row.rating);
+    if(!Number.isFinite(rating) || rating <= 0) return;
+    const key = row.viewer_id || row.auth_user_id;
+    if(!key) return;
+    const date = dateScore(row.updated_at || row.created_at);
+    const previous = latestByViewer.get(key);
+    if(!previous || date >= previous.date){
+      latestByViewer.set(key, {rating, date, source:'movie_ratings'});
+    }
+  });
+
+  (comments || [])
+    .filter(comment => !comment.parent_id)
+    .forEach(comment => {
+      const rating = Number(comment.rating);
+      if(!Number.isFinite(rating) || rating <= 0) return;
+      const key = comment.viewer_uuid || comment.auth_user_id || comment.name || comment.id;
+      if(!key || latestByViewer.has(key)) return;
+      const date = dateScore(comment.edited_at || comment.date);
+      latestByViewer.set(key, {rating, date, source:'comments_fallback'});
+    });
 
   return [...latestByViewer.values()].map(entry => entry.rating);
 }
@@ -1051,6 +1090,22 @@ async function submitEditComment(form){
 
   if(!comment.parent_id){
     payload.rating = Number(form.querySelector('select[name="rating"]')?.value || comment.rating || 0) || null;
+  }
+
+  const viewer = await getAuthenticatedViewerForPage();
+  if(!viewer?.id){
+    setStatus('Connexion requise pour modifier cette critique.', 'error');
+    return;
+  }
+
+  if(!comment.parent_id && payload.rating){
+    setStatus('Synchronisation de ta note...', 'pending');
+    const ratingSaved = await saveQuickRating(currentItem.slug, viewer, payload.rating);
+    if(!ratingSaved){
+      setStatus('Impossible d’enregistrer la note. Modification annulée pour éviter une note fantôme.', 'error');
+      return;
+    }
+    currentUserRating = payload.rating;
   }
 
   setStatus('Modification de la critique...', 'pending');
