@@ -32,6 +32,10 @@ let realtimeCommentsClient = null;
 let realtimeCommentsChannel = null;
 let realtimeCommentsMovieId = '';
 let realtimeCommentsRefreshTimer = null;
+let realtimeLikesClient = null;
+let realtimeLikesChannel = null;
+let realtimeLikesMovieId = '';
+let realtimeLikesRefreshTimers = new Map();
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
 const COMMENT_MAX_VISUAL_DEPTH = 2;
@@ -71,6 +75,7 @@ async function initWatch(){
     await refreshCommunity(item);
     startCommunityPolling(item);
     startRealtimeComments(item);
+    startRealtimeLikes(item);
     await saveViewerHistory(item.slug, 0);
     document.title = `${item.title} | Salle de projection`;
   }catch(error){
@@ -1994,6 +1999,104 @@ function flashRealtimeComment(payload){
   setTimeout(() => card.classList.remove('is-realtime-new'), 1800);
 }
 
+
+async function startRealtimeLikes(item){
+  if(!item?.slug || !SUPABASE_ENABLED) return false;
+  if(!window.supabase?.createClient) return false;
+  if(realtimeLikesChannel && realtimeLikesMovieId === item.slug) return true;
+
+  await stopRealtimeLikes();
+  realtimeLikesMovieId = item.slug;
+
+  try{
+    const token = window.PSAuth?.getAccessToken?.() || window.PS?.state?.accessToken || SUPABASE_KEY;
+    realtimeLikesClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      global:{headers:{Authorization:`Bearer ${token || SUPABASE_KEY}`}},
+      realtime:{params:{eventsPerSecond:8}}
+    });
+
+    const table = await resolveTable('comment_likes') || 'comment_likes';
+    realtimeLikesChannel = realtimeLikesClient
+      .channel(`ps-comment-likes-${item.slug}`)
+      .on('postgres_changes', {
+        event:'*',
+        schema:'public',
+        table
+      }, payload => {
+        scheduleRealtimeLikeRefresh(payload);
+      })
+      .subscribe(status => {
+        if(status === 'SUBSCRIBED'){
+          console.info('Planète Stream realtime likes actif. Les petits cœurs battent en direct.');
+        }
+      });
+    return true;
+  }catch(error){
+    console.warn('Realtime likes indisponible, les compteurs restent mis à jour au prochain refresh.', error);
+    realtimeLikesChannel = null;
+    realtimeLikesClient = null;
+    realtimeLikesMovieId = '';
+    return false;
+  }
+}
+
+async function stopRealtimeLikes(){
+  for(const timer of realtimeLikesRefreshTimers.values()) clearTimeout(timer);
+  realtimeLikesRefreshTimers.clear();
+  if(realtimeLikesChannel && realtimeLikesClient){
+    try{ await realtimeLikesClient.removeChannel(realtimeLikesChannel); }
+    catch(error){ console.warn('Realtime likes remove warning', error); }
+  }
+  realtimeLikesChannel = null;
+  realtimeLikesClient = null;
+  realtimeLikesMovieId = '';
+}
+
+function scheduleRealtimeLikeRefresh(payload){
+  const commentId = payload?.new?.comment_id || payload?.old?.comment_id;
+  if(!commentId) return;
+  if(!currentComments.some(comment => String(comment.id) === String(commentId))) return;
+
+  const key = String(commentId);
+  if(realtimeLikesRefreshTimers.has(key)) clearTimeout(realtimeLikesRefreshTimers.get(key));
+  const timer = setTimeout(async () => {
+    realtimeLikesRefreshTimers.delete(key);
+    await applyRealtimeLikeUpdate(key, payload);
+  }, 120);
+  realtimeLikesRefreshTimers.set(key, timer);
+}
+
+async function applyRealtimeLikeUpdate(commentId, payload){
+  if(!commentId || !currentComments.some(comment => String(comment.id) === String(commentId))) return;
+  try{
+    const exactCount = await fetchSingleCommentLikeCount(commentId);
+    const currentLiked = currentViewer?.id
+      ? (await fetchLikedCommentIds(currentViewer.id, [commentId])).has(commentId)
+      : likedCommentIds.has(commentId);
+
+    const currentComment = currentComments.find(comment => String(comment.id) === String(commentId));
+    const previousCount = Number(currentComment?.likes_count) || 0;
+    const finalCount = exactCount === null ? previousCount : exactCount;
+
+    setCommentLikeState(commentId, currentLiked, finalCount);
+    pulseLikeButton(commentId);
+
+    if(finalCount !== previousCount){
+      setStatus(finalCount > previousCount ? 'Un cœur vient de s’allumer dans la salle.' : 'Un like a été retiré.', 'ok');
+    }
+  }catch(error){
+    console.warn('Realtime like update error', error);
+  }
+}
+
+function pulseLikeButton(commentId){
+  const button = document.querySelector(`[data-like-comment="${cssEscape(commentId)}"]`);
+  if(!button) return;
+  button.classList.remove('like-pop');
+  void button.offsetWidth;
+  button.classList.add('like-pop');
+}
+
 function startCommunityPolling(item){
   if(communityPollTimer){
     clearInterval(communityPollTimer);
@@ -2073,6 +2176,7 @@ function commentsSignature(comments=[]){
 window.addEventListener('beforeunload', () => {
   if(communityPollTimer) clearInterval(communityPollTimer);
   stopRealtimeComments();
+  stopRealtimeLikes();
 });
 
 

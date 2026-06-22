@@ -4213,7 +4213,7 @@ a.journey-event:hover{
   .hall-ticker-track{animation:none !important; flex-wrap:wrap; width:auto; white-space:normal}
 }
 
-/* === Planète Stream V2.9.2 : critiques & réponses en temps réel === */
+/* === Planète Stream V2.9.2 / V2.9.3 : realtime commentaires + likes === */
 .realtime-comments-notice{
   display:block;
   width:max-content;
