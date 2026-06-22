@@ -40,7 +40,7 @@
       const [catalogue, commentsResult, viewersResult, likesResult, ratingsResult] = await Promise.all([
         cataloguePromise,
         select('comments', 'select=id,movie_id,viewer_uuid,parent_id,comment,rating,created_at,edited_at,likes_count&order=created_at.desc&limit=220'),
-        select('viewers', 'select=id,pseudo,avatar,role,created_at,last_seen&order=created_at.desc&limit=80'),
+        select('viewers', 'select=id,pseudo,avatar,badge,role,created_at,last_seen&order=created_at.desc&limit=80'),
         select('comment_likes', 'select=comment_id,viewer_id,created_at&order=created_at.desc&limit=360'),
         select('movie_ratings', 'select=viewer_id,movie_id,rating,created_at,updated_at&order=updated_at.desc&limit=600')
       ]);
@@ -143,7 +143,7 @@
     container.innerHTML = `
       <h3>❤️ Critique populaire</h3>
       <a class="hall-feature-review" href="watch.html?slug=${encodeURIComponent(item.movie.slug)}#comment-${encodeURIComponent(item.comment.id)}">
-        ${PSAuth.avatarHtml(item.viewer?.avatar || 'orbiteur', 'viewer-avatar')}
+        ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(item.viewer) || item.viewer?.avatar || 'orbiteur', 'viewer-avatar')}
         <strong>${escape(item.viewer?.pseudo || 'Spectateur')}</strong>
         <small>sur ${escape(item.movie.title)}</small>
         <p>${escape(shorten(item.comment.comment, 150))}</p>
@@ -164,9 +164,9 @@
     container.innerHTML = `
       <h3>🆕 Bienvenue</h3>
       <div class="hall-welcome-card">
-        ${PSAuth.avatarHtml(latest.avatar || 'orbiteur', 'viewer-avatar big')}
+        ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(latest) || latest.avatar || 'orbiteur', 'viewer-avatar big')}
         <strong>${escape(latest.pseudo || 'Nouveau membre')}</strong>
-        <small>${relativeDate(latest.created_at)} · ${escape(PSAuth.avatarLabel?.(latest.avatar) || 'Orbiteur')}</small>
+        <small>${relativeDate(latest.created_at)} · ${escape(PSAuth.publicTitle?.(latest) || PSAuth.avatarLabel?.(latest.avatar) || 'Orbiteur')}</small>
         <p>${stats.roots ? 'Premier avis publié, entrée réussie dans l’orbite.' : 'Nouveau Planétien arrivé dans le hall.'}</p>
       </div>
     `;
@@ -185,7 +185,7 @@
     container.innerHTML = `<h3>🏆 Membres actifs</h3>${rows.length ? rows.map((row, index) => `
       <div class="hall-member-row hall-member-row-rich">
         <span>${['🥇','🥈','🥉','⭐'][index] || '⭐'}</span>
-        <span class="hall-member-avatar">${PSAuth.avatarHtml(row.viewer.avatar || 'orbiteur', 'viewer-avatar small')}</span>
+        <span class="hall-member-avatar">${PSAuth.avatarHtml(PSAuth.displayAvatar?.(row.viewer) || row.viewer.avatar || 'orbiteur', 'viewer-avatar small')}</span>
         <strong>${escape(row.viewer.pseudo)}</strong>
         <small>${escape((PSAuth.reputationLevel ? PSAuth.reputationLevel(row.score).label : 'Planétien'))} · ${row.score} pts</small>
       </div>
@@ -272,7 +272,7 @@
       icon: row.moment.icon,
       pseudo: row.viewer?.pseudo || 'Planétien',
       label: row.moment.label,
-      avatar: row.viewer?.avatar || 'orbiteur'
+      avatar: PSAuth.displayAvatar?.(row.viewer) || row.viewer?.avatar || 'orbiteur'
     }));
 
     if(!items.length){
@@ -292,6 +292,7 @@
 
   function bestJourneyMoment(viewer, stats){
     const role = String(viewer?.role || '').toLowerCase();
+    if(String(viewer?.badge || '').toLowerCase() === 'architecte') return {icon:'🛰️', label:'Architecte de l’orbite'};
     if(role === 'admin') return {icon:'👑', label:'Fondateur de l’orbite'};
     if(role === 'moderator') return {icon:'🛡️', label:'Gardien du Hall'};
     if(stats.likesReceived >= 100) return {icon:'🏆', label:'100 likes reçus'};

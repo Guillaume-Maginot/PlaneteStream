@@ -594,7 +594,7 @@ async function fetchViewersMap(ids){
   const cleanIds = ids.filter(id => /^[0-9a-f-]{36}$/i.test(String(id)));
   if(!cleanIds.length) return new Map();
 
-  const result = await supabaseSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,created_at,last_seen,role`);
+  const result = await supabaseSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,badge,created_at,last_seen,role`);
   if(!result.ok) return new Map();
 
   return new Map((result.data || []).map(viewer => [viewer.id, viewer]));
@@ -951,7 +951,7 @@ async function askViewerPseudo(force=false){
 }
 
 async function findViewerByPseudo(pseudo){
-  const result = await supabaseSelect('viewers', `pseudo=eq.${encodeURIComponent(pseudo)}&select=id,pseudo,avatar,created_at,last_seen&limit=1`);
+  const result = await supabaseSelect('viewers', `pseudo=eq.${encodeURIComponent(pseudo)}&select=id,pseudo,avatar,badge,created_at,last_seen&limit=1`);
   if(!result.ok) return null;
   return Array.isArray(result.data) ? result.data[0] : null;
 }
@@ -962,6 +962,7 @@ function normalizeViewer(row){
     id: row.id,
     pseudo,
     avatar: row.avatar || pickAvatar(pseudo),
+    badge: String(row.badge || 'none').toLowerCase(),
     created_at: row.created_at || null,
     last_seen: row.last_seen || null,
     role: row.role || 'viewer',
@@ -1230,7 +1231,7 @@ async function openMiniProfile(viewerId){
 
 async function fetchSingleViewer(viewerId){
   if(!viewerId || !/^[0-9a-f-]{36}$/i.test(String(viewerId))) return null;
-  const result = await supabaseSelect('viewers', `id=eq.${encodeURIComponent(viewerId)}&select=id,pseudo,avatar,created_at,last_seen,role&limit=1`);
+  const result = await supabaseSelect('viewers', `id=eq.${encodeURIComponent(viewerId)}&select=id,pseudo,avatar,badge,created_at,last_seen,role&limit=1`);
   if(!result.ok) return null;
   const row = Array.isArray(result.data) ? result.data[0] : null;
   return row ? normalizeViewer(row) : null;
@@ -1294,7 +1295,8 @@ function buildProfileBadges(viewer, stats){
   if(PSAuth.badgeDefinitions) return PSAuth.badgeDefinitions(viewer, stats);
   const badges = [];
   const role = String(viewer?.role || 'viewer').toLowerCase();
-  if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Administrateur Planète Stream'});
+  if(String(viewer?.badge || '').toLowerCase() === 'architecte') badges.push({icon:'🛰️', label:'Architecte', description:'Celui qui a dessiné les premiers plans de la station orbitale'});
+  else if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Administrateur Planète Stream'});
   if(role === 'moderator') badges.push({icon:'🛡️', label:'Modérateur', description:'Aide à garder la salle propre'});
   if(stats.comments >= 1) badges.push({icon:'🎬', label:'Premier avis', description:'A publié au moins une critique'});
   if(stats.comments >= 5) badges.push({icon:'🍿', label:'Cinéphile actif', description:'A publié au moins 5 critiques'});
@@ -1307,7 +1309,8 @@ function buildProfileBadges(viewer, stats){
 function getInlineAuthorBadges(comment){
   const badges = [];
   const role = String(comment.role || 'viewer').toLowerCase();
-  if(role === 'admin') badges.push('👑 Fondateur');
+  if(String(comment.badge || '').toLowerCase() === 'architecte') badges.push('🛰️ Architecte');
+  else if(role === 'admin') badges.push('👑 Fondateur');
   else if(role === 'moderator') badges.push('🛡️ Modérateur');
   if(currentViewer?.id && comment.viewer_uuid === currentViewer.id) badges.push('Vous');
   if(!comment.parent_id && Number(comment.rating) >= 9) badges.push('⭐ Coup de cœur');
@@ -1682,6 +1685,7 @@ function normalizeComments(rows, viewerMap=new Map(), likeCounts=new Map()){
       auth_user_id: row.auth_user_id || null,
       name: viewer?.pseudo || row.display_name || readableUserName(row.user_id),
       avatar: viewer?.avatar || pickAvatar(row.display_name || row.user_id || 'Spectateur'),
+      badge: String(viewer?.badge || 'none').toLowerCase(),
       role: viewer?.role || 'viewer',
       viewer_created_at: viewer?.created_at || null,
       rating: row.rating === null || row.rating === undefined ? null : Number(row.rating) || 0,
@@ -1799,7 +1803,7 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
     <article class="comment-card thread-tone-${threadTone} ${isReply ? 'is-reply' : 'is-root-review'} depth-${visualDepth} ${depth >= COMMENT_MAX_VISUAL_DEPTH ? 'is-flat-depth' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${visualDepth}" data-actual-depth="${Math.min(Number(depth) || 0, 20)}">
       <div class="comment-head community-head">
         <button class="comment-author profile-trigger" type="button" ${profileAttr} ${comment.viewer_uuid ? '' : 'disabled'}>
-          ${PSAuth.avatarHtml(comment.avatar || 'orbiteur', 'viewer-avatar')}
+          ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(comment) || comment.avatar || 'orbiteur', 'viewer-avatar')}
           <span class="comment-author-copy">
             <strong>${escapeHtml(comment.name)}</strong>
             <small>${formatCommentDate(comment.date)}${comment.edited_at ? ' · modifié' : ''}</small>

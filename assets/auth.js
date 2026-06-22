@@ -45,7 +45,8 @@ const PS_AUTH_CONFIG = {
     {id:'cyberpunk', label:'Cyberpunk', public:true},
     {id:'vip', label:'VIP', public:true},
     {id:'fondateur', label:'Fondateur', public:false, reserved:true},
-    {id:'moderateur', label:'Modérateur', public:false, reserved:true}
+    {id:'moderateur', label:'Modérateur', public:false, reserved:true},
+    {id:'architecte', label:'Architecte', public:false, reserved:true}
   ];
   const AVATAR_IDS = new Set(AVATAR_CATALOG.map(item => item.id));
   const RESERVED_AVATARS = new Set(AVATAR_CATALOG.filter(item => item.reserved).map(item => item.id));
@@ -279,7 +280,7 @@ const PS_AUTH_CONFIG = {
 
   async function fetchViewerByAuth(authUserId){
     if(!authUserId) return null;
-    const result = await restSelect('viewers', `auth_user_id=eq.${encodeURIComponent(authUserId)}&select=id,auth_user_id,pseudo,avatar,role,created_at,last_seen&limit=1`, {auth:true});
+    const result = await restSelect('viewers', `auth_user_id=eq.${encodeURIComponent(authUserId)}&select=id,auth_user_id,pseudo,avatar,role,badge,created_at,last_seen&limit=1`, {auth:true});
     return result.ok && Array.isArray(result.data) ? result.data[0] : null;
   }
 
@@ -468,6 +469,7 @@ const PS_AUTH_CONFIG = {
       pseudo:row.pseudo || 'Spectateur',
       avatar:normalizeAvatar(row.avatar, row.pseudo || 'Spectateur'),
       role:row.role || 'viewer',
+      badge:String(row.badge || 'none').toLowerCase(),
       created_at:row.created_at || null,
       last_seen:row.last_seen || null,
       authenticated:Boolean(row.auth_user_id || state.user?.id)
@@ -541,9 +543,32 @@ const PS_AUTH_CONFIG = {
   }
 
 
+  function isArchitect(viewer={}){
+    return String(viewer?.badge || '').toLowerCase() === 'architecte' || String(viewer?.avatar || '').toLowerCase() === 'architecte';
+  }
+
+  function displayAvatar(viewer={}){
+    if(isArchitect(viewer)) return 'architecte';
+    const role = String(viewer?.role || 'viewer').toLowerCase();
+    if(role === 'admin' || role === 'founder') return 'fondateur';
+    if(role === 'moderator') return 'moderateur';
+    return viewer?.avatar || 'orbiteur';
+  }
+
+  function publicTitle(viewer={}){
+    if(isArchitect(viewer)) return 'Architecte';
+    const badge = String(viewer?.badge || '').toLowerCase();
+    if(badge === 'founder' || badge === 'fondateur') return 'Fondateur';
+    if(badge === 'moderator' || badge === 'moderateur') return 'Modérateur';
+    const role = String(viewer?.role || 'viewer').toLowerCase();
+    if(role === 'admin' || role === 'founder') return 'Fondateur';
+    if(role === 'moderator') return 'Modérateur';
+    return 'Planétien';
+  }
+
   function roleLabel(role='viewer'){
     const key = String(role || 'viewer').toLowerCase();
-    if(key === 'admin') return 'Fondateur';
+    if(key === 'admin' || key === 'founder') return 'Fondateur';
     if(key === 'moderator') return 'Modérateur';
     return 'Planétien';
   }
@@ -582,7 +607,8 @@ const PS_AUTH_CONFIG = {
     const score = reputationScore(stats);
     const level = reputationLevel(score);
     const badges = [];
-    if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Pilote officiel de Planète Stream', rarity:'legendary'});
+    if(isArchitect(viewer)) badges.push({icon:'🛰️', label:'Architecte', description:'Celui qui a dessiné les premiers plans de la station orbitale', rarity:'legendary'});
+    else if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Pilote officiel de Planète Stream', rarity:'legendary'});
     if(role === 'moderator') badges.push({icon:'🛡️', label:'Modérateur', description:'Gardien de la salle et des popcorns civilisés', rarity:'rare'});
     if(Number(stats.comments || stats.roots || 0) >= 1) badges.push({icon:'🎬', label:'Premier avis', description:'A publié sa première critique', rarity:'common'});
     if(Number(stats.comments || stats.roots || 0) >= 5) badges.push({icon:'🍿', label:'Cinéphile actif', description:'A publié au moins 5 critiques', rarity:'rare'});
@@ -711,10 +737,10 @@ const PS_AUTH_CONFIG = {
 
     menu.innerHTML = `
       <div class="account-dropdown-head">
-        ${avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar')}
+        ${avatarHtml(displayAvatar(viewer), 'viewer-avatar')}
         <div>
           <strong>${escapeHtml(viewer.pseudo)}</strong>
-          <small>${escapeHtml(avatarTitle(viewer.avatar))} · ${escapeHtml(roleLabel(viewer.role))}</small>
+          <small>${escapeHtml(avatarTitle(displayAvatar(viewer)))} · ${escapeHtml(publicTitle(viewer))}</small>
         </div>
       </div>
       <a href="account.html#mon-espace">🪐 Mon Espace</a>
@@ -891,6 +917,8 @@ const PS_AUTH_CONFIG = {
     avatarPath,
     avatarLabel,
     avatarHtml,
+    displayAvatar,
+    publicTitle,
     normalizeAvatar,
     isImageAvatar,
     isReservedAvatar,
@@ -938,6 +966,8 @@ const PS_AUTH_CONFIG = {
     avatarPath,
     avatarLabel,
     avatarHtml,
+    displayAvatar,
+    publicTitle,
     normalizeAvatar,
     isImageAvatar,
     isReservedAvatar,

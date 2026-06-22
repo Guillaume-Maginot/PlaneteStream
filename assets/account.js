@@ -170,10 +170,10 @@ async function renderCurrentViewer(){
         </div>
         <div class="planetiens-card space-profile-card">
           <div class="planetiens-head">
-            ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar giant')}
+            ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(viewer) || viewer.avatar || 'orbiteur', 'viewer-avatar giant')}
             <div>
               <h2>${PSAuth.escapeHtml(viewer.pseudo)}</h2>
-              <small>${PSAuth.escapeHtml(PSAuth.avatarLabel?.(viewer.avatar) || 'Orbiteur')} · ${PSAuth.escapeHtml(PSAuth.roleLabel?.(viewer.role) || 'Planétien')}</small>
+              <small>${PSAuth.escapeHtml(PSAuth.avatarLabel?.(PSAuth.displayAvatar?.(viewer) || viewer.avatar) || 'Orbiteur')} · ${PSAuth.escapeHtml(PSAuth.publicTitle?.(viewer) || PSAuth.roleLabel?.(viewer.role) || 'Planétien')}</small>
               <p class="soft-note space-joined">Membre depuis ${formatAccountDateLong(viewer.created_at)}</p>
             </div>
           </div>
@@ -738,7 +738,7 @@ async function fetchMyNotifications(viewerId, limit=12){
 async function fetchNotificationActors(ids=[]){
   const cleanIds = ids.filter(id => /^[0-9a-f-]{36}$/i.test(String(id)));
   if(!cleanIds.length) return new Map();
-  const result = await window.PS.restSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,role,created_at`, {auth:true});
+  const result = await window.PS.restSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,badge,role,created_at`, {auth:true});
   const rows = result.ok && Array.isArray(result.data) ? result.data : [];
   return new Map(rows.map(row => [row.id, row]));
 }
@@ -754,7 +754,7 @@ function renderNotificationItem(item){
   return `
     <div class="space-notification-item ${unread ? 'is-unread' : ''}" data-notification-card="${PSAuth.escapeHtml(item.id)}">
       <a class="space-notification-main" href="${href}" data-notification-link data-notification-id="${PSAuth.escapeHtml(item.id)}">
-        ${PSAuth.avatarHtml(actor.avatar || 'orbiteur', 'viewer-avatar')}
+        ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(actor) || actor.avatar || 'orbiteur', 'viewer-avatar')}
         <span>
           <strong>${PSAuth.escapeHtml(label)}</strong>
           <small>${PSAuth.escapeHtml(item.movie_title)} · ${formatAccountDate(item.created_at)}</small>

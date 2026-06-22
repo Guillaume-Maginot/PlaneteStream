@@ -155,7 +155,7 @@
         ${avatarHtml(visibleAvatar(viewer))}
         <span class="viewer-main">
           <strong>${escapeHtml(viewer.pseudo)}</strong>
-          <span>${escapeHtml(roleLabel(viewer.role))} · ${escapeHtml(badgeLabel(viewer.badge))}</span>
+          <span>${escapeHtml(publicTitle(viewer))}</span>
         </span>
         <span class="viewer-chip ${viewer.banned_at ? 'is-danger' : ''}">${viewer.banned_at ? 'Banni' : 'Actif'}</span>
       </button>
@@ -186,12 +186,13 @@
         ${avatarHtml(visibleAvatar(viewer))}
         <span class="viewer-detail-title">
           <strong>${escapeHtml(viewer.pseudo)}</strong>
-          <span>${escapeHtml(roleLabel(viewer.role))} · ${escapeHtml(badgeLabel(viewer.badge))}</span>
+          <span>${escapeHtml(publicTitle(viewer))}</span>
         </span>
       </div>
 
       <div class="viewer-detail-grid">
-        ${field('Rôle', roleLabel(viewer.role))}
+        ${field('Titre public', publicTitle(viewer))}
+        ${field('Rôle technique', roleLabel(viewer.role))}
         ${field('Badge public', badgeLabel(viewer.badge))}
         ${field('Avatar affiché', avatarLabel(visibleAvatar(viewer)))}
         ${field('État', statusLabel(viewer))}
@@ -288,6 +289,17 @@
   }
 
   function renderBadgeEditor(viewer){
+    if(isArchitect(viewer)){
+      return `
+        <div class="community-action-panel is-disabled">
+          <div>
+            <span>Badge exclusif</span>
+            <strong>🛰️ Architecte</strong>
+          </div>
+          <p>Ce titre est réservé et ne peut pas être attribué depuis le sélecteur standard.</p>
+        </div>
+      `;
+    }
     if(!canManageBadges()){
       return `
         <div class="community-action-panel is-disabled">
@@ -349,7 +361,7 @@
       if(!ps.restWrite) throw new Error('restWrite indisponible dans auth.js.');
 
       const payload = {role: nextRole};
-      const nextBadge = badgeForRole(nextRole);
+      const nextBadge = isArchitect(viewer) ? 'architecte' : badgeForRole(nextRole);
       const nextAvatar = officialAvatarForRole(nextRole);
 
       if(nextAvatar){
@@ -359,7 +371,7 @@
         payload.avatar = 'orbiteur';
       }
 
-      if(syncBadge && nextBadge && ['none', badgeForRole(viewer.role), viewer.badge].includes(viewer.badge)){
+      if(!isArchitect(viewer) && syncBadge && nextBadge && ['none', badgeForRole(viewer.role), viewer.badge].includes(viewer.badge)){
         payload.badge = nextBadge;
       }
 
@@ -821,9 +833,24 @@
     return '';
   }
 
+  function isArchitect(viewer={}){
+    return String(viewer?.badge || '').toLowerCase() === 'architecte' || String(viewer?.avatar || '').toLowerCase() === 'architecte';
+  }
+
+  function publicTitle(viewer={}){
+    if(isArchitect(viewer)) return 'Architecte';
+    const badge = String(viewer?.badge || '').toLowerCase();
+    if(badge === 'founder' || badge === 'fondateur') return 'Fondateur';
+    if(badge === 'moderator' || badge === 'moderateur') return 'Modérateur';
+    if(badge === 'vip') return 'VIP';
+    if(badge === 'supporter') return 'Supporter';
+    if(badge === 'beta') return 'Bêta testeur';
+    return roleLabel(viewer?.role);
+  }
+
   function isReservedAvatar(avatar){
     const key = String(avatar || '').toLowerCase();
-    return key === 'fondateur' || key === 'founder' || key === 'moderateur' || key === 'moderator';
+    return key === 'fondateur' || key === 'founder' || key === 'moderateur' || key === 'moderator' || key === 'architecte';
   }
 
   function canManageBadges(){
@@ -863,6 +890,7 @@
     const key = String(badge || 'none').toLowerCase();
     const labels = {
       none: 'Aucun badge',
+      architecte: 'Architecte',
       founder: 'Fondateur',
       fondateur: 'Fondateur',
       moderator: 'Modérateur',
@@ -875,6 +903,7 @@
   }
 
   function visibleAvatar(viewer){
+    if(isArchitect(viewer)) return 'architecte';
     return officialAvatarForRole(viewer?.role) || viewer?.avatar || 'orbiteur';
   }
 
