@@ -4483,3 +4483,15 @@ section{margin:24px 0 34px}
 
 /* === V3.0 RC1.4 - Page Confidentialité / RGPD === */
 .privacy-page{padding:46px 0 60px}.privacy-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:28px;margin-top:28px;margin-bottom:24px;padding:38px;border:1px solid rgba(195,77,255,.26);border-radius:28px;background:radial-gradient(circle at 78% 18%,rgba(195,77,255,.32),transparent 30%),linear-gradient(135deg,rgba(18,12,34,.96),rgba(7,6,19,.92));overflow:hidden;box-shadow:0 20px 70px rgba(0,0,0,.34)}.privacy-hero:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(circle,#fff 0 1px,transparent 1px);background-size:86px 86px}.privacy-hero-copy{position:relative;z-index:1;max-width:720px}.privacy-hero h1{margin:8px 0 12px;font-size:clamp(34px,5vw,62px);line-height:.96;text-transform:uppercase;letter-spacing:-.055em}.privacy-hero p{color:#ddd5f5;line-height:1.65}.privacy-updated{margin-top:16px;color:#a994d5!important;font-size:14px}.privacy-orb{position:relative;z-index:1;width:122px;height:122px;min-width:122px;border-radius:50%;display:grid;place-items:center;font-size:52px;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.18),rgba(139,44,255,.42) 46%,rgba(22,12,54,.92) 75%);border:1px solid rgba(195,77,255,.48);box-shadow:0 0 44px rgba(139,44,255,.42)}.privacy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.privacy-card{padding:24px;border-radius:22px;background:linear-gradient(145deg,rgba(18,14,31,.92),rgba(8,7,19,.9));border:1px solid rgba(195,77,255,.22);box-shadow:0 12px 38px rgba(0,0,0,.24)}.privacy-card-wide{grid-column:1 / -1}.privacy-card h2{margin:0 0 12px;font-size:20px}.privacy-card p,.privacy-card li{color:#ded8ef;line-height:1.6;font-size:15px}.privacy-card ul{padding-left:20px;display:grid;gap:6px}.privacy-card a{color:#d86cff;font-weight:800}.privacy-note{background:linear-gradient(135deg,rgba(139,44,255,.25),rgba(12,9,25,.94));border-color:rgba(195,77,255,.38)}@media(max-width:760px){.privacy-page{padding-top:22px}.privacy-hero{padding:26px;align-items:flex-start}.privacy-orb{display:none}.privacy-grid{grid-template-columns:1fr}.privacy-card{padding:20px}.privacy-card h2{font-size:18px}}
+
+
+/* V3.0 RC1.5 - saut vers les résultats de recherche */
+#catalogue.search-jump-highlight{
+  animation: searchJumpGlow .9s ease both;
+}
+
+@keyframes searchJumpGlow{
+  0%{ filter: drop-shadow(0 0 0 rgba(196,67,255,0)); }
+  35%{ filter: drop-shadow(0 0 22px rgba(196,67,255,.35)); }
+  100%{ filter: drop-shadow(0 0 0 rgba(196,67,255,0)); }
+}

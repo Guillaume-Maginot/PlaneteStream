@@ -58,6 +58,14 @@ function bindEvents(){
     render();
   });
 
+  search?.addEventListener('keydown', e => {
+    if(e.key !== 'Enter') return;
+    e.preventDefault();
+    state.search = e.target.value.trim().toLowerCase();
+    render();
+    focusSearchResults();
+  });
+
   document.querySelector('#genreFilter')?.addEventListener('change', e => {
     state.filter = e.target.value || 'all';
     document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
@@ -109,6 +117,17 @@ function matches(item){
   const filterOk = state.filter === 'all' || item.type === state.filter || item.mediaType === state.filter || haystack.includes(state.filter);
   const searchOk = !state.search || haystack.includes(state.search);
   return filterOk && searchOk;
+}
+
+
+function focusSearchResults(){
+  const target = document.querySelector('#catalogue');
+  if(!target) return;
+  requestAnimationFrame(() => {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.classList.add('search-jump-highlight');
+    setTimeout(() => target.classList.remove('search-jump-highlight'), 900);
+  });
 }
 
 function render(){
