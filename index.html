@@ -28,7 +28,7 @@
           <span>Discord</span>
         </a>
       </nav>
-      <div class="nav-actions"><input id="searchInput" class="search-input" placeholder="Rechercher un titre..." /></div>
+      <div class="nav-actions"><a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a><input id="searchInput" class="search-input" placeholder="Rechercher un titre..." /></div>
       <button class="hamb">☰</button>
     </div>
   </header>
@@ -75,6 +75,70 @@
       </div>
     </section>
 
+    <section class="container cinema-hall" id="hall-cinema" aria-label="Hall du Cinéma">
+      <div class="hall-shell">
+        <div class="hall-head">
+          <div>
+            <p class="eyebrow">Hall du Cinéma</p>
+            <h2>Là où les films continuent après le générique.</h2>
+            <p>Critiques, débats, nouveaux membres et avis qui font vibrer l’orbite Planète Stream.</p>
+          </div>
+          <a class="secondary hall-cta" href="account.html">Rejoindre les Planétiens</a>
+        </div>
+
+        <div class="hall-stats" id="hallStats" aria-label="Activité communautaire">
+          <span><strong>—</strong><small>critiques aujourd’hui</small></span>
+          <span><strong>—</strong><small>réponses</small></span>
+          <span><strong>—</strong><small>likes</small></span>
+          <span><strong>—</strong><small>nouveaux membres</small></span>
+        </div>
+
+        <article class="hall-planetian-ticker" aria-label="Activité du parcours des Planétiens">
+          <div class="hall-ticker-title">🏅 Parcours des Planétiens</div>
+          <div class="hall-ticker-viewport">
+            <div class="hall-ticker-track" id="hallJourneyTicker">
+              <span>Lecture des carnets de bord...</span>
+            </div>
+          </div>
+        </article>
+
+        <div class="hall-grid">
+          <article class="hall-card hall-hot" id="hallHotDiscussions">
+            <h3>🔥 Discussions du moment</h3>
+            <p class="hall-muted">Chargement des débats...</p>
+          </article>
+          <article class="hall-card" id="hallPopularReview">
+            <h3>❤️ Critique populaire</h3>
+            <p class="hall-muted">Recherche de la pépite...</p>
+          </article>
+          <article class="hall-card" id="hallWelcome">
+            <h3>🆕 Bienvenue</h3>
+            <p class="hall-muted">Ouverture du registre...</p>
+          </article>
+          <article class="hall-card" id="hallActiveMembers">
+            <h3>🏆 Membres actifs</h3>
+            <p class="hall-muted">Comptage des traces orbitales...</p>
+          </article>
+        </div>
+
+        <div class="hall-bottom-grid">
+          <article class="hall-card hall-timeline-card">
+            <div class="hall-card-head">
+              <h3>🌌 Ce qui se passe maintenant</h3>
+              <span id="hallUpdatedAt">—</span>
+            </div>
+            <div class="hall-timeline" id="hallTimeline">
+              <p class="hall-muted">La timeline chauffe ses projecteurs...</p>
+            </div>
+          </article>
+          <article class="hall-card hall-divisive" id="hallDivisiveMovies">
+            <h3>🎭 Films qui divisent</h3>
+            <p class="hall-muted">Analyse des écarts de notes...</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <div class="container" id="catalogue">
       <div class="tabs" id="tabs">
 
@@ -117,7 +181,7 @@
         <a class="logo footer-logo" href="index.html">PLANÈTE<span>STREAM</span></a>
         <p class="footer-tagline">Chaque œuvre a une histoire. Chaque spectateur aussi.</p>
         <p class="footer-description">Découvrez, notez et partagez les films, séries et mangas qui méritent d’être vus.</p>
-        <p class="footer-meta">© 2026 Planète Stream · v0.9.6</p>
+        <p class="footer-meta">© 2026 Planète Stream · v2.9.1</p>
       </section>
 
       <nav class="footer-links-grid" aria-label="Navigation secondaire">
@@ -152,9 +216,12 @@
     </div>
     <div class="container footer-bottom">
       <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
-      <span class="footer-version">Build v0.9.6</span>
+      <span class="footer-version">Build v2.9.4.3</span>
     </div>
   </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/auth.js"></script>
   <script src="assets/app.js"></script>
+  <script src="assets/hall.js"></script>
 </body>
 </html>
