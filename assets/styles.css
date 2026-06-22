@@ -4236,3 +4236,15 @@ a.journey-event:hover{
   20%{box-shadow:0 0 0 1px rgba(210,122,255,.75), 0 0 34px rgba(189,84,255,.36); transform:translateY(-1px)}
   100%{box-shadow:var(--thread-shadow, 0 16px 38px rgba(0,0,0,.18)); transform:translateY(0)}
 }
+
+/* === Planète Stream V2.9.4 : ratings temps réel === */
+#communityRatingLabel.rating-pop{
+  display:inline-block;
+  animation: ratingRealtimePop .38s ease;
+  text-shadow:0 0 18px rgba(186, 91, 255, .55);
+}
+@keyframes ratingRealtimePop{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.08);}
+  100%{transform:scale(1);}
+}

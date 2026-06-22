@@ -36,6 +36,10 @@ let realtimeLikesClient = null;
 let realtimeLikesChannel = null;
 let realtimeLikesMovieId = '';
 let realtimeLikesRefreshTimers = new Map();
+let realtimeRatingsClient = null;
+let realtimeRatingsChannel = null;
+let realtimeRatingsMovieId = '';
+let realtimeRatingsRefreshTimer = null;
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
 const COMMENT_MAX_VISUAL_DEPTH = 2;
@@ -76,6 +80,7 @@ async function initWatch(){
     startCommunityPolling(item);
     startRealtimeComments(item);
     startRealtimeLikes(item);
+    startRealtimeRatings(item);
     await saveViewerHistory(item.slug, 0);
     document.title = `${item.title} | Salle de projection`;
   }catch(error){
@@ -400,6 +405,7 @@ async function refreshCommunity(item){
   currentComments = comments.online ? comments.data : getLocalComments(item.slug);
   currentRatings = ratings.online ? ratings.data : [];
   currentUserRating = getCurrentViewerRating(currentRatings);
+  syncQuickRatingSelect();
 
   if(comments.online && currentViewer?.id){
     likedCommentIds = await fetchLikedCommentIds(currentViewer.id, currentComments.map(comment => comment.id).filter(Boolean));
@@ -2095,6 +2101,121 @@ function pulseLikeButton(commentId){
   button.classList.remove('like-pop');
   void button.offsetWidth;
   button.classList.add('like-pop');
+}
+
+
+async function startRealtimeRatings(item){
+  if(!item?.slug || !SUPABASE_ENABLED) return false;
+  if(!window.supabase?.createClient) return false;
+  if(realtimeRatingsChannel && realtimeRatingsMovieId === item.slug) return true;
+
+  await stopRealtimeRatings();
+  realtimeRatingsMovieId = item.slug;
+
+  try{
+    const token = window.PSAuth?.getAccessToken?.() || window.PS?.state?.accessToken || SUPABASE_KEY;
+    realtimeRatingsClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      global:{headers:{Authorization:`Bearer ${token || SUPABASE_KEY}`}},
+      realtime:{params:{eventsPerSecond:8}}
+    });
+
+    const table = await resolveTable('movie_ratings') || 'movie_ratings';
+    realtimeRatingsChannel = realtimeRatingsClient
+      .channel(`ps-movie-ratings-${item.slug}`)
+      .on('postgres_changes', {
+        event:'*',
+        schema:'public',
+        table,
+        filter:`movie_id=eq.${item.slug}`
+      }, payload => {
+        scheduleRealtimeRatingRefresh(payload);
+      })
+      .subscribe(status => {
+        if(status === 'SUBSCRIBED'){
+          console.info('Planète Stream realtime ratings actif. Les étoiles se recalculent en direct.');
+        }
+      });
+    return true;
+  }catch(error){
+    console.warn('Realtime ratings indisponible, les moyennes restent mises à jour au prochain refresh.', error);
+    realtimeRatingsChannel = null;
+    realtimeRatingsClient = null;
+    realtimeRatingsMovieId = '';
+    return false;
+  }
+}
+
+async function stopRealtimeRatings(){
+  if(realtimeRatingsRefreshTimer){
+    clearTimeout(realtimeRatingsRefreshTimer);
+    realtimeRatingsRefreshTimer = null;
+  }
+  if(realtimeRatingsChannel && realtimeRatingsClient){
+    try{ await realtimeRatingsClient.removeChannel(realtimeRatingsChannel); }
+    catch(error){ console.warn('Realtime ratings remove warning', error); }
+  }
+  realtimeRatingsChannel = null;
+  realtimeRatingsClient = null;
+  realtimeRatingsMovieId = '';
+}
+
+function scheduleRealtimeRatingRefresh(payload){
+  if(!currentItem?.slug) return;
+  if(realtimeRatingsRefreshTimer) clearTimeout(realtimeRatingsRefreshTimer);
+  realtimeRatingsRefreshTimer = setTimeout(async () => {
+    realtimeRatingsRefreshTimer = null;
+    await applyRealtimeRatingUpdate(payload);
+  }, 160);
+}
+
+async function applyRealtimeRatingUpdate(payload){
+  if(!currentItem?.slug) return;
+  try{
+    const previousSignature = ratingsSignature(currentRatings);
+    const [ratings, stats] = await Promise.all([
+      fetchMovieRatings(currentItem.slug),
+      fetchMovieStats(currentItem.slug)
+    ]);
+
+    if(ratings.online){
+      currentRatings = ratings.data;
+      currentUserRating = getCurrentViewerRating(currentRatings);
+      syncQuickRatingSelect();
+    }
+
+    updateCommunityRatingLabel(currentComments, stats, currentRatings);
+
+    const nextSignature = ratingsSignature(currentRatings);
+    if(nextSignature !== previousSignature){
+      pulseCommunityRatingLabel();
+      setStatus('La note Planète Stream vient de bouger en temps réel.', 'ok');
+    }
+  }catch(error){
+    console.warn('Realtime rating update error', error);
+  }
+}
+
+function ratingsSignature(ratings=[]){
+  return (ratings || [])
+    .map(row => [row.movie_id || currentItem?.slug || '', row.viewer_id || row.auth_user_id || '', Number(row.rating) || 0, row.updated_at || ''].join(':'))
+    .sort()
+    .join('|');
+}
+
+function syncQuickRatingSelect(){
+  const select = document.querySelector('#quickRating');
+  if(!select) return;
+  const active = document.activeElement;
+  if(active === select) return;
+  select.value = currentUserRating ? String(currentUserRating) : '';
+}
+
+function pulseCommunityRatingLabel(){
+  const label = document.querySelector('#communityRatingLabel');
+  if(!label) return;
+  label.classList.remove('rating-pop');
+  void label.offsetWidth;
+  label.classList.add('rating-pop');
 }
 
 function startCommunityPolling(item){
