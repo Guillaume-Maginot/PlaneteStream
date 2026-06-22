@@ -128,10 +128,11 @@ async function renderCurrentViewer(){
   const viewer = state.viewer;
 
   if(state.isAuthenticated && viewer?.pseudo){
-    const [stats, recentReviews, ratedMovies, notifications] = await Promise.all([
+    const [stats, recentReviews, ratedMovies, favoriteMovies, notifications] = await Promise.all([
       fetchMyCommunityStats(viewer.id),
       fetchMyRecentReviews(viewer.id, 8),
       fetchMyRatedMovies(viewer.id, 8),
+      fetchMyFavoriteMovies(viewer.id, 12),
       fetchMyNotifications(viewer.id, 12)
     ]);
     const journey = await fetchMyJourney(viewer, stats, recentReviews, ratedMovies);
@@ -155,6 +156,7 @@ async function renderCurrentViewer(){
         <a href="#mes-notifications">📬 Messages</a>
         <a href="#mon-parcours">🚀 Parcours</a>
         <a href="#mes-statistiques">📊 Stats</a>
+        <a href="#mes-favoris">❤️ Favoris</a>
         <a href="#mes-critiques">💬 Critiques</a>
         <a href="#mes-avatars">🎭 Avatars</a>
         <a href="#mes-badges">🏅 Badges</a>
@@ -248,6 +250,14 @@ async function renderCurrentViewer(){
           ${renderSpaceStat('🤍', stats.likesGiven, 'likes donnés')}
           ${renderSpaceStat('📌', stats.favorites, 'favoris')}
         </div>
+      </section>
+
+      <section class="space-section" id="mes-favoris">
+        <div class="space-section-head">
+          <p class="eyebrow">Mes favoris</p>
+          <h2>Les films mis de côté</h2>
+        </div>
+        ${favoriteMovies.length ? `<div class="profile-recent account-recent space-list">${favoriteMovies.map(renderAccountFavoriteItem).join('')}</div>` : '<p class="soft-note">Aucun favori pour le moment. Clique sur le cœur d’un film pour le garder sous le coude.</p>'}
       </section>
 
       <section class="space-section" id="mes-critiques">
@@ -488,6 +498,27 @@ async function fetchMyRatedMovies(viewerId, limit=8){
   const rows = result.ok && Array.isArray(result.data) ? result.data : [];
   const catalogue = await loadCatalogueTitles();
   return rows.map(row => ({...row, movie_title: catalogue.get(row.movie_id) || row.movie_id || 'Titre inconnu'}));
+}
+
+async function fetchMyFavoriteMovies(viewerId, limit=12){
+  if(!viewerId) return [];
+  const result = await window.PS.restSelect('movie_favorites', `viewer_id=eq.${encodeURIComponent(viewerId)}&select=movie_id,created_at&order=created_at.desc&limit=${Number(limit) || 12}`, {auth:true});
+  const rows = result.ok && Array.isArray(result.data) ? result.data : [];
+  const catalogue = await loadCatalogueTitles();
+  return rows.map(row => ({...row, movie_title: catalogue.get(row.movie_id) || row.movie_id || 'Titre inconnu'}));
+}
+
+function renderAccountFavoriteItem(item){
+  return `
+    <a class="profile-review-item" href="watch.html?slug=${encodeURIComponent(item.movie_id)}">
+      <span class="profile-review-rating">❤️</span>
+      <span>
+        <strong>${PSAuth.escapeHtml(item.movie_title)}</strong>
+        <small>ajouté aux favoris ${formatAccountDate(item.created_at)}</small>
+        <em>Reprendre la lecture ou retirer ce film de ta liste.</em>
+      </span>
+    </a>
+  `;
 }
 
 function renderAccountRatingItem(item){
