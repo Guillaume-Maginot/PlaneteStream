@@ -1295,7 +1295,7 @@ function buildProfileBadges(viewer, stats){
   if(PSAuth.badgeDefinitions) return PSAuth.badgeDefinitions(viewer, stats);
   const badges = [];
   const role = String(viewer?.role || 'viewer').toLowerCase();
-  if(String(viewer?.badge || '').toLowerCase() === 'architecte') badges.push({icon:'🛰️', label:'Architecte', description:'Celui qui a dessiné les premiers plans de la station orbitale'});
+  if(String(viewer?.badge || '').toLowerCase() === 'architecte' || String(viewer?.avatar || '').toLowerCase() === 'architecte' || (String(viewer?.pseudo || '').toLowerCase().trim() === 'spoofle' && role === 'admin')) badges.push({icon:'🛰️', label:'Architecte', description:'Celui qui a dessiné les premiers plans de la station orbitale'});
   else if(role === 'admin') badges.push({icon:'👑', label:'Fondateur', description:'Administrateur Planète Stream'});
   if(role === 'moderator') badges.push({icon:'🛡️', label:'Modérateur', description:'Aide à garder la salle propre'});
   if(stats.comments >= 1) badges.push({icon:'🎬', label:'Premier avis', description:'A publié au moins une critique'});
@@ -1309,7 +1309,7 @@ function buildProfileBadges(viewer, stats){
 function getInlineAuthorBadges(comment){
   const badges = [];
   const role = String(comment.role || 'viewer').toLowerCase();
-  if(String(comment.badge || '').toLowerCase() === 'architecte') badges.push('🛰️ Architecte');
+  if(String(comment.badge || '').toLowerCase() === 'architecte' || String(comment.avatar || '').toLowerCase() === 'architecte' || (String(comment.author || comment.pseudo || comment.name || '').toLowerCase().trim() === 'spoofle' && role === 'admin')) badges.push('🛰️ Architecte');
   else if(role === 'admin') badges.push('👑 Fondateur');
   else if(role === 'moderator') badges.push('🛡️ Modérateur');
   if(currentViewer?.id && comment.viewer_uuid === currentViewer.id) badges.push('Vous');

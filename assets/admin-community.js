@@ -97,7 +97,7 @@
   }
 
   function normalizeViewer(viewer={}){
-    return {
+    const normalized = {
       id: viewer.id || '',
       pseudo: viewer.pseudo || 'Viewer inconnu',
       avatar: viewer.avatar || 'orbiteur',
@@ -108,6 +108,14 @@
       badge: String(viewer.badge || 'none').toLowerCase(),
       banned_at: viewer.banned_at || null
     };
+
+    // Statut exclusif de Spoofle : permissions admin, identité publique Architecte.
+    if(isArchitect(normalized)){
+      normalized.avatar = 'architecte';
+      normalized.badge = 'architecte';
+    }
+
+    return normalized;
   }
 
   function filterViewers(){
@@ -312,7 +320,11 @@
       `;
     }
 
-    const options = BADGE_OPTIONS.map(option => `
+    const badgeOptions = isArchitect(viewer)
+      ? [{value:'architecte', label:'Architecte'}, ...BADGE_OPTIONS]
+      : BADGE_OPTIONS;
+
+    const options = badgeOptions.map(option => `
       <option value="${escapeAttr(option.value)}" ${option.value === viewer.badge ? 'selected' : ''}>${escapeHtml(option.label)}</option>
     `).join('');
 
@@ -361,8 +373,9 @@
       if(!ps.restWrite) throw new Error('restWrite indisponible dans auth.js.');
 
       const payload = {role: nextRole};
-      const nextBadge = isArchitect(viewer) ? 'architecte' : badgeForRole(nextRole);
-      const nextAvatar = officialAvatarForRole(nextRole);
+      const architect = isArchitect(viewer);
+      const nextBadge = architect ? 'architecte' : badgeForRole(nextRole);
+      const nextAvatar = architect ? 'architecte' : officialAvatarForRole(nextRole);
 
       if(nextAvatar){
         payload.avatar = nextAvatar;
@@ -371,7 +384,9 @@
         payload.avatar = 'orbiteur';
       }
 
-      if(!isArchitect(viewer) && syncBadge && nextBadge && ['none', badgeForRole(viewer.role), viewer.badge].includes(viewer.badge)){
+      if(architect){
+        payload.badge = 'architecte';
+      }else if(syncBadge && nextBadge && ['none', badgeForRole(viewer.role), viewer.badge].includes(viewer.badge)){
         payload.badge = nextBadge;
       }
 
@@ -838,7 +853,15 @@
   }
 
   function isArchitect(viewer={}){
-    return String(viewer?.badge || '').toLowerCase() === 'architecte' || String(viewer?.avatar || '').toLowerCase() === 'architecte';
+    const badge = String(viewer?.badge || '').toLowerCase().trim();
+    const avatar = String(viewer?.avatar || '').toLowerCase().trim();
+    const title = String(viewer?.title || '').toLowerCase().trim();
+    const role = String(viewer?.role || '').toLowerCase().trim();
+    const pseudo = String(viewer?.pseudo || '').toLowerCase().trim();
+    return ['architecte','architect'].includes(badge)
+      || ['architecte','architect'].includes(avatar)
+      || ['architecte','architect'].includes(title)
+      || (pseudo === 'spoofle' && ['admin','founder'].includes(role));
   }
 
   function publicTitle(viewer={}){

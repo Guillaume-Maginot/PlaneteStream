@@ -139,7 +139,8 @@ async function renderCurrentViewer(){
     const score = PSAuth.reputationScore?.(stats) || localReputationScore(stats);
     const level = PSAuth.reputationLevel?.(score) || localReputationLevel(score);
     const badges = PSAuth.badgeDefinitions?.(viewer, stats) || [];
-    const reserved = PSAuth.isReservedAvatar?.(viewer.avatar) || ['admin','moderator','moderateur','fondateur','founder'].includes(String(viewer.role || '').toLowerCase());
+    const visibleAvatar = PSAuth.displayAvatar?.(viewer) || viewer.avatar || 'orbiteur';
+    const reserved = PSAuth.isReservedAvatar?.(visibleAvatar) || ['admin','moderator','moderateur','fondateur','founder','architecte'].includes(String(viewer.role || '').toLowerCase()) || String(viewer.badge || '').toLowerCase() === 'architecte';
     const avatarChooser = reserved
       ? `<div class="avatar-reserved-note">Avatar spécial attribué par l’équipe Planète Stream.</div>`
       : `<div class="account-avatar-editor">

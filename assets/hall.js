@@ -292,7 +292,10 @@
 
   function bestJourneyMoment(viewer, stats){
     const role = String(viewer?.role || '').toLowerCase();
-    if(String(viewer?.badge || '').toLowerCase() === 'architecte') return {icon:'🛰️', label:'Architecte de l’orbite'};
+    const pseudo = String(viewer?.pseudo || '').toLowerCase().trim();
+    const badge = String(viewer?.badge || '').toLowerCase().trim();
+    const avatar = String(viewer?.avatar || '').toLowerCase().trim();
+    if(badge === 'architecte' || avatar === 'architecte' || (pseudo === 'spoofle' && role === 'admin')) return {icon:'🛰️', label:'Architecte de l’orbite'};
     if(role === 'admin') return {icon:'👑', label:'Fondateur de l’orbite'};
     if(role === 'moderator') return {icon:'🛡️', label:'Gardien du Hall'};
     if(stats.likesReceived >= 100) return {icon:'🏆', label:'100 likes reçus'};

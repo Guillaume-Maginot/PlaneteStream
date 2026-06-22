@@ -463,7 +463,7 @@ const PS_AUTH_CONFIG = {
   }
 
   function normalizeViewer(row={}){
-    return {
+    const viewer = {
       id:row.id,
       auth_user_id:row.auth_user_id || state.user?.id || null,
       pseudo:row.pseudo || 'Spectateur',
@@ -474,6 +474,15 @@ const PS_AUTH_CONFIG = {
       last_seen:row.last_seen || null,
       authenticated:Boolean(row.auth_user_id || state.user?.id)
     };
+
+    // Statut exclusif : l’Architecte garde les droits admin, mais son identité publique
+    // prime sur Fondateur/Modérateur, y compris si un ancien cache a conservé un autre avatar.
+    if(isArchitect(viewer)){
+      viewer.avatar = 'architecte';
+      viewer.badge = 'architecte';
+    }
+
+    return viewer;
   }
 
   function cleanPseudo(value=''){
@@ -544,7 +553,15 @@ const PS_AUTH_CONFIG = {
 
 
   function isArchitect(viewer={}){
-    return String(viewer?.badge || '').toLowerCase() === 'architecte' || String(viewer?.avatar || '').toLowerCase() === 'architecte';
+    const badge = String(viewer?.badge || '').toLowerCase().trim();
+    const avatar = String(viewer?.avatar || '').toLowerCase().trim();
+    const title = String(viewer?.title || '').toLowerCase().trim();
+    const role = String(viewer?.role || '').toLowerCase().trim();
+    const pseudo = String(viewer?.pseudo || '').toLowerCase().trim();
+    return ['architecte','architect'].includes(badge)
+      || ['architecte','architect'].includes(avatar)
+      || ['architecte','architect'].includes(title)
+      || (pseudo === 'spoofle' && ['admin','founder'].includes(role));
   }
 
   function displayAvatar(viewer={}){
