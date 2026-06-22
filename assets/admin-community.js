@@ -45,7 +45,8 @@
         'select=id,pseudo,avatar,created_at,last_seen,auth_user_id,role,badge,banned_at',
         'order=created_at.asc'
       ].join('&');
-      const result = await window.PS.auth.restSelect('viewers', query, {auth:true});
+      const ps = getPS();
+      const result = await ps.restSelect('viewers', query, {auth:false});
 
       if(!result.ok || !Array.isArray(result.data)){
         throw new Error(`Lecture viewers impossible (${result.status || 'réponse inconnue'})`);
@@ -204,7 +205,8 @@
   }
 
   function roleLabel(role='viewer'){
-    if(window.PS?.auth?.roleLabel) return window.PS.auth.roleLabel(role);
+    const ps = getPS(false);
+    if(ps?.roleLabel) return ps.roleLabel(role);
     const key = String(role || 'viewer').toLowerCase();
     if(key === 'admin') return 'Fondateur';
     if(key === 'moderator') return 'Modérateur';
@@ -227,11 +229,13 @@
   }
 
   function avatarLabel(avatar){
-    return window.PS?.auth?.avatarLabel ? window.PS.auth.avatarLabel(avatar) : avatar || 'Orbiteur';
+    const ps = getPS(false);
+    return ps?.avatarLabel ? ps.avatarLabel(avatar) : avatar || 'Orbiteur';
   }
 
   function avatarHtml(avatar){
-    if(window.PS?.auth?.avatarHtml) return window.PS.auth.avatarHtml(avatar, 'viewer-avatar-admin');
+    const ps = getPS(false);
+    if(ps?.avatarHtml) return ps.avatarHtml(avatar, 'viewer-avatar-admin');
     return `<span class="viewer-avatar-admin">${escapeHtml(avatar || '🪐')}</span>`;
   }
 
@@ -250,7 +254,8 @@
   }
 
   function escapeHtml(str=''){
-    if(window.PS?.auth?.escapeHtml) return window.PS.auth.escapeHtml(str);
+    const ps = getPS(false);
+    if(ps?.escapeHtml) return ps.escapeHtml(str);
     return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
   }
 
@@ -258,19 +263,25 @@
     return escapeHtml(str).replace(/`/g, '&#096;');
   }
 
+  function getPS(required=true){
+    const ps = window.PS?.restSelect ? window.PS : (window.PSAuth?.restSelect ? window.PSAuth : null);
+    if(required && !ps) throw new Error('Le module auth.js est chargé, mais l’API Planète Stream n’est pas disponible.');
+    return ps;
+  }
+
   function waitForPS(){
-    if(window.PS?.auth?.restSelect) return Promise.resolve();
+    if(getPS(false)?.restSelect) return Promise.resolve();
     return new Promise((resolve, reject) => {
       let tries = 0;
       const timer = setInterval(() => {
         tries += 1;
-        if(window.PS?.auth?.restSelect){
+        if(getPS(false)?.restSelect){
           clearInterval(timer);
           resolve();
         }
         if(tries > 80){
           clearInterval(timer);
-          reject(new Error('Le module auth.js n’est pas disponible.'));
+          reject(new Error('Le module auth.js n’est pas disponible ou n’expose pas restSelect.'));
         }
       }, 50);
     });
