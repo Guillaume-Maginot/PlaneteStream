@@ -248,11 +248,135 @@
       line-height:1.5;
     }
 
+
+
+    .admin-shell{
+      display:grid;
+      grid-template-columns:260px minmax(0,1fr);
+      gap:22px;
+      align-items:start;
+    }
+
+    .admin-sidebar{
+      position:sticky;
+      top:100px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      background:linear-gradient(180deg, rgba(13,14,32,.88), rgba(7,8,19,.78));
+      box-shadow:0 16px 44px rgba(0,0,0,.30);
+      padding:14px;
+      backdrop-filter:blur(12px);
+    }
+
+    .admin-sidebar-title{
+      padding:12px 12px 14px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .admin-tabs{
+      display:grid;
+      gap:8px;
+    }
+
+    .admin-tab{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:rgba(255,255,255,.035);
+      color:#fff;
+      padding:12px 13px;
+      font:inherit;
+      font-weight:800;
+      text-align:left;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .admin-tab:hover,
+    .admin-tab.is-active{
+      border-color:rgba(195,77,255,.46);
+      background:rgba(139,44,255,.16);
+      box-shadow:0 0 24px rgba(139,44,255,.14);
+      transform:translateY(-1px);
+    }
+
+    .admin-tab small{
+      color:var(--muted);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .admin-content{
+      min-width:0;
+    }
+
+    .admin-module[hidden]{
+      display:none !important;
+    }
+
+    .admin-module-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:14px;
+      border:1px solid rgba(195,77,255,.22);
+      border-radius:999px;
+      background:rgba(139,44,255,.10);
+      color:#f4e7ff;
+      padding:7px 11px;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .admin-placeholder-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .admin-placeholder-card{
+      min-height:150px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(139,44,255,.18), transparent 34%),
+        rgba(255,255,255,.035);
+      padding:18px;
+    }
+
+    .admin-placeholder-card strong{
+      display:block;
+      margin-bottom:8px;
+      color:#fff;
+    }
+
+    .admin-placeholder-card span{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
     @media (max-width:900px){
+      .admin-shell{grid-template-columns:1fr}
+      .admin-sidebar{position:static}
       .admin-layout{grid-template-columns:1fr}
       .admin-preview{position:static}
       .admin-row{grid-template-columns:1fr}
       .admin-tools{grid-template-columns:1fr}
+      .admin-placeholder-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -277,14 +401,44 @@
 
   <main class="container admin-panel">
     <section class="admin-hero">
-      <p class="eyebrow">Centre de contrôle · v2.9.4.2</p>
-      <h1>Ajouter un contenu simplement</h1>
+      <p class="eyebrow">Centre de contrôle · v3.0</p>
+      <h1>Administration Planetestream</h1>
       <p>
-        Recherche un film ou une série, choisis le bon résultat, classe-le dans une section,
-        puis prépare son ajout au catalogue. L’objectif : garder des fiches propres, cohérentes et rapides à publier.
+        Le QG de la plateforme : le catalogue reste opérationnel, et la future Communauté de l’Anneau Orbital
+        dispose maintenant de son quai d’amarrage. Une tour de contrôle, pas un tiroir à câbles.
       </p>
     </section>
 
+    <div class="admin-shell">
+      <aside class="admin-sidebar" aria-label="Navigation administration">
+        <div class="admin-sidebar-title">Modules</div>
+        <div class="admin-tabs" role="tablist" aria-label="Modules d'administration">
+          <button class="admin-tab is-active" type="button" role="tab" aria-selected="true" data-admin-tab="catalogue">
+            <span>📽 Catalogue</span>
+            <small>Actif</small>
+          </button>
+          <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="communaute">
+            <span>👥 Communauté</span>
+            <small>Bientôt</small>
+          </button>
+          <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="stats">
+            <span>📊 Statistiques</span>
+            <small>Bientôt</small>
+          </button>
+          <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="notifications">
+            <span>📢 Notifications</span>
+            <small>Bientôt</small>
+          </button>
+          <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="parametres">
+            <span>⚙ Paramètres</span>
+            <small>Bientôt</small>
+          </button>
+        </div>
+      </aside>
+
+      <div class="admin-content">
+        <section class="admin-module" id="admin-module-catalogue" data-admin-module="catalogue">
+          <div class="admin-module-kicker">📽 Module catalogue</div>
     <div class="admin-layout">
       <section class="admin-box">
         <h2>1. Rechercher un contenu</h2>
@@ -377,13 +531,72 @@
     </section>
 
     <section class="admin-box discord-admin-box">
-      <h2>Communauté</h2>
+      <h2>Relais Discord</h2>
       <p>Le Discord servira de point de ralliement pour les suggestions, les retours de lancement et les discussions autour des films, séries, mangas et anime.</p>
       <a class="primary" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Ouvrir le serveur Discord</a>
     </section>
-    <p class="admin-version">Planète Stream v2.9.4.2 · Pré-lancement</p>
+
+        </section>
+
+        <section class="admin-module" id="admin-module-communaute" data-admin-module="communaute" hidden>
+          <div class="admin-module-kicker">👥 Communauté de l’Anneau Orbital</div>
+          <section class="admin-box">
+            <h2>Gestion des viewers</h2>
+            <p>
+              Ce module accueillera la liste des viewers, les rôles, les badges et les bannissements.
+              Les fondations Supabase sont prêtes, mais le moteur reste séparé du catalogue.
+            </p>
+            <div class="admin-placeholder-grid">
+              <div class="admin-placeholder-card"><strong>Viewers</strong><span>Liste des membres, recherche, fiche détaillée et dernière activité.</span></div>
+              <div class="admin-placeholder-card"><strong>Rôles</strong><span>Viewer, moderator et admin, avec affichage public via les badges.</span></div>
+              <div class="admin-placeholder-card"><strong>Modération</strong><span>Bannir, débannir et protéger le fondateur des clics kamikazes.</span></div>
+              <div class="admin-placeholder-card"><strong>Historique</strong><span>Plus tard : journal des actions, raisons de sanction et signalements.</span></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="admin-module" id="admin-module-stats" data-admin-module="stats" hidden>
+          <div class="admin-module-kicker">📊 Statistiques</div>
+          <section class="admin-box"><h2>Statistiques</h2><p>Zone prévue pour l'activité, les notes, les favoris et les tendances du catalogue.</p></section>
+        </section>
+
+        <section class="admin-module" id="admin-module-notifications" data-admin-module="notifications" hidden>
+          <div class="admin-module-kicker">📢 Notifications</div>
+          <section class="admin-box"><h2>Notifications</h2><p>Zone prévue pour les annonces, les messages importants et les alertes communautaires.</p></section>
+        </section>
+
+        <section class="admin-module" id="admin-module-parametres" data-admin-module="parametres" hidden>
+          <div class="admin-module-kicker">⚙ Paramètres</div>
+          <section class="admin-box"><h2>Paramètres</h2><p>Zone prévue pour les réglages de la plateforme et les futures options d'administration.</p></section>
+        </section>
+      </div>
+    </div>
+
+    <p class="admin-version">Planète Stream v3.0 · Back-office modulaire</p>
   </main>
 
   <script src="assets/admin.js"></script>
+  <script>
+    (() => {
+      const tabs = [...document.querySelectorAll('[data-admin-tab]')];
+      const modules = [...document.querySelectorAll('[data-admin-module]')];
+
+      function showAdminModule(target){
+        tabs.forEach((tab) => {
+          const active = tab.dataset.adminTab === target;
+          tab.classList.toggle('is-active', active);
+          tab.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        modules.forEach((module) => {
+          module.hidden = module.dataset.adminModule !== target;
+        });
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => showAdminModule(tab.dataset.adminTab));
+      });
+    })();
+  </script>
 </body>
 </html>
