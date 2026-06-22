@@ -582,11 +582,11 @@
       await waitForPS();
       const ps = getPS();
       const query = [
-        'select=id,viewer_id,staff_id,action,old_value,new_value,reason,created_at',
+        'select=id,target_viewer_id,staff_viewer_id,action,old_value,new_value,reason,created_at',
         'order=created_at.desc',
         'limit=30'
       ].join('&');
-      const result = await ps.restSelect('viewer_history', query, {auth:true});
+      const result = await ps.restSelect('viewer_admin_history', query, {auth:true});
 
       if(!result.ok || !Array.isArray(result.data)){
         throw new Error(`Journal indisponible (${result.status || 'réponse inconnue'})`);
@@ -596,7 +596,7 @@
       renderHistory();
     }catch(error){
       console.warn('Admin community history load warning', error);
-      renderHistoryMessage(`Journal non connecté. Ajoute la table viewer_history avec le fichier SQL fourni, puis recharge la page.`);
+      renderHistoryMessage(`Journal non connecté. Ajoute la table viewer_admin_history avec le fichier SQL fourni, puis recharge la page.`);
     }
   }
 
@@ -607,15 +607,15 @@
       if(!ps.restWrite) return;
       const staffId = getCurrentViewerId() || null;
       const payload = {
-        viewer_id: viewer?.id || null,
-        staff_id: staffId,
+        target_viewer_id: viewer?.id || null,
+        staff_viewer_id: staffId,
         action,
         old_value: oldValue || {},
         new_value: newValue || {},
         reason: reason || null
       };
 
-      const result = await ps.restWrite('viewer_history', 'POST', '', payload, {auth:true, prefer:'return=representation'});
+      const result = await ps.restWrite('viewer_admin_history', 'POST', '', payload, {auth:true, prefer:'return=representation'});
       if(result.ok && Array.isArray(result.data) && result.data[0]){
         state.history = [result.data[0], ...state.history].slice(0, 30);
         renderHistory();
@@ -635,8 +635,8 @@
     }
 
     els.history.innerHTML = state.history.map(entry => {
-      const staffName = viewerName(entry.staff_id) || 'Staff';
-      const targetName = viewerName(entry.viewer_id) || 'Viewer';
+      const staffName = viewerName(entry.staff_viewer_id) || 'Staff';
+      const targetName = viewerName(entry.target_viewer_id) || 'Viewer';
       return `
         <article class="community-history-item">
           <div>${historySentence(entry, staffName, targetName)}</div>
