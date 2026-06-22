@@ -112,7 +112,7 @@
   function renderStats(){
     const today = new Date().toISOString().slice(0, 10);
     const total = state.viewers.length;
-    const staff = state.viewers.filter(v => ['admin','moderator'].includes(v.role)).length;
+    const staff = state.viewers.filter(v => ['admin','founder','moderator'].includes(v.role)).length;
     const banned = state.viewers.filter(v => Boolean(v.banned_at)).length;
     const activeToday = state.viewers.filter(v => String(v.last_seen || '').startsWith(today)).length;
 
@@ -169,14 +169,12 @@
       </div>
 
       <div class="viewer-detail-grid">
-        ${field('Rôle technique', roleLabel(viewer.role), viewer.role)}
-        ${field('Badge public', badgeLabel(viewer.badge), viewer.badge)}
-        ${field('Avatar', avatarLabel(viewer.avatar), viewer.avatar)}
-        ${field('État', viewer.banned_at ? 'Banni' : 'Actif', viewer.banned_at ? formatDate(viewer.banned_at) : 'banned_at = NULL')}
-        ${field('Inscription', formatDate(viewer.created_at), viewer.created_at || '—')}
-        ${field('Dernière activité', formatDate(viewer.last_seen), viewer.last_seen || '—')}
-        ${field('Viewer ID', viewer.id, '')}
-        ${field('Auth user ID', viewer.auth_user_id || '—', '')}
+        ${field('Rôle', roleLabel(viewer.role))}
+        ${field('Badge public', badgeLabel(viewer.badge))}
+        ${field('Avatar', avatarLabel(viewer.avatar))}
+        ${field('État', statusLabel(viewer))}
+        ${field('Inscription', formatDate(viewer.created_at))}
+        ${field('Dernière activité', formatDate(viewer.last_seen))}
       </div>
 
       <div class="community-note">
@@ -194,21 +192,23 @@
     els.list.innerHTML = `<div class="admin-empty">${message}</div>`;
   }
 
-  function field(label, value, hint=''){
+  function field(label, value){
     return `
       <div class="viewer-detail-field">
         <span>${escapeHtml(label)}</span>
         <strong>${escapeHtml(value || '—')}</strong>
-        ${hint ? `<small>${escapeHtml(hint)}</small>` : ''}
       </div>
     `;
   }
 
+  function statusLabel(viewer){
+    if(viewer?.banned_at) return `🔴 Banni depuis ${formatDate(viewer.banned_at)}`;
+    return '🟢 Actif';
+  }
+
   function roleLabel(role='viewer'){
-    const ps = getPS(false);
-    if(ps?.roleLabel) return ps.roleLabel(role);
     const key = String(role || 'viewer').toLowerCase();
-    if(key === 'admin') return 'Fondateur';
+    if(key === 'admin' || key === 'founder') return 'Fondateur';
     if(key === 'moderator') return 'Modérateur';
     return 'Planétien';
   }
