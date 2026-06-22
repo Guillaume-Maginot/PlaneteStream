@@ -231,9 +231,11 @@ function createRelatedCard(item) {
     <button class="card" data-related-slug="${escapeHtml(item.slug)}">
       <div class="poster" data-title="${escapeHtml(item.title)}" style="background-image:url('${poster}')"></div>
       <div class="info">
-        <h3>${escapeHtml(item.title)}</h3>
-        <div class="meta">
+        <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
           <span>${escapeHtml(item.type || 'film')}</span>
+          ${item.year ? `<span>${escapeHtml(String(item.year))}</span>` : ''}
+        </div>
+        <div class="compact-genres">
           ${(item.genres || []).slice(0, 2).map(g => `<span>${escapeHtml(g)}</span>`).join('')}
         </div>
       </div>

@@ -255,10 +255,11 @@ function createCard(item){
   card.innerHTML = `
     <a class="poster poster-link" href="${detailHref}" data-title="${escapeHtml(item.title)}" style="background-image:url('${item.poster || ''}'), ${posterFallback}" aria-label="Voir la fiche ${escapeHtml(item.title)}"></a>
     <div class="info">
-      <h3>${escapeHtml(item.title)}</h3>
-      <div class="meta">
+      <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
         <span>${escapeHtml(formatType(item.type || item.mediaType || 'film'))}</span>
         ${year ? `<span>${escapeHtml(year)}</span>` : ''}
+      </div>
+      <div class="compact-genres">
         ${(item.genres || []).slice(0,2).map(g => `<span>${escapeHtml(g)}</span>`).join('')}
       </div>
       <div class="card-actions">

@@ -1853,9 +1853,11 @@ function createRelatedCard(item){
     <article class="card">
       <a class="poster poster-link" href="watch.html?slug=${encodeURIComponent(item.slug)}" data-title="${escapeHtml(item.title)}" style="background-image:url('${item.poster || ''}')" aria-label="Lire ${escapeHtml(item.title)}"></a>
       <div class="info">
-        <h3>${escapeHtml(item.title)}</h3>
-        <div class="meta">
+        <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
           <span>${escapeHtml(formatType(item.type || 'film'))}</span>
+          ${item.year ? `<span>${escapeHtml(String(item.year))}</span>` : ''}
+        </div>
+        <div class="compact-genres">
           ${(item.genres || []).slice(0,2).map(g => `<span>${escapeHtml(g)}</span>`).join('')}
         </div>
         <div class="card-actions">
