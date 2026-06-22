@@ -1,4 +1,4 @@
-/* Planète Stream v2.3 · Hall du Cinéma
+/* Planète Stream v2.9.5 · Hall du Cinéma Realtime
    Module autonome branché sur window.PS : lit l'activité communautaire et transforme
    critiques, réponses, likes et nouveaux membres en contenu vivant sur l'accueil.
 */
@@ -15,7 +15,11 @@
     viewerMap: new Map(),
     movieMap: new Map(),
     busy:false,
-    timer:null
+    timer:null,
+    realtimeClient:null,
+    realtimeChannel:null,
+    realtimeTimer:null,
+    realtimeActive:false
   };
 
   const qs = selector => root.querySelector(selector);
@@ -24,7 +28,8 @@
   async function boot(){
     if(window.PS?.ready) await window.PS.ready;
     await loadHall();
-    state.timer = setInterval(loadHall, 30000);
+    startRealtimeHall();
+    state.timer = setInterval(loadHall, 90000);
   }
 
   async function loadHall(){
@@ -49,6 +54,7 @@
       state.movieMap = new Map(state.catalogue.map(movie => [movie.slug, movie]));
 
       renderHall();
+      root.classList.remove('is-hall-live-refresh');
     }catch(error){
       console.error('Hall du Cinéma error', error);
       renderError();
@@ -398,11 +404,76 @@
     return `<p class="hall-muted">${escape(text)}</p>`;
   }
 
+
+  function startRealtimeHall(){
+    if(state.realtimeActive) return true;
+    if(!window.supabase?.createClient || !window.PS?.config?.supabaseUrl || !window.PS?.config?.supabaseKey) return false;
+    try{
+      state.realtimeClient = window.supabase.createClient(window.PS.config.supabaseUrl, window.PS.config.supabaseKey, {
+        auth:{persistSession:false, autoRefreshToken:false, detectSessionInUrl:false},
+        realtime:{params:{eventsPerSecond:8}}
+      });
+      const token = window.PS?.getState?.()?.accessToken || window.PS?.state?.accessToken || null;
+      if(token && state.realtimeClient?.realtime?.setAuth){
+        try{ state.realtimeClient.realtime.setAuth(token); }catch(error){ console.warn('Hall realtime auth warning', error); }
+      }
+
+      state.realtimeChannel = state.realtimeClient
+        .channel('ps-hall-realtime')
+        .on('postgres_changes', {event:'*', schema:'public', table:'comments'}, payload => queueRealtimeHallRefresh('comments', payload))
+        .on('postgres_changes', {event:'*', schema:'public', table:'comment_likes'}, payload => queueRealtimeHallRefresh('likes', payload))
+        .on('postgres_changes', {event:'*', schema:'public', table:'movie_ratings'}, payload => queueRealtimeHallRefresh('ratings', payload))
+        .on('postgres_changes', {event:'*', schema:'public', table:'notifications'}, payload => queueRealtimeHallRefresh('notifications', payload))
+        .subscribe(status => {
+          state.realtimeActive = status === 'SUBSCRIBED';
+          if(status === 'SUBSCRIBED') console.info('Planète Stream Hall realtime actif. Le hall respire tout seul.');
+        });
+      return true;
+    }catch(error){
+      console.warn('Hall realtime indisponible', error);
+      return false;
+    }
+  }
+
+  function queueRealtimeHallRefresh(source='hall', payload=null){
+    if(document.hidden) return;
+    if(state.realtimeTimer) clearTimeout(state.realtimeTimer);
+    state.realtimeTimer = setTimeout(async () => {
+      state.realtimeTimer = null;
+      root.classList.add('is-hall-live-refresh');
+      await loadHall();
+      flashHallRealtime(source);
+    }, 650);
+  }
+
+  function flashHallRealtime(source){
+    const updated = qs('#hallUpdatedAt');
+    if(updated){
+      const labels = {comments:'nouvel échange', likes:'nouveau like', ratings:'nouvelle note', notifications:'nouvelle activité'};
+      updated.textContent = `Mis à jour à l’instant · ${labels[source] || 'activité du Hall'}`;
+    }
+    root.classList.add('is-hall-realtime-pulse');
+    setTimeout(() => root.classList.remove('is-hall-realtime-pulse'), 900);
+  }
+
+  async function stopRealtimeHall(){
+    if(state.realtimeTimer){ clearTimeout(state.realtimeTimer); state.realtimeTimer = null; }
+    if(state.realtimeChannel && state.realtimeClient){
+      try{ await state.realtimeClient.removeChannel(state.realtimeChannel); }catch(error){ console.warn('Hall realtime remove warning', error); }
+    }
+    state.realtimeChannel = null;
+    state.realtimeClient = null;
+    state.realtimeActive = false;
+  }
+
   document.addEventListener('visibilitychange', () => {
-    if(document.hidden) clearInterval(state.timer);
-    else{
+    if(document.hidden){
+      clearInterval(state.timer);
+      stopRealtimeHall();
+    }else{
       loadHall();
-      state.timer = setInterval(loadHall, 30000);
+      startRealtimeHall();
+      state.timer = setInterval(loadHall, 90000);
     }
   });
 

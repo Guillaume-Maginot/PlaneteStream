@@ -4250,3 +4250,18 @@ a.journey-event:hover{
 }
 
 /* === Planète Stream V2.9.4.2 : realtime DELETE ratings === */
+
+/* === V2.9.5 · Hall realtime === */
+.cinema-hall.is-hall-live-refresh .hall-shell{
+  box-shadow:0 0 0 1px rgba(195,77,255,.24), 0 0 28px rgba(195,77,255,.11);
+}
+.cinema-hall.is-hall-realtime-pulse .hall-stats strong,
+.cinema-hall.is-hall-realtime-pulse .hall-card h3,
+.cinema-hall.is-hall-realtime-pulse .hall-ticker-title{
+  animation:hallRealtimePulse .75s ease;
+}
+@keyframes hallRealtimePulse{
+  0%{filter:brightness(1); transform:translateY(0)}
+  35%{filter:brightness(1.28); transform:translateY(-1px)}
+  100%{filter:brightness(1); transform:translateY(0)}
+}
