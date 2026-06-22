@@ -1,5 +1,5 @@
 /* Planète Stream · Administration communauté
-   Phase 3.5 : rôles avec avatars officiels staff.
+   Phase 4 : rôles, avatars staff et bannissements prudents.
 */
 (function initAdminCommunity(){
   const state = {
@@ -10,6 +10,7 @@
     loading: false,
     savingBadge: false,
     savingRole: false,
+    savingBan: false,
     notice: ''
   };
 
@@ -197,15 +198,17 @@
 
       ${renderRoleEditor(viewer)}
       ${renderBadgeEditor(viewer)}
+      ${renderBanEditor(viewer)}
       ${state.notice ? `<div class="community-notice">${escapeHtml(state.notice)}</div>` : ''}
 
       <div class="community-note">
-        Phase 3.5 : les rôles staff attribuent automatiquement leur avatar officiel. Les bannissements restent désarmés jusqu’à la prochaine passe.
+        Phase 4 : rôles, badges, avatars staff et bannissements sont actifs. Les actions sensibles restent protégées par confirmations.
       </div>
     `;
 
     bindRoleEditor(viewer);
     bindBadgeEditor(viewer);
+    bindBanEditor(viewer);
   }
 
 
@@ -428,6 +431,138 @@
   }
 
 
+  function renderBanEditor(viewer){
+    const permission = banPermission(viewer);
+    const isBanned = Boolean(viewer?.banned_at);
+
+    if(!permission.allowed){
+      return `
+        <div class="community-action-panel is-disabled">
+          <div>
+            <span>Bannissement</span>
+            <strong>${isBanned ? 'Viewer banni' : 'Viewer actif'}</strong>
+          </div>
+          <p>${escapeHtml(permission.reason)}</p>
+        </div>
+      `;
+    }
+
+    if(isBanned){
+      return `
+        <div class="community-action-panel">
+          <label for="unbanViewerBtn">
+            <span>Bannissement</span>
+            <strong>🔴 Banni depuis ${escapeHtml(formatDate(viewer.banned_at))}</strong>
+          </label>
+          <div class="community-action-row">
+            <p>Réactiver ce compte lui rendra l’accès normal aux fonctions communautaires.</p>
+            <button class="primary community-safe-btn" id="unbanViewerBtn" type="button" ${state.savingBan ? 'disabled' : ''}>
+              ${state.savingBan ? 'Débannissement…' : 'Débannir'}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="community-action-panel community-danger-panel">
+        <label for="banViewerBtn">
+          <span>Bannissement</span>
+          <strong>🟢 Compte actif</strong>
+        </label>
+        <div class="community-action-row">
+          <p>Le bannissement bloque le viewer sans supprimer son profil. Action réversible, mais à manier avec des gants orbitaux.</p>
+          <button class="primary community-danger-btn" id="banViewerBtn" type="button" ${state.savingBan ? 'disabled' : ''}>
+            ${state.savingBan ? 'Bannissement…' : 'Bannir'}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindBanEditor(viewer){
+    const banButton = document.querySelector('#banViewerBtn');
+    const unbanButton = document.querySelector('#unbanViewerBtn');
+    if(banButton){
+      banButton.addEventListener('click', async () => {
+        const permission = banPermission(viewer);
+        if(!permission.allowed){
+          state.notice = permission.reason;
+          renderDetail(viewer);
+          return;
+        }
+        const message = `Bannir ${viewer?.pseudo || 'ce viewer'} ?\n\nLe compte ne sera pas supprimé, mais il sera marqué comme banni dans Supabase. Cette action pourra être annulée ensuite.`;
+        if(!window.confirm(message)){
+          state.notice = 'Bannissement annulé. Le bouton rouge retourne dormir sous son capot.';
+          renderDetail(viewer);
+          return;
+        }
+        await saveBanStatus(viewer, true);
+      });
+    }
+    if(unbanButton){
+      unbanButton.addEventListener('click', async () => {
+        const permission = banPermission(viewer);
+        if(!permission.allowed){
+          state.notice = permission.reason;
+          renderDetail(viewer);
+          return;
+        }
+        const message = `Débannir ${viewer?.pseudo || 'ce viewer'} ?\n\nLe compte retrouvera son état actif.`;
+        if(!window.confirm(message)){
+          state.notice = 'Débannissement annulé.';
+          renderDetail(viewer);
+          return;
+        }
+        await saveBanStatus(viewer, false);
+      });
+    }
+  }
+
+  async function saveBanStatus(viewer, shouldBan){
+    if(!viewer?.id || state.savingBan) return;
+    state.savingBan = true;
+    state.notice = '';
+    renderDetail(viewer);
+
+    try{
+      await waitForPS();
+      const ps = getPS();
+      if(!ps.restWrite) throw new Error('restWrite indisponible dans auth.js.');
+
+      const payload = {banned_at: shouldBan ? new Date().toISOString() : null};
+      const result = await ps.restWrite(
+        'viewers',
+        'PATCH',
+        `id=eq.${encodeURIComponent(viewer.id)}`,
+        payload,
+        {auth:true, prefer:'return=minimal'}
+      );
+
+      if(!result.ok){
+        throw new Error(`Supabase a refusé la mise à jour du bannissement (${result.status || 'statut inconnu'}).`);
+      }
+
+      state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, ...payload} : item);
+      filterViewers();
+      state.selectedId = viewer.id;
+      state.notice = shouldBan
+        ? `${escapePlain(viewer.pseudo)} est maintenant banni. Profil conservé, trappe refermée.`
+        : `${escapePlain(viewer.pseudo)} est débanni et repasse en statut actif.`;
+      renderStats();
+      renderList();
+      renderDetail(getSelectedViewer());
+    }catch(error){
+      console.error('Admin community ban update error', error);
+      state.notice = `${error.message || 'Impossible de modifier le bannissement.'} Vérifie les droits du compte connecté et les policies Supabase.`;
+      renderDetail(getSelectedViewer() || viewer);
+    }finally{
+      state.savingBan = false;
+      renderDetail(getSelectedViewer() || viewer);
+    }
+  }
+
+
   function getCurrentViewer(){
     const ps = getPS(false);
     return ps?.getState?.().viewer || ps?.state?.viewer || null;
@@ -453,6 +588,31 @@
   function countAdmins(){
     return state.viewers.filter(viewer => isAdminRole(viewer.role)).length;
   }
+
+  function banPermission(viewer){
+    const currentRole = getCurrentRole();
+    const currentViewerId = getCurrentViewerId();
+    const targetRole = technicalRoleValue(viewer?.role);
+
+    if(!['admin','founder','moderator'].includes(currentRole)){
+      return {allowed:false, reason:'Seul le staff peut bannir ou débannir un viewer.'};
+    }
+
+    if(currentViewerId && viewer?.id === currentViewerId){
+      return {allowed:false, reason:'Tu ne peux pas te bannir toi-même. Même les capitaines ont besoin de garde-fous.'};
+    }
+
+    if(targetRole === 'admin'){
+      return {allowed:false, reason:'Un Fondateur ne peut pas être banni depuis l’interface. Protection royale activée.'};
+    }
+
+    if(currentRole === 'moderator' && targetRole === 'moderator'){
+      return {allowed:false, reason:'Un Modérateur ne peut pas bannir un autre Modérateur.'};
+    }
+
+    return {allowed:true, reason:''};
+  }
+
 
   function rolePermission(viewer, nextRole=null){
     const currentRole = getCurrentRole();
