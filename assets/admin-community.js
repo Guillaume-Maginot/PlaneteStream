@@ -5,6 +5,7 @@
   const state = {
     viewers: [],
     filtered: [],
+    history: [],
     selectedId: null,
     loaded: false,
     loading: false,
@@ -22,7 +23,8 @@
     total: document.querySelector('#communityTotal'),
     staff: document.querySelector('#communityStaff'),
     banned: document.querySelector('#communityBanned'),
-    activeToday: document.querySelector('#communityActiveToday')
+    activeToday: document.querySelector('#communityActiveToday'),
+    history: document.querySelector('#communityHistoryList')
   };
 
   const BADGE_OPTIONS = [
@@ -78,6 +80,7 @@
       renderStats();
       renderList();
       renderDetail(getSelectedViewer());
+      await loadHistory();
     }catch(error){
       console.error('Admin community load error', error);
       renderListMessage(`Impossible de charger les viewers. ${escapeHtml(error.message || '')}`);
@@ -372,6 +375,9 @@
         throw new Error(`Supabase a refusé la mise à jour du rôle (${result.status || 'statut inconnu'}).`);
       }
 
+      await recordHistory('role_update', viewer, {role: viewer.role, badge: viewer.badge, avatar: viewer.avatar}, {role: nextRole, badge: payload.badge || viewer.badge, avatar: payload.avatar || viewer.avatar});
+
+
       state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, ...payload} : item);
       filterViewers();
       state.selectedId = viewer.id;
@@ -412,6 +418,8 @@
       if(!result.ok){
         throw new Error(`Supabase a refusé la mise à jour du badge (${result.status || 'statut inconnu'}).`);
       }
+
+      await recordHistory('badge_update', viewer, {badge: viewer.badge}, {badge: nextBadge});
 
       state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, badge: nextBadge} : item);
       filterViewers();
@@ -543,6 +551,8 @@
         throw new Error(`Supabase a refusé la mise à jour du bannissement (${result.status || 'statut inconnu'}).`);
       }
 
+      await recordHistory(shouldBan ? 'ban' : 'unban', viewer, {banned_at: viewer.banned_at}, {banned_at: payload.banned_at});
+
       state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, ...payload} : item);
       filterViewers();
       state.selectedId = viewer.id;
@@ -562,6 +572,119 @@
     }
   }
 
+
+
+  async function loadHistory(){
+    if(!els.history) return;
+    renderHistoryMessage('Chargement du journal de bord…');
+
+    try{
+      await waitForPS();
+      const ps = getPS();
+      const query = [
+        'select=id,viewer_id,staff_id,action,old_value,new_value,reason,created_at',
+        'order=created_at.desc',
+        'limit=30'
+      ].join('&');
+      const result = await ps.restSelect('viewer_history', query, {auth:true});
+
+      if(!result.ok || !Array.isArray(result.data)){
+        throw new Error(`Journal indisponible (${result.status || 'réponse inconnue'})`);
+      }
+
+      state.history = result.data;
+      renderHistory();
+    }catch(error){
+      console.warn('Admin community history load warning', error);
+      renderHistoryMessage(`Journal non connecté. Ajoute la table viewer_history avec le fichier SQL fourni, puis recharge la page.`);
+    }
+  }
+
+  async function recordHistory(action, viewer, oldValue={}, newValue={}, reason=''){
+    try{
+      await waitForPS();
+      const ps = getPS();
+      if(!ps.restWrite) return;
+      const staffId = getCurrentViewerId() || null;
+      const payload = {
+        viewer_id: viewer?.id || null,
+        staff_id: staffId,
+        action,
+        old_value: oldValue || {},
+        new_value: newValue || {},
+        reason: reason || null
+      };
+
+      const result = await ps.restWrite('viewer_history', 'POST', '', payload, {auth:true, prefer:'return=representation'});
+      if(result.ok && Array.isArray(result.data) && result.data[0]){
+        state.history = [result.data[0], ...state.history].slice(0, 30);
+        renderHistory();
+      }else if(!result.ok){
+        console.warn('Journal non écrit', result.status, result.data);
+      }
+    }catch(error){
+      console.warn('Journal non écrit', error);
+    }
+  }
+
+  function renderHistory(){
+    if(!els.history) return;
+    if(!state.history.length){
+      renderHistoryMessage('Aucune action enregistrée pour le moment. Le journal sent encore la peinture fraîche.');
+      return;
+    }
+
+    els.history.innerHTML = state.history.map(entry => {
+      const staffName = viewerName(entry.staff_id) || 'Staff';
+      const targetName = viewerName(entry.viewer_id) || 'Viewer';
+      return `
+        <article class="community-history-item">
+          <div>${historySentence(entry, staffName, targetName)}</div>
+          <div class="community-history-meta">
+            <span>${escapeHtml(formatDate(entry.created_at))}</span>
+            ${entry.reason ? `<span>Motif : ${escapeHtml(entry.reason)}</span>` : ''}
+            <span>${escapeHtml(actionLabel(entry.action))}</span>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function renderHistoryMessage(message){
+    if(els.history) els.history.innerHTML = `<div class="admin-empty">${escapeHtml(message)}</div>`;
+  }
+
+  function viewerName(viewerId){
+    return state.viewers.find(viewer => viewer.id === viewerId)?.pseudo || '';
+  }
+
+  function actionLabel(action){
+    const labels = {
+      role_update: 'Rôle',
+      badge_update: 'Badge',
+      ban: 'Bannissement',
+      unban: 'Débannissement'
+    };
+    return labels[action] || action || 'Action';
+  }
+
+  function historySentence(entry, staffName, targetName){
+    const oldValue = entry?.old_value || {};
+    const newValue = entry?.new_value || {};
+    if(entry.action === 'role_update'){
+      return `<strong>${escapeHtml(staffName)}</strong> a changé le rôle de <strong>${escapeHtml(targetName)}</strong> : ${escapeHtml(roleLabel(oldValue.role))} → <strong>${escapeHtml(roleLabel(newValue.role))}</strong>.`;
+    }
+    if(entry.action === 'badge_update'){
+      return `<strong>${escapeHtml(staffName)}</strong> a changé le badge de <strong>${escapeHtml(targetName)}</strong> : ${escapeHtml(badgeLabel(oldValue.badge))} → <strong>${escapeHtml(badgeLabel(newValue.badge))}</strong>.`;
+    }
+    if(entry.action === 'ban'){
+      return `<strong>${escapeHtml(staffName)}</strong> a banni <strong>${escapeHtml(targetName)}</strong>.`;
+    }
+    if(entry.action === 'unban'){
+      return `<strong>${escapeHtml(staffName)}</strong> a débanni <strong>${escapeHtml(targetName)}</strong>.`;
+    }
+    return `<strong>${escapeHtml(staffName)}</strong> a effectué une action sur <strong>${escapeHtml(targetName)}</strong>.`;
+  }
 
   function getCurrentViewer(){
     const ps = getPS(false);
