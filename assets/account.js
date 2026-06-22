@@ -576,7 +576,7 @@ async function fetchMyJourney(viewer={}, stats={}, recentReviews=[], ratedMovies
   addEvent({
     icon:'🎭',
     title:'Avatar actuel',
-    text:`${PSAuth.avatarLabel?.(viewer.avatar) || 'Orbiteur'} accompagne ton parcours dans le Hall.`,
+    text:`${PSAuth.avatarLabel?.(PSAuth.displayAvatar?.(viewer) || viewer.avatar) || 'Orbiteur'} accompagne ton parcours dans le Hall.`,
     at:viewer.last_seen || viewer.created_at
   });
 

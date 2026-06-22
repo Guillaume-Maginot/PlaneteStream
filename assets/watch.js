@@ -951,7 +951,7 @@ async function askViewerPseudo(force=false){
 }
 
 async function findViewerByPseudo(pseudo){
-  const result = await supabaseSelect('viewers', `pseudo=eq.${encodeURIComponent(pseudo)}&select=id,pseudo,avatar,badge,created_at,last_seen&limit=1`);
+  const result = await supabaseSelect('viewers', `pseudo=eq.${encodeURIComponent(pseudo)}&select=id,pseudo,avatar,badge,role,created_at,last_seen&limit=1`);
   if(!result.ok) return null;
   return Array.isArray(result.data) ? result.data[0] : null;
 }
@@ -1002,7 +1002,7 @@ function renderViewerBox(){
       box.innerHTML = `
         <p class="eyebrow">Spectateur</p>
         <div class="viewer-card-mini">
-          ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar')}
+          ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(viewer) || viewer.avatar || 'orbiteur', 'viewer-avatar')}
           <div>
             <strong>${escapeHtml(viewer.pseudo)}</strong>
             <small id="viewCountLabel">Audience connectée</small>
@@ -1021,7 +1021,7 @@ function renderViewerBox(){
 
   if(label){
     label.innerHTML = viewer?.pseudo
-      ? `${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar small')} Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
+      ? `${PSAuth.avatarHtml(PSAuth.displayAvatar?.(viewer) || viewer.avatar || 'orbiteur', 'viewer-avatar small')} Publication en tant que <strong>${escapeHtml(viewer.pseudo)}</strong>`
       : '<a href="account.html">Se connecter pour publier</a>';
   }
 
@@ -1195,11 +1195,11 @@ async function openMiniProfile(viewerId){
     <div class="profile-mini-card profile-mini-card-wide" role="dialog" aria-label="Mini profil ${escapeHtml(viewer.pseudo)}">
       <button class="profile-close" type="button" data-close-profile>×</button>
       <div class="profile-mini-head">
-        ${PSAuth.avatarHtml(viewer.avatar || 'orbiteur', 'viewer-avatar big')}
+        ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(viewer) || viewer.avatar || 'orbiteur', 'viewer-avatar big')}
         <div>
           <p class="eyebrow">Profil spectateur</p>
           <h3>${escapeHtml(viewer.pseudo || 'Spectateur')}</h3>
-          <small>${viewer.created_at ? `Membre depuis ${formatCommentDate(viewer.created_at)}` : 'Membre Planète Stream'} · ${escapeHtml(PSAuth.avatarLabel?.(viewer.avatar) || 'Orbiteur')}</small>
+          <small>${viewer.created_at ? `Membre depuis ${formatCommentDate(viewer.created_at)}` : 'Membre Planète Stream'} · ${escapeHtml(PSAuth.avatarLabel?.(PSAuth.displayAvatar?.(viewer) || viewer.avatar) || 'Orbiteur')}</small>
         </div>
       </div>
       <div class="profile-badges" aria-label="Badges du spectateur">

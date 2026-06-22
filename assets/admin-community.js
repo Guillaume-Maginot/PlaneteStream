@@ -800,6 +800,10 @@
       return {allowed:false, reason:'Tu ne peux pas modifier ton propre rôle depuis l’interface. Protection anti-auto-éjection activée.'};
     }
 
+    if(isArchitect(viewer)){
+      return {allowed:false, reason:'Le statut Architecte est exclusif et ne se modifie pas depuis le panneau standard.'};
+    }
+
     if(wantedRole && targetRole === 'admin' && wantedRole !== 'admin' && countAdmins() <= 1){
       return {allowed:false, reason:'Impossible de rétrograder le dernier Fondateur. La station orbitale refuse de se laisser sans capitaine.'};
     }

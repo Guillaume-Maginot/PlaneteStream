@@ -300,11 +300,11 @@ const PS_AUTH_CONFIG = {
     return result.ok;
   }
 
-  async function ensureViewerProfile({pseudo, avatar}={}){
+  async function ensureViewerProfile({pseudo, avatar, force=false}={}){
     const user = state.user;
     if(!user?.id) return null;
 
-    const local = loadViewer();
+    const local = force ? null : loadViewer();
     if(local?.auth_user_id === user.id && local?.id){
       state.viewer = normalizeViewer(local);
       return state.viewer;
@@ -367,7 +367,7 @@ const PS_AUTH_CONFIG = {
     state.session = session;
     state.user = session.user;
     state.accessToken = session.access_token;
-    state.viewer = await ensureViewerProfile({});
+    state.viewer = await ensureViewerProfile({force});
 
     updateNav();
     if(state.viewer?.id){
@@ -657,7 +657,7 @@ const PS_AUTH_CONFIG = {
       const viewer = state.viewer || loadViewer();
       if(viewer?.pseudo && (!link.querySelector('.account-user-name') || /^\d+$/.test((link.textContent || '').trim()))){
         link.href = '#';
-        link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
+        link.innerHTML = `${avatarHtml(displayAvatar(viewer), 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
         link.classList.add('is-connected');
         ensureAccountDropdown(link, viewer);
       }
@@ -700,7 +700,7 @@ const PS_AUTH_CONFIG = {
 
     if(connected){
       link.href = '#';
-      link.innerHTML = `${avatarHtml(viewer.avatar || 'orbiteur', 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
+      link.innerHTML = `${avatarHtml(displayAvatar(viewer), 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
       link.classList.add('is-connected');
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-expanded', 'false');
