@@ -1725,7 +1725,9 @@ function getRelated(item, catalogue){
 }
 
 function renderComments(comments){
-  const list = comments.length ? comments : getDemoComments();
+  const list = Array.isArray(comments) ? comments : [];
+  if(!list.length) return '';
+
   const repliesByParent = buildRepliesTree(list);
   const commentsById = buildCommentsIndex(list);
 
