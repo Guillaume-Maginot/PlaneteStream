@@ -2148,12 +2148,33 @@ async function startRealtimeRatings(item){
     realtimeRatingsChannel = realtimeRatingsClient
       .channel(`ps-movie-ratings-${item.slug}`)
       .on('postgres_changes', {
-        event:'*',
+        event:'INSERT',
         schema:'public',
         table,
         filter:`movie_id=eq.${item.slug}`
       }, payload => {
         scheduleRealtimeRatingRefresh(payload);
+      })
+      .on('postgres_changes', {
+        event:'UPDATE',
+        schema:'public',
+        table,
+        filter:`movie_id=eq.${item.slug}`
+      }, payload => {
+        scheduleRealtimeRatingRefresh(payload);
+      })
+      .on('postgres_changes', {
+        event:'DELETE',
+        schema:'public',
+        table
+      }, payload => {
+        const deletedMovieId = payload?.old?.movie_id;
+        // Sur DELETE, Supabase ne fournit parfois que la clé primaire selon la config
+        // Postgres. Dans ce cas, on rafraîchit quand même la fiche ouverte : c'est léger
+        // et cela évite une note fantôme après suppression d'une critique.
+        if(!deletedMovieId || deletedMovieId === item.slug){
+          scheduleRealtimeRatingRefresh(payload);
+        }
       })
       .subscribe(status => {
         if(status === 'SUBSCRIBED'){
