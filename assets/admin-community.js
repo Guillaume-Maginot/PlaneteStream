@@ -1,5 +1,5 @@
 /* Planète Stream · Administration communauté
-   Phase 2 : première commande douce. Modification du badge public uniquement.
+   Phase 3 : badges et rôles avec garde-fous doux.
 */
 (function initAdminCommunity(){
   const state = {
@@ -9,6 +9,7 @@
     loaded: false,
     loading: false,
     savingBadge: false,
+    savingRole: false,
     notice: ''
   };
 
@@ -30,6 +31,12 @@
     {value:'vip', label:'VIP'},
     {value:'supporter', label:'Supporter'},
     {value:'beta', label:'Bêta testeur'}
+  ];
+
+  const ROLE_OPTIONS = [
+    {value:'viewer', label:'Planétien'},
+    {value:'moderator', label:'Modérateur'},
+    {value:'admin', label:'Fondateur'}
   ];
 
   if(!els.module || !els.list) return;
@@ -188,15 +195,90 @@
         ${field('Dernière activité', formatDate(viewer.last_seen))}
       </div>
 
+      ${renderRoleEditor(viewer)}
       ${renderBadgeEditor(viewer)}
       ${state.notice ? `<div class="community-notice">${escapeHtml(state.notice)}</div>` : ''}
 
       <div class="community-note">
-        Phase 2 : première commande active. Seul le badge public est modifiable pour valider l’écriture Supabase sans toucher aux rôles ni aux bannissements.
+        Phase 3 : badges et rôles sont actifs. Les bannissements restent désarmés jusqu’à la prochaine passe.
       </div>
     `;
 
+    bindRoleEditor(viewer);
     bindBadgeEditor(viewer);
+  }
+
+
+  function renderRoleEditor(viewer){
+    const permission = rolePermission(viewer);
+    if(!permission.allowed){
+      return `
+        <div class="community-action-panel is-disabled">
+          <div>
+            <span>Rôle</span>
+            <strong>${escapeHtml(roleLabel(viewer.role))}</strong>
+          </div>
+          <p>${escapeHtml(permission.reason)}</p>
+        </div>
+      `;
+    }
+
+    const currentValue = technicalRoleValue(viewer.role);
+    const options = ROLE_OPTIONS.map(option => `
+      <option value="${escapeAttr(option.value)}" ${option.value === currentValue ? 'selected' : ''}>${escapeHtml(option.label)}</option>
+    `).join('');
+
+    return `
+      <div class="community-action-panel">
+        <label for="viewerRoleSelect">
+          <span>Rôle</span>
+          <strong>Accès et permissions</strong>
+        </label>
+        <div class="community-action-row">
+          <select id="viewerRoleSelect" ${state.savingRole ? 'disabled' : ''}>${options}</select>
+          <button class="primary" id="saveViewerRole" type="button" ${state.savingRole ? 'disabled' : ''}>
+            ${state.savingRole ? 'Enregistrement…' : 'Enregistrer le rôle'}
+          </button>
+        </div>
+        <label class="community-inline-check" style="display:flex;gap:10px;align-items:flex-start;margin-top:12px;color:var(--muted);font-size:13px;line-height:1.35;text-transform:none;letter-spacing:0;font-weight:700;">
+          <input id="syncRoleBadge" type="checkbox" checked style="margin-top:2px;accent-color:#a855f7;">
+          <span style="display:inline;color:var(--muted);font-size:13px;font-weight:700;letter-spacing:0;text-transform:none;margin:0;">Aligner aussi le badge public si le rôle devient Fondateur ou Modérateur.</span>
+        </label>
+      </div>
+    `;
+  }
+
+  function bindRoleEditor(viewer){
+    const button = document.querySelector('#saveViewerRole');
+    const select = document.querySelector('#viewerRoleSelect');
+    const syncBadge = document.querySelector('#syncRoleBadge');
+    if(!button || !select || !viewer) return;
+
+    button.addEventListener('click', async () => {
+      const nextRole = String(select.value || 'viewer').toLowerCase();
+      const currentRole = technicalRoleValue(viewer.role);
+      if(nextRole === currentRole){
+        state.notice = 'Rôle inchangé. Le sas est resté fermé, ce qui est parfois très sain.';
+        renderDetail(viewer);
+        return;
+      }
+
+      const permission = rolePermission(viewer, nextRole);
+      if(!permission.allowed){
+        state.notice = permission.reason;
+        renderDetail(viewer);
+        return;
+      }
+
+      const message = roleConfirmMessage(viewer, nextRole);
+      if(!window.confirm(message)){
+        state.notice = 'Changement de rôle annulé.';
+        renderDetail(viewer);
+        return;
+      }
+
+      await saveRole(viewer, nextRole, Boolean(syncBadge?.checked));
+    });
   }
 
   function renderBadgeEditor(viewer){
@@ -248,6 +330,53 @@
     });
   }
 
+
+  async function saveRole(viewer, nextRole, syncBadge=false){
+    if(!viewer?.id || state.savingRole) return;
+    state.savingRole = true;
+    state.notice = '';
+    renderDetail(viewer);
+
+    try{
+      await waitForPS();
+      const ps = getPS();
+      if(!ps.restWrite) throw new Error('restWrite indisponible dans auth.js.');
+
+      const payload = {role: nextRole};
+      const nextBadge = badgeForRole(nextRole);
+      if(syncBadge && nextBadge && ['none', badgeForRole(viewer.role), viewer.badge].includes(viewer.badge)){
+        payload.badge = nextBadge;
+      }
+
+      const result = await ps.restWrite(
+        'viewers',
+        'PATCH',
+        `id=eq.${encodeURIComponent(viewer.id)}`,
+        payload,
+        {auth:true, prefer:'return=minimal'}
+      );
+
+      if(!result.ok){
+        throw new Error(`Supabase a refusé la mise à jour du rôle (${result.status || 'statut inconnu'}).`);
+      }
+
+      state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, ...payload} : item);
+      filterViewers();
+      state.selectedId = viewer.id;
+      state.notice = `${escapePlain(viewer.pseudo)} est désormais ${roleLabel(nextRole)}${payload.badge ? `, avec le badge ${badgeLabel(payload.badge)}` : ''}.`;
+      renderStats();
+      renderList();
+      renderDetail(getSelectedViewer());
+    }catch(error){
+      console.error('Admin community role update error', error);
+      state.notice = `${error.message || 'Impossible de mettre à jour le rôle.'} Vérifie que le compte connecté possède le rôle technique admin dans Supabase.`;
+      renderDetail(getSelectedViewer() || viewer);
+    }finally{
+      state.savingRole = false;
+      renderDetail(getSelectedViewer() || viewer);
+    }
+  }
+
   async function saveBadge(viewer, nextBadge){
     if(!viewer?.id || state.savingBadge) return;
     state.savingBadge = true;
@@ -288,10 +417,75 @@
     }
   }
 
-  function canManageBadges(){
+
+  function getCurrentViewer(){
     const ps = getPS(false);
-    const role = String(ps?.getState?.().viewer?.role || ps?.state?.viewer?.role || '').toLowerCase();
-    return ['admin','founder','moderator'].includes(role);
+    return ps?.getState?.().viewer || ps?.state?.viewer || null;
+  }
+
+  function getCurrentRole(){
+    return String(getCurrentViewer()?.role || '').toLowerCase();
+  }
+
+  function getCurrentViewerId(){
+    return String(getCurrentViewer()?.id || '');
+  }
+
+  function isAdminRole(role){
+    const key = String(role || '').toLowerCase();
+    return key === 'admin' || key === 'founder';
+  }
+
+  function technicalRoleValue(role){
+    return isAdminRole(role) ? 'admin' : (String(role || 'viewer').toLowerCase() === 'moderator' ? 'moderator' : 'viewer');
+  }
+
+  function countAdmins(){
+    return state.viewers.filter(viewer => isAdminRole(viewer.role)).length;
+  }
+
+  function rolePermission(viewer, nextRole=null){
+    const currentRole = getCurrentRole();
+    const currentViewerId = getCurrentViewerId();
+    const targetRole = technicalRoleValue(viewer?.role);
+    const wantedRole = nextRole ? technicalRoleValue(nextRole) : null;
+
+    if(!isAdminRole(currentRole)){
+      return {allowed:false, reason:'Seul un Fondateur peut modifier les rôles. Les modérateurs auront leurs propres leviers, mais pas celui-ci.'};
+    }
+
+    if(currentViewerId && viewer?.id === currentViewerId){
+      return {allowed:false, reason:'Tu ne peux pas modifier ton propre rôle depuis l’interface. Protection anti-auto-éjection activée.'};
+    }
+
+    if(wantedRole && targetRole === 'admin' && wantedRole !== 'admin' && countAdmins() <= 1){
+      return {allowed:false, reason:'Impossible de rétrograder le dernier Fondateur. La station orbitale refuse de se laisser sans capitaine.'};
+    }
+
+    return {allowed:true, reason:''};
+  }
+
+  function roleConfirmMessage(viewer, nextRole){
+    const name = viewer?.pseudo || 'ce viewer';
+    const role = technicalRoleValue(nextRole);
+    if(role === 'admin'){
+      return `Promouvoir ${name} au rang de Fondateur ?\n\nCette personne obtiendra un accès complet à l’administration Planetestream.`;
+    }
+    if(role === 'moderator'){
+      return `Promouvoir ${name} au rang de Modérateur ?\n\nCette personne pourra accéder à la Communauté de l’Anneau Orbital et gérer les viewers simples, sans modifier les Fondateurs.`;
+    }
+    return `Repasser ${name} en Planétien ?\n\nCette personne perdra les permissions de staff, mais gardera son badge public sauf si tu le changes séparément.`;
+  }
+
+  function badgeForRole(role){
+    const key = technicalRoleValue(role);
+    if(key === 'admin') return 'founder';
+    if(key === 'moderator') return 'moderator';
+    return '';
+  }
+
+  function canManageBadges(){
+    return ['admin','founder','moderator'].includes(getCurrentRole());
   }
 
   function getSelectedViewer(){
@@ -361,6 +555,10 @@
 
   function setText(element, value){
     if(element) element.textContent = String(value);
+  }
+
+  function escapePlain(str=''){
+    return String(str || '');
   }
 
   function escapeHtml(str=''){
