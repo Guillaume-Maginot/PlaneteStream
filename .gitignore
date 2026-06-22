@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.netlify/
+.cache/
+*.zip
+*.rar
+*.7z
+*.log
+.DS_Store
+Thumbs.db
+allfiles.txt
