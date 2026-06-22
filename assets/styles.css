@@ -4265,3 +4265,122 @@ a.journey-event:hover{
   35%{filter:brightness(1.28); transform:translateY(-1px)}
   100%{filter:brightness(1); transform:translateY(0)}
 }
+
+/* === Planète Stream V3.0 RC1 : polish lisibilité, densité et responsive léger === */
+:root{
+  --ps-fast:.16s ease;
+}
+
+/* Textes plus denses, moins de hauteur perdue */
+section{margin:24px 0 34px}
+.section-head{margin-bottom:14px}
+.section-title{font-size:clamp(18px,2.2vw,21px);padding-left:12px}
+.section-head p{max-width:520px;line-height:1.45}
+
+/* Accueil : marque et hero un peu plus compacts */
+.brand-orbit{padding:30px 0 24px}
+.brand-orbit-inner{min-height:170px;gap:22px}
+.planet-logo-wrap{width:174px;height:174px;flex-basis:174px}
+.planet-logo{width:150px;height:150px}
+.planet-logo-wrap::after{width:230px;height:54px}
+.brand-copy h1{font-size:clamp(34px,5.2vw,62px)}
+.brand-copy p:not(.eyebrow){font-size:16px;max-width:500px;margin-top:12px}
+.compact-hero{min-height:310px!important;padding:34px 0 28px!important}
+.compact-hero h1{font-size:clamp(30px,4vw,50px)}
+.compact-hero .stats-strip{margin-top:16px;gap:16px}
+.compact-hero .hero-actions{margin-top:14px}
+.hero-carousel-status{margin-top:16px!important}
+
+/* Hall : même richesse, moins de volume. Le Hall respire, il ne monopolise plus le pont. */
+.cinema-hall{margin:26px auto 34px}
+.hall-shell{padding:22px;border-radius:24px}
+.hall-head{margin-bottom:14px;gap:18px}
+.hall-head h2{font-size:clamp(24px,3.3vw,36px);line-height:1.04}
+.hall-head p:not(.eyebrow){line-height:1.45;max-width:610px}
+.hall-stats{margin:14px 0;gap:10px}
+.hall-stats span{padding:11px 12px;border-radius:15px}
+.hall-stats strong{font-size:24px}
+.hall-stats small{font-size:11px;margin-top:5px}
+.hall-grid{gap:12px}
+.hall-bottom-grid{gap:12px;margin-top:12px}
+.hall-card{padding:15px;border-radius:18px;min-height:180px}
+.hall-card h3{font-size:15px;margin-bottom:10px}
+.hall-muted,.hall-feature-review p,.hall-welcome-card p{font-size:13px;line-height:1.45}
+.hall-mini-row{padding:8px 0;grid-template-columns:36px 1fr auto;gap:9px}
+.hall-poster-dot{width:36px;height:50px;border-radius:8px}
+.hall-event{padding:10px;border-radius:14px;gap:10px}
+.hall-event>span{width:34px;height:34px;border-radius:12px}
+.hall-member-row{padding:8px 0}
+.hall-feature-review .viewer-avatar,
+.hall-welcome-card .viewer-avatar.big{width:42px;height:42px;border-radius:14px;margin-bottom:8px}
+.hall-welcome-card .viewer-avatar.big{width:52px;height:52px;border-radius:18px}
+.hall-planetian-ticker{margin:12px 0!important}
+
+/* Catalogue : cartes plus lisibles et moins hautes */
+.tabs{margin:22px 0;padding:9px;border-radius:14px;gap:8px}
+.tabs button{padding:9px 16px;font-size:13px}
+.genre-filter{min-height:38px!important;font-size:13px!important}
+.grid{gap:14px}
+.poster{height:230px}
+.info{padding:11px}
+.info h3{font-size:13px;line-height:1.25}
+.card-actions{margin-top:10px}
+.card-actions a{padding:8px 7px}
+.card:hover{transform:translateY(-4px)}
+
+/* CTA et footer : plus directs */
+.cta{padding:20px;margin:18px 0 30px;border-radius:15px}
+.cta-copy{gap:16px}.cta h2{font-size:20px}.cta p{line-height:1.45}.circle{width:52px;height:52px;min-width:52px}
+.footer-shell{gap:26px!important}.footer-description,.footer-tagline{line-height:1.45}.site-footer.footer-redesign{padding-top:26px!important}
+.footer-bottom{padding-top:14px!important}
+
+/* Mon Espace : cartes plus denses */
+.account-page{padding:38px 0 62px}
+.account-hero{padding:26px;margin-bottom:18px}
+.account-hero h1{font-size:clamp(30px,4.5vw,48px);margin:8px 0 10px}
+.account-hero p{line-height:1.5;max-width:690px}
+.account-grid{gap:14px}.account-card{padding:19px}.account-card h2{font-size:21px}.account-card p{line-height:1.45}
+.planetiens-card{padding:15px;gap:14px}.planetiens-head h2{font-size:26px}.viewer-avatar.giant{width:74px;height:74px;min-width:74px}
+
+/* Header mobile : on affiche les accès essentiels au lieu de cacher le cockpit. */
+@media(max-width:900px){
+  .nav{flex-wrap:wrap;gap:10px;padding:13px 0}
+  .logo{font-size:20px;flex:1 1 auto}
+  .hamb{display:none!important}
+  .menu{order:3;display:flex!important;width:100%;gap:8px;overflow-x:auto;padding:4px 0 2px;scrollbar-width:none}
+  .menu::-webkit-scrollbar{display:none}
+  .menu a{flex:0 0 auto;font-size:12px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}
+  .menu a.active{background:rgba(139,44,255,.22);border-color:rgba(195,77,255,.30)}
+  .nav-actions{order:2;display:flex!important;gap:8px;align-items:center;justify-content:flex-end;flex:1 1 100%}
+  .account-link{min-height:38px;padding:0 12px;font-size:12px;max-width:100%}
+  .search-input{min-height:38px;max-width:210px;font-size:13px;padding:0 12px}
+  .account-dropdown{left:auto;right:0;width:min(300px,calc(100vw - 28px))}
+  .brand-orbit-inner{min-height:auto}
+  .compact-hero .hero-controls{position:static;margin-top:12px}
+}
+
+@media(max-width:700px){
+  .hall-shell{padding:16px;border-radius:20px}
+  .hall-head h2{font-size:24px}
+  .hall-cta{width:100%;margin-top:10px}
+  .hall-stats{grid-template-columns:repeat(2,1fr)}
+  .hall-card{min-height:auto}
+}
+
+@media(max-width:620px){
+  .container{width:min(100% - 20px,1180px)}
+  .brand-orbit{padding:20px 0 18px}
+  .planet-logo-wrap{width:136px;height:136px;flex-basis:136px}.planet-logo{width:116px;height:116px}.planet-logo-wrap::after{width:176px;height:42px}
+  .brand-copy h1{font-size:34px}.brand-copy p:not(.eyebrow){font-size:14px}
+  .compact-hero{padding:26px 0 24px!important}.hero-actions{gap:8px}.hero-actions .secondary,.hero-actions .primary{min-width:0;flex:1 1 calc(50% - 8px);padding:11px 12px;font-size:13px}.hero-actions #surpriseBtn{flex-basis:100%}
+  .badges{gap:10px}.badge{font-size:12px}
+  .grid{grid-template-columns:repeat(2, minmax(0,1fr));gap:10px}.poster{height:176px}.poster:after{font-size:16px;left:10px;right:10px;bottom:12px}.info{padding:10px}.meta{font-size:10px}
+  .section-head:after{display:none}.section-title{font-size:18px}.section-head p{font-size:13px}.section-head{gap:8px}
+  .tabs{position:sticky;top:0;z-index:20;margin:14px -2px 18px;box-shadow:0 10px 30px rgba(0,0,0,.28);backdrop-filter:blur(16px)}
+  .cta{padding:16px}.cta-copy{align-items:flex-start}.circle{width:44px;height:44px;min-width:44px}.cta .primary{width:100%}
+  .account-page{padding-top:24px}.account-hero{padding:20px}.account-card{padding:16px}.avatar-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
