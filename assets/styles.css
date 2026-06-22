@@ -4237,7 +4237,7 @@ a.journey-event:hover{
   100%{box-shadow:var(--thread-shadow, 0 16px 38px rgba(0,0,0,.18)); transform:translateY(0)}
 }
 
-/* === Planète Stream V2.9.4 : ratings temps réel === */
+/* === Planète Stream V2.9.4.1 : fix suppression note indépendante === */
 #communityRatingLabel.rating-pop{
   display:inline-block;
   animation: ratingRealtimePop .38s ease;

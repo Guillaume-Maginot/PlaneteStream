@@ -1136,17 +1136,42 @@ async function deleteComment(commentId){
     return;
   }
 
-  const label = comment.parent_id ? 'cette réponse' : 'cette critique et ses réponses';
+  const isMainReview = !comment.parent_id;
+  const label = isMainReview
+    ? 'cette critique, sa note et ses réponses'
+    : 'cette réponse';
   if(!window.confirm(`Supprimer ${label} ?`)) return;
 
   setStatus('Suppression en cours...', 'pending');
   const ok = await supabaseDelete('comments', `id=eq.${encodeURIComponent(commentId)}`);
   if(ok){
+    if(isMainReview){
+      await deleteIndependentRatingForComment(comment);
+    }
     setStatus('Critique supprimée. Le balai cosmique a fait son œuvre.', 'ok');
     await refreshCommunity(currentItem);
   }else{
     setStatus('Suppression refusée. Vérifie les policies DELETE de comments.', 'error');
   }
+}
+
+async function deleteIndependentRatingForComment(comment){
+  const movieId = comment?.movie_id || currentItem?.slug;
+  const viewerId = comment?.viewer_uuid || currentViewer?.id;
+  if(!movieId || !viewerId) return false;
+
+  const deleted = await supabaseDelete(
+    'movie_ratings',
+    `movie_id=eq.${encodeURIComponent(movieId)}&viewer_id=eq.${encodeURIComponent(viewerId)}`
+  );
+
+  if(currentItem?.slug === movieId && currentViewer?.id === viewerId){
+    currentUserRating = null;
+    const quickRating = document.querySelector('#quickRating');
+    if(quickRating) quickRating.value = '';
+  }
+
+  return deleted;
 }
 
 async function openMiniProfile(viewerId){
