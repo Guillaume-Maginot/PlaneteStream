@@ -28,6 +28,10 @@ let profileStatsCache = new Map();
 let communityPollTimer = null;
 let communityPollSignature = '';
 let communityPollBusy = false;
+let realtimeCommentsClient = null;
+let realtimeCommentsChannel = null;
+let realtimeCommentsMovieId = '';
+let realtimeCommentsRefreshTimer = null;
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
 const COMMENT_MAX_VISUAL_DEPTH = 2;
@@ -66,6 +70,7 @@ async function initWatch(){
     renderViewerBox();
     await refreshCommunity(item);
     startCommunityPolling(item);
+    startRealtimeComments(item);
     await saveViewerHistory(item.slug, 0);
     document.title = `${item.title} | Salle de projection`;
   }catch(error){
@@ -1801,6 +1806,139 @@ function saveLocalComments(slug, comments){
   localStorage.setItem(getStorageKey(slug, 'comments'), JSON.stringify(comments.slice(0,50)));
 }
 
+
+async function startRealtimeComments(item){
+  if(!item?.slug || !SUPABASE_ENABLED) return false;
+  if(!window.supabase?.createClient) return false;
+  if(realtimeCommentsChannel && realtimeCommentsMovieId === item.slug) return true;
+
+  await stopRealtimeComments();
+  realtimeCommentsMovieId = item.slug;
+
+  try{
+    const token = window.PSAuth?.getAccessToken?.() || window.PS?.state?.accessToken || SUPABASE_KEY;
+    realtimeCommentsClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      global:{headers:{Authorization:`Bearer ${token || SUPABASE_KEY}`}},
+      realtime:{params:{eventsPerSecond:8}}
+    });
+
+    const table = await resolveTable('comments') || 'comments';
+    realtimeCommentsChannel = realtimeCommentsClient
+      .channel(`ps-comments-${item.slug}`)
+      .on('postgres_changes', {
+        event:'*',
+        schema:'public',
+        table,
+        filter:`movie_id=eq.${item.slug}`
+      }, payload => {
+        scheduleRealtimeCommentsRefresh(payload);
+      })
+      .subscribe(status => {
+        if(status === 'SUBSCRIBED'){
+          setStatus('Temps réel activé pour cette salle. Les échanges arrivent sans F5.', 'ok');
+          if(communityPollTimer){
+            clearInterval(communityPollTimer);
+            communityPollTimer = null;
+            startCommunityPolling(item);
+          }
+        }
+      });
+    return true;
+  }catch(error){
+    console.warn('Realtime comments indisponible, polling conservé.', error);
+    realtimeCommentsChannel = null;
+    realtimeCommentsClient = null;
+    realtimeCommentsMovieId = '';
+    return false;
+  }
+}
+
+async function stopRealtimeComments(){
+  if(realtimeCommentsRefreshTimer){
+    clearTimeout(realtimeCommentsRefreshTimer);
+    realtimeCommentsRefreshTimer = null;
+  }
+  if(realtimeCommentsChannel && realtimeCommentsClient){
+    try{ await realtimeCommentsClient.removeChannel(realtimeCommentsChannel); }
+    catch(error){ console.warn('Realtime comments remove warning', error); }
+  }
+  realtimeCommentsChannel = null;
+  realtimeCommentsClient = null;
+  realtimeCommentsMovieId = '';
+}
+
+function scheduleRealtimeCommentsRefresh(payload){
+  if(!currentItem?.slug) return;
+  if(realtimeCommentsRefreshTimer) clearTimeout(realtimeCommentsRefreshTimer);
+  realtimeCommentsRefreshTimer = setTimeout(async () => {
+    realtimeCommentsRefreshTimer = null;
+    await applyRealtimeCommentsUpdate(payload);
+  }, 180);
+}
+
+async function applyRealtimeCommentsUpdate(payload){
+  if(!currentItem?.slug || communityPollBusy) return;
+  communityPollBusy = true;
+  try{
+    const comments = await fetchComments(currentItem.slug);
+    if(!comments.online) return;
+    const signature = commentsSignature(comments.data);
+    if(signature === communityPollSignature) return;
+
+    currentComments = comments.data;
+    communityPollSignature = signature;
+    if(currentViewer?.id){
+      likedCommentIds = await fetchLikedCommentIds(currentViewer.id, currentComments.map(comment => comment.id).filter(Boolean));
+    }
+
+    updateCommunityRatingLabel(currentComments, {online:false, data:null}, currentRatings);
+    const moodLine = document.querySelector('#moodLine');
+    if(moodLine) moodLine.textContent = getMoodLine(currentItem, currentComments);
+
+    if(shouldDeferCommunityRefresh()){
+      showNewCommentsNotice();
+      setStatus('Nouveaux échanges détectés. Ils attendent sagement que tu finisses ta saisie.', 'ok');
+    }else{
+      updateCommentsListWithoutJump();
+      flashRealtimeComment(payload);
+      setStatus('Conversation mise à jour en temps réel.', 'ok');
+    }
+  }catch(error){
+    console.warn('Realtime comments refresh error', error);
+  }finally{
+    communityPollBusy = false;
+  }
+}
+
+function showNewCommentsNotice(){
+  const section = document.querySelector('.comments-section');
+  if(!section) return;
+  let notice = section.querySelector('[data-realtime-comments-notice]');
+  if(!notice){
+    notice = document.createElement('button');
+    notice.type = 'button';
+    notice.className = 'realtime-comments-notice';
+    notice.dataset.realtimeCommentsNotice = 'true';
+    notice.addEventListener('click', () => {
+      notice.remove();
+      updateCommentsListWithoutJump();
+      setStatus('Conversation synchronisée.', 'ok');
+    });
+    const list = section.querySelector('#commentsList');
+    section.insertBefore(notice, list || null);
+  }
+  notice.textContent = '💬 Nouveaux échanges disponibles · Afficher';
+}
+
+function flashRealtimeComment(payload){
+  const id = payload?.new?.id || payload?.old?.id;
+  if(!id) return;
+  const card = document.querySelector(`[data-comment-id="${cssEscape(String(id))}"]`);
+  if(!card) return;
+  card.classList.add('is-realtime-new');
+  setTimeout(() => card.classList.remove('is-realtime-new'), 1800);
+}
+
 function startCommunityPolling(item){
   if(communityPollTimer){
     clearInterval(communityPollTimer);
@@ -1835,7 +1973,7 @@ function startCommunityPolling(item){
     }finally{
       communityPollBusy = false;
     }
-  }, 12000);
+  }, realtimeCommentsChannel ? 45000 : 12000);
 }
 
 function shouldDeferCommunityRefresh(){
@@ -1879,6 +2017,7 @@ function commentsSignature(comments=[]){
 
 window.addEventListener('beforeunload', () => {
   if(communityPollTimer) clearInterval(communityPollTimer);
+  stopRealtimeComments();
 });
 
 
