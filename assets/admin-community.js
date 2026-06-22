@@ -602,6 +602,13 @@
 
   async function recordHistory(action, viewer, oldValue={}, newValue={}, reason=''){
     try{
+      const oldPayload = normalizeHistoryPayload(oldValue);
+      const newPayload = normalizeHistoryPayload(newValue);
+
+      // Le journal ne doit garder que les vrais changements.
+      // Sinon il se transforme en carnet de bord d'ascenseur spatial : beaucoup de bruit, peu d'orbite.
+      if(historyPayloadsEqual(oldPayload, newPayload)) return;
+
       await waitForPS();
       const ps = getPS();
       if(!ps.restWrite) return;
@@ -610,8 +617,9 @@
         target_viewer_id: viewer?.id || null,
         staff_viewer_id: staffId,
         action,
-        old_value: oldValue || {},
-        new_value: newValue || {},
+        // Compatible avec une colonne text OU jsonb : à l'affichage, on reparsera proprement.
+        old_value: JSON.stringify(oldPayload),
+        new_value: JSON.stringify(newPayload),
         reason: reason || null
       };
 
@@ -668,9 +676,38 @@
     return labels[action] || action || 'Action';
   }
 
+  function normalizeHistoryPayload(value){
+    if(!value || typeof value !== 'object' || Array.isArray(value)) return {};
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, item == null ? '' : String(item).toLowerCase()])
+    );
+  }
+
+  function historyPayloadsEqual(a, b){
+    return JSON.stringify(normalizeHistoryPayload(a)) === JSON.stringify(normalizeHistoryPayload(b));
+  }
+
+  function parseHistoryValue(value){
+    if(!value) return {};
+    if(typeof value === 'object' && !Array.isArray(value)) return value;
+    if(typeof value !== 'string') return {};
+
+    let parsed = value;
+    for(let i = 0; i < 2; i += 1){
+      if(typeof parsed !== 'string') break;
+      try{
+        parsed = JSON.parse(parsed);
+      }catch(_error){
+        return {};
+      }
+    }
+
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  }
+
   function historySentence(entry, staffName, targetName){
-    const oldValue = entry?.old_value || {};
-    const newValue = entry?.new_value || {};
+    const oldValue = parseHistoryValue(entry?.old_value);
+    const newValue = parseHistoryValue(entry?.new_value);
     if(entry.action === 'role_update'){
       return `<strong>${escapeHtml(staffName)}</strong> a changé le rôle de <strong>${escapeHtml(targetName)}</strong> : ${escapeHtml(roleLabel(oldValue.role))} → <strong>${escapeHtml(roleLabel(newValue.role))}</strong>.`;
     }
