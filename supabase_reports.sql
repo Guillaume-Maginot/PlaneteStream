@@ -15,6 +15,15 @@ create table if not exists public.reports (
   handled_at timestamptz
 );
 
+
+-- Correction anti-doublon : on retire les anciens index éventuels qui bloquaient
+-- un second signalement du même message par un autre membre.
+drop index if exists public.reports_unique_target;
+drop index if exists public.reports_target_unique;
+drop index if exists public.reports_unique_report_target;
+drop index if exists public.reports_unique_target_type_target_id;
+drop index if exists public.reports_unique_target_id;
+
 create unique index if not exists reports_unique_reporter_target
   on public.reports(reporter_viewer_id, target_type, target_id);
 

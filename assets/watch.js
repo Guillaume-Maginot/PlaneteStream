@@ -1305,20 +1305,56 @@ function openReportReasonDialog(reasons){
 }
 
 async function notifyModeratorsOfReport(report, comment, reporter, reasonLabel){
-  if(!window.PS?.createNotification || !report?.id) return false;
+  if(!window.PS?.createNotification || !report?.id || !comment?.id) return false;
+
   const staff = await fetchModerationViewers();
   const movieTitle = currentItem?.title || currentItem?.slug || 'Planète Stream';
+
+  // Anti-doublon intelligent :
+  // - un même planétien ne peut signaler qu'une fois le même message ;
+  // - plusieurs planétiens peuvent signaler le même message ;
+  // - côté équipe, on garde une seule alerte par message et par modo, avec un compteur.
+  const reportsCountResult = await supabaseSelect(
+    'reports',
+    `target_type=eq.comment&target_id=eq.${encodeURIComponent(comment.id)}&status=eq.new&select=id`
+  );
+  const reportsCount = reportsCountResult.ok && Array.isArray(reportsCountResult.data)
+    ? reportsCountResult.data.length
+    : 1;
+
+  const label = reportsCount > 1
+    ? `🚩 ${reportsCount} signalements sur ${movieTitle} · dernier motif : ${reasonLabel}`
+    : `🚩 Signalement sur ${movieTitle} · ${reasonLabel}`;
+
   await Promise.all(staff
     .filter(member => member?.id && String(member.id) !== String(reporter.id))
-    .map(member => window.PS.createNotification({
-      type:'report',
-      recipient_viewer_id:member.id,
-      actor_viewer_id:reporter.id,
-      movie_id:currentItem?.slug || comment.movie_id || null,
-      comment_id:comment.id,
-      parent_comment_id:comment.parent_id || null,
-      message:`🚩 Signalement sur ${movieTitle} · ${reasonLabel}`
-    })));
+    .map(async member => {
+      const existing = await supabaseSelect(
+        'notifications',
+        `recipient_viewer_id=eq.${encodeURIComponent(member.id)}&type=eq.report&comment_id=eq.${encodeURIComponent(comment.id)}&read_at=is.null&select=id&limit=1`
+      );
+
+      if(existing.ok && Array.isArray(existing.data) && existing.data.length){
+        await supabaseUpdate('notifications', `id=eq.${encodeURIComponent(existing.data[0].id)}`, {
+          actor_viewer_id: reporter.id,
+          message: label,
+          created_at: new Date().toISOString()
+        });
+        return true;
+      }
+
+      return window.PS.createNotification({
+        type:'report',
+        recipient_viewer_id:member.id,
+        actor_viewer_id:reporter.id,
+        movie_id:currentItem?.slug || comment.movie_id || null,
+        comment_id:comment.id,
+        parent_comment_id:comment.parent_id || null,
+        message:label
+      });
+    }));
+
+  await window.PS?.refreshNotificationsCount?.();
   return true;
 }
 
