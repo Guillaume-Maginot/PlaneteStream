@@ -1,6 +1,7 @@
 let draft = [];
 let selectedItem = null;
 let editingIndex = -1;
+let catalogueMissingMode = false;
 
 const output = document.querySelector('#jsonOutput');
 const results = document.querySelector('#results');
@@ -19,6 +20,9 @@ const genreSelect = document.querySelector('#genreSelect');
 const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
 const catalogueSort = document.querySelector('#catalogueSort');
+const showAllEmbedsBtn = document.querySelector('#showAllEmbedsBtn');
+const showMissingEmbedsBtn = document.querySelector('#showMissingEmbedsBtn');
+const catalogueEmbedStatus = document.querySelector('#catalogueEmbedStatus');
 const catalogueList = document.querySelector('#catalogueList');
 const catalogueEditorGrid = document.querySelector('.catalogue-editor-grid');
 const catalogueCount = document.querySelector('#catalogueCount');
@@ -77,9 +81,24 @@ async function init() {
   copyBtn?.addEventListener('click', copyJson);
   resetBtn?.addEventListener('click', resetDraft);
   clearBtn?.addEventListener('click', clearSelection);
-  catalogueSearch?.addEventListener('input', renderCatalogueList);
+  catalogueSearch?.addEventListener('input', () => {
+    catalogueMissingMode = false;
+    updateCatalogueFilterButtons();
+    renderCatalogueList();
+  });
   catalogueTypeFilter?.addEventListener('change', renderCatalogueList);
   catalogueSort?.addEventListener('change', renderCatalogueList);
+  showAllEmbedsBtn?.addEventListener('click', () => {
+    catalogueMissingMode = false;
+    updateCatalogueFilterButtons();
+    renderCatalogueList();
+  });
+  showMissingEmbedsBtn?.addEventListener('click', () => {
+    catalogueMissingMode = true;
+    if (catalogueSearch) catalogueSearch.value = '';
+    updateCatalogueFilterButtons();
+    renderCatalogueList();
+  });
   saveEditBtn?.addEventListener('click', saveEditedItem);
   cancelEditBtn?.addEventListener('click', closeEditor);
   topCancelEditBtn?.addEventListener('click', closeEditor);
@@ -307,17 +326,28 @@ function updatePreview(item) {
 }
 
 
+
+function updateCatalogueFilterButtons() {
+  showAllEmbedsBtn?.classList.toggle('is-active', !catalogueMissingMode);
+  showMissingEmbedsBtn?.classList.toggle('is-active', catalogueMissingMode);
+}
+
 function renderCatalogueList() {
   if (!catalogueList) return;
 
   const query = (catalogueSearch?.value || '').trim().toLowerCase();
   const type = catalogueTypeFilter?.value || 'all';
   const sortMode = catalogueSort?.value || 'recent';
+  const missingTotal = draft.filter(entry => getMediaEmbedSummary(entry).missing).length;
 
   let items = draft.map((entry, index) => ({ entry, index }));
 
   if (type !== 'all') {
     items = items.filter(({ entry }) => (entry.mediaType || (entry.type === 'serie' ? 'tv' : 'movie')) === type);
+  }
+
+  if (catalogueMissingMode) {
+    items = items.filter(({ entry }) => getMediaEmbedSummary(entry).missing);
   }
 
   if (query) {
@@ -338,8 +368,23 @@ function renderCatalogueList() {
   items.sort((a, b) => compareCatalogueItems(a.entry, b.entry, sortMode));
 
   if (catalogueCount) {
-    catalogueCount.textContent = `${draft.length} contenu${draft.length > 1 ? 's' : ''}`;
+    const visible = items.length;
+    catalogueCount.textContent = catalogueMissingMode || query || type !== 'all'
+      ? `${visible} / ${draft.length} contenu${draft.length > 1 ? 's' : ''}`
+      : `${draft.length} contenu${draft.length > 1 ? 's' : ''}`;
   }
+
+  if (catalogueEmbedStatus) {
+    catalogueEmbedStatus.textContent = missingTotal
+      ? `${missingTotal} contenu${missingTotal > 1 ? 's' : ''} à compléter côté embed`
+      : 'Tous les embeds sont renseignés';
+  }
+
+  if (showMissingEmbedsBtn) {
+    showMissingEmbedsBtn.textContent = missingTotal ? `Sans embed (${missingTotal})` : 'Sans embed';
+  }
+
+  updateCatalogueFilterButtons();
 
   if (!items.length) {
     catalogueList.innerHTML = '<div class="admin-empty">Aucun contenu ne correspond aux filtres. Le catalogue boude dans son coin.</div>';
@@ -351,6 +396,11 @@ function renderCatalogueList() {
 }
 
 function compareCatalogueItems(a, b, sortMode) {
+  if (sortMode === 'missing-first') {
+    const ma = getMediaEmbedSummary(a).missing ? 1 : 0;
+    const mb = getMediaEmbedSummary(b).missing ? 1 : 0;
+    return mb - ma || String(a.title || '').localeCompare(String(b.title || ''), 'fr');
+  }
   if (sortMode === 'title') return String(a.title || '').localeCompare(String(b.title || ''), 'fr');
   if (sortMode === 'year-desc') return String(b.year || '').localeCompare(String(a.year || '')) || String(a.title || '').localeCompare(String(b.title || ''), 'fr');
   if (sortMode === 'year-asc') return String(a.year || '').localeCompare(String(b.year || '')) || String(a.title || '').localeCompare(String(b.title || ''), 'fr');
@@ -363,21 +413,35 @@ function catalogueRow(entry, index) {
   const el = document.createElement('article');
   el.className = 'catalogue-item';
   const poster = entry.poster || '';
-  const genres = Array.isArray(entry.genres) ? entry.genres.slice(0, 3).join(', ') : '';
-  const typeLabel = (entry.mediaType || '').toLowerCase() === 'tv' || entry.type === 'serie' ? 'Série' : 'Film';
-  const featured = entry.featured ? ' · À la une' : '';
+  const genres = Array.isArray(entry.genres) ? entry.genres.slice(0, 5).join(', ') : '';
+  const isSeries = isSeriesEntry(entry);
+  const typeLabel = isSeries ? 'Série' : 'Film';
+  const featured = entry.featured ? '<span class="catalogue-badge">À la une</span>' : '';
   const mediaSummary = getMediaEmbedSummary(entry);
-  const betaVideo = mediaSummary.ready ? ' · 🎬 Vidéo bêta' : '';
-  const missingBadge = mediaSummary.missing ? `<span class="catalogue-missing-badge">${escapeHtml(mediaSummary.label)}</span>` : '';
+  const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
+  const readyBadge = mediaSummary.missing
+    ? `<span class="catalogue-badge missing">${escapeHtml(mediaSummary.label)}</span>`
+    : `<span class="catalogue-badge ready">${isSeries ? 'Série prête' : 'Embed OK'}</span>`;
+  const seriesBadge = isSeries
+    ? `<span class="catalogue-badge">${escapeHtml(String(entry.seasons || (Array.isArray(entry.seasonsData) ? entry.seasonsData.length : 0)))} saison${Number(entry.seasons || 0) > 1 ? 's' : ''}</span><span class="catalogue-badge">${escapeHtml(String(entry.episodes || stats?.total || 0))} épisode${Number(entry.episodes || stats?.total || 0) > 1 ? 's' : ''}</span>`
+    : '';
+  const overview = String(entry.overview || '').trim();
 
   if (mediaSummary.missing) el.classList.add('is-missing-embed');
 
   el.innerHTML = `
     ${poster ? `<img src="${escapeAttr(poster)}" alt="Affiche ${escapeAttr(entry.title || '')}">` : '<div class="catalogue-thumb">Sans affiche</div>'}
     <div>
-      <h3>${escapeHtml(entry.title || 'Sans titre')} ${missingBadge}</h3>
-      <p>${escapeHtml(typeLabel)} · ${escapeHtml(entry.year || 'Année ?')} · ${escapeHtml(entry.category || 'section ?')}${escapeHtml(featured)}${escapeHtml(betaVideo)}</p>
+      <h3>${escapeHtml(entry.title || 'Sans titre')}</h3>
+      <div class="catalogue-meta-line">
+        <span class="catalogue-badge">${escapeHtml(typeLabel)}</span>
+        <span class="catalogue-badge">${escapeHtml(entry.year || 'Année ?')}</span>
+        ${seriesBadge}
+        ${readyBadge}
+        ${featured}
+      </div>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
+      ${overview ? `<p class="catalogue-summary">${escapeHtml(overview)}</p>` : ''}
     </div>
     <div class="catalogue-buttons">
       <button class="ghost" type="button" data-action="edit">Modifier</button>
