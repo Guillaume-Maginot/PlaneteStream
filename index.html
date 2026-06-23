@@ -160,10 +160,14 @@
         <div class="section-head catalogue-head">
           <div>
             <h2 class="section-title">Catalogue complet</h2>
-            <p id="countLabel"></p>
+            <p id="countLabel" class="catalogue-summary"></p>
           </div>
+        </div>
+        <div class="grid" id="catalogueGrid"></div>
+        <div class="catalogue-bottom-panel" aria-label="Navigation du catalogue">
+          <nav class="pagination pagination-bottom" data-pagination aria-label="Pagination du catalogue"></nav>
           <div class="catalogue-tools" aria-label="Options du catalogue">
-            <label>Par page
+            <label class="catalogue-tool-pill">Par page
               <select id="cataloguePageSize" class="catalogue-page-size">
                 <option value="auto">Auto</option>
                 <option value="12">12</option>
@@ -172,16 +176,13 @@
                 <option value="48">48</option>
               </select>
             </label>
-            <form id="catalogueGotoForm" class="catalogue-goto">
+            <form id="catalogueGotoForm" class="catalogue-goto catalogue-tool-pill">
               <label for="catalogueGotoInput">Aller page</label>
               <input id="catalogueGotoInput" type="number" min="1" value="1" inputmode="numeric">
               <button type="submit">Go</button>
             </form>
           </div>
         </div>
-        <nav class="pagination pagination-top" data-pagination aria-label="Pagination du catalogue"></nav>
-        <div class="grid" id="catalogueGrid"></div>
-        <nav class="pagination pagination-bottom" data-pagination aria-label="Pagination du catalogue"></nav>
       </section>
 
 
