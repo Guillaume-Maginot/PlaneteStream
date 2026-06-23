@@ -523,6 +523,85 @@
 
 
 
+
+
+    .station-pulse{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:16px;
+      align-items:center;
+      margin:0 0 18px;
+      border:1px solid rgba(195,77,255,.18);
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(139,44,255,.13), rgba(255,255,255,.035));
+      padding:16px 18px;
+      box-shadow:0 14px 34px rgba(0,0,0,.18);
+    }
+
+    .station-pulse strong{
+      display:block;
+      color:#fff;
+      font-size:18px;
+      margin-bottom:5px;
+    }
+
+    .station-pulse span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .station-meter{
+      min-width:210px;
+    }
+
+    .station-meter-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      color:#fff;
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .station-meter-bar{
+      height:10px;
+      overflow:hidden;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .station-meter-fill{
+      display:block;
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(98,255,178,.65), rgba(195,77,255,.9));
+      box-shadow:0 0 18px rgba(195,77,255,.45);
+      transition:width .45s ease;
+    }
+
+    .admin-user-chip small{
+      display:block;
+      color:#a997c9;
+      font-size:11px;
+      margin-top:4px;
+      line-height:1.35;
+    }
+
+    .dashboard-card .trend-up{
+      color:#cffff0;
+    }
+
+    .dashboard-card .trend-warn{
+      color:#ffd7a0;
+    }
+
+
     .community-dashboard{
       display:grid;
       grid-template-columns:repeat(4, minmax(0,1fr));
@@ -1159,7 +1238,7 @@
       .admin-row{grid-template-columns:1fr}
       .admin-tools{grid-template-columns:1fr}
       .admin-placeholder-grid{grid-template-columns:1fr}
-      .dashboard-grid{grid-template-columns:repeat(2, minmax(0,1fr))}.dashboard-stage{grid-template-columns:1fr}.community-dashboard{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .station-pulse{grid-template-columns:1fr}.station-meter{min-width:0}.dashboard-grid{grid-template-columns:repeat(2, minmax(0,1fr))}.dashboard-stage{grid-template-columns:1fr}.community-dashboard{grid-template-columns:repeat(2, minmax(0,1fr))}
       .community-stage{grid-template-columns:1fr}
       .community-ban-grid{grid-template-columns:1fr}
       .admin-mini-grid{grid-template-columns:1fr}
@@ -1239,11 +1318,22 @@
         <section class="admin-module" id="admin-module-dashboard" data-admin-module="dashboard">
           <div class="admin-module-kicker">🛰 Vue d’ensemble</div>
 
+          <div class="station-pulse" aria-label="Niveau d'activité de la station">
+            <div>
+              <strong id="stationMood">Station en cours de scan</strong>
+              <span id="stationMoodText">Le cockpit rassemble les signaux utiles sans réveiller toute la soute.</span>
+            </div>
+            <div class="station-meter">
+              <div class="station-meter-head"><span>Activité</span><b id="stationActivityScore">—</b></div>
+              <div class="station-meter-bar"><i class="station-meter-fill" id="stationActivityFill"></i></div>
+            </div>
+          </div>
+
           <div class="dashboard-grid" aria-label="Résumé administration">
-            <div class="dashboard-card"><span>Catalogue</span><strong id="dashMovies">—</strong><em>contenus indexés</em></div>
-            <div class="dashboard-card"><span>Communauté</span><strong id="dashMembers">—</strong><em>membres enregistrés</em></div>
-            <div class="dashboard-card"><span>Critiques</span><strong id="dashReviews">—</strong><em>avis et réponses</em></div>
-            <div class="dashboard-card"><span>Signalements</span><strong id="dashReports">—</strong><em>à surveiller</em></div>
+            <div class="dashboard-card"><span>Catalogue</span><strong id="dashMovies">—</strong><em id="dashMoviesTrend">contenus indexés</em></div>
+            <div class="dashboard-card"><span>Communauté</span><strong id="dashMembers">—</strong><em id="dashMembersTrend">membres enregistrés</em></div>
+            <div class="dashboard-card"><span>Critiques</span><strong id="dashReviews">—</strong><em id="dashReviewsTrend">avis et réponses</em></div>
+            <div class="dashboard-card"><span>Signalements</span><strong id="dashReports">—</strong><em id="dashReportsTrend">à surveiller</em></div>
           </div>
 
           <div class="dashboard-stage">
@@ -1584,54 +1674,106 @@
     
     async function hydrateAdminDashboard(){
       const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+      const setClass = (id, cls) => { const el = document.getElementById(id); if(el && cls) el.classList.add(cls); };
       const line = (text, tag) => `<div class="captain-line"><span>${text}</span><small>${tag}</small></div>`;
       const log = document.getElementById('captainLog');
+      const todayIso = new Date(new Date().setHours(0,0,0,0)).toISOString();
+      const weekIso = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      let catalogue = [];
+      let missingEmbeds = 0;
+      let metrics = {members:null, membersToday:null, comments:null, commentsToday:null, reportsOpen:null, reportsToday:null, ratingsToday:null, favoritesToday:null};
 
       try{
         const res = await fetch('data/catalogue.json', {cache:'no-store'});
-        const catalogue = res.ok ? await res.json() : [];
+        catalogue = res.ok ? await res.json() : [];
+        missingEmbeds = Array.isArray(catalogue) ? catalogue.filter(item => !String(item.videoEmbed || item.embed || '').trim()).length : 0;
         setText('dashMovies', Array.isArray(catalogue) ? catalogue.length : '—');
+        setText('dashMoviesTrend', missingEmbeds ? `${missingEmbeds} sans embed` : 'Tous les embeds renseignés');
+        if(missingEmbeds) setClass('dashMoviesTrend', 'trend-warn'); else setClass('dashMoviesTrend', 'trend-up');
         setText('navCatalogueCount', Array.isArray(catalogue) ? `${catalogue.length} films` : '—');
-        setText('watchMissingEmbeds', Array.isArray(catalogue) ? catalogue.filter(item => !String(item.embed || '').trim()).length : '—');
-      }catch(_){ setText('dashMovies', '—'); }
+        setText('watchMissingEmbeds', Array.isArray(catalogue) ? missingEmbeds : '—');
+      }catch(_){
+        setText('dashMovies', '—');
+        setText('dashMoviesTrend', 'Catalogue local indisponible');
+      }
 
       try{
         await window.PS?.ready;
         const state = window.PS?.getState?.() || {};
         const viewer = state.viewer || {};
         const chip = document.getElementById('adminUserChip');
+        const previousVisit = localStorage.getItem('planetestream.admin.lastVisit');
+        const previousText = previousVisit
+          ? new Date(previousVisit).toLocaleString('fr-FR', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'})
+          : 'Premier passage enregistré';
         if(chip){
           const avatar = viewer.avatar ? `assets/${viewer.avatar}.png` : 'assets/orbiteur.png';
-          chip.innerHTML = `<img src="${avatar}" alt=""><div><strong>${window.PS?.escapeHtml?.(viewer.pseudo || state.user?.email || 'Administrateur') || 'Administrateur'}</strong><span>${window.PS?.escapeHtml?.(viewer.badge || viewer.role || 'Équipage orbital') || 'Équipage orbital'}</span></div>`;
+          const name = window.PS?.escapeHtml?.(viewer.pseudo || state.user?.email || 'Administrateur') || 'Administrateur';
+          const role = window.PS?.escapeHtml?.(viewer.badge || viewer.role || 'Équipage orbital') || 'Équipage orbital';
+          chip.innerHTML = `<img src="${avatar}" alt=""><div><strong>${name}</strong><span>${role}</span><small>🟢 En ligne · Dernier passage : ${previousText}</small></div>`;
         }
 
         const supabase = window.PS?.supabase;
         if(supabase){
-          const [profiles, comments, reports] = await Promise.allSettled([
+          const [profiles, profilesToday, comments, commentsToday, reports, reportsToday, ratingsToday, favoritesToday] = await Promise.allSettled([
             supabase.from('profiles').select('id', {count:'exact', head:true}),
+            supabase.from('profiles').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
             supabase.from('comments').select('id', {count:'exact', head:true}),
-            supabase.from('reports').select('id,status', {count:'exact'})
+            supabase.from('comments').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
+            supabase.from('reports').select('id,status,created_at', {count:'exact'}),
+            supabase.from('reports').select('id,status,created_at', {count:'exact'}).gte('created_at', todayIso),
+            supabase.from('ratings').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
+            supabase.from('favorites').select('id', {count:'exact', head:true}).gte('created_at', todayIso)
           ]);
 
-          if(profiles.status === 'fulfilled'){
-            setText('dashMembers', profiles.value.count ?? '—');
-            setText('navMembersCount', profiles.value.count != null ? `${profiles.value.count} membres` : '—');
-          }
-          if(comments.status === 'fulfilled') setText('dashReviews', comments.value.count ?? '—');
+          metrics.members = profiles.status === 'fulfilled' ? profiles.value.count : null;
+          metrics.membersToday = profilesToday.status === 'fulfilled' ? profilesToday.value.count : null;
+          metrics.comments = comments.status === 'fulfilled' ? comments.value.count : null;
+          metrics.commentsToday = commentsToday.status === 'fulfilled' ? commentsToday.value.count : null;
+          metrics.ratingsToday = ratingsToday.status === 'fulfilled' ? ratingsToday.value.count : null;
+          metrics.favoritesToday = favoritesToday.status === 'fulfilled' ? favoritesToday.value.count : null;
+
           if(reports.status === 'fulfilled'){
             const rows = reports.value.data || [];
-            const open = rows.filter(r => String(r.status || 'open').toLowerCase() !== 'closed').length;
-            setText('dashReports', open);
-            setText('navReportsCount', open ? `${open} ouvert${open > 1 ? 's' : ''}` : '0 alerte');
-            setText('watchOpenReports', open);
+            metrics.reportsOpen = rows.filter(r => String(r.status || 'open').toLowerCase() !== 'closed').length;
           }
+          metrics.reportsToday = reportsToday.status === 'fulfilled' ? (reportsToday.value.count ?? (reportsToday.value.data || []).length) : null;
+
+          setText('dashMembers', metrics.members ?? '—');
+          setText('dashMembersTrend', metrics.membersToday != null ? `+${metrics.membersToday} aujourd’hui` : 'membres enregistrés');
+          setText('navMembersCount', metrics.members != null ? `${metrics.members} membres` : '—');
+          setText('dashReviews', metrics.comments ?? '—');
+          setText('dashReviewsTrend', metrics.commentsToday != null ? `+${metrics.commentsToday} aujourd’hui` : 'avis et réponses');
+          setText('dashReports', metrics.reportsOpen ?? '—');
+          setText('dashReportsTrend', metrics.reportsOpen ? `${metrics.reportsOpen} à traiter` : 'Aucun voyant rouge');
+          if(metrics.reportsOpen) setClass('dashReportsTrend', 'trend-warn'); else setClass('dashReportsTrend', 'trend-up');
+          setText('navReportsCount', metrics.reportsOpen ? `${metrics.reportsOpen} ouvert${metrics.reportsOpen > 1 ? 's' : ''}` : '0 alerte');
+          setText('watchOpenReports', metrics.reportsOpen ?? '—');
+
+          const activityScore = Math.min(100, Math.round(
+            (metrics.commentsToday || 0) * 8 +
+            (metrics.membersToday || 0) * 12 +
+            (metrics.ratingsToday || 0) * 4 +
+            (metrics.favoritesToday || 0) * 4 +
+            (metrics.reportsOpen || 0) * 6 +
+            (missingEmbeds ? 4 : 0)
+          ));
+          setText('stationActivityScore', `${activityScore}%`);
+          const fill = document.getElementById('stationActivityFill');
+          if(fill) fill.style.width = `${activityScore}%`;
+          const mood = activityScore >= 70 ? 'Station très animée' : activityScore >= 35 ? 'Station en activité' : activityScore > 0 ? 'Station calme mais vivante' : 'Station au repos';
+          const moodText = activityScore >= 70 ? 'Le radar clignote, les projecteurs chauffent, le popcorn devient stratégique.' : activityScore >= 35 ? 'Les signaux sont réguliers. La communauté laisse des traces fraîches.' : activityScore > 0 ? 'Quelques mouvements détectés. Rien d’inquiétant, mais la station respire.' : 'Aucun remous notable. Le silence spatial, version confortable.';
+          setText('stationMood', mood);
+          setText('stationMoodText', moodText);
 
           if(log){
+            const reportLine = metrics.reportsOpen ? `${metrics.reportsOpen} signalement${metrics.reportsOpen > 1 ? 's' : ''} à traiter.` : 'Aucun signalement ouvert.';
+            const embedLine = missingEmbeds ? `${missingEmbeds} film${missingEmbeds > 1 ? 's' : ''} sans embed.` : 'Tous les films ont un embed renseigné.';
             log.innerHTML = [
-              line('Identité vérifiée et droits administrateur confirmés.', 'Sécurité'),
-              line('Catalogue chargé depuis le fichier de données.', 'Catalogue'),
-              line('Communauté et signalements raccordés au cockpit.', 'Orbital'),
-              line('Aucun incident détecté au démarrage.', 'Système')
+              line(`Depuis minuit : ${metrics.membersToday ?? '—'} nouveau${metrics.membersToday > 1 ? 'x' : ''} membre${metrics.membersToday > 1 ? 's' : ''}, ${metrics.commentsToday ?? '—'} critique${metrics.commentsToday > 1 ? 's' : ''}.`, 'Activité'),
+              line(`Notes aujourd’hui : ${metrics.ratingsToday ?? '—'} · Favoris : ${metrics.favoritesToday ?? '—'}.`, 'Engagement'),
+              line(reportLine, metrics.reportsOpen ? 'À traiter' : 'Modération'),
+              line(embedLine, missingEmbeds ? 'Catalogue' : 'Nominal')
             ].join('');
           }
         }
@@ -1640,7 +1782,6 @@
         if(log) log.innerHTML = line('Tableau de bord partiellement chargé.', 'Info');
       }
     }
-
 
 
 
