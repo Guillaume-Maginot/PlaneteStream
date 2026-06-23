@@ -937,6 +937,121 @@
       color:#ffdbe3;
     }
 
+
+    .admin-mini-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      margin:18px 0;
+    }
+
+    .admin-mini-card{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(255,255,255,.055), rgba(139,44,255,.045));
+      padding:18px;
+      min-height:112px;
+    }
+
+    .admin-mini-card span{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .admin-mini-card strong{
+      display:block;
+      color:#fff;
+      font-size:34px;
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .admin-mini-card em{
+      display:block;
+      margin-top:8px;
+      color:var(--muted);
+      font-style:normal;
+      font-size:13px;
+    }
+
+    .admin-two-cols{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(300px,.72fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .admin-list-lines{
+      display:grid;
+      gap:10px;
+    }
+
+    .admin-list-line{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:rgba(255,255,255,.035);
+      padding:12px 14px;
+      color:#fff;
+    }
+
+    .admin-list-line small{color:var(--muted);font-size:12px}
+
+    .admin-setting-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .admin-setting-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:12px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:rgba(255,255,255,.035);
+      padding:14px;
+    }
+
+    .admin-setting-row strong{display:block;color:#fff;margin-bottom:4px}
+    .admin-setting-row span{display:block;color:var(--muted);font-size:13px;line-height:1.45}
+
+    .announcement-form{
+      display:grid;
+      gap:12px;
+    }
+
+    .announcement-form input,
+    .announcement-form textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      color:#fff;
+      background:#10111f;
+      padding:13px 14px;
+      outline:none;
+      font:inherit;
+    }
+
+    .announcement-preview{
+      border:1px solid rgba(195,77,255,.24);
+      border-radius:18px;
+      background:rgba(139,44,255,.08);
+      padding:16px;
+      margin-top:14px;
+    }
+
+    .announcement-preview strong{display:block;color:#fff;margin-bottom:6px}
+    .announcement-preview p{margin:0;color:var(--muted)}
+
     @media (max-width:900px){
       .admin-shell{grid-template-columns:1fr}
       .admin-sidebar{position:static}
@@ -948,6 +1063,9 @@
       .dashboard-grid{grid-template-columns:repeat(2, minmax(0,1fr))}.dashboard-stage{grid-template-columns:1fr}.community-dashboard{grid-template-columns:repeat(2, minmax(0,1fr))}
       .community-stage{grid-template-columns:1fr}
       .community-ban-grid{grid-template-columns:1fr}
+      .admin-mini-grid{grid-template-columns:1fr}
+      .admin-two-cols{grid-template-columns:1fr}
+      .admin-setting-row{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -1002,15 +1120,15 @@
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="stats">
             <span>📊 Statistiques</span>
-            <small>Bientôt</small>
+            <small>Actif</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="notifications">
             <span>📢 Notifications</span>
-            <small>Bientôt</small>
+            <small>Préparé</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="parametres">
             <span>⚙ Paramètres</span>
-            <small>Bientôt</small>
+            <small>Actif</small>
           </button>
         <button class="ghost admin-logout" type="button" id="adminLogoutBtn">🚪 Déconnexion</button>
         </div>
@@ -1263,18 +1381,70 @@
         </section>
 
         <section class="admin-module" id="admin-module-stats" data-admin-module="stats" hidden>
-          <div class="admin-module-kicker">📊 Statistiques</div>
-          <section class="admin-box"><h2>Statistiques</h2><p>Zone prévue pour l'activité, les notes, les favoris et les tendances du catalogue.</p></section>
+          <div class="admin-module-kicker">📊 Statistiques orbitales</div>
+          <div class="admin-mini-grid" aria-label="Statistiques principales">
+            <div class="admin-mini-card"><span>Notes</span><strong id="statsRatings">—</strong><em>votes enregistrés</em></div>
+            <div class="admin-mini-card"><span>Favoris</span><strong id="statsFavorites">—</strong><em>films gardés sous le coude</em></div>
+            <div class="admin-mini-card"><span>Likes</span><strong id="statsLikes">—</strong><em>petites approbations cosmiques</em></div>
+          </div>
+          <div class="admin-two-cols">
+            <section class="admin-box">
+              <h2>Films les plus actifs</h2>
+              <p>Première version légère : on agrège ce qui est disponible sans tirer sur Supabase comme sur une sonnette d’alarme.</p>
+              <div class="admin-list-lines" id="statsActiveMovies"><div class="admin-empty">Chargement des tendances…</div></div>
+            </section>
+            <aside class="admin-box">
+              <h2>Santé communautaire</h2>
+              <p>Un résumé rapide pour sentir si la station ronronne ou si un réacteur tousse.</p>
+              <div class="admin-list-lines" id="statsHealthLines">
+                <div class="admin-list-line"><span>Critiques</span><small id="statsHealthComments">—</small></div>
+                <div class="admin-list-line"><span>Signalements ouverts</span><small id="statsHealthReports">—</small></div>
+                <div class="admin-list-line"><span>Membres inscrits</span><small id="statsHealthMembers">—</small></div>
+              </div>
+            </aside>
+          </div>
         </section>
 
         <section class="admin-module" id="admin-module-notifications" data-admin-module="notifications" hidden>
-          <div class="admin-module-kicker">📢 Notifications</div>
-          <section class="admin-box"><h2>Notifications</h2><p>Zone prévue pour les annonces, les messages importants et les alertes communautaires.</p></section>
+          <div class="admin-module-kicker">📢 Annonces de bord</div>
+          <div class="admin-two-cols">
+            <section class="admin-box">
+              <h2>Préparer une annonce</h2>
+              <p>Pour cette première passe, on prépare le module sans envoi massif. Pas de mégaphone dans le sas avant d’avoir les permissions propres.</p>
+              <div class="announcement-form">
+                <input id="announcementTitle" type="text" placeholder="Titre de l’annonce">
+                <textarea id="announcementMessage" rows="5" placeholder="Message pour les Planétiens…"></textarea>
+                <button class="primary" type="button" id="previewAnnouncementBtn">Prévisualiser</button>
+              </div>
+              <div class="announcement-preview" id="announcementPreview" hidden>
+                <strong>Annonce Planète Stream</strong>
+                <p>La prévisualisation apparaîtra ici.</p>
+              </div>
+            </section>
+            <aside class="admin-box">
+              <h2>Canaux prévus</h2>
+              <p>Les futures annonces pourront être envoyées sans mélanger les torchons, les serviettes et les satellites.</p>
+              <div class="admin-list-lines">
+                <div class="admin-list-line"><span>Hall du cinéma</span><small>Prévu</small></div>
+                <div class="admin-list-line"><span>Notification cloche</span><small>Prévu</small></div>
+                <div class="admin-list-line"><span>Bandeau accueil</span><small>Prévu</small></div>
+              </div>
+            </aside>
+          </div>
         </section>
 
         <section class="admin-module" id="admin-module-parametres" data-admin-module="parametres" hidden>
-          <div class="admin-module-kicker">⚙ Paramètres</div>
-          <section class="admin-box"><h2>Paramètres</h2><p>Zone prévue pour les réglages de la plateforme et les futures options d'administration.</p></section>
+          <div class="admin-module-kicker">⚙ Paramètres de station</div>
+          <section class="admin-box">
+            <h2>Réglages visibles</h2>
+            <p>Tableau de contrôle préparé pour centraliser les options de Planète Stream. Pour l’instant, il affiche l’état et les futures commandes.</p>
+            <div class="admin-setting-list">
+              <div class="admin-setting-row"><div><strong>Mode bêta privée</strong><span>Les vidéos restent réservées aux comptes validés pendant les tests.</span></div><b class="status-pill">Actif</b></div>
+              <div class="admin-setting-row"><div><strong>Turnstile inscription</strong><span>Protection anti-bots vérifiée côté Netlify Function.</span></div><b class="status-pill">Protégé</b></div>
+              <div class="admin-setting-row"><div><strong>Emotes automatiques</strong><span>Conversion sobre des smileys dans les critiques, réponses et critique populaire.</span></div><b class="status-pill">Actif</b></div>
+              <div class="admin-setting-row"><div><strong>Marqueurs de nouveautés</strong><span>Badges Nouveau sur les critiques non lues par film.</span></div><b class="status-pill">Actif</b></div>
+            </div>
+          </section>
         </section>
       </div>
     </div>
@@ -1340,6 +1510,70 @@
       }
     }
 
+
+    async function hydrateAdminStats(){
+      const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+      const safe = (value) => String(value ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      try{
+        await window.PS?.ready;
+        const supabase = window.PS?.supabase;
+        if(!supabase) return;
+        const [ratings, favorites, likes, comments, reports, profiles] = await Promise.allSettled([
+          supabase.from('ratings').select('id,film_id', {count:'exact'}),
+          supabase.from('favorites').select('id,film_id', {count:'exact'}),
+          supabase.from('likes').select('id,comment_id', {count:'exact'}),
+          supabase.from('comments').select('id,film_id,created_at', {count:'exact'}),
+          supabase.from('reports').select('id,status', {count:'exact'}),
+          supabase.from('profiles').select('id', {count:'exact', head:true})
+        ]);
+
+        const ratingRows = ratings.status === 'fulfilled' ? (ratings.value.data || []) : [];
+        const favoriteRows = favorites.status === 'fulfilled' ? (favorites.value.data || []) : [];
+        const likeRows = likes.status === 'fulfilled' ? (likes.value.data || []) : [];
+        const commentRows = comments.status === 'fulfilled' ? (comments.value.data || []) : [];
+        const reportRows = reports.status === 'fulfilled' ? (reports.value.data || []) : [];
+
+        setText('statsRatings', ratings.status === 'fulfilled' ? (ratings.value.count ?? ratingRows.length) : '—');
+        setText('statsFavorites', favorites.status === 'fulfilled' ? (favorites.value.count ?? favoriteRows.length) : '—');
+        setText('statsLikes', likes.status === 'fulfilled' ? (likes.value.count ?? likeRows.length) : '—');
+        setText('statsHealthComments', comments.status === 'fulfilled' ? `${comments.value.count ?? commentRows.length} au total` : '—');
+        setText('statsHealthReports', reports.status === 'fulfilled' ? `${reportRows.filter(r => String(r.status || 'open').toLowerCase() !== 'closed').length} ouverts` : '—');
+        setText('statsHealthMembers', profiles.status === 'fulfilled' ? `${profiles.value.count ?? '—'} membres` : '—');
+
+        const byFilm = new Map();
+        commentRows.forEach(row => {
+          const key = row.film_id || 'inconnu';
+          byFilm.set(key, (byFilm.get(key) || 0) + 1);
+        });
+        const top = [...byFilm.entries()].sort((a,b) => b[1] - a[1]).slice(0,5);
+        const target = document.getElementById('statsActiveMovies');
+        if(target){
+          target.innerHTML = top.length
+            ? top.map(([film, count]) => `<div class="admin-list-line"><span>${safe(film)}</span><small>${count} critique${count > 1 ? 's' : ''}</small></div>`).join('')
+            : '<div class="admin-empty">Pas encore assez de données pour établir une tendance.</div>';
+        }
+      }catch(error){
+        console.warn('Stats admin partielles', error);
+        const target = document.getElementById('statsActiveMovies');
+        if(target) target.innerHTML = '<div class="admin-empty">Statistiques partiellement disponibles. La station a gardé quelques chiffres dans sa poche.</div>';
+      }
+    }
+
+    function initAnnouncementPreview(){
+      const title = document.getElementById('announcementTitle');
+      const message = document.getElementById('announcementMessage');
+      const button = document.getElementById('previewAnnouncementBtn');
+      const preview = document.getElementById('announcementPreview');
+      const safe = (value) => String(value || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      button?.addEventListener('click', () => {
+        if(!preview) return;
+        const t = title?.value?.trim() || 'Annonce Planète Stream';
+        const m = message?.value?.trim() || 'Aucun message saisi pour le moment.';
+        preview.hidden = false;
+        preview.innerHTML = `<strong>${safe(t)}</strong><p>${safe(m)}</p>`;
+      });
+    }
+
     document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
       try{ await window.PS?.supabase?.auth?.signOut(); }catch(_){}
       window.location.href = 'admin-login.html';
@@ -1365,7 +1599,11 @@
         modules.forEach((module) => {
           module.hidden = module.dataset.adminModule !== target;
         });
+
+        if(target === 'stats') hydrateAdminStats();
       }
+
+      initAnnouncementPreview();
 
       tabs.forEach((tab) => {
         tab.addEventListener('click', () => showAdminModule(tab.dataset.adminTab));
