@@ -1456,7 +1456,7 @@
           <div class="dashboard-stage">
             <section class="admin-box">
               <h2>Journal du capitaine</h2>
-              <p>Résumé rapide de la station. Pour l’instant, on affiche les compteurs disponibles sans forcer la base comme un citron cosmique.</p>
+              <p>Résumé automatique de la station, alimenté par Supabase et le catalogue local.</p>
               <div class="captain-log" id="captainLog">
                 <div class="captain-line"><span>Chargement du journal…</span><small>Patience</small></div>
               </div>
@@ -1808,22 +1808,37 @@
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
   <script src="assets/admin.js?v=3.0.4-architecte"></script>
   <script src="assets/admin-community.js?v=3.0.4-architecte"></script>
-  <script src="assets/admin-reports.js?v=3.1.4-reports-archive-enabled"></script>
+  <script src="assets/admin-reports.js?v=3.1.4-real-data-sync"></script>
   <script>
     
     async function hydrateAdminDashboard(){
       const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
-      const setClass = (id, cls) => { const el = document.getElementById(id); if(el && cls) el.classList.add(cls); };
-      const line = (text, tag) => `<div class="captain-line"><span>${text}</span><small>${tag}</small></div>`;
+      const setClass = (id, className) => { const el = document.getElementById(id); if(el){ el.classList.remove('trend-up','trend-warn'); el.classList.add(className); } };
+      const line = (text, tag='Info') => `<div class="captain-line"><span>${text}</span><small>${tag}</small></div>`;
       const log = document.getElementById('captainLog');
       const todayIso = new Date(new Date().setHours(0,0,0,0)).toISOString();
       const weekIso = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const previousVisit = localStorage.getItem('planetestream.admin.lastVisit');
+      const sinceIso = previousVisit || weekIso;
+
+      const normalizeStatus = (value) => String(value || 'new')
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      const isOpenReport = (row={}) => ['new','open','opened','pending','nouveau','nouveaux','en_attente','attente'].includes(normalizeStatus(row.status));
+
       let catalogue = [];
       let missingEmbeds = 0;
-      let metrics = {members:null, membersToday:null, comments:null, commentsToday:null, reportsOpen:null, reportsToday:null, ratingsToday:null, favoritesToday:null};
+      let metrics = {
+        members:null, membersToday:null, activeToday:null, staff:null, banned:null,
+        comments:null, commentsToday:null, replies:null,
+        ratings:null, ratingsToday:null, favorites:null, favoritesToday:null, likes:null, likesToday:null,
+        reportsTotal:null, reportsOpen:null, reportsClosed:null, reportsSince:null
+      };
 
       try{
-        const res = await fetch('data/catalogue.json', {cache:'no-store'});
+        const res = await fetch(`data/catalogue.json?v=${Date.now()}`, {cache:'no-store'});
         catalogue = res.ok ? await res.json() : [];
         missingEmbeds = Array.isArray(catalogue) ? catalogue.filter(item => !String(item.videoEmbed || item.embed || '').trim()).length : 0;
         setText('dashMovies', Array.isArray(catalogue) ? catalogue.length : '—');
@@ -1834,6 +1849,7 @@
       }catch(_){
         setText('dashMovies', '—');
         setText('dashMoviesTrend', 'Catalogue local indisponible');
+        setClass('dashMoviesTrend', 'trend-warn');
       }
 
       try{
@@ -1841,7 +1857,6 @@
         const state = window.PS?.getState?.() || {};
         const viewer = state.viewer || {};
         const chip = document.getElementById('adminUserChip');
-        const previousVisit = localStorage.getItem('planetestream.admin.lastVisit');
         const previousText = previousVisit
           ? new Date(previousVisit).toLocaleString('fr-FR', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'})
           : 'Premier passage enregistré';
@@ -1854,37 +1869,63 @@
 
         const supabase = window.PS?.supabase;
         if(supabase){
-          const [profiles, profilesToday, comments, commentsToday, reports, reportsToday, ratingsToday, favoritesToday] = await Promise.allSettled([
-            supabase.from('profiles').select('id', {count:'exact', head:true}),
-            supabase.from('profiles').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('comments').select('id', {count:'exact', head:true}),
+          const [
+            viewers, viewersToday, activeToday, staffRows, bannedRows,
+            comments, commentsToday, replies,
+            ratings, ratingsToday, favorites, favoritesToday, likes, likesToday,
+            reports, reportsSince
+          ] = await Promise.allSettled([
+            supabase.from('viewers').select('id', {count:'exact', head:true}),
+            supabase.from('viewers').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
+            supabase.from('viewers').select('id', {count:'exact', head:true}).gte('last_seen', todayIso),
+            supabase.from('viewers').select('id,role,badge'),
+            supabase.from('viewers').select('id,banned_at,banned_until'),
+            supabase.from('comments').select('id,parent_id', {count:'exact'}),
             supabase.from('comments').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('reports').select('id,status,created_at', {count:'exact'}),
-            supabase.from('reports').select('id,status,created_at', {count:'exact'}).gte('created_at', todayIso),
+            supabase.from('comments').select('id', {count:'exact', head:true}).not('parent_id','is', null),
+            supabase.from('ratings').select('id', {count:'exact', head:true}),
             supabase.from('ratings').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('favorites').select('id', {count:'exact', head:true}).gte('created_at', todayIso)
+            supabase.from('favorites').select('id', {count:'exact', head:true}),
+            supabase.from('favorites').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
+            supabase.from('likes').select('id', {count:'exact', head:true}),
+            supabase.from('likes').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
+            supabase.from('reports').select('id,status,created_at', {count:'exact'}),
+            supabase.from('reports').select('id,status,created_at', {count:'exact'}).gte('created_at', sinceIso)
           ]);
 
-          metrics.members = profiles.status === 'fulfilled' ? profiles.value.count : null;
-          metrics.membersToday = profilesToday.status === 'fulfilled' ? profilesToday.value.count : null;
-          metrics.comments = comments.status === 'fulfilled' ? comments.value.count : null;
-          metrics.commentsToday = commentsToday.status === 'fulfilled' ? commentsToday.value.count : null;
-          metrics.ratingsToday = ratingsToday.status === 'fulfilled' ? ratingsToday.value.count : null;
-          metrics.favoritesToday = favoritesToday.status === 'fulfilled' ? favoritesToday.value.count : null;
+          const countOf = (result, rows=[]) => result.status === 'fulfilled' && !result.value.error ? (result.value.count ?? rows.length) : null;
+          const commentsRows = comments.status === 'fulfilled' && !comments.value.error ? (comments.value.data || []) : [];
+          const staffData = staffRows.status === 'fulfilled' && !staffRows.value.error ? (staffRows.value.data || []) : [];
+          const bannedData = bannedRows.status === 'fulfilled' && !bannedRows.value.error ? (bannedRows.value.data || []) : [];
+          const reportRows = reports.status === 'fulfilled' && !reports.value.error ? (reports.value.data || []) : [];
+          const reportSinceRows = reportsSince.status === 'fulfilled' && !reportsSince.value.error ? (reportsSince.value.data || []) : [];
 
-          if(reports.status === 'fulfilled'){
-            const rows = reports.value.data || [];
-            metrics.reportsOpen = rows.filter(r => String(r.status || 'open').toLowerCase() !== 'closed').length;
-          }
-          metrics.reportsToday = reportsToday.status === 'fulfilled' ? (reportsToday.value.count ?? (reportsToday.value.data || []).length) : null;
+          metrics.members = countOf(viewers);
+          metrics.membersToday = countOf(viewersToday);
+          metrics.activeToday = countOf(activeToday);
+          metrics.staff = staffData.filter(v => ['admin','founder','moderator','architecte'].includes(String(v.role || v.badge || '').toLowerCase())).length;
+          metrics.banned = bannedData.filter(v => v.banned_at && (!v.banned_until || new Date(v.banned_until).getTime() > Date.now())).length;
+          metrics.comments = countOf(comments, commentsRows);
+          metrics.commentsToday = countOf(commentsToday);
+          metrics.replies = countOf(replies);
+          metrics.ratings = countOf(ratings);
+          metrics.ratingsToday = countOf(ratingsToday);
+          metrics.favorites = countOf(favorites);
+          metrics.favoritesToday = countOf(favoritesToday);
+          metrics.likes = countOf(likes);
+          metrics.likesToday = countOf(likesToday);
+          metrics.reportsTotal = countOf(reports, reportRows);
+          metrics.reportsOpen = reportRows.filter(isOpenReport).length;
+          metrics.reportsClosed = Math.max(0, (metrics.reportsTotal ?? reportRows.length) - metrics.reportsOpen);
+          metrics.reportsSince = reportSinceRows.length;
 
           setText('dashMembers', metrics.members ?? '—');
-          setText('dashMembersTrend', metrics.membersToday != null ? `+${metrics.membersToday} aujourd’hui` : 'membres enregistrés');
+          setText('dashMembersTrend', metrics.membersToday != null ? `+${metrics.membersToday} aujourd’hui · ${metrics.activeToday ?? 0} actif${(metrics.activeToday || 0) > 1 ? 's' : ''}` : 'membres enregistrés');
           setText('navMembersCount', metrics.members != null ? `${metrics.members} membres` : '—');
           setText('dashReviews', metrics.comments ?? '—');
-          setText('dashReviewsTrend', metrics.commentsToday != null ? `+${metrics.commentsToday} aujourd’hui` : 'avis et réponses');
+          setText('dashReviewsTrend', metrics.commentsToday != null ? `+${metrics.commentsToday} aujourd’hui · ${metrics.replies ?? 0} réponses` : 'avis et réponses');
           setText('dashReports', metrics.reportsOpen ?? '—');
-          setText('dashReportsTrend', metrics.reportsOpen ? `${metrics.reportsOpen} à traiter` : 'Aucun voyant rouge');
+          setText('dashReportsTrend', metrics.reportsOpen ? `${metrics.reportsOpen} à traiter · ${metrics.reportsClosed ?? 0} clôturés` : 'Aucun voyant rouge');
           if(metrics.reportsOpen) setClass('dashReportsTrend', 'trend-warn'); else setClass('dashReportsTrend', 'trend-up');
           setText('navReportsCount', metrics.reportsOpen ? `${metrics.reportsOpen} ouvert${metrics.reportsOpen > 1 ? 's' : ''}` : '0 alerte');
           setText('watchOpenReports', metrics.reportsOpen ?? '—');
@@ -1892,8 +1933,10 @@
           const activityScore = Math.min(100, Math.round(
             (metrics.commentsToday || 0) * 8 +
             (metrics.membersToday || 0) * 12 +
+            (metrics.activeToday || 0) * 5 +
             (metrics.ratingsToday || 0) * 4 +
             (metrics.favoritesToday || 0) * 4 +
+            (metrics.likesToday || 0) * 3 +
             (metrics.reportsOpen || 0) * 6 +
             (missingEmbeds ? 4 : 0)
           ));
@@ -1908,9 +1951,11 @@
           if(log){
             const reportLine = metrics.reportsOpen ? `${metrics.reportsOpen} signalement${metrics.reportsOpen > 1 ? 's' : ''} à traiter.` : 'Aucun signalement ouvert.';
             const embedLine = missingEmbeds ? `${missingEmbeds} film${missingEmbeds > 1 ? 's' : ''} sans embed.` : 'Tous les films ont un embed renseigné.';
+            const memberLine = `${metrics.membersToday ?? 0} nouveau${(metrics.membersToday || 0) > 1 ? 'x' : ''} membre${(metrics.membersToday || 0) > 1 ? 's' : ''} aujourd’hui · ${metrics.activeToday ?? 0} actif${(metrics.activeToday || 0) > 1 ? 's' : ''}.`;
+            const commentLine = `${metrics.commentsToday ?? 0} critique${(metrics.commentsToday || 0) > 1 ? 's' : ''} aujourd’hui · ${metrics.ratingsToday ?? 0} note${(metrics.ratingsToday || 0) > 1 ? 's' : ''} · ${metrics.favoritesToday ?? 0} favori${(metrics.favoritesToday || 0) > 1 ? 's' : ''}.`;
             log.innerHTML = [
-              line(`Depuis minuit : ${metrics.membersToday ?? '—'} nouveau${metrics.membersToday > 1 ? 'x' : ''} membre${metrics.membersToday > 1 ? 's' : ''}, ${metrics.commentsToday ?? '—'} critique${metrics.commentsToday > 1 ? 's' : ''}.`, 'Activité'),
-              line(`Notes aujourd’hui : ${metrics.ratingsToday ?? '—'} · Favoris : ${metrics.favoritesToday ?? '—'}.`, 'Engagement'),
+              line(memberLine, 'Communauté'),
+              line(commentLine, 'Engagement'),
               line(reportLine, metrics.reportsOpen ? 'À traiter' : 'Modération'),
               line(embedLine, missingEmbeds ? 'Catalogue' : 'Nominal')
             ].join('');
@@ -2015,42 +2060,64 @@
     async function hydrateAdminStats(){
       const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
       const safe = (value) => String(value ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      const normalizeStatus = (value) => String(value || 'new')
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      const isOpenReport = (row={}) => ['new','open','opened','pending','nouveau','nouveaux','en_attente','attente'].includes(normalizeStatus(row.status));
+
       try{
         await window.PS?.ready;
         const supabase = window.PS?.supabase;
         if(!supabase) return;
-        const [ratings, favorites, likes, comments, reports, profiles] = await Promise.allSettled([
+
+        let titleBySlug = new Map();
+        try{
+          const res = await fetch(`data/catalogue.json?v=${Date.now()}`, {cache:'no-store'});
+          const catalogue = res.ok ? await res.json() : [];
+          if(Array.isArray(catalogue)){
+            catalogue.forEach(item => {
+              const keys = [item.slug, item.id, item.tmdbId, item.tmdb_id, item.title].filter(Boolean).map(String);
+              keys.forEach(key => titleBySlug.set(key, item.title || key));
+            });
+          }
+        }catch(_){ }
+
+        const [ratings, favorites, likes, comments, reports, viewers] = await Promise.allSettled([
           supabase.from('ratings').select('id,film_id', {count:'exact'}),
           supabase.from('favorites').select('id,film_id', {count:'exact'}),
           supabase.from('likes').select('id,comment_id', {count:'exact'}),
-          supabase.from('comments').select('id,film_id,created_at', {count:'exact'}),
+          supabase.from('comments').select('id,film_id,movie_id,parent_id,created_at', {count:'exact'}),
           supabase.from('reports').select('id,status', {count:'exact'}),
-          supabase.from('profiles').select('id', {count:'exact', head:true})
+          supabase.from('viewers').select('id', {count:'exact', head:true})
         ]);
 
-        const ratingRows = ratings.status === 'fulfilled' ? (ratings.value.data || []) : [];
-        const favoriteRows = favorites.status === 'fulfilled' ? (favorites.value.data || []) : [];
-        const likeRows = likes.status === 'fulfilled' ? (likes.value.data || []) : [];
-        const commentRows = comments.status === 'fulfilled' ? (comments.value.data || []) : [];
-        const reportRows = reports.status === 'fulfilled' ? (reports.value.data || []) : [];
+        const okRows = result => result.status === 'fulfilled' && !result.value.error ? (result.value.data || []) : [];
+        const count = (result, rows=[]) => result.status === 'fulfilled' && !result.value.error ? (result.value.count ?? rows.length) : null;
+        const ratingRows = okRows(ratings);
+        const favoriteRows = okRows(favorites);
+        const likeRows = okRows(likes);
+        const commentRows = okRows(comments);
+        const reportRows = okRows(reports);
 
-        setText('statsRatings', ratings.status === 'fulfilled' ? (ratings.value.count ?? ratingRows.length) : '—');
-        setText('statsFavorites', favorites.status === 'fulfilled' ? (favorites.value.count ?? favoriteRows.length) : '—');
-        setText('statsLikes', likes.status === 'fulfilled' ? (likes.value.count ?? likeRows.length) : '—');
-        setText('statsHealthComments', comments.status === 'fulfilled' ? `${comments.value.count ?? commentRows.length} au total` : '—');
-        setText('statsHealthReports', reports.status === 'fulfilled' ? `${reportRows.filter(r => String(r.status || 'open').toLowerCase() !== 'closed').length} ouverts` : '—');
-        setText('statsHealthMembers', profiles.status === 'fulfilled' ? `${profiles.value.count ?? '—'} membres` : '—');
+        setText('statsRatings', count(ratings, ratingRows) ?? '—');
+        setText('statsFavorites', count(favorites, favoriteRows) ?? '—');
+        setText('statsLikes', count(likes, likeRows) ?? '—');
+        setText('statsHealthComments', comments.status === 'fulfilled' && !comments.value.error ? `${count(comments, commentRows)} au total` : '—');
+        setText('statsHealthReports', reports.status === 'fulfilled' && !reports.value.error ? `${reportRows.filter(isOpenReport).length} ouverts` : '—');
+        setText('statsHealthMembers', viewers.status === 'fulfilled' && !viewers.value.error ? `${viewers.value.count ?? '—'} membres` : '—');
 
         const byFilm = new Map();
         commentRows.forEach(row => {
-          const key = row.film_id || 'inconnu';
+          const key = String(row.film_id || row.movie_id || 'inconnu');
           byFilm.set(key, (byFilm.get(key) || 0) + 1);
         });
         const top = [...byFilm.entries()].sort((a,b) => b[1] - a[1]).slice(0,5);
         const target = document.getElementById('statsActiveMovies');
         if(target){
           target.innerHTML = top.length
-            ? top.map(([film, count]) => `<div class="admin-list-line"><span>${safe(film)}</span><small>${count} critique${count > 1 ? 's' : ''}</small></div>`).join('')
+            ? top.map(([film, value]) => `<div class="admin-list-line"><span>${safe(titleBySlug.get(film) || film)}</span><small>${value} critique${value > 1 ? 's' : ''}</small></div>`).join('')
             : '<div class="admin-empty">Pas encore assez de données pour établir une tendance.</div>';
         }
       }catch(error){
