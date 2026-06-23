@@ -207,7 +207,7 @@ async function renderCurrentViewer(){
               <button class="ghost" type="button" data-delete-read-notifications ${notifications.read ? '' : 'disabled'}>Supprimer les messages lus</button>
             </div>
           </div>
-          ${notifications.items.length ? `<div class="space-notification-list">${notifications.items.map(renderNotificationItem).join('')}</div>` : '<p class="soft-note">Aucun message pour le moment. Le Hall est calme, presque suspect.</p>'}
+          ${renderNotificationGroups(notifications.items)}
         </div>
       </section>
 
@@ -744,22 +744,55 @@ async function fetchNotificationActors(ids=[]){
   return new Map(rows.map(row => [row.id, row]));
 }
 
+
+function notificationMeta(item){
+  const type = String(item?.type || 'activity');
+  if(type === 'report') return {icon:'🚩', label:'Signalement', group:'moderation', groupTitle:'🚩 Modération', className:'is-report'};
+  if(type === 'reply') return {icon:'💬', label:'Réponse', group:'discussion', groupTitle:'💬 Discussions', className:'is-reply'};
+  if(type === 'like') return {icon:'❤️', label:'Like', group:'appreciation', groupTitle:'❤️ Appréciations', className:'is-like'};
+  if(type === 'badge') return {icon:'🏆', label:'Badge', group:'reward', groupTitle:'🏆 Récompenses', className:'is-reward'};
+  return {icon:'🔔', label:'Info', group:'activity', groupTitle:'🔔 Activité', className:'is-activity'};
+}
+
+function renderNotificationGroups(items=[]){
+  if(!items.length) return '<p class="soft-note">Aucun message pour le moment. Le Hall est calme, presque suspect.</p>';
+  const order = ['moderation', 'discussion', 'appreciation', 'reward', 'activity'];
+  const groups = new Map();
+  items.forEach(item => {
+    const meta = notificationMeta(item);
+    if(!groups.has(meta.group)) groups.set(meta.group, {meta, items:[]});
+    groups.get(meta.group).items.push(item);
+  });
+  return `<div class="space-notification-list coded-notifications">${order.map(key => {
+    const group = groups.get(key);
+    if(!group) return '';
+    return `
+      <div class="notification-group notification-group-${key}">
+        <h4>${PSAuth.escapeHtml(group.meta.groupTitle)} <small>${group.items.length}</small></h4>
+        ${group.items.map(renderNotificationItem).join('')}
+      </div>
+    `;
+  }).join('')}</div>`;
+}
+
 function renderNotificationItem(item){
   const actor = item.actor || {pseudo:'Un Planétien', avatar:'orbiteur'};
   const unread = !item.read_at;
   const href = item.movie_id ? `watch.html?slug=${encodeURIComponent(item.movie_id)}${item.comment_id ? `#comment-${encodeURIComponent(item.comment_id)}` : ''}` : '#';
+  const meta = notificationMeta(item);
   const label = item.type === 'reply'
     ? `${actor.pseudo || 'Un Planétien'} vous a répondu`
     : item.type === 'report'
-      ? (item.message || '🚩 Nouveau signalement à examiner')
+      ? (item.message || 'Nouveau signalement à examiner')
       : (item.message || 'Nouvelle activité dans le Hall');
 
   return `
-    <div class="space-notification-item ${unread ? 'is-unread' : ''}" data-notification-card="${PSAuth.escapeHtml(item.id)}">
+    <div class="space-notification-item ${meta.className} ${unread ? 'is-unread' : ''}" data-notification-card="${PSAuth.escapeHtml(item.id)}">
       <a class="space-notification-main" href="${href}" data-notification-link data-notification-id="${PSAuth.escapeHtml(item.id)}">
-        ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(actor) || actor.avatar || 'orbiteur', 'viewer-avatar')}
+        <span class="notification-type-icon" aria-hidden="true">${PSAuth.escapeHtml(meta.icon)}</span>
+        ${item.type === 'report' ? '' : PSAuth.avatarHtml(PSAuth.displayAvatar?.(actor) || actor.avatar || 'orbiteur', 'viewer-avatar')}
         <span>
-          <strong>${PSAuth.escapeHtml(label)}</strong>
+          <strong><b>${PSAuth.escapeHtml(meta.label)}</b> · ${PSAuth.escapeHtml(label)}</strong>
           <small>${PSAuth.escapeHtml(item.movie_title)} · ${formatAccountDate(item.created_at)}</small>
           ${unread ? '<em>Nouveau</em>' : ''}
         </span>

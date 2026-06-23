@@ -23,6 +23,7 @@ const PS_AUTH_CONFIG = {
     viewer:null,
     accessToken:null,
     notificationsUnread:0,
+    reportNotificationsUnread:0,
     error:null
   };
 
@@ -116,6 +117,7 @@ const PS_AUTH_CONFIG = {
     state.viewer = null;
     state.accessToken = null;
     state.notificationsUnread = 0;
+    state.reportNotificationsUnread = 0;
     state.error = null;
     stopRealtimeNotifications();
     updateNav();
@@ -146,6 +148,7 @@ const PS_AUTH_CONFIG = {
       viewer:state.viewer,
       accessToken:state.accessToken,
       notificationsUnread:state.notificationsUnread || 0,
+      reportNotificationsUnread:state.reportNotificationsUnread || 0,
       isAuthenticated:Boolean(state.user?.id && state.accessToken),
       error:state.error
     };
@@ -643,17 +646,26 @@ const PS_AUTH_CONFIG = {
   }
 
 
-  async function fetchUnreadNotificationsCount(){
+  async function fetchUnreadNotificationsSummary(){
     const viewer = state.viewer || loadViewer();
-    if(!viewer?.id || !state.accessToken) return 0;
-    const result = await restSelect('notifications', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&read_at=is.null&select=id`, {auth:true});
-    if(!result.ok || !Array.isArray(result.data)) return 0;
-    return result.data.length;
+    if(!viewer?.id || !state.accessToken) return {total:0, reports:0};
+    const result = await restSelect('notifications', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&read_at=is.null&select=id,type`, {auth:true});
+    if(!result.ok || !Array.isArray(result.data)) return {total:0, reports:0};
+    return {
+      total: result.data.length,
+      reports: result.data.filter(item => item.type === 'report').length
+    };
+  }
+
+  async function fetchUnreadNotificationsCount(){
+    const summary = await fetchUnreadNotificationsSummary();
+    return summary.total;
   }
 
   async function refreshNotificationsCount(){
-    const count = await fetchUnreadNotificationsCount();
-    state.notificationsUnread = Number(count || 0);
+    const summary = await fetchUnreadNotificationsSummary();
+    state.notificationsUnread = Number(summary.total || 0);
+    state.reportNotificationsUnread = Number(summary.reports || 0);
     updateNotificationBadges();
     emit('notifications', snapshot());
     return state.notificationsUnread;
@@ -661,6 +673,7 @@ const PS_AUTH_CONFIG = {
 
   function updateNotificationBadges(){
     const count = Number(state.notificationsUnread || 0);
+    const reportCount = Number(state.reportNotificationsUnread || 0);
     const link = document.querySelector('#accountNavLink');
 
     // Sécurité V2.6.3 : une ancienne version plaçait data-notification-count
@@ -669,7 +682,9 @@ const PS_AUTH_CONFIG = {
     if(link){
       link.removeAttribute('data-notification-count');
       link.classList.toggle('has-notifications', count > 0);
+      link.classList.toggle('has-report-notifications', reportCount > 0);
       link.dataset.notificationsUnread = String(count);
+      link.dataset.reportNotificationsUnread = String(reportCount);
 
       const viewer = state.viewer || loadViewer();
       if(viewer?.pseudo && (!link.querySelector('.account-user-name') || /^\d+$/.test((link.textContent || '').trim()))){
@@ -682,9 +697,16 @@ const PS_AUTH_CONFIG = {
 
     document.querySelectorAll('[data-notification-count]').forEach(node => {
       if(node.id === 'accountNavLink') return;
-      node.textContent = String(count);
+      node.textContent = node.classList.contains('notification-dot') && reportCount > 0 ? `🚩${reportCount}` : String(count);
       node.classList.toggle('has-notifications', count > 0);
+      node.classList.toggle('has-report-notifications', reportCount > 0);
       node.hidden = count <= 0;
+    });
+
+    document.querySelectorAll('[data-report-notification-count]').forEach(node => {
+      node.textContent = `🚩${reportCount}`;
+      node.classList.toggle('has-report-notifications', reportCount > 0);
+      node.hidden = reportCount <= 0;
     });
   }
 
@@ -761,7 +783,7 @@ const PS_AUTH_CONFIG = {
         </div>
       </div>
       <a href="account.html#mon-espace">🪐 Mon Espace</a>
-      <a href="account.html#mes-notifications">📬 Messages du Hall <b class="menu-notification-pill" data-notification-count hidden aria-label="Messages non lus">0</b></a>
+      <a href="account.html#mes-notifications">📬 Notifications <b class="menu-notification-pill report-pill" data-report-notification-count hidden aria-label="Signalements non lus">🚩0</b><b class="menu-notification-pill" data-notification-count hidden aria-label="Messages non lus">0</b></a>
       <a href="account.html#mon-parcours">🚀 Mon parcours</a>
       <a href="account.html#mon-profil">👤 Mon profil</a>
       <a href="account.html#mes-favoris">❤️ Mes favoris</a>
