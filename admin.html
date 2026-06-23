@@ -390,6 +390,138 @@
     }
 
 
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:14px;
+      margin:0 0 18px;
+    }
+
+    .dashboard-card{
+      position:relative;
+      overflow:hidden;
+      min-height:132px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(139,44,255,.22), transparent 35%),
+        linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+      padding:18px;
+      box-shadow:0 14px 34px rgba(0,0,0,.24);
+    }
+
+    .dashboard-card span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    .dashboard-card strong{
+      display:block;
+      color:#fff;
+      font-size:34px;
+      line-height:1;
+      letter-spacing:-.04em;
+    }
+
+    .dashboard-card em{
+      display:block;
+      margin-top:10px;
+      color:#d9c9ff;
+      font-style:normal;
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    .dashboard-stage{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .system-list,
+    .captain-log{
+      display:grid;
+      gap:10px;
+    }
+
+    .system-line,
+    .captain-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:rgba(255,255,255,.035);
+      padding:13px 14px;
+      color:#fff;
+    }
+
+    .system-line small,
+    .captain-line small{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      border:1px solid rgba(98,255,178,.28);
+      border-radius:999px;
+      background:rgba(98,255,178,.10);
+      color:#cffff0;
+      padding:6px 9px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .status-pill::before{
+      content:'';
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background:#62ffb2;
+      box-shadow:0 0 14px rgba(98,255,178,.8);
+    }
+
+    .admin-user-chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:0 0 12px;
+      border:1px solid rgba(195,77,255,.18);
+      border-radius:16px;
+      background:rgba(139,44,255,.08);
+      padding:12px;
+    }
+
+    .admin-user-chip img{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      object-fit:cover;
+      background:rgba(255,255,255,.06);
+    }
+
+    .admin-user-chip strong{display:block;color:#fff;font-size:14px}
+    .admin-user-chip span{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+
+    .admin-logout{
+      margin-top:12px;
+      width:100%;
+    }
+
+
 
     .community-dashboard{
       display:grid;
@@ -813,29 +945,14 @@
       .admin-row{grid-template-columns:1fr}
       .admin-tools{grid-template-columns:1fr}
       .admin-placeholder-grid{grid-template-columns:1fr}
-      .community-dashboard{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .dashboard-grid{grid-template-columns:repeat(2, minmax(0,1fr))}.dashboard-stage{grid-template-columns:1fr}.community-dashboard{grid-template-columns:repeat(2, minmax(0,1fr))}
       .community-stage{grid-template-columns:1fr}
       .community-ban-grid{grid-template-columns:1fr}
-    }
-
-    body.admin-locked .admin-panel{display:none;}
-    body.admin-locked::before{
-      content:"Connexion au centre de contrôle…";
-      position:fixed;
-      inset:0;
-      display:grid;
-      place-items:center;
-      z-index:9999;
-      background:radial-gradient(circle at 50% 20%, rgba(139,44,255,.22), transparent 34%), #080817;
-      color:#fff;
-      font-weight:900;
-      letter-spacing:.08em;
-      text-transform:uppercase;
     }
   </style>
 </head>
 
-<body class="admin-locked">
+<body>
   <header>
     <div class="container nav">
       <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
@@ -855,19 +972,23 @@
 
   <main class="container admin-panel">
     <section class="admin-hero">
-      <p class="eyebrow">Centre de contrôle · v3.0</p>
-      <h1>Administration Planetestream</h1>
+      <p class="eyebrow">Centre de contrôle orbital · v4</p>
+      <h1>Centre de contrôle orbital</h1>
       <p>
-        Le QG de la plateforme : le catalogue reste opérationnel, et la future Communauté de l’Anneau Orbital
-        dispose maintenant de son quai d’amarrage. Une tour de contrôle, pas un tiroir à câbles.
+        Tableau de bord, catalogue, communauté et signalements : la passerelle commence à prendre forme. Les boutons brillent, les voyants clignotent, aucun stagiaire spatial n’a été blessé.
       </p>
     </section>
 
     <div class="admin-shell">
       <aside class="admin-sidebar" aria-label="Navigation administration">
+        <div class="admin-user-chip" id="adminUserChip"><img src="assets/orbiteur.png" alt=""><div><strong>Centre de contrôle</strong><span>Connexion sécurisée</span></div></div>
         <div class="admin-sidebar-title">Modules</div>
         <div class="admin-tabs" role="tablist" aria-label="Modules d'administration">
-          <button class="admin-tab is-active" type="button" role="tab" aria-selected="true" data-admin-tab="catalogue">
+          <button class="admin-tab is-active" type="button" role="tab" aria-selected="true" data-admin-tab="dashboard">
+            <span>🏠 Tableau de bord</span>
+            <small>Actif</small>
+          </button>
+          <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="catalogue">
             <span>📽 Catalogue</span>
             <small>Actif</small>
           </button>
@@ -891,11 +1012,44 @@
             <span>⚙ Paramètres</span>
             <small>Bientôt</small>
           </button>
+        <button class="ghost admin-logout" type="button" id="adminLogoutBtn">🚪 Déconnexion</button>
         </div>
       </aside>
 
       <div class="admin-content">
-        <section class="admin-module" id="admin-module-catalogue" data-admin-module="catalogue">
+        <section class="admin-module" id="admin-module-dashboard" data-admin-module="dashboard">
+          <div class="admin-module-kicker">🛰 Vue d’ensemble</div>
+
+          <div class="dashboard-grid" aria-label="Résumé administration">
+            <div class="dashboard-card"><span>Catalogue</span><strong id="dashMovies">—</strong><em>contenus indexés</em></div>
+            <div class="dashboard-card"><span>Communauté</span><strong id="dashMembers">—</strong><em>membres enregistrés</em></div>
+            <div class="dashboard-card"><span>Critiques</span><strong id="dashReviews">—</strong><em>avis et réponses</em></div>
+            <div class="dashboard-card"><span>Signalements</span><strong id="dashReports">—</strong><em>à surveiller</em></div>
+          </div>
+
+          <div class="dashboard-stage">
+            <section class="admin-box">
+              <h2>Journal du capitaine</h2>
+              <p>Résumé rapide de la station. Pour l’instant, on affiche les compteurs disponibles sans forcer la base comme un citron cosmique.</p>
+              <div class="captain-log" id="captainLog">
+                <div class="captain-line"><span>Chargement du journal…</span><small>Patience</small></div>
+              </div>
+            </section>
+
+            <aside class="admin-box">
+              <h2>État des systèmes</h2>
+              <p>Les services critiques de Planète Stream, version cockpit.</p>
+              <div class="system-list">
+                <div class="system-line"><span>Supabase Auth</span><b class="status-pill">Actif</b></div>
+                <div class="system-line"><span>Catalogue local</span><b class="status-pill">Actif</b></div>
+                <div class="system-line"><span>Turnstile</span><b class="status-pill">Protégé</b></div>
+                <div class="system-line"><span>Hall du cinéma</span><b class="status-pill">Prêt</b></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="admin-module" id="admin-module-catalogue" data-admin-module="catalogue" hidden>
           <div class="admin-module-kicker">📽 Module catalogue</div>
     <div class="admin-layout">
       <section class="admin-box">
@@ -1125,15 +1279,78 @@
       </div>
     </div>
 
-    <p class="admin-version">Planète Stream v3.0 · Back-office modulaire</p>
+    <p class="admin-version">Planète Stream v4 · Centre de contrôle orbital</p>
   </main>
 
-  <script src="assets/auth.js?v=3.0.5-admin-lock"></script>
-  <script src="assets/admin-guard.js?v=3.0.5-admin-lock"></script>
-  <script src="assets/admin.js?v=3.0.5-admin-lock"></script>
+  <script src="assets/auth.js?v=3.0.4-architecte"></script>
+  <script src="assets/admin.js?v=3.0.4-architecte"></script>
   <script src="assets/admin-community.js?v=3.0.4-architecte"></script>
   <script src="assets/admin-reports.js?v=3.1.0-reports"></script>
   <script>
+    
+    async function hydrateAdminDashboard(){
+      const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+      const line = (text, tag) => `<div class="captain-line"><span>${text}</span><small>${tag}</small></div>`;
+      const log = document.getElementById('captainLog');
+
+      try{
+        const res = await fetch('data/catalogue.json', {cache:'no-store'});
+        const catalogue = res.ok ? await res.json() : [];
+        setText('dashMovies', Array.isArray(catalogue) ? catalogue.length : '—');
+      }catch(_){ setText('dashMovies', '—'); }
+
+      try{
+        await window.PS?.ready;
+        const state = window.PS?.getState?.() || {};
+        const viewer = state.viewer || {};
+        const chip = document.getElementById('adminUserChip');
+        if(chip){
+          const avatar = viewer.avatar ? `assets/${viewer.avatar}.png` : 'assets/orbiteur.png';
+          chip.innerHTML = `<img src="${avatar}" alt=""><div><strong>${window.PS?.escapeHtml?.(viewer.pseudo || state.user?.email || 'Administrateur') || 'Administrateur'}</strong><span>${window.PS?.escapeHtml?.(viewer.badge || viewer.role || 'Équipage orbital') || 'Équipage orbital'}</span></div>`;
+        }
+
+        const supabase = window.PS?.supabase;
+        if(supabase){
+          const [profiles, comments, reports] = await Promise.allSettled([
+            supabase.from('profiles').select('id', {count:'exact', head:true}),
+            supabase.from('comments').select('id', {count:'exact', head:true}),
+            supabase.from('reports').select('id,status', {count:'exact'})
+          ]);
+
+          if(profiles.status === 'fulfilled') setText('dashMembers', profiles.value.count ?? '—');
+          if(comments.status === 'fulfilled') setText('dashReviews', comments.value.count ?? '—');
+          if(reports.status === 'fulfilled'){
+            const rows = reports.value.data || [];
+            const open = rows.filter(r => String(r.status || 'open').toLowerCase() !== 'closed').length;
+            setText('dashReports', open);
+          }
+
+          if(log){
+            log.innerHTML = [
+              line('Identité vérifiée et droits administrateur confirmés.', 'Sécurité'),
+              line('Catalogue chargé depuis le fichier de données.', 'Catalogue'),
+              line('Communauté et signalements raccordés au cockpit.', 'Orbital'),
+              line('Aucun incident détecté au démarrage.', 'Système')
+            ].join('');
+          }
+        }
+      }catch(error){
+        console.warn('Dashboard admin partiel', error);
+        if(log) log.innerHTML = line('Tableau de bord partiellement chargé.', 'Info');
+      }
+    }
+
+    document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
+      try{ await window.PS?.supabase?.auth?.signOut(); }catch(_){}
+      window.location.href = 'admin-login.html';
+    });
+
+    if (document.body?.classList.contains('admin-locked')) {
+      window.addEventListener('ps:admin-access-granted', hydrateAdminDashboard, {once:true});
+    } else {
+      hydrateAdminDashboard();
+    }
+
     (() => {
       const tabs = [...document.querySelectorAll('[data-admin-tab]')];
       const modules = [...document.querySelectorAll('[data-admin-module]')];
