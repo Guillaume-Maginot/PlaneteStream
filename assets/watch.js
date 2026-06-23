@@ -1159,19 +1159,14 @@ async function reportComment(commentId){
   }
 
   const reasons = [
-    ['spam', 'Spam'],
-    ['insulte', 'Insulte'],
-    ['spoiler', 'Spoiler non signalé'],
-    ['inapproprie', 'Contenu inapproprié'],
-    ['autre', 'Autre']
+    ['spam', '📢 Spam'],
+    ['insulte', '🤬 Insulte ou harcèlement'],
+    ['spoiler', '🎬 Spoiler non signalé'],
+    ['inapproprie', '⚠️ Contenu inapproprié'],
+    ['autre', '❓ Autre']
   ];
-  const choice = window.prompt(`Pourquoi signaler ce message ?\n\n1. Spam\n2. Insulte\n3. Spoiler non signalé\n4. Contenu inapproprié\n5. Autre\n\nIndique un chiffre de 1 à 5 :`, '');
-  if(choice === null) return;
-  const index = Math.max(0, Math.min(4, Number(String(choice).trim()) - 1));
-  if(!Number.isFinite(index) || !reasons[index]){
-    setStatus('Signalement annulé : motif invalide.', 'error');
-    return;
-  }
+  const selectedReason = await openReportReasonDialog(reasons);
+  if(!selectedReason) return;
 
   setStatus('Envoi du signalement...', 'pending');
   const existing = await supabaseSelect('reports', `reporter_viewer_id=eq.${encodeURIComponent(viewer.id)}&target_type=eq.comment&target_id=eq.${encodeURIComponent(comment.id)}&select=id&limit=1`);
@@ -1185,7 +1180,7 @@ async function reportComment(commentId){
     target_type: 'comment',
     target_id: comment.id,
     movie_id: currentItem?.slug || comment.movie_id || null,
-    reason: reasons[index][0],
+    reason: selectedReason[0],
     details: null,
     status: 'new',
     created_at: new Date().toISOString()
@@ -1196,8 +1191,71 @@ async function reportComment(commentId){
     return;
   }
 
-  await notifyModeratorsOfReport(row, comment, viewer, reasons[index][1]);
+  await notifyModeratorsOfReport(row, comment, viewer, selectedReason[1].replace(/^[^\wÀ-ÿ]+\s*/, ''));
   setStatus('Signalement envoyé. L’équipe a reçu l’alerte rouge.', 'ok');
+}
+
+function openReportReasonDialog(reasons){
+  return new Promise(resolve => {
+    const previous = document.querySelector('.report-modal');
+    if(previous) previous.remove();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'report-modal';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'reportModalTitle');
+
+    overlay.innerHTML = `
+      <div class="report-card-dialog">
+        <button class="report-modal-close" type="button" aria-label="Fermer">×</button>
+        <div class="report-modal-head">
+          <span class="report-modal-icon">🚩</span>
+          <div>
+            <h3 id="reportModalTitle">Signaler ce message</h3>
+            <p>Pourquoi souhaitez-vous le signaler ?</p>
+          </div>
+        </div>
+        <div class="report-reasons" role="radiogroup" aria-label="Motif du signalement">
+          ${reasons.map(([value, label], index) => `
+            <label class="report-reason">
+              <input type="radio" name="report-reason" value="${escapeAttr(value)}" ${index === 0 ? 'checked' : ''}>
+              <span>${escapeHtml(label)}</span>
+            </label>
+          `).join('')}
+        </div>
+        <p class="report-hint">Les signalements sont examinés par l’équipe de modération.</p>
+        <div class="report-modal-actions">
+          <button class="ghost" type="button" data-report-cancel>Annuler</button>
+          <button class="primary" type="button" data-report-submit>Envoyer</button>
+        </div>
+      </div>
+    `;
+
+    const close = (value = null) => {
+      document.removeEventListener('keydown', onKeydown);
+      overlay.remove();
+      resolve(value);
+    };
+
+    const onKeydown = event => {
+      if(event.key === 'Escape') close(null);
+    };
+
+    overlay.addEventListener('click', event => {
+      if(event.target === overlay) close(null);
+      if(event.target.closest('[data-report-cancel]') || event.target.closest('.report-modal-close')) close(null);
+      if(event.target.closest('[data-report-submit]')){
+        const checked = overlay.querySelector('input[name="report-reason"]:checked');
+        const reason = reasons.find(([value]) => value === checked?.value);
+        close(reason || null);
+      }
+    });
+
+    document.addEventListener('keydown', onKeydown);
+    document.body.appendChild(overlay);
+    overlay.querySelector('input[name="report-reason"]')?.focus();
+  });
 }
 
 async function notifyModeratorsOfReport(report, comment, reporter, reasonLabel){
