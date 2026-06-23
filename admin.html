@@ -242,6 +242,15 @@
     .catalogue-editor-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(440px,.9fr);gap:18px;margin-top:18px}
     .catalogue-editor-grid.is-series-editing{grid-template-columns:minmax(320px,.72fr) minmax(680px,1.28fr)}
     .catalogue-editor-grid.is-series-editing .catalogue-list{max-height:360px}
+    .catalogue-editor-grid.is-editing-content{grid-template-columns:1fr}
+    .catalogue-editor-grid.is-editing-content .catalogue-browser{display:none}
+    .catalogue-editor-grid.is-editing-content .edit-panel{width:100%;max-width:none}
+    .editor-topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:14px}
+    .editor-topbar h2{margin:0 0 6px}.editor-topbar p{margin:0;color:var(--muted);line-height:1.45}
+    .editor-back-btn{min-height:44px;white-space:nowrap}
+    .catalogue-editor-grid.is-editing-content + textarea#jsonOutput{display:none}
+    .catalogue-editor-grid.is-editing-content .edit-actions{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(12,11,25,.78),rgba(12,11,25,.98));border-top:1px solid rgba(255,255,255,.08);padding-top:14px;z-index:5}
+    .catalogue-editor-grid.is-editing-content .edit-panel{box-shadow:0 22px 70px rgba(0,0,0,.35), 0 0 0 1px rgba(195,77,255,.12)}
     .catalogue-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto auto 210px;gap:10px;margin-bottom:14px}
     .catalogue-toolbar input,.catalogue-toolbar select{min-width:0;width:100%;border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;background:#10111f;padding:12px 13px;outline:none;font:inherit;box-shadow:inset 0 0 0 1px rgba(195,77,255,.04)}
     .catalogue-filter-btn{min-height:48px;padding:12px 16px;border-radius:12px;font-weight:900;white-space:nowrap}.catalogue-filter-btn.is-active{border-color:rgba(195,77,255,.75);background:linear-gradient(135deg,rgba(139,44,255,.38),rgba(195,77,255,.22));box-shadow:0 0 20px rgba(195,77,255,.18)}
@@ -1618,7 +1627,7 @@
 
 
       <div class="catalogue-editor-grid">
-        <div>
+        <div class="catalogue-browser">
           <div class="catalogue-toolbar catalogue-toolbar-embed">
             <input id="catalogueSearch" type="search" placeholder="Rechercher dans le catalogue…">
             <button class="ghost catalogue-filter-btn is-active" id="showAllEmbedsBtn" type="button">Tous les contenus</button>
@@ -1638,8 +1647,13 @@
         </div>
 
         <aside class="edit-panel is-hidden" id="editPanel">
-          <h2>Modifier la fiche</h2>
-          <p>Ajoute ici le code embed de test. Il sera stocké dans l'objet du film, puis exporté dans <code>catalogue.json</code>.</p>
+          <div class="editor-topbar">
+            <div>
+              <h2>Modifier la fiche</h2>
+              <p>Ajoute ici les informations du contenu. Pour une série, les embeds se gèrent épisode par épisode dans le bloc saisons.</p>
+            </div>
+            <button class="ghost editor-back-btn" type="button" id="topCancelEditBtn">← Retour au catalogue</button>
+          </div>
           <div class="edit-grid">
             <label>Titre<input id="editTitle" type="text"></label>
             <label>Année<input id="editYear" type="text"></label>
@@ -1842,7 +1856,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.1.1-series-wide"></script>
+  <script src="assets/admin.js?v=3.1.2-editor-full"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>

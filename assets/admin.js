@@ -28,6 +28,7 @@ const seriesEpisodeList = document.querySelector('#seriesEpisodeList');
 const collapseSeasonsBtn = document.querySelector('#collapseSeasonsBtn');
 const saveEditBtn = document.querySelector('#saveEditBtn');
 const cancelEditBtn = document.querySelector('#cancelEditBtn');
+const topCancelEditBtn = document.querySelector('#topCancelEditBtn');
 const editFields = {
   title: document.querySelector('#editTitle'),
   year: document.querySelector('#editYear'),
@@ -81,6 +82,7 @@ async function init() {
   catalogueSort?.addEventListener('change', renderCatalogueList);
   saveEditBtn?.addEventListener('click', saveEditedItem);
   cancelEditBtn?.addEventListener('click', closeEditor);
+  topCancelEditBtn?.addEventListener('click', closeEditor);
   collapseSeasonsBtn?.addEventListener('click', toggleAllSeasons);
 
   renderCatalogueList();
@@ -394,6 +396,7 @@ function openEditor(index) {
   editingIndex = index;
   editPanel.classList.remove('is-hidden');
   const isSeries = isSeriesEntry(entry);
+  catalogueEditorGrid?.classList.add('is-editing-content');
   catalogueEditorGrid?.classList.toggle('is-series-editing', isSeries);
   editPanel.classList.toggle('is-series-editing', isSeries);
   if (editFields.videoEmbed) editFields.videoEmbed.closest('label')?.classList.toggle('is-hidden', isSeries);
@@ -463,6 +466,7 @@ function closeEditor() {
   editPanel?.classList.add('is-hidden');
   seriesEpisodeManager?.classList.add('is-hidden');
   catalogueEditorGrid?.classList.remove('is-series-editing');
+  catalogueEditorGrid?.classList.remove('is-editing-content');
   editPanel?.classList.remove('is-series-editing');
   if (editFields.videoEmbed) editFields.videoEmbed.closest('label')?.classList.remove('is-hidden');
 }
