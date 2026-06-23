@@ -20,6 +20,7 @@ const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
 const catalogueSort = document.querySelector('#catalogueSort');
 const catalogueList = document.querySelector('#catalogueList');
+const catalogueEditorGrid = document.querySelector('.catalogue-editor-grid');
 const catalogueCount = document.querySelector('#catalogueCount');
 const editPanel = document.querySelector('#editPanel');
 const seriesEpisodeManager = document.querySelector('#seriesEpisodeManager');
@@ -392,6 +393,10 @@ function openEditor(index) {
   if (!entry || !editPanel) return;
   editingIndex = index;
   editPanel.classList.remove('is-hidden');
+  const isSeries = isSeriesEntry(entry);
+  catalogueEditorGrid?.classList.toggle('is-series-editing', isSeries);
+  editPanel.classList.toggle('is-series-editing', isSeries);
+  if (editFields.videoEmbed) editFields.videoEmbed.closest('label')?.classList.toggle('is-hidden', isSeries);
 
   editFields.title.value = entry.title || '';
   editFields.year.value = entry.year || '';
@@ -457,6 +462,9 @@ function closeEditor() {
   editingIndex = -1;
   editPanel?.classList.add('is-hidden');
   seriesEpisodeManager?.classList.add('is-hidden');
+  catalogueEditorGrid?.classList.remove('is-series-editing');
+  editPanel?.classList.remove('is-series-editing');
+  if (editFields.videoEmbed) editFields.videoEmbed.closest('label')?.classList.remove('is-hidden');
 }
 
 

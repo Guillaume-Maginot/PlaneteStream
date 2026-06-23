@@ -239,7 +239,9 @@
       transform:translate(-50%, 0);
       opacity:1;
     }
-    .catalogue-editor-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.75fr);gap:18px;margin-top:18px}
+    .catalogue-editor-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(440px,.9fr);gap:18px;margin-top:18px}
+    .catalogue-editor-grid.is-series-editing{grid-template-columns:minmax(320px,.72fr) minmax(680px,1.28fr)}
+    .catalogue-editor-grid.is-series-editing .catalogue-list{max-height:360px}
     .catalogue-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto auto 210px;gap:10px;margin-bottom:14px}
     .catalogue-toolbar input,.catalogue-toolbar select{min-width:0;width:100%;border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;background:#10111f;padding:12px 13px;outline:none;font:inherit;box-shadow:inset 0 0 0 1px rgba(195,77,255,.04)}
     .catalogue-filter-btn{min-height:48px;padding:12px 16px;border-radius:12px;font-weight:900;white-space:nowrap}.catalogue-filter-btn.is-active{border-color:rgba(195,77,255,.75);background:linear-gradient(135deg,rgba(139,44,255,.38),rgba(195,77,255,.22));box-shadow:0 0 20px rgba(195,77,255,.18)}
@@ -270,16 +272,18 @@
 
     .series-episode-manager{margin-top:16px;border:1px solid rgba(195,77,255,.20);border-radius:16px;background:linear-gradient(135deg,rgba(139,44,255,.08),rgba(255,255,255,.035));padding:14px;grid-column:1/-1}
     .series-episode-manager.is-hidden{display:none}
-    .series-episode-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .series-episode-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;position:sticky;top:88px;z-index:2;background:linear-gradient(180deg,rgba(20,14,38,.98),rgba(20,14,38,.88));padding:4px 0 10px;backdrop-filter:blur(10px)}
     .series-episode-head h3{margin:0;color:#fff;font-size:16px}.series-episode-head p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
     .season-block{border:1px solid rgba(255,255,255,.10);border-radius:14px;background:rgba(0,0,0,.18);margin-top:10px;overflow:hidden}
     .season-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:0;background:rgba(255,255,255,.045);color:#fff;padding:12px 14px;text-align:left;font-weight:900;cursor:pointer}
     .season-toggle small{color:var(--muted);font-weight:800}.season-block.is-collapsed .season-episodes{display:none}
-    .season-episodes{display:grid;gap:10px;padding:12px}
-    .episode-edit-row{display:grid;grid-template-columns:90px minmax(150px,1fr) minmax(220px,1.4fr);gap:10px;align-items:start;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.035);padding:10px}
-    .episode-edit-row strong{font-size:12px;color:#ffd98a;letter-spacing:.04em;text-transform:uppercase;padding-top:10px}.episode-edit-row label{font-size:11px;color:var(--muted);display:grid;gap:5px}.episode-edit-row input,.episode-edit-row textarea{width:100%;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10111f;color:#fff;padding:10px;font:inherit}.episode-edit-row textarea{min-height:76px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;resize:vertical}
+    .season-episodes{display:grid;gap:12px;padding:12px}
+    .episode-edit-row{display:grid;grid-template-columns:86px minmax(180px,.7fr) minmax(360px,1.7fr);gap:12px;align-items:start;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.035);padding:12px}
+    .episode-edit-row strong{font-size:12px;color:#ffd98a;letter-spacing:.04em;text-transform:uppercase;padding-top:28px}.episode-edit-row label{font-size:11px;color:var(--muted);display:grid;gap:6px}.episode-edit-row input,.episode-edit-row textarea{width:100%;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10111f;color:#fff;padding:10px;font:inherit}.episode-edit-row textarea{min-height:112px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;resize:vertical;line-height:1.45}
+    .edit-panel.is-series-editing{padding:18px;max-height:calc(100vh - 116px);overflow:auto;scrollbar-color:rgba(195,77,255,.55) rgba(255,255,255,.06)}
+    .edit-panel.is-series-editing .edit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.edit-panel.is-series-editing #seriesEpisodeManager{margin-top:18px}.edit-panel .is-hidden{display:none!important}
     .episode-missing{color:#ffd18a;font-size:11px;font-weight:900}.episode-ready{color:#a9ffd4;font-size:11px;font-weight:900}
-    @media(max-width:900px){.episode-edit-row{grid-template-columns:1fr}.episode-edit-row strong{padding-top:0}}
+    @media(max-width:1100px){.catalogue-editor-grid.is-series-editing{grid-template-columns:1fr}.episode-edit-row{grid-template-columns:1fr}.episode-edit-row strong{padding-top:0}.series-episode-head{position:static}}
 
 
 
@@ -1838,7 +1842,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.1.0-series-admin"></script>
+  <script src="assets/admin.js?v=3.1.1-series-wide"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>
