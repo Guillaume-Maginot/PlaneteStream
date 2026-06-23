@@ -196,12 +196,12 @@ async function renderCurrentViewer(){
 
       <section class="space-section" id="mes-notifications">
         <div class="space-section-head">
-          <p class="eyebrow">Messages du Hall</p>
+          <p class="eyebrow">Messages & alertes</p>
           <h2>Ce qui vous attend</h2>
         </div>
         <div class="space-notification-panel">
           <div class="space-notification-actions">
-            <p class="soft-note">Les réponses à vos critiques et messages apparaissent ici. Discret, mais fidèle au poste.</p>
+            <p class="soft-note">Les réponses et les alertes de modération apparaissent ici. Discret, mais fidèle au poste.</p>
             <div class="space-notification-buttons">
               <button class="ghost" type="button" data-mark-notifications-read ${notifications.unread ? '' : 'disabled'}>Tout marquer comme lu</button>
               <button class="ghost" type="button" data-delete-read-notifications ${notifications.read ? '' : 'disabled'}>Supprimer les messages lus</button>
@@ -750,7 +750,9 @@ function renderNotificationItem(item){
   const href = item.movie_id ? `watch.html?slug=${encodeURIComponent(item.movie_id)}${item.comment_id ? `#comment-${encodeURIComponent(item.comment_id)}` : ''}` : '#';
   const label = item.type === 'reply'
     ? `${actor.pseudo || 'Un Planétien'} vous a répondu`
-    : (item.message || 'Nouvelle activité dans le Hall');
+    : item.type === 'report'
+      ? (item.message || '🚩 Nouveau signalement à examiner')
+      : (item.message || 'Nouvelle activité dans le Hall');
 
   return `
     <div class="space-notification-item ${unread ? 'is-unread' : ''}" data-notification-card="${PSAuth.escapeHtml(item.id)}">

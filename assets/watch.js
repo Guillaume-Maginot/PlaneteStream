@@ -13,7 +13,8 @@ const dbTables = {
   comment_likes: null,
   movie_favorites: null,
   viewer_history: null,
-  movie_ratings: null
+  movie_ratings: null,
+  reports: null
 };
 
 let currentItem = null;
@@ -324,6 +325,12 @@ function bindWatchEvents(item){
     const deleteBtn = event.target.closest('[data-delete-comment]');
     if(deleteBtn){
       await deleteComment(deleteBtn.dataset.deleteComment);
+      return;
+    }
+
+    const reportBtn = event.target.closest('[data-report-comment]');
+    if(reportBtn){
+      await reportComment(reportBtn.dataset.reportComment);
       return;
     }
 
@@ -1045,9 +1052,19 @@ function canManageComment(comment){
   if(!comment || !authUserId) return false;
   if(comment.auth_user_id && comment.auth_user_id === authUserId) return true;
   if(currentViewer?.id && comment.viewer_uuid && comment.viewer_uuid === currentViewer.id) return true;
-  const role = window.PS?.state?.viewer?.role || currentViewer?.role || 'viewer';
-  return ['admin','moderator'].includes(role);
+  return isModerationViewer(window.PS?.state?.viewer || currentViewer);
 }
+
+function isModerationViewer(viewer={}){
+  const role = String(viewer?.role || '').toLowerCase();
+  const badge = String(viewer?.badge || '').toLowerCase();
+  return ['admin','founder','fondateur','moderator','moderateur','architecte'].includes(role) || ['founder','fondateur','moderator','moderateur','architecte'].includes(badge);
+}
+
+function canReportComment(comment){
+  return Boolean(comment?.id && currentViewer?.id && getCurrentAuthUserId());
+}
+
 
 function findCommentById(commentId){
   return currentComments.find(comment => String(comment.id) === String(commentId));
@@ -1128,6 +1145,82 @@ async function submitEditComment(form){
   }else{
     setStatus('Modification refusée. Vérifie les policies UPDATE de comments.', 'error');
   }
+}
+
+
+async function reportComment(commentId){
+  const comment = findCommentById(commentId);
+  const viewer = await getAuthenticatedViewerForPage();
+  if(!comment || !viewer?.id || !getCurrentAuthUserId()){
+    setStatus('Connexion requise pour signaler ce message.', 'error');
+    return;
+  }
+
+  const reasons = [
+    ['spam', 'Spam'],
+    ['insulte', 'Insulte'],
+    ['spoiler', 'Spoiler non signalé'],
+    ['inapproprie', 'Contenu inapproprié'],
+    ['autre', 'Autre']
+  ];
+  const choice = window.prompt(`Pourquoi signaler ce message ?\n\n1. Spam\n2. Insulte\n3. Spoiler non signalé\n4. Contenu inapproprié\n5. Autre\n\nIndique un chiffre de 1 à 5 :`, '');
+  if(choice === null) return;
+  const index = Math.max(0, Math.min(4, Number(String(choice).trim()) - 1));
+  if(!Number.isFinite(index) || !reasons[index]){
+    setStatus('Signalement annulé : motif invalide.', 'error');
+    return;
+  }
+
+  setStatus('Envoi du signalement...', 'pending');
+  const existing = await supabaseSelect('reports', `reporter_viewer_id=eq.${encodeURIComponent(viewer.id)}&target_type=eq.comment&target_id=eq.${encodeURIComponent(comment.id)}&select=id&limit=1`);
+  if(existing.ok && Array.isArray(existing.data) && existing.data.length){
+    setStatus('Tu as déjà signalé ce message. Les modos ont reçu le pigeon rouge.', 'ok');
+    return;
+  }
+
+  const row = await supabaseInsertReturning('reports', {
+    reporter_viewer_id: viewer.id,
+    target_type: 'comment',
+    target_id: comment.id,
+    movie_id: currentItem?.slug || comment.movie_id || null,
+    reason: reasons[index][0],
+    details: null,
+    status: 'new',
+    created_at: new Date().toISOString()
+  });
+
+  if(!row?.id){
+    setStatus('Impossible d’enregistrer le signalement. Vérifie la table reports/RLS.', 'error');
+    return;
+  }
+
+  await notifyModeratorsOfReport(row, comment, viewer, reasons[index][1]);
+  setStatus('Signalement envoyé. L’équipe a reçu l’alerte rouge.', 'ok');
+}
+
+async function notifyModeratorsOfReport(report, comment, reporter, reasonLabel){
+  if(!window.PS?.createNotification || !report?.id) return false;
+  const staff = await fetchModerationViewers();
+  const movieTitle = currentItem?.title || currentItem?.slug || 'Planète Stream';
+  await Promise.all(staff
+    .filter(member => member?.id && String(member.id) !== String(reporter.id))
+    .map(member => window.PS.createNotification({
+      type:'report',
+      recipient_viewer_id:member.id,
+      actor_viewer_id:reporter.id,
+      movie_id:currentItem?.slug || comment.movie_id || null,
+      comment_id:comment.id,
+      parent_comment_id:comment.parent_id || null,
+      message:`🚩 Signalement sur ${movieTitle} · ${reasonLabel}`
+    })));
+  return true;
+}
+
+async function fetchModerationViewers(){
+  const query = 'or=(role.in.(admin,founder,fondateur,moderator,moderateur,architecte),badge.in.(founder,fondateur,moderator,moderateur,architecte))&select=id,pseudo,avatar,badge,role';
+  const result = await supabaseSelect('viewers', query);
+  if(!result.ok || !Array.isArray(result.data)) return [];
+  return result.data.filter(isModerationViewer);
 }
 
 async function deleteComment(commentId){
@@ -1636,7 +1729,8 @@ async function resolveTable(kind){
     comment_likes: ['comment_likes'],
     movie_favorites: ['movie_favorites'],
     viewer_history: ['viewer_history'],
-    movie_ratings: ['movie_ratings', 'ratings']
+    movie_ratings: ['movie_ratings', 'ratings'],
+    reports: ['reports']
   };
 
   const candidates = candidatesByKind[kind] || [kind];
@@ -1817,6 +1911,7 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
       <div class="comment-actions">
         <button class="comment-action like-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '❤️' : '🤍'} <span>${count}</span>${liked ? '<small>Aimé par vous</small>' : ''}</button>
         <button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">💬 ${replyLabel}${replyCount ? ` · ${replyCount}` : ''}</button>
+        ${canReportComment(comment) ? `<button class="comment-action report-action" type="button" data-report-comment="${escapeHtml(comment.id || '')}">🚩 Signaler</button>` : ''}
         ${owner ? `<button class="comment-action" type="button" data-edit-comment="${escapeHtml(comment.id || '')}">✏ Modifier</button><button class="comment-action danger" type="button" data-delete-comment="${escapeHtml(comment.id || '')}">🗑 Supprimer</button>` : ''}
       </div>
       ${replyMarkup}

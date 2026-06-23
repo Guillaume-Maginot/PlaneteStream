@@ -710,6 +710,66 @@
       line-height:1.55;
     }
 
+
+
+    .reports-list{
+      display:grid;
+      gap:14px;
+    }
+
+    .report-card{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      background:rgba(255,255,255,.035);
+      padding:16px;
+    }
+
+    .report-card.is-open{
+      border-color:rgba(255,92,122,.28);
+      background:linear-gradient(135deg, rgba(255,92,122,.10), rgba(139,44,255,.06));
+    }
+
+    .report-head{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .report-head strong{display:block;color:#fff}
+    .report-head small{color:var(--muted);font-size:12px}
+    .report-flag{font-size:26px;filter:drop-shadow(0 0 12px rgba(255,92,122,.45))}
+    .report-status{margin-left:auto;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 9px;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.06)}
+
+    .report-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .report-card blockquote{
+      margin:0 0 14px;
+      border-left:3px solid rgba(195,77,255,.55);
+      padding:10px 12px;
+      color:#eee;
+      background:rgba(0,0,0,.18);
+      border-radius:12px;
+      line-height:1.55;
+    }
+
+    .report-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .report-actions .danger,
+    .ghost.danger{
+      border-color:rgba(255,92,122,.35);
+      color:#ffdbe3;
+    }
+
     @media (max-width:900px){
       .admin-shell{grid-template-columns:1fr}
       .admin-sidebar{position:static}
@@ -762,6 +822,10 @@
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="communaute">
             <span>👥 Communauté</span>
+            <small>Actif</small>
+          </button>
+          <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="signalements">
+            <span>🚩 Signalements</span>
             <small>Actif</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="stats">
@@ -925,6 +989,26 @@
 
         </section>
 
+
+        <section class="admin-module" id="admin-module-signalements" data-admin-module="signalements" hidden>
+          <div class="admin-module-kicker">🚩 Signalements</div>
+
+          <div class="community-dashboard" aria-label="Résumé signalements">
+            <div class="community-stat"><span>Total</span><strong id="reportsCount">—</strong></div>
+            <div class="community-stat"><span>Nouveaux</span><strong id="reportsOpenCount">—</strong></div>
+            <div class="community-stat"><span>Traités</span><strong id="reportsClosedCount">—</strong></div>
+            <div class="community-stat"><span>Canal</span><strong>Modos</strong></div>
+          </div>
+
+          <section class="admin-box">
+            <h2>Messages signalés</h2>
+            <p>Les alertes remontées par les membres arrivent ici. On regarde, on tranche, et les lourdauds retournent dans le sas.</p>
+            <div class="reports-list" id="reportsList">
+              <div class="admin-empty">Chargement des signalements…</div>
+            </div>
+          </section>
+        </section>
+
         <section class="admin-module" id="admin-module-stats" data-admin-module="stats" hidden>
           <div class="admin-module-kicker">📊 Statistiques</div>
           <section class="admin-box"><h2>Statistiques</h2><p>Zone prévue pour l'activité, les notes, les favoris et les tendances du catalogue.</p></section>
@@ -948,6 +1032,7 @@
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
   <script src="assets/admin.js?v=3.0.4-architecte"></script>
   <script src="assets/admin-community.js?v=3.0.4-architecte"></script>
+  <script src="assets/admin-reports.js?v=3.1.0-reports"></script>
   <script>
     (() => {
       const tabs = [...document.querySelectorAll('[data-admin-tab]')];
