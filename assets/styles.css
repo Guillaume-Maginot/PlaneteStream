@@ -4645,13 +4645,13 @@ section{margin:24px 0 34px}
 }
 
 /* === Planète Stream V3.1 : notifications codifiées === */
-.notification-dot.has-report-notifications,
+.notification-report-flag,
 .menu-notification-pill.has-report-notifications,
 .menu-notification-pill.report-pill{
   background:linear-gradient(135deg,#ff3b3b,#ff8a3d);
   box-shadow:0 0 18px rgba(255,59,59,.55);
 }
-#accountNavLink.has-report-notifications .notification-dot{
+#accountNavLink .notification-report-flag{
   min-width:28px;
   letter-spacing:.01em;
 }

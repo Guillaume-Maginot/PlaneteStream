@@ -667,23 +667,26 @@ const PS_AUTH_CONFIG = {
 
   async function fetchUnreadNotificationsSummary(){
     const viewer = state.viewer || loadViewer();
-    if(!viewer?.id || !state.accessToken) return {total:0, reports:0};
+    if(!viewer?.id || !state.accessToken) return {total:0, personal:0, reports:0};
     const result = await restSelect('notifications', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&read_at=is.null&select=id,type`, {auth:true});
-    if(!result.ok || !Array.isArray(result.data)) return {total:0, reports:0};
+    if(!result.ok || !Array.isArray(result.data)) return {total:0, personal:0, reports:0};
+    const reports = result.data.filter(item => item.type === 'report').length;
+    const personal = Math.max(0, result.data.length - reports);
     return {
       total: result.data.length,
-      reports: result.data.filter(item => item.type === 'report').length
+      personal,
+      reports
     };
   }
 
   async function fetchUnreadNotificationsCount(){
     const summary = await fetchUnreadNotificationsSummary();
-    return summary.total;
+    return summary.personal;
   }
 
   async function refreshNotificationsCount(){
     const summary = await fetchUnreadNotificationsSummary();
-    state.notificationsUnread = Number(summary.total || 0);
+    state.notificationsUnread = Number(summary.personal || 0);
     state.reportNotificationsUnread = Number(summary.reports || 0);
     updateNotificationBadges();
     emit('notifications', snapshot());
@@ -708,7 +711,7 @@ const PS_AUTH_CONFIG = {
       const viewer = state.viewer || loadViewer();
       if(viewer?.pseudo && (!link.querySelector('.account-user-name') || /^\d+$/.test((link.textContent || '').trim()))){
         link.href = '#';
-        link.innerHTML = `${avatarHtml(displayAvatar(viewer), 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
+        link.innerHTML = `${avatarHtml(displayAvatar(viewer), 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b><b class="notification-dot notification-report-flag" data-report-notification-count hidden aria-label="Signalements non lus">🚩0</b>`;
         link.classList.add('is-connected');
         ensureAccountDropdown(link, viewer);
       }
@@ -716,9 +719,9 @@ const PS_AUTH_CONFIG = {
 
     document.querySelectorAll('[data-notification-count]').forEach(node => {
       if(node.id === 'accountNavLink') return;
-      node.textContent = node.classList.contains('notification-dot') && reportCount > 0 ? `🚩${reportCount}` : String(count);
+      node.textContent = String(count);
       node.classList.toggle('has-notifications', count > 0);
-      node.classList.toggle('has-report-notifications', reportCount > 0);
+      node.classList.remove('has-report-notifications');
       node.hidden = count <= 0;
     });
 
@@ -758,7 +761,7 @@ const PS_AUTH_CONFIG = {
 
     if(connected){
       link.href = '#';
-      link.innerHTML = `${avatarHtml(displayAvatar(viewer), 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b>`;
+      link.innerHTML = `${avatarHtml(displayAvatar(viewer), 'account-avatar')}<span class="account-user-name">${escapeHtml(viewer.pseudo)}</span><span class="account-chevron">▾</span><b class="notification-dot" data-notification-count hidden aria-label="Messages non lus">0</b><b class="notification-dot notification-report-flag" data-report-notification-count hidden aria-label="Signalements non lus">🚩0</b>`;
       link.classList.add('is-connected');
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-expanded', 'false');
