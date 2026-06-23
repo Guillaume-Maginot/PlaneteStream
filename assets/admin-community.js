@@ -63,7 +63,7 @@
     try{
       await waitForPS();
       const query = [
-        'select=id,pseudo,avatar,created_at,last_seen,auth_user_id,role,badge,banned_at',
+        'select=id,pseudo,avatar,created_at,last_seen,auth_user_id,role,badge,banned_at,banned_until,ban_reason,banned_by',
         'order=created_at.asc'
       ].join('&');
       const ps = getPS();
@@ -106,7 +106,10 @@
       auth_user_id: viewer.auth_user_id || '',
       role: String(viewer.role || 'viewer').toLowerCase(),
       badge: String(viewer.badge || 'none').toLowerCase(),
-      banned_at: viewer.banned_at || null
+      banned_at: viewer.banned_at || null,
+      banned_until: viewer.banned_until || null,
+      ban_reason: viewer.ban_reason || '',
+      banned_by: viewer.banned_by || null
     };
 
     // Statut exclusif de Spoofle : permissions admin, identité publique Architecte.
@@ -130,7 +133,7 @@
       viewer.badge,
       roleLabel(viewer.role),
       badgeLabel(viewer.badge),
-      viewer.banned_at ? 'banni' : 'actif'
+      isBanActive(viewer) ? 'banni' : 'actif'
     ].some(value => String(value || '').toLowerCase().includes(term)));
 
     if(!state.filtered.some(viewer => viewer.id === state.selectedId)){
@@ -143,7 +146,7 @@
     const today = new Date().toISOString().slice(0, 10);
     const total = state.viewers.length;
     const staff = state.viewers.filter(v => ['admin','founder','moderator'].includes(v.role)).length;
-    const banned = state.viewers.filter(v => Boolean(v.banned_at)).length;
+    const banned = state.viewers.filter(v => isBanActive(v)).length;
     const activeToday = state.viewers.filter(v => String(v.last_seen || '').startsWith(today)).length;
 
     setText(els.total, total);
@@ -165,7 +168,7 @@
           <strong>${escapeHtml(viewer.pseudo)}</strong>
           <span>${escapeHtml(publicTitle(viewer))}</span>
         </span>
-        <span class="viewer-chip ${viewer.banned_at ? 'is-danger' : ''}">${viewer.banned_at ? 'Banni' : 'Actif'}</span>
+        <span class="viewer-chip ${isBanActive(viewer) ? 'is-danger' : ''}">${isBanActive(viewer) ? 'Banni' : 'Actif'}</span>
       </button>
     `).join('');
 
@@ -468,14 +471,16 @@
 
   function renderBanEditor(viewer){
     const permission = banPermission(viewer);
-    const isBanned = Boolean(viewer?.banned_at);
+    const isBanned = isBanActive(viewer);
+    const currentRole = getCurrentRole();
+    const isPermanent = isBanned && !viewer.banned_until;
 
     if(!permission.allowed){
       return `
         <div class="community-action-panel is-disabled">
           <div>
             <span>Bannissement</span>
-            <strong>${isBanned ? 'Viewer banni' : 'Viewer actif'}</strong>
+            <strong>${isBanned ? banStatusLabel(viewer) : 'Viewer actif'}</strong>
           </div>
           <p>${escapeHtml(permission.reason)}</p>
         </div>
@@ -483,34 +488,54 @@
     }
 
     if(isBanned){
+      const canUnban = canUnbanViewer(viewer);
       return `
-        <div class="community-action-panel">
+        <div class="community-action-panel ${isPermanent ? 'community-danger-panel' : ''}">
           <label for="unbanViewerBtn">
             <span>Bannissement</span>
-            <strong>🔴 Banni depuis ${escapeHtml(formatDate(viewer.banned_at))}</strong>
+            <strong>${escapeHtml(banStatusLabel(viewer))}</strong>
           </label>
           <div class="community-action-row">
-            <p>Réactiver ce compte lui rendra l’accès normal aux fonctions communautaires.</p>
-            <button class="primary community-safe-btn" id="unbanViewerBtn" type="button" ${state.savingBan ? 'disabled' : ''}>
-              ${state.savingBan ? 'Débannissement…' : 'Débannir'}
-            </button>
+            <p>${viewer.ban_reason ? `Motif : ${escapeHtml(viewer.ban_reason)}` : 'Aucun motif précisé.'}</p>
+            ${canUnban ? `
+              <button class="primary community-safe-btn" id="unbanViewerBtn" type="button" ${state.savingBan ? 'disabled' : ''}>
+                ${state.savingBan ? 'Débannissement…' : 'Débannir'}
+              </button>
+            ` : `<p class="community-note">Le débannissement est réservé aux Fondateurs et à l’Architecte.</p>`}
           </div>
         </div>
       `;
     }
 
+    const permanentOption = isAdminRole(currentRole)
+      ? `<option value="permanent">Permanent</option>`
+      : '';
+
     return `
       <div class="community-action-panel community-danger-panel">
-        <label for="banViewerBtn">
+        <label for="banViewerDuration">
           <span>Bannissement</span>
           <strong>🟢 Compte actif</strong>
         </label>
-        <div class="community-action-row">
-          <p>Le bannissement bloque le viewer sans supprimer son profil. Action réversible, mais à manier avec des gants orbitaux.</p>
+        <div class="community-action-row community-ban-grid">
+          <div>
+            <label class="community-mini-label" for="banViewerDuration">Durée</label>
+            <select id="banViewerDuration">
+              <option value="1h">1 heure</option>
+              <option value="24h">24 heures</option>
+              <option value="7d">7 jours</option>
+              ${permanentOption}
+            </select>
+          </div>
+          <div>
+            <label class="community-mini-label" for="banViewerReason">Motif</label>
+            <input id="banViewerReason" type="text" maxlength="160" placeholder="Spam, insultes, spoiler volontaire…">
+          </div>
           <button class="primary community-danger-btn" id="banViewerBtn" type="button" ${state.savingBan ? 'disabled' : ''}>
             ${state.savingBan ? 'Bannissement…' : 'Bannir'}
           </button>
         </div>
+        <p class="community-note">Les Modérateurs peuvent bannir 1 h, 24 h ou 7 jours. Le permanent et le déban restent réservés aux Fondateurs et à l’Architecte.</p>
       </div>
     `;
   }
@@ -526,24 +551,37 @@
           renderDetail(viewer);
           return;
         }
-        const message = `Bannir ${viewer?.pseudo || 'ce viewer'} ?\n\nLe compte ne sera pas supprimé, mais il sera marqué comme banni dans Supabase. Cette action pourra être annulée ensuite.`;
+        const duration = document.querySelector('#banViewerDuration')?.value || '1h';
+        const reason = String(document.querySelector('#banViewerReason')?.value || '').trim();
+        if(getCurrentRole() === 'moderator' && duration === 'permanent'){
+          state.notice = 'Le bannissement permanent est réservé aux Fondateurs et à l’Architecte.';
+          renderDetail(viewer);
+          return;
+        }
+        const label = banDurationLabel(duration);
+        const message = `Bannir ${viewer?.pseudo || 'ce viewer'} pendant ${label} ?
+
+Motif : ${reason || 'Non précisé'}
+
+Le compte ne pourra plus publier, noter, liker, répondre ni signaler pendant la durée choisie.`;
         if(!window.confirm(message)){
           state.notice = 'Bannissement annulé. Le bouton rouge retourne dormir sous son capot.';
           renderDetail(viewer);
           return;
         }
-        await saveBanStatus(viewer, true);
+        await saveBanStatus(viewer, true, {duration, reason});
       });
     }
     if(unbanButton){
       unbanButton.addEventListener('click', async () => {
-        const permission = banPermission(viewer);
-        if(!permission.allowed){
-          state.notice = permission.reason;
+        if(!canUnbanViewer(viewer)){
+          state.notice = 'Débannissement réservé aux Fondateurs et à l’Architecte.';
           renderDetail(viewer);
           return;
         }
-        const message = `Débannir ${viewer?.pseudo || 'ce viewer'} ?\n\nLe compte retrouvera son état actif.`;
+        const message = `Débannir ${viewer?.pseudo || 'ce viewer'} ?
+
+Le compte retrouvera son état actif.`;
         if(!window.confirm(message)){
           state.notice = 'Débannissement annulé.';
           renderDetail(viewer);
@@ -554,7 +592,7 @@
     }
   }
 
-  async function saveBanStatus(viewer, shouldBan){
+  async function saveBanStatus(viewer, shouldBan, options={}){
     if(!viewer?.id || state.savingBan) return;
     state.savingBan = true;
     state.notice = '';
@@ -565,7 +603,10 @@
       const ps = getPS();
       if(!ps.restWrite) throw new Error('restWrite indisponible dans auth.js.');
 
-      const payload = {banned_at: shouldBan ? new Date().toISOString() : null};
+      const banDates = shouldBan ? computeBanDates(options.duration || '1h') : {banned_at:null, banned_until:null};
+      const payload = shouldBan
+        ? {banned_at: banDates.banned_at, banned_until: banDates.banned_until, ban_reason: options.reason || null, banned_by: getCurrentViewerId() || null}
+        : {banned_at: null, banned_until: null, ban_reason: null, banned_by: null};
       const result = await ps.restWrite(
         'viewers',
         'PATCH',
@@ -578,13 +619,13 @@
         throw new Error(`Supabase a refusé la mise à jour du bannissement (${result.status || 'statut inconnu'}).`);
       }
 
-      await recordHistory(shouldBan ? 'ban' : 'unban', viewer, {banned_at: viewer.banned_at}, {banned_at: payload.banned_at});
+      await recordHistory(shouldBan ? 'ban' : 'unban', viewer, {banned_at: viewer.banned_at, banned_until: viewer.banned_until, ban_reason: viewer.ban_reason}, {banned_at: payload.banned_at, banned_until: payload.banned_until, ban_reason: payload.ban_reason}, options.reason || '');
 
       state.viewers = state.viewers.map(item => item.id === viewer.id ? {...item, ...payload} : item);
       filterViewers();
       state.selectedId = viewer.id;
       state.notice = shouldBan
-        ? `${escapePlain(viewer.pseudo)} est maintenant banni. Profil conservé, trappe refermée.`
+        ? `${escapePlain(viewer.pseudo)} est banni ${payload.banned_until ? `jusqu’au ${formatDate(payload.banned_until)}` : 'définitivement'}. Trappe refermée.`
         : `${escapePlain(viewer.pseudo)} est débanni et repasse en statut actif.`;
       renderStats();
       renderList();
@@ -742,7 +783,8 @@
       return `<strong>${escapeHtml(staffName)}</strong> a changé le badge de <strong>${escapeHtml(targetName)}</strong> : ${escapeHtml(badgeLabel(oldValue.badge))} → <strong>${escapeHtml(badgeLabel(newValue.badge))}</strong>.`;
     }
     if(entry.action === 'ban'){
-      return `<strong>${escapeHtml(staffName)}</strong> a banni <strong>${escapeHtml(targetName)}</strong>.`;
+      const until = newValue.banned_until ? ` jusqu’au ${formatDate(newValue.banned_until)}` : ' définitivement';
+      return `<strong>${escapeHtml(staffName)}</strong> a banni <strong>${escapeHtml(targetName)}</strong>${escapeHtml(until)}.`;
     }
     if(entry.action === 'unban'){
       return `<strong>${escapeHtml(staffName)}</strong> a débanni <strong>${escapeHtml(targetName)}</strong>.`;
@@ -756,7 +798,12 @@
   }
 
   function getCurrentRole(){
-    return String(getCurrentViewer()?.role || '').toLowerCase();
+    const viewer = getCurrentViewer() || {};
+    const role = String(viewer.role || '').toLowerCase();
+    const badge = String(viewer.badge || '').toLowerCase();
+    if(['architecte','founder','fondateur'].includes(badge)) return 'admin';
+    if(['moderator','moderateur'].includes(badge) && !['admin','founder','fondateur'].includes(role)) return 'moderator';
+    return role;
   }
 
   function getCurrentViewerId(){
@@ -774,6 +821,43 @@
 
   function countAdmins(){
     return state.viewers.filter(viewer => isAdminRole(viewer.role)).length;
+  }
+
+
+  function isBanActive(viewer={}){
+    if(!viewer?.banned_at) return false;
+    if(!viewer.banned_until) return true;
+    return new Date(viewer.banned_until).getTime() > Date.now();
+  }
+
+  function banStatusLabel(viewer={}){
+    if(!isBanActive(viewer)) return '🟢 Actif';
+    if(viewer.banned_until) return `🔴 Banni jusqu’au ${formatDate(viewer.banned_until)}`;
+    return `🔴 Banni définitivement depuis ${formatDate(viewer.banned_at)}`;
+  }
+
+  function canUnbanViewer(viewer={}){
+    if(!isBanActive(viewer)) return false;
+    if(!isAdminRole(getCurrentRole())) return false;
+    const permission = banPermission(viewer);
+    return permission.allowed;
+  }
+
+  function computeBanDates(duration='1h'){
+    const now = new Date();
+    const until = new Date(now.getTime());
+    if(duration === '24h') until.setHours(until.getHours() + 24);
+    else if(duration === '7d') until.setDate(until.getDate() + 7);
+    else if(duration === 'permanent') return {banned_at: now.toISOString(), banned_until: null};
+    else until.setHours(until.getHours() + 1);
+    return {banned_at: now.toISOString(), banned_until: until.toISOString()};
+  }
+
+  function banDurationLabel(duration='1h'){
+    if(duration === '24h') return '24 heures';
+    if(duration === '7d') return '7 jours';
+    if(duration === 'permanent') return 'définitivement';
+    return '1 heure';
   }
 
   function banPermission(viewer){
@@ -902,7 +986,7 @@
   }
 
   function statusLabel(viewer){
-    if(viewer?.banned_at) return `🔴 Banni depuis ${formatDate(viewer.banned_at)}`;
+    if(isBanActive(viewer)) return banStatusLabel(viewer);
     return '🟢 Actif';
   }
 

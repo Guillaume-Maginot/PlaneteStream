@@ -548,6 +548,11 @@ async function addReview(slug, viewer, rating, text, parentId=null){
     return false;
   }
 
+  if(isViewerCurrentlyBanned(officialViewer)){
+    setStatus(banActionMessage(officialViewer), 'error');
+    return false;
+  }
+
   currentViewer = officialViewer;
   renderViewerBox();
 
@@ -602,7 +607,7 @@ async function fetchViewersMap(ids){
   const cleanIds = ids.filter(id => /^[0-9a-f-]{36}$/i.test(String(id)));
   if(!cleanIds.length) return new Map();
 
-  const result = await supabaseSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,badge,created_at,last_seen,role`);
+  const result = await supabaseSelect('viewers', `id=in.(${cleanIds.join(',')})&select=id,pseudo,avatar,badge,created_at,last_seen,role,banned_at,banned_until,ban_reason,banned_by`);
   if(!result.ok) return new Map();
 
   return new Map((result.data || []).map(viewer => [viewer.id, viewer]));
@@ -649,6 +654,11 @@ async function saveQuickRating(slug, viewer, rating){
 
   if(!authUserId || !officialViewer?.id){
     showAuthRequiredNotice();
+    return false;
+  }
+
+  if(isViewerCurrentlyBanned(officialViewer)){
+    setStatus(banActionMessage(officialViewer), 'error');
     return false;
   }
 
@@ -830,6 +840,12 @@ async function recordAndFetchMovieViews(slug){
 async function ensureViewer({silent=false}={}){
   const viewer = await getAuthenticatedViewerForPage();
   if(viewer?.id){
+    if(isViewerCurrentlyBanned(viewer)){
+      currentViewer = viewer;
+      renderViewerBox();
+      if(!silent) setStatus(banActionMessage(viewer), 'error');
+      return null;
+    }
     currentViewer = viewer;
     renderViewerBox();
     return viewer;
@@ -849,6 +865,13 @@ async function ensureViewerForComment(){
   if(!viewer?.id){
     setStatus('Connexion requise : ouvre la page Compte puis reconnecte-toi.', 'error');
     showAuthRequiredNotice();
+    return null;
+  }
+
+  if(isViewerCurrentlyBanned(viewer)){
+    currentViewer = viewer;
+    renderViewerBox();
+    setStatus(banActionMessage(viewer), 'error');
     return null;
   }
 
@@ -1013,7 +1036,7 @@ function renderViewerBox(){
           ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(viewer) || viewer.avatar || 'orbiteur', 'viewer-avatar')}
           <div>
             <strong>${escapeHtml(viewer.pseudo)}</strong>
-            <small id="viewCountLabel">Audience connectée</small>
+            <small id="viewCountLabel">${isViewerCurrentlyBanned(viewer) ? escapeHtml(banShortLabel(viewer)) : 'Audience connectée'}</small>
             <p id="moodLine">${getMoodLine(currentItem || {}, currentComments)}</p>
           </div>
         </div>
@@ -1035,14 +1058,36 @@ function renderViewerBox(){
 
   if(helpText){
     helpText.textContent = viewer?.pseudo
-      ? isAutoViewer(viewer)
-        ? 'Compte temporaire : crée un compte sécurisé pour publier.'
-        : `Tu es connecté en tant que ${viewer.pseudo}.`
+      ? isViewerCurrentlyBanned(viewer)
+        ? banActionMessage(viewer)
+        : isAutoViewer(viewer)
+          ? 'Compte temporaire : crée un compte sécurisé pour publier.'
+          : `Tu es connecté en tant que ${viewer.pseudo}.`
       : 'Pour publier, connecte-toi ou crée un compte sécurisé.';
   }
 
 }
 
+
+
+function isViewerCurrentlyBanned(viewer={}){
+  if(window.PSAuth?.isBanActive) return PSAuth.isBanActive(viewer);
+  if(!viewer?.banned_at) return false;
+  if(!viewer.banned_until) return true;
+  return new Date(viewer.banned_until).getTime() > Date.now();
+}
+
+function banShortLabel(viewer={}){
+  if(!isViewerCurrentlyBanned(viewer)) return '';
+  if(viewer.banned_until) return `Banni jusqu’au ${new Date(viewer.banned_until).toLocaleString('fr-FR')}`;
+  return 'Banni définitivement';
+}
+
+function banActionMessage(viewer={}){
+  if(!isViewerCurrentlyBanned(viewer)) return '';
+  const reason = viewer.ban_reason ? ` Motif : ${viewer.ban_reason}.` : '';
+  return `${banShortLabel(viewer)}. Les actions communautaires sont temporairement verrouillées.${reason}`;
+}
 
 function getCurrentAuthUserId(){
   return window.PS?.state?.user?.id || window.PS?.getState?.()?.user?.id || null;
@@ -1065,7 +1110,7 @@ function isModerationViewer(viewer={}){
 function canReportComment(comment){
   // Le signalement est ouvert à tous les Planétiens connectés.
   // Les invités voient les critiques, mais doivent se connecter pour signaler.
-  return Boolean(comment?.id && currentViewer?.id);
+  return Boolean(comment?.id && currentViewer?.id && !isViewerCurrentlyBanned(currentViewer));
 }
 
 
@@ -1406,7 +1451,7 @@ async function openMiniProfile(viewerId){
 
 async function fetchSingleViewer(viewerId){
   if(!viewerId || !/^[0-9a-f-]{36}$/i.test(String(viewerId))) return null;
-  const result = await supabaseSelect('viewers', `id=eq.${encodeURIComponent(viewerId)}&select=id,pseudo,avatar,badge,created_at,last_seen,role&limit=1`);
+  const result = await supabaseSelect('viewers', `id=eq.${encodeURIComponent(viewerId)}&select=id,pseudo,avatar,badge,created_at,last_seen,role,banned_at,banned_until,ban_reason,banned_by&limit=1`);
   if(!result.ok) return null;
   const row = Array.isArray(result.data) ? result.data[0] : null;
   return row ? normalizeViewer(row) : null;
@@ -1865,6 +1910,8 @@ function normalizeComments(rows, viewerMap=new Map(), likeCounts=new Map()){
       badge: String(viewer?.badge || 'none').toLowerCase(),
       role: viewer?.role || 'viewer',
       viewer_created_at: viewer?.created_at || null,
+      viewer_banned_at: viewer?.banned_at || null,
+      viewer_banned_until: viewer?.banned_until || null,
       rating: row.rating === null || row.rating === undefined ? null : Number(row.rating) || 0,
       text: row.comment || '',
       date: row.created_at,

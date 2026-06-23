@@ -283,7 +283,7 @@ const PS_AUTH_CONFIG = {
 
   async function fetchViewerByAuth(authUserId){
     if(!authUserId) return null;
-    const result = await restSelect('viewers', `auth_user_id=eq.${encodeURIComponent(authUserId)}&select=id,auth_user_id,pseudo,avatar,role,badge,created_at,last_seen&limit=1`, {auth:true});
+    const result = await restSelect('viewers', `auth_user_id=eq.${encodeURIComponent(authUserId)}&select=id,auth_user_id,pseudo,avatar,role,badge,created_at,last_seen,banned_at,banned_until,ban_reason,banned_by&limit=1`, {auth:true});
     return result.ok && Array.isArray(result.data) ? result.data[0] : null;
   }
 
@@ -475,6 +475,10 @@ const PS_AUTH_CONFIG = {
       badge:String(row.badge || 'none').toLowerCase(),
       created_at:row.created_at || null,
       last_seen:row.last_seen || null,
+      banned_at:row.banned_at || null,
+      banned_until:row.banned_until || null,
+      ban_reason:row.ban_reason || '',
+      banned_by:row.banned_by || null,
       authenticated:Boolean(row.auth_user_id || state.user?.id)
     };
 
@@ -486,6 +490,21 @@ const PS_AUTH_CONFIG = {
     }
 
     return viewer;
+  }
+
+
+  function isBanActive(viewer={}){
+    if(!viewer?.banned_at) return false;
+    if(!viewer.banned_until) return true;
+    return new Date(viewer.banned_until).getTime() > Date.now();
+  }
+
+  function banLabel(viewer={}){
+    if(!isBanActive(viewer)) return '';
+    if(viewer.banned_until){
+      return `Banni temporairement jusqu’au ${new Date(viewer.banned_until).toLocaleString('fr-FR')}`;
+    }
+    return 'Banni définitivement';
   }
 
   function cleanPseudo(value=''){
@@ -939,6 +958,8 @@ const PS_AUTH_CONFIG = {
     getState:() => snapshot(),
     refreshAuthState,
     requireAuthenticatedViewer,
+    isBanActive,
+    banLabel,
     signUp,
     signIn,
     signOut,
@@ -995,6 +1016,8 @@ const PS_AUTH_CONFIG = {
     refreshSession,
     getVerifiedSession:() => refreshAuthState({force:true}).then(s => s.session),
     requireAuthenticatedViewer,
+    isBanActive,
+    banLabel,
     loadViewer,
     saveViewer,
     clearLocal:clearSession,

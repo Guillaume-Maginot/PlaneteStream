@@ -652,7 +652,8 @@
       margin-top:12px;
     }
 
-    .community-action-row select{
+    .community-action-row select,
+    .community-action-row input{
       width:100%;
       border:1px solid rgba(255,255,255,.12);
       border-radius:12px;
@@ -661,6 +662,20 @@
       padding:12px 13px;
       outline:none;
       font:inherit;
+    }
+
+
+
+    .community-ban-grid{
+      grid-template-columns:160px minmax(0,1fr) auto;
+      align-items:end;
+    }
+
+    .community-mini-label{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:6px;
     }
 
     .community-action-row p{
@@ -780,6 +795,7 @@
       .admin-placeholder-grid{grid-template-columns:1fr}
       .community-dashboard{grid-template-columns:repeat(2, minmax(0,1fr))}
       .community-stage{grid-template-columns:1fr}
+      .community-ban-grid{grid-template-columns:1fr}
     }
   </style>
 </head>

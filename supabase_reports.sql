@@ -121,3 +121,109 @@ create policy "notifications_update_staff_reports"
     public.ps_is_staff()
     and type = 'report'
   );
+
+-- Planète Stream · Bannissements temporaires
+-- À relancer dans Supabase pour ajouter les durées de ban et autoriser les modos à poser un ban temporaire.
+
+alter table public.viewers
+  add column if not exists banned_until timestamptz,
+  add column if not exists ban_reason text,
+  add column if not exists banned_by uuid references public.viewers(id) on delete set null;
+
+create index if not exists viewers_ban_active_idx
+  on public.viewers(banned_at, banned_until);
+
+create or replace function public.ps_current_staff_role()
+returns text
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select case
+    when exists (
+      select 1 from public.viewers v
+      where v.auth_user_id = auth.uid()
+        and (
+          lower(coalesce(v.role,'')) in ('admin','founder','fondateur','architecte')
+          or lower(coalesce(v.badge,'')) in ('founder','fondateur','architecte')
+        )
+    ) then 'admin'
+    when exists (
+      select 1 from public.viewers v
+      where v.auth_user_id = auth.uid()
+        and (
+          lower(coalesce(v.role,'')) in ('moderator','moderateur')
+          or lower(coalesce(v.badge,'')) in ('moderator','moderateur')
+        )
+    ) then 'moderator'
+    else 'viewer'
+  end;
+$$;
+
+create or replace function public.ps_current_viewer_id()
+returns uuid
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select v.id
+  from public.viewers v
+  where v.auth_user_id = auth.uid()
+  limit 1;
+$$;
+
+create or replace function public.ps_viewer_is_active(viewer_uuid uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select not exists (
+    select 1
+    from public.viewers v
+    where v.id = viewer_uuid
+      and v.banned_at is not null
+      and (v.banned_until is null or v.banned_until > now())
+  );
+$$;
+
+-- Les membres bannis ne doivent plus pouvoir poster tant que le ban est actif.
+-- Ces policies complètent l'existant : si tes policies portent d'autres noms, elles restent en place.
+drop policy if exists "comments_insert_active_viewer" on public.comments;
+create policy "comments_insert_active_viewer"
+  on public.comments
+  for insert
+  to authenticated
+  with check (
+    public.ps_viewer_is_active(viewer_uuid)
+  );
+
+-- Autorise les modérateurs à poser uniquement des bans temporaires sur des viewers simples.
+-- Fondateurs / Architecte gardent le permanent et le déban.
+drop policy if exists "viewers_update_staff_bans" on public.viewers;
+create policy "viewers_update_staff_bans"
+  on public.viewers
+  for update
+  to authenticated
+  using (
+    public.ps_current_staff_role() in ('admin','moderator')
+    and id <> public.ps_current_viewer_id()
+    and lower(coalesce(role,'')) not in ('admin','founder','fondateur','architecte')
+    and lower(coalesce(badge,'')) not in ('founder','fondateur','architecte')
+    and not (
+      public.ps_current_staff_role() = 'moderator'
+      and lower(coalesce(role,'')) in ('moderator','moderateur')
+    )
+  )
+  with check (
+    public.ps_current_staff_role() = 'admin'
+    or (
+      public.ps_current_staff_role() = 'moderator'
+      and banned_at is not null
+      and banned_until is not null
+      and banned_until <= now() + interval '7 days 5 minutes'
+    )
+  );
