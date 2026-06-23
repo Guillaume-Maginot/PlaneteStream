@@ -4781,7 +4781,7 @@ section{margin:24px 0 34px}
   100%{transform:scale(1) translateY(0)}
 }
 
-/* Reprise de lecture des critiques */
+/* Nouveautés des critiques */
 .new-comments-divider{
   display:flex;
   align-items:center;
@@ -4818,10 +4818,12 @@ section{margin:24px 0 34px}
 .comment-card.is-unread-thread .comment-head::after{
   content:"Nouveau";
   margin-left:auto;
-  padding:4px 8px;
+  padding:4px 9px;
   border-radius:999px;
-  background:linear-gradient(135deg, rgba(139,44,255,.35), rgba(255,77,225,.25));
-  color:#fff;
+  border:1px solid rgba(112,255,190,.35);
+  background:linear-gradient(135deg, rgba(43,255,168,.24), rgba(91,255,211,.12));
+  color:#dfffea;
+  box-shadow:0 0 18px rgba(43,255,168,.14);
   font-size:.68rem;
   font-weight:900;
   text-transform:uppercase;

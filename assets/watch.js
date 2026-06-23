@@ -2090,24 +2090,24 @@ function renderComments(comments){
     }))
     .sort((a,b) => sortTopLevelComments(a,b));
 
-  let newDividerPrinted = false;
-  const hasUnread = commentSortMode === 'recent' && commentReadCutoff > 0 && topLevel.some(comment => isUnreadThread(comment));
+  const showUnreadMarkers = commentSortMode === 'recent' && commentReadCutoff > 0;
+  const unreadByIndex = topLevel.map(comment => showUnreadMarkers && isUnreadThread(comment));
+  const lastUnreadIndex = unreadByIndex.lastIndexOf(true);
 
   return topLevel.map((comment, index) => {
     const threadTone = index % 2 === 0 ? 'light' : 'dark';
-    const unread = isUnreadThread(comment);
-    const divider = hasUnread && unread && !newDividerPrinted
-      ? (newDividerPrinted = true, renderNewCommentsDivider())
-      : '';
-    return divider + renderCommentCard(comment, repliesByParent, commentsById, 0, null, {threadTone, unread});
+    const unread = Boolean(unreadByIndex[index]);
+    const card = renderCommentCard(comment, repliesByParent, commentsById, 0, null, {threadTone, unread});
+    const divider = index === lastUnreadIndex ? renderNewCommentsDivider() : '';
+    return card + divider;
   }).join('');
 }
 
 
 function renderNewCommentsDivider(){
   return `
-    <div class="new-comments-divider" role="separator" aria-label="Nouvelles critiques depuis votre dernière visite">
-      <span>🍿 Nouvelles critiques depuis votre dernière visite</span>
+    <div class="new-comments-divider" role="separator" aria-label="Vous avez rattrapé les nouveautés">
+      <span>🍿 Vous avez rattrapé les nouveautés</span>
     </div>
   `;
 }
