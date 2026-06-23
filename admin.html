@@ -240,13 +240,16 @@
       opacity:1;
     }
     .catalogue-editor-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.75fr);gap:18px;margin-top:18px}
-    .catalogue-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) 150px 170px;gap:10px;margin-bottom:14px}
+    .catalogue-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto auto 210px;gap:10px;margin-bottom:14px}
     .catalogue-toolbar input,.catalogue-toolbar select{min-width:0;width:100%;border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;background:#10111f;padding:12px 13px;outline:none;font:inherit;box-shadow:inset 0 0 0 1px rgba(195,77,255,.04)}
+    .catalogue-filter-btn{min-height:48px;padding:12px 16px;border-radius:12px;font-weight:900;white-space:nowrap}.catalogue-filter-btn.is-active{border-color:rgba(195,77,255,.75);background:linear-gradient(135deg,rgba(139,44,255,.38),rgba(195,77,255,.22));box-shadow:0 0 20px rgba(195,77,255,.18)}
     .catalogue-toolbar input:focus,.catalogue-toolbar select:focus{border-color:rgba(195,77,255,.58);box-shadow:0 0 22px rgba(139,44,255,.18)}
+    @media(max-width:920px){.catalogue-toolbar{grid-template-columns:1fr}.catalogue-filter-btn{width:100%}}
     .catalogue-list{display:grid;gap:12px;max-height:520px;overflow:auto;padding-right:8px;scrollbar-color:rgba(195,77,255,.55) rgba(255,255,255,.06)}
     .catalogue-item{display:grid;grid-template-columns:54px minmax(0,1fr) minmax(188px,auto);gap:12px;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(139,44,255,.045));padding:10px;box-shadow:0 12px 30px rgba(0,0,0,.20)}
     .catalogue-item:hover{border-color:rgba(195,77,255,.28);background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(139,44,255,.075))}
     .catalogue-item img,.catalogue-thumb{width:54px;height:78px;border-radius:9px;object-fit:cover;background:#171827;display:grid;place-items:center;color:var(--muted);font-size:10px;text-align:center;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+    .catalogue-missing-badge{display:inline-flex;align-items:center;margin-left:8px;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,190,90,.38);background:rgba(255,171,64,.12);color:#ffd18a;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;vertical-align:middle}
     .catalogue-item h3{font-size:14px;margin:0 0 4px;line-height:1.25}.catalogue-item p{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
 
     .catalogue-item.is-missing-embed{border-color:rgba(255,190,87,.42);box-shadow:0 0 0 1px rgba(255,190,87,.12),0 14px 34px rgba(0,0,0,.24)}
@@ -1598,15 +1601,10 @@
 
       <div class="catalogue-editor-grid">
         <div>
-          <div class="catalogue-toolbar">
+          <div class="catalogue-toolbar catalogue-toolbar-embed">
             <input id="catalogueSearch" type="search" placeholder="Rechercher dans le catalogue…">
-            <select id="catalogueTypeFilter">
-              <option value="all">Tous</option>
-              <option value="missing-embed">Sans embed</option>
-              <option value="with-embed">Avec embed</option>
-              <option value="movie">Films</option>
-              <option value="tv">Séries</option>
-            </select>
+            <button class="ghost catalogue-filter-btn is-active" id="showAllEmbedsBtn" type="button">Tous les contenus</button>
+            <button class="ghost catalogue-filter-btn" id="showMissingEmbedsBtn" type="button">Sans embed</button>
             <select id="catalogueSort">
               <option value="missing-first">Embeds manquants d’abord</option>
               <option value="recent">Ajout récent</option>
@@ -1815,7 +1813,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.0.7-embed-filter-fix"></script>
+  <script src="assets/admin.js?v=3.0.8-embed-buttons"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>
