@@ -21,13 +21,19 @@ function initAccount(){
     const pseudo = document.querySelector('#createPseudo')?.value.trim();
     const password = document.querySelector('#createPassword')?.value;
     const avatar = createAvatarInput?.value || PSAuth.pickAvatar(pseudo);
+    const turnstileToken = document.querySelector('input[name="cf-turnstile-response"]')?.value;
 
     if(!validateEmail(email) || !validatePseudo(pseudo) || !validatePassword(password)) return;
+    if(!turnstileToken){
+      setStatus('Valide la vérification humaine avant de créer le compte.', 'error');
+      return;
+    }
 
-    setStatus('Création du compte sécurisé...', 'pending');
-    const result = await PSAuth.signUp({email, password, pseudo, avatar});
+    setStatus('Vérification humaine puis création du compte...', 'pending');
+    const result = await PSAuth.signUp({email, password, pseudo, avatar, turnstileToken});
 
     if(!result.ok){
+      if(window.turnstile) window.turnstile.reset();
       setStatus(result.message || 'Impossible de créer le compte.', 'error');
       return;
     }
@@ -39,6 +45,7 @@ function initAccount(){
     }
 
     createForm.reset();
+    if(window.turnstile) window.turnstile.reset();
     if(createAvatarInput) createAvatarInput.value = 'orbiteur';
     renderAvatarGallery(createAvatarGallery, createAvatarInput, 'orbiteur');
     renderCurrentViewer();

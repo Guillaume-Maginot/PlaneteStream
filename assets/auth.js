@@ -381,7 +381,7 @@ const PS_AUTH_CONFIG = {
     return snapshot();
   }
 
-  async function signUp({email, password, pseudo, avatar}){
+  async function signUp({email, password, pseudo, avatar, turnstileToken}){
     if(!enabled()) return {ok:false, message:'Supabase est indisponible.'};
 
     const wantedPseudo = cleanPseudo(pseudo);
@@ -389,27 +389,33 @@ const PS_AUTH_CONFIG = {
       return {ok:false, message:'Pseudo invalide : 2 à 32 caractères, lettres, chiffres, espaces, tirets et underscores uniquement.'};
     }
 
+    if(!turnstileToken){
+      return {ok:false, message:'Vérification humaine manquante.'};
+    }
+
     const alreadyTaken = await fetchViewerByPseudo(wantedPseudo);
     if(alreadyTaken){
       return {ok:false, message:`Le pseudo « ${wantedPseudo} » est déjà utilisé.`};
     }
 
-    const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/signup`, {
+    const response = await fetch('/.netlify/functions/signup-with-turnstile', {
       method:'POST',
-      headers:{...anonHeaders(), 'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
         email,
         password,
-        data:{pseudo:wantedPseudo, avatar:normalizeAvatar(avatar, wantedPseudo)}
+        pseudo:wantedPseudo,
+        avatar:normalizeAvatar(avatar, wantedPseudo),
+        turnstileToken
       })
     });
     const data = await response.json().catch(() => null);
-    if(!response.ok) return {ok:false, message:authErrorMessage(data)};
+    if(!response.ok || !data?.ok) return {ok:false, message:data?.message || 'Impossible de créer le compte.'};
 
     localStorage.setItem(pendingKey, JSON.stringify({email, pseudo:wantedPseudo, avatar:normalizeAvatar(avatar, wantedPseudo)}));
 
-    if(data?.access_token){
-      persistSession(data);
+    if(data?.session?.access_token){
+      persistSession(data.session);
       await refreshAuthState({force:true});
       return {ok:true, session:state.session, viewer:state.viewer, needsEmailConfirmation:false};
     }

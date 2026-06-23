@@ -67,6 +67,17 @@
           <label>Avatar</label>
           <input id="createAvatar" type="hidden" value="orbiteur">
           <div id="createAvatarGallery" class="avatar-gallery" aria-label="Choisir un avatar"></div>
+
+          <label class="turnstile-label">Vérification humaine</label>
+          <div class="turnstile-shell">
+            <div
+              class="cf-turnstile"
+              data-sitekey="0x4AAAAAADprQdZ90JtO5JbZ"
+              data-theme="dark"
+              data-size="flexible">
+            </div>
+          </div>
+
           <button class="primary" type="submit">Créer mon compte</button>
         </form>
       </article>
@@ -97,6 +108,7 @@
     <p class="account-status" id="accountStatus" role="status"></p>
   </main>
 
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
   <script src="assets/account.js?v=3.0.4-architecte"></script>
