@@ -103,3 +103,21 @@ create policy "comments_select_public"
   for select
   to anon, authenticated
   using (true);
+
+
+-- Synchronisation des alertes de modération : quand un signalement est traité
+-- par un membre de l'équipe, les notifications associées peuvent être marquées
+-- comme lues pour toute l'équipe afin d'éviter les alertes fantômes.
+drop policy if exists "notifications_update_staff_reports" on public.notifications;
+create policy "notifications_update_staff_reports"
+  on public.notifications
+  for update
+  to authenticated
+  using (
+    public.ps_is_staff()
+    and type = 'report'
+  )
+  with check (
+    public.ps_is_staff()
+    and type = 'report'
+  );

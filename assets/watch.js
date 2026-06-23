@@ -14,7 +14,8 @@ const dbTables = {
   movie_favorites: null,
   viewer_history: null,
   movie_ratings: null,
-  reports: null
+  reports: null,
+  notifications: null
 };
 
 let currentItem = null;
@@ -1302,11 +1303,32 @@ async function deleteComment(commentId){
     if(isMainReview){
       await deleteIndependentRatingForComment(comment);
     }
+    await closeReportsAndAlertsForComment(comment.id);
     setStatus('Critique supprimée. Le balai cosmique a fait son œuvre.', 'ok');
     await refreshCommunity(currentItem);
   }else{
     setStatus('Suppression refusée. Vérifie les policies DELETE de comments.', 'error');
   }
+}
+
+
+async function closeReportsAndAlertsForComment(commentId){
+  if(!commentId) return false;
+  const viewer = await getAuthenticatedViewerForPage();
+  const now = new Date().toISOString();
+
+  // Quand un modérateur supprime directement un message signalé depuis la page film,
+  // on clôt aussi les signalements et les alertes associées chez toute l'équipe.
+  await supabaseUpdate('reports', `target_type=eq.comment&target_id=eq.${encodeURIComponent(commentId)}&status=eq.new`, {
+    status:'reviewed',
+    handled_by: viewer?.id || null,
+    handled_at: now
+  });
+
+  await supabaseUpdate('notifications', `type=eq.report&comment_id=eq.${encodeURIComponent(commentId)}&read_at=is.null`, {read_at:now});
+  await supabaseUpdate('notifications', `type=eq.report&parent_comment_id=eq.${encodeURIComponent(commentId)}&read_at=is.null`, {read_at:now});
+  await window.PS?.refreshNotificationsCount?.();
+  return true;
 }
 
 async function deleteIndependentRatingForComment(comment){
@@ -1790,7 +1812,8 @@ async function resolveTable(kind){
     movie_favorites: ['movie_favorites'],
     viewer_history: ['viewer_history'],
     movie_ratings: ['movie_ratings', 'ratings'],
-    reports: ['reports']
+    reports: ['reports'],
+    notifications: ['notifications']
   };
 
   const candidates = candidatesByKind[kind] || [kind];

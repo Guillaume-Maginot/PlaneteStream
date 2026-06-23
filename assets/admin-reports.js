@@ -1,6 +1,6 @@
 /* Planète Stream · Signalements communauté */
 (function initAdminReports(){
-  const state = {loaded:false, loading:false, reports:[], comments:new Map(), viewers:new Map(), notice:''};
+  const state = {loaded:false, loading:false, reports:[], comments:new Map(), viewers:new Map(), notice:'', activeHandlers:new Map()};
   const els = {
     module: document.querySelector('[data-admin-module="signalements"]'),
     list: document.querySelector('#reportsList'),
@@ -109,6 +109,7 @@
           ${field('Auteur du message', author?.pseudo || comment?.display_name || 'Auteur inconnu')}
           ${field('Film / contenu', comment?.movie_id || report.movie_id || 'Non renseigné')}
           ${field('Type', report.target_type || 'comment')}
+          ${report.handled_by ? field(status === 'new' ? 'Pris en charge par' : 'Traité par', state.viewers.get(String(report.handled_by))?.pseudo || 'Équipe') : ''}
         </div>
         <blockquote>${escapeHtml(shorten(text, 260))}</blockquote>
         <div class="report-actions">
@@ -133,7 +134,9 @@
       alert('Impossible de mettre à jour le signalement. Vérifie les droits RLS.');
       return;
     }
-    await markRelatedReportNotificationsRead();
+    const report = state.reports.find(r => String(r.id) === String(id));
+    await resolveRelatedReportNotifications(report);
+    await ps.refreshNotificationsCount?.();
     await loadReports(true);
   }
 
@@ -154,12 +157,29 @@
     await updateReportStatus(reportId, 'reviewed');
   }
 
-  async function markRelatedReportNotificationsRead(){
+  async function resolveRelatedReportNotifications(report){
     const ps = getPS();
-    const viewer = ps.state?.viewer || ps.getState?.()?.viewer || null;
-    if(!viewer?.id) return;
-    await ps.restWrite('notifications', 'PATCH', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&type=eq.report&read_at=is.null`, {read_at:new Date().toISOString()}, {auth:true, prefer:'return=minimal'});
-    await ps.refreshNotificationsCount?.();
+    const now = new Date().toISOString();
+    const filters = [];
+    if(report?.target_id) filters.push(`comment_id=eq.${encodeURIComponent(report.target_id)}`);
+    if(report?.target_id) filters.push(`parent_comment_id=eq.${encodeURIComponent(report.target_id)}`);
+
+    if(filters.length){
+      await Promise.all(filters.map(filter => ps.restWrite(
+        'notifications',
+        'PATCH',
+        `type=eq.report&${filter}&read_at=is.null`,
+        {read_at:now},
+        {auth:true, prefer:'return=minimal'}
+      )));
+    }else{
+      // Filet de sécurité : si l'ancien signalement n'a pas de cible exploitable,
+      // on ne nettoie que les alertes du modérateur courant.
+      const viewer = ps.state?.viewer || ps.getState?.()?.viewer || null;
+      if(viewer?.id){
+        await ps.restWrite('notifications', 'PATCH', `recipient_viewer_id=eq.${encodeURIComponent(viewer.id)}&type=eq.report&read_at=is.null`, {read_at:now}, {auth:true, prefer:'return=minimal'});
+      }
+    }
   }
 
   function renderMessage(message){
