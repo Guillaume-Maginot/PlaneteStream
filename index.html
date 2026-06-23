@@ -156,7 +156,33 @@
       <section id="latestSection"><div class="section-head"><h2 class="section-title">Derniers ajouts</h2><p>Les nouveautés fraîchement posées sur l'étagère.</p></div><div class="grid rail" id="latestGrid"></div></section>
       <section id="topRatedSection"><div class="section-head"><h2 class="section-title">Les mieux notés</h2><p>Le haut du panier, sans panier percé.</p></div><div class="grid rail" id="topRatedGrid"></div></section>
       <section id="recentYearsSection"><div class="section-head"><h2 class="section-title">Récents et populaires</h2><p>Les titres qui gardent encore la peinture fraîche.</p></div><div class="grid rail" id="recentYearsGrid"></div></section>
-      <section><div class="section-head"><h2 class="section-title">Catalogue complet</h2><p id="countLabel"></p></div><div class="grid" id="catalogueGrid"></div></section>
+      <section id="catalogueFullSection" class="catalogue-full-section">
+        <div class="section-head catalogue-head">
+          <div>
+            <h2 class="section-title">Catalogue complet</h2>
+            <p id="countLabel"></p>
+          </div>
+          <div class="catalogue-tools" aria-label="Options du catalogue">
+            <label>Par page
+              <select id="cataloguePageSize" class="catalogue-page-size">
+                <option value="auto">Auto</option>
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="36">36</option>
+                <option value="48">48</option>
+              </select>
+            </label>
+            <form id="catalogueGotoForm" class="catalogue-goto">
+              <label for="catalogueGotoInput">Aller page</label>
+              <input id="catalogueGotoInput" type="number" min="1" value="1" inputmode="numeric">
+              <button type="submit">Go</button>
+            </form>
+          </div>
+        </div>
+        <nav class="pagination pagination-top" data-pagination aria-label="Pagination du catalogue"></nav>
+        <div class="grid" id="catalogueGrid"></div>
+        <nav class="pagination pagination-bottom" data-pagination aria-label="Pagination du catalogue"></nav>
+      </section>
 
 
       <aside class="cta discord-cta" id="communaute">
