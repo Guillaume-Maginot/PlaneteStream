@@ -1005,6 +1005,132 @@
 
     .admin-list-line small{color:var(--muted);font-size:12px}
 
+
+
+    .command-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(320px,.85fr);
+      gap:18px;
+      margin-top:18px;
+      align-items:start;
+    }
+
+    .activity-feed{
+      display:grid;
+      gap:10px;
+    }
+
+    .activity-item{
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr) auto;
+      gap:12px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      background:linear-gradient(135deg, rgba(255,255,255,.04), rgba(139,44,255,.045));
+      padding:13px 14px;
+    }
+
+    .activity-icon{
+      width:38px;
+      height:38px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(195,77,255,.22);
+      border-radius:14px;
+      background:rgba(139,44,255,.12);
+      filter:drop-shadow(0 0 10px rgba(139,44,255,.20));
+    }
+
+    .activity-main strong{
+      display:block;
+      color:#fff;
+      font-size:14px;
+      line-height:1.35;
+    }
+
+    .activity-main span{
+      display:block;
+      margin-top:3px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .activity-time{
+      color:var(--muted);
+      font-size:11px;
+      white-space:nowrap;
+    }
+
+    .quick-actions{
+      display:grid;
+      gap:10px;
+    }
+
+    .quick-action{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:15px;
+      background:rgba(255,255,255,.035);
+      color:#fff;
+      padding:13px 14px;
+      font:inherit;
+      font-weight:850;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .quick-action:hover{
+      border-color:rgba(195,77,255,.42);
+      background:rgba(139,44,255,.13);
+      transform:translateY(-1px);
+      box-shadow:0 0 24px rgba(139,44,255,.12);
+    }
+
+    .quick-action small{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .since-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .since-card{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:15px;
+      background:rgba(255,255,255,.035);
+      padding:13px;
+    }
+
+    .since-card span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .since-card strong{
+      display:block;
+      color:#fff;
+      font-size:28px;
+      line-height:1;
+    }
+
     .admin-setting-list{
       display:grid;
       gap:12px;
@@ -1065,6 +1191,8 @@
       .community-ban-grid{grid-template-columns:1fr}
       .admin-mini-grid{grid-template-columns:1fr}
       .admin-two-cols{grid-template-columns:1fr}
+      .command-grid{grid-template-columns:1fr}
+      .since-grid{grid-template-columns:1fr}
       .admin-setting-row{grid-template-columns:1fr}
     }
   </style>
@@ -1162,6 +1290,32 @@
                 <div class="system-line"><span>Catalogue local</span><b class="status-pill">Actif</b></div>
                 <div class="system-line"><span>Turnstile</span><b class="status-pill">Protégé</b></div>
                 <div class="system-line"><span>Hall du cinéma</span><b class="status-pill">Prêt</b></div>
+              </div>
+            </aside>
+          </div>
+
+          <div class="command-grid">
+            <section class="admin-box">
+              <h2>Activité récente</h2>
+              <p>Les dernières traces laissées dans la station : critiques, arrivées et alertes. Le cockpit commence à avoir des oreilles.</p>
+              <div class="activity-feed" id="adminActivityFeed">
+                <div class="admin-empty">Chargement de l’activité récente…</div>
+              </div>
+            </section>
+
+            <aside class="admin-box">
+              <h2>Accès rapides</h2>
+              <p>Des raccourcis pour éviter de traverser trois sas juste pour ouvrir le catalogue.</p>
+              <div class="quick-actions">
+                <button class="quick-action" type="button" data-admin-jump="catalogue"><span>📽 Ouvrir le catalogue</span><small>Gestion</small></button>
+                <button class="quick-action" type="button" data-admin-jump="communaute"><span>👥 Voir la communauté</span><small>Staff</small></button>
+                <button class="quick-action" type="button" data-admin-jump="signalements"><span>🚩 Traiter les signalements</span><small>Modération</small></button>
+                <button class="quick-action" type="button" data-admin-jump="stats"><span>📊 Lire les statistiques</span><small>Données</small></button>
+              </div>
+              <div class="since-grid" aria-label="Résumé depuis la dernière visite">
+                <div class="since-card"><span>Critiques</span><strong id="sinceComments">—</strong></div>
+                <div class="since-card"><span>Membres</span><strong id="sinceViewers">—</strong></div>
+                <div class="since-card"><span>Alertes</span><strong id="sinceReports">—</strong></div>
               </div>
             </aside>
           </div>
@@ -1511,6 +1665,87 @@
     }
 
 
+
+
+    async function hydrateAdminActivity(){
+      const feed = document.getElementById('adminActivityFeed');
+      const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+      const safe = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+      const lastVisitKey = 'planetestream.admin.lastVisit';
+      const previousVisit = localStorage.getItem(lastVisitKey) || new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const now = new Date().toISOString();
+
+      function timeAgo(value){
+        if(!value) return '—';
+        const date = new Date(value);
+        if(Number.isNaN(date.getTime())) return '—';
+        const diff = Math.max(0, Date.now() - date.getTime());
+        const min = Math.floor(diff / 60000);
+        if(min < 1) return 'à l’instant';
+        if(min < 60) return `${min} min`;
+        const hours = Math.floor(min / 60);
+        if(hours < 24) return `${hours} h`;
+        const days = Math.floor(hours / 24);
+        return `${days} j`;
+      }
+
+      function item(icon, title, subtitle, date){
+        return `<article class="activity-item"><span class="activity-icon">${icon}</span><span class="activity-main"><strong>${safe(title)}</strong><span>${safe(subtitle)}</span></span><small class="activity-time">${safe(timeAgo(date))}</small></article>`;
+      }
+
+      try{
+        await window.PS?.ready;
+        const ps = window.PS || window.PSAuth;
+        const supabase = window.PS?.supabase;
+        if(!supabase) throw new Error('Supabase indisponible');
+
+        const [comments, viewers, reports] = await Promise.allSettled([
+          supabase.from('comments').select('id,movie_id,display_name,comment,created_at').order('created_at', {ascending:false}).limit(5),
+          supabase.from('viewers').select('id,pseudo,created_at').order('created_at', {ascending:false}).limit(5),
+          supabase.from('reports').select('id,reason,status,created_at').order('created_at', {ascending:false}).limit(5)
+        ]);
+
+        const commentRows = comments.status === 'fulfilled' && !comments.value.error ? (comments.value.data || []) : [];
+        const viewerRows = viewers.status === 'fulfilled' && !viewers.value.error ? (viewers.value.data || []) : [];
+        const reportRows = reports.status === 'fulfilled' && !reports.value.error ? (reports.value.data || []) : [];
+
+        const recent = [
+          ...commentRows.map(row => ({type:'comment', date:row.created_at, html:item('💬', `${row.display_name || 'Un Planétien'} a publié une critique`, `${row.movie_id || 'Film'} · ${shorten(row.comment, 78)}`, row.created_at)})),
+          ...viewerRows.map(row => ({type:'viewer', date:row.created_at, html:item('👤', `${row.pseudo || 'Nouveau membre'} a rejoint la station`, 'Nouvelle arrivée dans l’orbite', row.created_at)})),
+          ...reportRows.map(row => ({type:'report', date:row.created_at, html:item('🚩', `Signalement ${String(row.status || 'new') === 'new' ? 'ouvert' : 'mis à jour'}`, row.reason || 'Motif non renseigné', row.created_at)}))
+        ].sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0)).slice(0,8);
+
+        if(feed){
+          feed.innerHTML = recent.length ? recent.map(entry => entry.html).join('') : '<div class="admin-empty">Aucune activité récente. La station flotte tranquillement, presque trop sagement.</div>';
+        }
+
+        const since = (rows) => rows.filter(row => row.created_at && new Date(row.created_at) > new Date(previousVisit)).length;
+        setText('sinceComments', since(commentRows));
+        setText('sinceViewers', since(viewerRows));
+        setText('sinceReports', since(reportRows));
+
+        const log = document.getElementById('captainLog');
+        if(log){
+          const previousText = new Date(previousVisit).toLocaleString('fr-FR', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
+          const extra = `<div class="captain-line"><span>Dernier passage enregistré : ${safe(previousText)}.</span><small>Mémoire</small></div>`;
+          log.insertAdjacentHTML('beforeend', extra);
+        }
+
+        localStorage.setItem(lastVisitKey, now);
+      }catch(error){
+        console.warn('Activité admin partielle', error);
+        if(feed) feed.innerHTML = '<div class="admin-empty">Activité récente indisponible pour le moment. Le radar fait semblant de dormir.</div>';
+        setText('sinceComments', '—');
+        setText('sinceViewers', '—');
+        setText('sinceReports', '—');
+      }
+
+      function shorten(text='', limit=80){
+        const clean = String(text || '').replace(/\s+/g, ' ').trim();
+        return clean.length > limit ? `${clean.slice(0, limit - 1)}…` : clean || 'Message sans texte';
+      }
+    }
+
     async function hydrateAdminStats(){
       const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
       const safe = (value) => String(value ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -1580,9 +1815,9 @@
     });
 
     if (document.body?.classList.contains('admin-locked')) {
-      window.addEventListener('ps:admin-access-granted', hydrateAdminDashboard, {once:true});
+      window.addEventListener('ps:admin-access-granted', async () => { await hydrateAdminDashboard(); hydrateAdminActivity(); }, {once:true});
     } else {
-      hydrateAdminDashboard();
+      hydrateAdminDashboard().then(hydrateAdminActivity);
     }
 
     (() => {
@@ -1604,6 +1839,10 @@
       }
 
       initAnnouncementPreview();
+
+      document.querySelectorAll('[data-admin-jump]').forEach((button) => {
+        button.addEventListener('click', () => showAdminModule(button.dataset.adminJump));
+      });
 
       tabs.forEach((tab) => {
         tab.addEventListener('click', () => showAdminModule(tab.dataset.adminTab));
