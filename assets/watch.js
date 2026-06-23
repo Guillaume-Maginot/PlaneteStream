@@ -2576,4 +2576,8 @@ function escapeHtml(str=''){
   return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 }
 
+function escapeAttr(str=''){
+  return escapeHtml(str);
+}
+
 initWatch();
