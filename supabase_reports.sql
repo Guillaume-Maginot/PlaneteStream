@@ -94,10 +94,12 @@ create policy "comments_delete_staff"
   to authenticated
   using (public.ps_is_staff());
 
--- Variante utile si ta table comments n'avait pas encore de policy SELECT publique/authentifiée.
+-- Lecture publique des critiques : les invités doivent voir les avis déjà publiés.
+-- Les actions restent réservées aux comptes connectés côté code/RLS.
 drop policy if exists "comments_select_authenticated" on public.comments;
-create policy "comments_select_authenticated"
+drop policy if exists "comments_select_public" on public.comments;
+create policy "comments_select_public"
   on public.comments
   for select
-  to authenticated
+  to anon, authenticated
   using (true);

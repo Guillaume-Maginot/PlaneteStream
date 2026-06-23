@@ -1062,7 +1062,9 @@ function isModerationViewer(viewer={}){
 }
 
 function canReportComment(comment){
-  return Boolean(comment?.id && currentViewer?.id && getCurrentAuthUserId());
+  // Le signalement est ouvert à tous les Planétiens connectés.
+  // Les invités voient les critiques, mais doivent se connecter pour signaler.
+  return Boolean(comment?.id && currentViewer?.id);
 }
 
 
