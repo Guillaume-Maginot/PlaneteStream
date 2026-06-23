@@ -6,7 +6,8 @@
     list: document.querySelector('#reportsList'),
     count: document.querySelector('#reportsCount'),
     open: document.querySelector('#reportsOpenCount'),
-    closed: document.querySelector('#reportsClosedCount')
+    closed: document.querySelector('#reportsClosedCount'),
+    clearHandled: document.querySelector('#reportsClearHandled')
   };
   if(!els.module || !els.list) return;
 
@@ -15,6 +16,8 @@
       if(tab.dataset.adminTab === 'signalements') loadReports(true);
     });
   });
+
+  els.clearHandled?.addEventListener('click', archiveClosedReports);
 
   els.list.addEventListener('click', async event => {
     const action = event.target.closest('[data-report-action]');
@@ -72,11 +75,12 @@
 
   function render(){
     const total = state.reports.length;
-    const open = state.reports.filter(r => String(r.status || 'new') === 'new').length;
+    const open = state.reports.filter(isOpenReport).length;
     const closed = total - open;
     setText(els.count, total);
     setText(els.open, open);
     setText(els.closed, closed);
+    updateArchiveButton(closed);
 
     if(!total){
       renderMessage('Aucun signalement pour le moment. Le peuple est calme, rangez les casques.');
@@ -86,12 +90,59 @@
     els.list.innerHTML = state.reports.map(report => renderReport(report)).join('');
   }
 
+
+  function normalizeReportStatus(status){
+    return String(status || 'new')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function isOpenReport(report){
+    const status = normalizeReportStatus(report?.status);
+    return ['new','open','opened','pending','nouveau','nouveaux','en_attente','attente'].includes(status);
+  }
+
+  function isClosedReport(report){
+    return !isOpenReport(report);
+  }
+
+  function updateArchiveButton(count){
+    if(!els.clearHandled) return;
+    els.clearHandled.disabled = count === 0;
+    els.clearHandled.textContent = count > 0
+      ? `📦 Archiver les ${count} dossiers clôturés`
+      : 'Aucun dossier clôturé à archiver';
+  }
+
+  async function archiveClosedReports(){
+    const closedReports = state.reports.filter(isClosedReport);
+    const ids = closedReports.map(report => report.id).filter(Boolean);
+    const count = ids.length;
+    if(!count){
+      updateArchiveButton(0);
+      return;
+    }
+    if(!window.confirm(`Archiver les ${count} dossiers clôturés ? Les signalements encore ouverts resteront visibles.`)) return;
+    const ps = getPS();
+    const idList = ids.map(id => encodeURIComponent(id)).join(',');
+    const result = await ps.restWrite('reports', 'DELETE', `id=in.(${idList})`, {}, {auth:true, prefer:'return=minimal'});
+    if(!result.ok){
+      alert('Archivage impossible. Vérifie la policy DELETE de la table reports.');
+      return;
+    }
+    const idSet = new Set(ids.map(String));
+    state.reports = state.reports.filter(report => !idSet.has(String(report.id)));
+    render();
+  }
+
   function renderReport(report){
     const comment = state.comments.get(String(report.target_id));
     const reporter = state.viewers.get(String(report.reporter_viewer_id));
     const author = comment?.viewer_uuid ? state.viewers.get(String(comment.viewer_uuid)) : null;
     const status = String(report.status || 'new');
-    const isOpen = status === 'new';
+    const isOpen = isOpenReport(report);
     const href = comment?.movie_id ? `watch.html?slug=${encodeURIComponent(comment.movie_id)}#comment-${encodeURIComponent(comment.id)}` : '#';
     const text = comment?.comment || 'Message supprimé ou introuvable';
     return `
@@ -191,7 +242,7 @@
   function setText(node, value){ if(node) node.textContent = String(value); }
   function field(label, value){ return `<div class="viewer-detail-field"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value || '—')}</strong></div>`; }
   function reasonLabel(reason){ return {spam:'Spam', insulte:'Insulte', spoiler:'Spoiler non signalé', inapproprie:'Contenu inapproprié', autre:'Autre'}[String(reason || '').toLowerCase()] || reason || 'Signalement'; }
-  function statusLabel(status){ return {new:'Nouveau', reviewed:'Traité', ignored:'Ignoré', closed:'Fermé'}[String(status || '').toLowerCase()] || status || 'Nouveau'; }
+  function statusLabel(status){ return {new:'Nouveau', open:'Nouveau', pending:'Nouveau', reviewed:'Traité', treated:'Traité', traite:'Traité', ignored:'Ignoré', closed:'Fermé'}[normalizeReportStatus(status)] || status || 'Nouveau'; }
   function shorten(text='', limit=180){ const clean = String(text || '').replace(/\s+/g, ' ').trim(); return clean.length > limit ? `${clean.slice(0, limit - 1)}…` : clean; }
   function formatDate(value){ if(!value) return 'date inconnue'; const d = new Date(value); return Number.isNaN(d.getTime()) ? 'date inconnue' : d.toLocaleString('fr-FR', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'}); }
   function escapeHtml(value=''){ return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
