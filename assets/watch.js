@@ -232,14 +232,16 @@ function renderVideo(item){
   }
 
   return `
-    <iframe
-      id="watchPlayer"
-      src="about:blank"
-      data-src="${escapeAttr(src)}"
-      title="Lecture ${escapeHtml(item.title)}"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-      allowfullscreen>
-    </iframe>
+    <div
+      class="watch-player-mount"
+      id="watchPlayerMount"
+      data-embed="${escapeAttr(embed)}"
+      data-src="${escapeAttr(src)}">
+      <div class="watch-player-placeholder">
+        <strong>Lecteur prêt</strong>
+        <p>Clique sur “Lancer la projection” pour charger le lecteur vidéo.</p>
+      </div>
+    </div>
   `;
 }
 
@@ -254,6 +256,45 @@ function extractEmbedSrc(embed){
   if(iframeSrc?.[1]) return iframeSrc[1].trim();
   if(/^https?:\/\//i.test(raw)) return raw;
   return '';
+}
+
+function buildPlayableEmbed(embed, src, title){
+  const raw = String(embed || '').trim();
+  const safeTitle = escapeAttr(`Lecture ${title || 'Planète Stream'}`);
+
+  if(/<iframe[\s>]/i.test(raw)){
+    let iframe = raw;
+
+    iframe = iframe.replace(/\swidth=["'][^"']*["']/i, '');
+    iframe = iframe.replace(/\sheight=["'][^"']*["']/i, '');
+    iframe = iframe.replace(/\sstyle=["'][^"']*["']/i, '');
+    iframe = iframe.replace(/\sallow=["'][^"']*["']/i, '');
+    iframe = iframe.replace(/\sallowfullscreen(?:=["'][^"']*["'])?/i, '');
+    iframe = iframe.replace(/\stitle=["'][^"']*["']/i, '');
+
+    iframe = iframe.replace(/<iframe/i, `<iframe id="watchPlayer" title="${safeTitle}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen`);
+    return iframe;
+  }
+
+  return `
+    <iframe
+      id="watchPlayer"
+      src="${escapeAttr(src)}"
+      title="${safeTitle}"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+      allowfullscreen>
+    </iframe>
+  `;
+}
+
+function renderVideoFallback(src){
+  if(!src) return '';
+  return `
+    <div class="watch-player-fallback">
+      <span>Si le lecteur reste noir :</span>
+      <a href="${escapeAttr(src)}" target="_blank" rel="noopener noreferrer">ouvrir la vidéo dans un nouvel onglet</a>
+    </div>
+  `;
 }
 
 function showWatchLoginRequired(item){
@@ -273,14 +314,15 @@ function showWatchLoginRequired(item){
 function bindWatchEvents(item){
   document.querySelector('#startCinema')?.addEventListener('click', () => {
     const frame = document.querySelector('#cinemaFrame');
-    const player = document.querySelector('#watchPlayer');
-    const playerSrc = player?.dataset?.src || '';
+    const mount = document.querySelector('#watchPlayerMount');
+    const playerSrc = mount?.dataset?.src || '';
+    const embed = mount?.dataset?.embed || '';
 
     frame?.classList.add('is-playing');
     document.querySelector('#studioBumper')?.classList.add('hidden');
 
-    if(player && playerSrc && player.getAttribute('src') !== playerSrc){
-      player.setAttribute('src', playerSrc);
+    if(mount && playerSrc && !document.querySelector('#watchPlayer')){
+      mount.innerHTML = buildPlayableEmbed(embed, playerSrc, item.title) + renderVideoFallback(playerSrc);
     }
 
     frame?.scrollIntoView({behavior:'smooth', block:'center'});
