@@ -146,7 +146,7 @@
         ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(item.viewer) || item.viewer?.avatar || 'orbiteur', 'viewer-avatar')}
         <strong>${escape(item.viewer?.pseudo || 'Spectateur')}</strong>
         <small>sur ${escape(item.movie.title)}</small>
-        <p>${escape(shorten(item.comment.comment, 150))}</p>
+        <p>${renderTextWithEmotes(shorten(item.comment.comment, 150))}</p>
         <em>❤️ ${item.likes} · ${item.comment.rating ? `${item.comment.rating}/10` : 'réponse'}</em>
       </a>
     `;
@@ -387,6 +387,29 @@
 
   function isRecent(hours){
     return date => date && (Date.now() - new Date(date).getTime()) <= hours * 36e5;
+  }
+
+  function renderTextWithEmotes(text=''){
+    const escaped = escape(text);
+    const emotes = {
+      ':)': '🙂', ':-)': '🙂',
+      ':d': '😄', ':-d': '😄',
+      ';)': '😉', ';-)': '😉',
+      ';d': '😆',
+      ':(': '🙁', ':-(': '🙁',
+      ":'(': '😢',
+      ':p': '😛', ':-p': '😛',
+      '&lt;3': '❤️',
+      '(y)': '👍',
+      '(n)': '👎',
+      '(*)': '⭐',
+      '(popcorn)': '🍿'
+    };
+
+    return escaped.replace(/(^|[\s([{])(:-\)|:\)|:-D|:D|;-\)|;\)|;D|:-\(|:\(|:'\(|:-P|:P|&lt;3|\(y\)|\(n\)|\(\*\)|\(popcorn\))(?=$|[\s.,!?;:)\]}])/gi, (match, prefix, token) => {
+      const emoji = emotes[String(token).toLowerCase()];
+      return emoji ? `${prefix}<span class="ps-emote">${emoji}</span>` : match;
+    });
   }
 
   function relativeDate(value){
