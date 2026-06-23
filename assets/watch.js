@@ -232,16 +232,14 @@ function renderVideo(item){
   }
 
   return `
-    <div
-      class="watch-player-mount"
-      id="watchPlayerMount"
-      data-embed="${escapeAttr(embed)}"
-      data-src="${escapeAttr(src)}">
-      <div class="watch-player-placeholder">
-        <strong>Lecteur prêt</strong>
-        <p>Clique sur “Lancer la projection” pour charger le lecteur vidéo.</p>
-      </div>
-    </div>
+    <iframe
+      id="watchPlayer"
+      src="about:blank"
+      data-src="${escapeAttr(src)}"
+      title="Lecture ${escapeHtml(item.title)}"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+      allowfullscreen>
+    </iframe>
   `;
 }
 
@@ -258,45 +256,6 @@ function extractEmbedSrc(embed){
   return '';
 }
 
-function buildPlayableEmbed(embed, src, title){
-  const raw = String(embed || '').trim();
-  const safeTitle = escapeAttr(`Lecture ${title || 'Planète Stream'}`);
-
-  if(/<iframe[\s>]/i.test(raw)){
-    let iframe = raw;
-
-    iframe = iframe.replace(/\swidth=["'][^"']*["']/i, '');
-    iframe = iframe.replace(/\sheight=["'][^"']*["']/i, '');
-    iframe = iframe.replace(/\sstyle=["'][^"']*["']/i, '');
-    iframe = iframe.replace(/\sallow=["'][^"']*["']/i, '');
-    iframe = iframe.replace(/\sallowfullscreen(?:=["'][^"']*["'])?/i, '');
-    iframe = iframe.replace(/\stitle=["'][^"']*["']/i, '');
-
-    iframe = iframe.replace(/<iframe/i, `<iframe id="watchPlayer" title="${safeTitle}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen`);
-    return iframe;
-  }
-
-  return `
-    <iframe
-      id="watchPlayer"
-      src="${escapeAttr(src)}"
-      title="${safeTitle}"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-      allowfullscreen>
-    </iframe>
-  `;
-}
-
-function renderVideoFallback(src){
-  if(!src) return '';
-  return `
-    <div class="watch-player-fallback">
-      <span>Si le lecteur reste noir :</span>
-      <a href="${escapeAttr(src)}" target="_blank" rel="noopener noreferrer">ouvrir la vidéo dans un nouvel onglet</a>
-    </div>
-  `;
-}
-
 function showWatchLoginRequired(item){
   if(!watchPage) return;
   watchPage.innerHTML = `
@@ -311,23 +270,42 @@ function showWatchLoginRequired(item){
   `;
 }
 
+function launchCinema(item, options = {}){
+  const frame = document.querySelector('#cinemaFrame');
+  const player = document.querySelector('#watchPlayer');
+  const playerSrc = player?.dataset?.src || '';
+
+  frame?.classList.add('is-playing');
+  document.querySelector('#studioBumper')?.classList.add('hidden');
+
+  if(player && playerSrc && player.getAttribute('src') !== playerSrc){
+    player.setAttribute('src', playerSrc);
+  }
+
+  frame?.scrollIntoView({behavior: options.instant ? 'auto' : 'smooth', block:'center'});
+  saveViewerHistory(item.slug, 10);
+
+  if(options.fullscreen && frame?.requestFullscreen){
+    frame.requestFullscreen().catch(() => {
+      // Certains navigateurs refusent le plein écran après une navigation.
+      // Le bouton “Lancer la projection” garde alors le comportement manuel.
+    });
+  }
+}
+
+function shouldAutoStartCinema(){
+  const params = new URLSearchParams(window.location.search);
+  return params.get('autoplay') === '1' || params.get('play') === '1';
+}
+
 function bindWatchEvents(item){
   document.querySelector('#startCinema')?.addEventListener('click', () => {
-    const frame = document.querySelector('#cinemaFrame');
-    const mount = document.querySelector('#watchPlayerMount');
-    const playerSrc = mount?.dataset?.src || '';
-    const embed = mount?.dataset?.embed || '';
-
-    frame?.classList.add('is-playing');
-    document.querySelector('#studioBumper')?.classList.add('hidden');
-
-    if(mount && playerSrc && !document.querySelector('#watchPlayer')){
-      mount.innerHTML = buildPlayableEmbed(embed, playerSrc, item.title) + renderVideoFallback(playerSrc);
-    }
-
-    frame?.scrollIntoView({behavior:'smooth', block:'center'});
-    saveViewerHistory(item.slug, 10);
+    launchCinema(item, {fullscreen:true});
   });
+
+  if(shouldAutoStartCinema()){
+    window.setTimeout(() => launchCinema(item, {fullscreen:true, instant:true}), 250);
+  }
 
   document.querySelector('#quickRatingForm')?.addEventListener('submit', async event => {
     event.preventDefault();

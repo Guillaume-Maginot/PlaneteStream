@@ -235,7 +235,7 @@ function renderWatchAction(item, isLogged){
     return '<span class="ghost is-disabled" aria-disabled="true">🎬 Vidéo indisponible</span>';
   }
   if(isLogged){
-    return `<a class="primary" href="watch.html?slug=${encodeURIComponent(item.slug)}">▶ Regarder <span class="soft-note">bêta</span></a>`;
+    return `<a class="primary" href="watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1">▶ Regarder <span class="soft-note">bêta</span></a>`;
   }
   return '<a class="primary" href="account.html">🔐 Connexion requise pour la bêta vidéo</a>';
 }

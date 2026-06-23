@@ -310,7 +310,7 @@ function openRandomTitle(){
 
 
 function getWatchHref(item){
-  return `watch.html?slug=${encodeURIComponent(item.slug)}`;
+  return `watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1`;
 }
 
 function isExternalHref(href=''){
