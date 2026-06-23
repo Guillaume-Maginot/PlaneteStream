@@ -39,7 +39,11 @@ const editFields = {
   overview: document.querySelector('#editOverview')
 };
 
-init();
+if (document.body?.classList.contains('admin-locked')) {
+  window.addEventListener('ps:admin-access-granted', init, {once:true});
+} else {
+  init();
+}
 
 async function init() {
   try {

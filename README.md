@@ -17,3 +17,9 @@ Correction :
 - La salle de cinéma (`watch.html`) est réservée aux membres connectés pendant la bêta.
 - Pas de SQL nécessaire : le catalogue actuel fonctionne avec `data/catalogue.json`. Après modification dans l’admin, télécharger/exporter le catalogue puis remplacer le fichier JSON.
 
+
+
+## Patch admin login
+- Ajout de `admin-login.html` pour la connexion au centre de contrôle.
+- `admin.html` reste masqué tant que le rôle admin/fondateur/architecte n’est pas vérifié.
+- Redirection automatique vers la connexion si non connecté ou accès refusé si rôle insuffisant.
