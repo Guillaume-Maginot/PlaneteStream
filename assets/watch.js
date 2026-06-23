@@ -196,6 +196,7 @@ async function renderWatch(item, catalogue){
         <p class="eyebrow" id="commentFormTitle">Écrire une nouvelle critique</p>
         <div class="viewer-mini" id="formViewerLabel">Publier en tant que spectateur</div>
         <textarea id="commentText" placeholder="Votre critique après cette séance..." maxlength="700" required></textarea>
+        <p class="soft-note emote-help">Smileys reconnus : :) :D ;) ;D :( :'( :P <3 (y) (n) (*) (popcorn)</p>
         <p class="soft-note form-help" id="viewerHelpText">Connexion obligatoire pour publier une critique ou une réponse.</p>
         <button class="primary" type="submit" id="commentSubmitBtn">Publier ma critique</button>
       </form>
@@ -1619,7 +1620,7 @@ function renderProfileReviewItem(review){
       <span>
         <strong>${escapeHtml(review.movie_title)}</strong>
         <small>${formatCommentDate(review.created_at)}${review.edited_at ? ' · modifié' : ''}</small>
-        <em>${escapeHtml(truncateText(review.comment, 96))}</em>
+        <em>${renderTextWithEmotes(truncateText(review.comment, 96))}</em>
       </span>
     </a>
   `;
@@ -1766,6 +1767,7 @@ async function openReplyBox(commentId){
   form.dataset.parentId = commentId;
   form.innerHTML = `
     <textarea maxlength="500" required placeholder="Répondre${escapeHtml(targetName)}..."></textarea>
+    <p class="soft-note emote-help">Les smileys classiques se transforment automatiquement à l’affichage.</p>
     <div class="reply-actions">
       <button class="primary" type="submit">Publier la réponse</button>
       <button class="ghost" type="button" data-cancel-reply>Annuler</button>
@@ -2151,7 +2153,7 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
         ${comment.rating ? renderRatingBadge(comment.rating) : '<span class="comment-reply-pill">💬 Réponse</span>'}
       </div>
       ${isReply && parentName ? `<div class="reply-target">↳ Réponse à <strong>@${escapeHtml(parentName)}</strong></div>` : ''}
-      <p>${escapeHtml(comment.text)}</p>
+      <p class="comment-text">${renderTextWithEmotes(comment.text)}</p>
       <div class="comment-actions">
         <button class="comment-action like-action ${liked ? 'is-active' : ''}" type="button" data-like-comment="${escapeHtml(comment.id || '')}">${liked ? '❤️' : '🤍'} <span>${count}</span>${liked ? '<small>Aimé par vous</small>' : ''}</button>
         <button class="comment-action" type="button" data-reply-comment="${escapeHtml(comment.id || '')}">💬 ${replyLabel}${replyCount ? ` · ${replyCount}` : ''}</button>
@@ -2758,6 +2760,29 @@ function makeUuid(){
 
 function escapeHtml(str=''){
   return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+}
+
+function renderTextWithEmotes(text=''){
+  const escaped = escapeHtml(text);
+  const emotes = {
+    ':)': '🙂', ':-)': '🙂',
+    ':d': '😄', ':-d': '😄',
+    ';)': '😉', ';-)': '😉',
+    ';d': '😆',
+    ':(': '🙁', ':-(': '🙁',
+    ":'(": '😢',
+    ':p': '😛', ':-p': '😛',
+    '&lt;3': '❤️',
+    '(y)': '👍',
+    '(n)': '👎',
+    '(*)': '⭐',
+    '(popcorn)': '🍿'
+  };
+
+  return escaped.replace(/(^|[\s([{])(:-\)|:\)|:-D|:D|;-\)|;\)|;D|:-\(|:\(|:'\(|:-P|:P|&lt;3|\(y\)|\(n\)|\(\*\)|\(popcorn\))(?=$|[\s.,!?;:)\]}])/gi, (match, prefix, token) => {
+    const emoji = emotes[String(token).toLowerCase()];
+    return emoji ? `${prefix}<span class="ps-emote">${emoji}</span>` : match;
+  });
 }
 
 function escapeAttr(str=''){

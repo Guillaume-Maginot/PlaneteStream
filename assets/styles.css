@@ -4754,3 +4754,29 @@ section{margin:24px 0 34px}
 .turnstile-shell .cf-turnstile{
   width:100%;
 }
+
+.ps-emote{
+  display:inline-block;
+  font-size:1.12em;
+  line-height:1;
+  vertical-align:-0.08em;
+  transform-origin:center;
+}
+.comment-card .ps-emote,
+.profile-review-item .ps-emote,
+.hall-feature-review .ps-emote{
+  filter:drop-shadow(0 0 8px rgba(255,214,107,.14));
+}
+.emote-help{
+  margin-top:-4px;
+  font-size:12px;
+  opacity:.78;
+}
+.comments-list.is-refreshing .ps-emote,
+.comment-card:hover .ps-emote{
+  animation:ps-emote-pop .18s ease-out;
+}
+@keyframes ps-emote-pop{
+  0%{transform:scale(.92) translateY(1px)}
+  100%{transform:scale(1) translateY(0)}
+}
