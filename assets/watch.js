@@ -234,10 +234,10 @@ function renderVideo(item){
   return `
     <iframe
       id="watchPlayer"
-      src="${escapeAttr(src)}"
+      src="about:blank"
+      data-src="${escapeAttr(src)}"
       title="Lecture ${escapeHtml(item.title)}"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
       allowfullscreen>
     </iframe>
   `;
@@ -273,8 +273,16 @@ function showWatchLoginRequired(item){
 function bindWatchEvents(item){
   document.querySelector('#startCinema')?.addEventListener('click', () => {
     const frame = document.querySelector('#cinemaFrame');
+    const player = document.querySelector('#watchPlayer');
+    const playerSrc = player?.dataset?.src || '';
+
     frame?.classList.add('is-playing');
-    setTimeout(() => document.querySelector('#studioBumper')?.classList.add('hidden'), 1150);
+    document.querySelector('#studioBumper')?.classList.add('hidden');
+
+    if(player && playerSrc && player.getAttribute('src') !== playerSrc){
+      player.setAttribute('src', playerSrc);
+    }
+
     frame?.scrollIntoView({behavior:'smooth', block:'center'});
     saveViewerHistory(item.slug, 10);
   });
