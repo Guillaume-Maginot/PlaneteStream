@@ -831,7 +831,8 @@
     "poster": "https://image.tmdb.org/t/p/w500/czMJ6rsqJZFt01eGUT5n0DXoCEd.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/apfyLCPVFttB8oXcsLJ7q0NSFLx.jpg",
     "overview": "Dans les 72 heures précédant le jour J, alors que le destin du monde libre est en jeu, le général Dwight D. Eisenhower et le capitaine James Stagg sont confrontés à un choix impossible : lancer la plus vaste et la plus périlleuse invasion maritime de l'histoire, ou risquer de perdre la guerre.",
-    "featured": false
+    "featured": false,
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fj02a981qfzh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
   },
   {
     "title": "Projet Dernière Chance",
