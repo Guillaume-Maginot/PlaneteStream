@@ -263,6 +263,14 @@ function isSeries(item){
   return getMediaType(item) === 'tv';
 }
 
+function getSeasonNumber(season, index=0){
+  return Number(season?.seasonNumber || season?.number || season?.season || index + 1) || index + 1;
+}
+
+function getEpisodeNumber(episode, index=0){
+  return Number(episode?.episodeNumber || episode?.number || episode?.episode || index + 1) || index + 1;
+}
+
 function getSeasonsArray(item){
   if(Array.isArray(item?.seasons)) return item.seasons;
   if(Array.isArray(item?.seasonsData)) return item.seasonsData;
@@ -277,20 +285,20 @@ function episodeEmbed(episode){
 function getPlaybackForItem(item, request={}){
   const seasons = getSeasonsArray(item);
   if(seasons.length){
-    const sortedSeasons = [...seasons].sort((a,b) => Number(a.number || a.season || 0) - Number(b.number || b.season || 0));
+    const sortedSeasons = [...seasons].sort((a,b) => getSeasonNumber(a) - getSeasonNumber(b));
     const requestedSeason = Number(request.season || 0);
     const requestedEpisode = Number(request.episode || 0);
     let fallback = null;
 
     for(const season of sortedSeasons){
-      const seasonNumber = Number(season.number || season.season || 1);
+      const seasonNumber = getSeasonNumber(season);
       const episodes = Array.isArray(season.episodes) ? [...season.episodes] : [];
-      episodes.sort((a,b) => Number(a.number || a.episode || 0) - Number(b.number || b.episode || 0));
+      episodes.sort((a,b) => getEpisodeNumber(a) - getEpisodeNumber(b));
 
       for(const episode of episodes){
         const embed = episodeEmbed(episode);
         if(!embed) continue;
-        const episodeNumber = Number(episode.number || episode.episode || 1);
+        const episodeNumber = getEpisodeNumber(episode);
         const playback = {
           embed,
           season: seasonNumber,

@@ -112,6 +112,8 @@ if (rating) badges.push(rating);
 
         </p>
 
+        ${isSeries(item) ? renderSeriesEpisodes(item, isLogged) : ''}
+
         <h2>Casting principal</h2>
 
         <div class="detail-cast-list">
@@ -226,6 +228,107 @@ ${
   });
 }
 
+
+function getSeasonNumber(season, index=0){
+  return Number(season?.seasonNumber || season?.number || season?.season || index + 1) || index + 1;
+}
+
+function getEpisodeNumber(episode, index=0){
+  return Number(episode?.episodeNumber || episode?.number || episode?.episode || index + 1) || index + 1;
+}
+
+function getEpisodeEmbed(episode){
+  return String(episode?.videoEmbed || episode?.embed || episode?.video_embed || '').trim();
+}
+
+function getSeriesEpisodeStats(item){
+  const seasons = getSeasonsArray(item);
+  const seasonsCount = seasons.length || Number(item.seasonCount || item.seasonsCount || item.seasons || 0) || 0;
+  const episodesCount = seasons.length
+    ? seasons.reduce((total, season) => total + (Array.isArray(season.episodes) ? season.episodes.length : 0), 0)
+    : Number(item.episodeCount || item.episodesCount || item.episodes || 0) || 0;
+  const readyCount = seasons.reduce((total, season) => {
+    const episodes = Array.isArray(season.episodes) ? season.episodes : [];
+    return total + episodes.filter(ep => getEpisodeEmbed(ep)).length;
+  }, 0);
+  return {seasonsCount, episodesCount, readyCount};
+}
+
+function renderSeriesEpisodes(item, isLogged=false){
+  const seasons = getSeasonsArray(item)
+    .map((season, index) => ({...season, __seasonNumber: getSeasonNumber(season, index)}))
+    .sort((a,b) => a.__seasonNumber - b.__seasonNumber);
+  const stats = getSeriesEpisodeStats(item);
+
+  if(!seasons.length){
+    return `
+      <section class="series-detail-panel">
+        <div class="series-detail-head">
+          <div>
+            <p class="eyebrow">Guide des épisodes</p>
+            <h2>Saisons & épisodes</h2>
+          </div>
+          <span class="series-pill">${stats.seasonsCount || '-'} saison${stats.seasonsCount > 1 ? 's' : ''} · ${stats.episodesCount || '-'} épisode${stats.episodesCount > 1 ? 's' : ''}</span>
+        </div>
+        <p class="series-empty">La fiche connaît le volume de la série, mais les épisodes détaillés ne sont pas encore enregistrés. Dès que l’admin sauvegarde les saisons, ils apparaîtront ici rangés au cordeau.</p>
+      </section>
+    `;
+  }
+
+  return `
+    <section class="series-detail-panel" id="episodes">
+      <div class="series-detail-head">
+        <div>
+          <p class="eyebrow">Guide des épisodes</p>
+          <h2>Saisons & épisodes</h2>
+        </div>
+        <span class="series-pill">${stats.seasonsCount} saison${stats.seasonsCount > 1 ? 's' : ''} · ${stats.episodesCount} épisode${stats.episodesCount > 1 ? 's' : ''} · ${stats.readyCount} prêt${stats.readyCount > 1 ? 's' : ''}</span>
+      </div>
+      <div class="series-season-list">
+        ${seasons.map((season, seasonIndex) => {
+          const seasonNumber = season.__seasonNumber;
+          const episodes = (Array.isArray(season.episodes) ? season.episodes : [])
+            .map((episode, episodeIndex) => ({...episode, __episodeNumber: getEpisodeNumber(episode, episodeIndex)}))
+            .sort((a,b) => a.__episodeNumber - b.__episodeNumber);
+          const ready = episodes.filter(ep => getEpisodeEmbed(ep)).length;
+          return `
+            <details class="series-season-card" ${seasonIndex === 0 ? 'open' : ''}>
+              <summary>
+                <span>Saison ${escapeHtml(String(seasonNumber))}</span>
+                <small>${episodes.length} épisode${episodes.length > 1 ? 's' : ''} · ${ready} prêt${ready > 1 ? 's' : ''}</small>
+              </summary>
+              <div class="series-episode-list">
+                ${episodes.length ? episodes.map(episode => renderEpisodeRow(item, seasonNumber, episode, isLogged)).join('') : '<p class="series-empty small">Aucun épisode dans cette saison.</p>'}
+              </div>
+            </details>
+          `;
+        }).join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderEpisodeRow(item, seasonNumber, episode, isLogged=false){
+  const episodeNumber = episode.__episodeNumber || getEpisodeNumber(episode);
+  const title = episode.title || `Épisode ${episodeNumber}`;
+  const embed = getEpisodeEmbed(episode);
+  const watchUrl = `watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1&season=${encodeURIComponent(seasonNumber)}&episode=${encodeURIComponent(episodeNumber)}`;
+  const action = embed
+    ? (isLogged ? `<a href="${watchUrl}">▶ Lire</a>` : '<a href="account.html">🔐 Connexion</a>')
+    : '<span>Embed manquant</span>';
+  return `
+    <article class="series-episode-row ${embed ? 'is-ready' : 'is-missing'}">
+      <div class="episode-code">S${escapeHtml(String(seasonNumber))}E${escapeHtml(String(episodeNumber)).padStart(2, '0')}</div>
+      <div class="episode-copy">
+        <strong>${escapeHtml(title)}</strong>
+        ${episode.overview ? `<p>${escapeHtml(episode.overview)}</p>` : ''}
+      </div>
+      <div class="episode-state">${embed ? 'Disponible' : 'À compléter'}</div>
+      <div class="episode-action">${action}</div>
+    </article>
+  `;
+}
+
 function getMediaType(item){
   const value = String(item?.mediaType || item?.media_type || item?.type || '').toLowerCase();
   if(['tv','serie','series'].includes(value)) return 'tv';
@@ -245,11 +348,11 @@ function getSeasonsArray(item){
 
 function getFirstEpisode(item){
   const seasons = getSeasonsArray(item);
-  const sortedSeasons = [...seasons].sort((a,b) => Number(a.number || a.season || 0) - Number(b.number || b.season || 0));
+  const sortedSeasons = [...seasons].sort((a,b) => getSeasonNumber(a) - getSeasonNumber(b));
   for(const season of sortedSeasons){
     const episodes = Array.isArray(season.episodes) ? [...season.episodes] : [];
-    episodes.sort((a,b) => Number(a.number || a.episode || 0) - Number(b.number || b.episode || 0));
-    const episode = episodes.find(ep => String(ep.embed || ep.videoEmbed || ep.video_embed || '').trim());
+    episodes.sort((a,b) => getEpisodeNumber(a) - getEpisodeNumber(b));
+    const episode = episodes.find(ep => getEpisodeEmbed(ep));
     if(episode){
       return {season, episode};
     }
@@ -260,7 +363,7 @@ function getFirstEpisode(item){
 function getPrimaryVideoEmbed(item){
   const firstEpisode = getFirstEpisode(item);
   if(firstEpisode){
-    return String(firstEpisode.episode.embed || firstEpisode.episode.videoEmbed || firstEpisode.episode.video_embed || '').trim();
+    return getEpisodeEmbed(firstEpisode.episode);
   }
   return String(item?.videoEmbed || item?.video_embed || '').trim();
 }
@@ -269,8 +372,8 @@ function getWatchUrl(item){
   const firstEpisode = getFirstEpisode(item);
   const base = `watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1`;
   if(!firstEpisode) return base;
-  const seasonNumber = Number(firstEpisode.season.number || firstEpisode.season.season || 1);
-  const episodeNumber = Number(firstEpisode.episode.number || firstEpisode.episode.episode || 1);
+  const seasonNumber = getSeasonNumber(firstEpisode.season);
+  const episodeNumber = getEpisodeNumber(firstEpisode.episode);
   return `${base}&season=${encodeURIComponent(seasonNumber)}&episode=${encodeURIComponent(episodeNumber)}`;
 }
 

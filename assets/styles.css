@@ -4837,3 +4837,170 @@ section{margin:24px 0 34px}
   .new-comments-divider{font-size:.72rem;gap:8px}
   .new-comments-divider span{padding:6px 10px;text-align:center}
 }
+
+/* === Fiche série : saisons & épisodes === */
+.series-detail-panel{
+  margin:34px 0;
+  border:1px solid rgba(139,44,255,.28);
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(139,44,255,.12),rgba(255,45,85,.055));
+  padding:22px;
+  box-shadow:0 18px 55px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.series-detail-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:16px;
+}
+.series-detail-head h2{
+  margin:0;
+}
+.series-pill{
+  flex-shrink:0;
+  border:1px solid rgba(255,217,138,.34);
+  border-radius:999px;
+  padding:9px 13px;
+  color:#ffe1a3;
+  background:rgba(255,217,138,.08);
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.series-season-list{
+  display:grid;
+  gap:12px;
+}
+.series-season-card{
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(5,6,15,.38);
+}
+.series-season-card summary{
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:15px 16px;
+  color:#fff;
+  font-weight:900;
+  list-style:none;
+}
+.series-season-card summary::-webkit-details-marker{display:none;}
+.series-season-card summary::after{
+  content:'+';
+  width:26px;
+  height:26px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  color:#ffd98a;
+}
+.series-season-card[open] summary::after{content:'−';}
+.series-season-card summary small{
+  margin-left:auto;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+.series-episode-list{
+  display:grid;
+  gap:10px;
+  padding:0 12px 14px;
+}
+.series-episode-row{
+  display:grid;
+  grid-template-columns:74px minmax(0,1fr) 112px 112px;
+  align-items:center;
+  gap:12px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:14px;
+  background:rgba(255,255,255,.045);
+  padding:12px;
+}
+.series-episode-row.is-ready{
+  border-color:rgba(94,255,179,.20);
+}
+.series-episode-row.is-missing{
+  opacity:.74;
+}
+.episode-code{
+  color:#ffd98a;
+  font-weight:950;
+  font-size:12px;
+  letter-spacing:.06em;
+}
+.episode-copy strong{
+  display:block;
+  color:#fff;
+  font-size:14px;
+}
+.episode-copy p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+.episode-state{
+  justify-self:end;
+  color:#a9ffd4;
+  font-size:12px;
+  font-weight:900;
+}
+.series-episode-row.is-missing .episode-state{
+  color:#ffd18a;
+}
+.episode-action{
+  justify-self:end;
+}
+.episode-action a,
+.episode-action span{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:92px;
+  border-radius:999px;
+  padding:8px 10px;
+  font-size:12px;
+  font-weight:900;
+  text-decoration:none;
+}
+.episode-action a{
+  color:#fff;
+  background:linear-gradient(135deg,var(--red,#ff2d55),var(--purple,#8b2cff));
+  box-shadow:0 10px 24px rgba(255,45,85,.18);
+}
+.episode-action span{
+  color:#ffd18a;
+  border:1px solid rgba(255,209,138,.22);
+  background:rgba(255,209,138,.06);
+}
+.series-empty{
+  color:#d8d0e8;
+  line-height:1.7;
+  margin:0;
+}
+.series-empty.small{
+  padding:14px;
+  font-size:13px;
+}
+@media(max-width:760px){
+  .series-detail-head{
+    display:grid;
+  }
+  .series-pill{
+    white-space:normal;
+  }
+  .series-episode-row{
+    grid-template-columns:1fr;
+    align-items:start;
+  }
+  .episode-state,
+  .episode-action{
+    justify-self:start;
+  }
+}
