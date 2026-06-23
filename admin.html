@@ -1063,13 +1063,12 @@
       white-space:nowrap;
     }
 
-    .quick-actions{
+    .watch-list{
       display:grid;
       gap:10px;
     }
 
-    .quick-action{
-      width:100%;
+    .watch-line{
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -1077,58 +1076,32 @@
       border:1px solid rgba(255,255,255,.08);
       border-radius:15px;
       background:rgba(255,255,255,.035);
-      color:#fff;
       padding:13px 14px;
-      font:inherit;
-      font-weight:850;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .quick-action:hover{
-      border-color:rgba(195,77,255,.42);
-      background:rgba(139,44,255,.13);
-      transform:translateY(-1px);
-      box-shadow:0 0 24px rgba(139,44,255,.12);
-    }
-
-    .quick-action small{
-      color:var(--muted);
-      font-size:11px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.06em;
-    }
-
-    .since-grid{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .since-card{
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:15px;
-      background:rgba(255,255,255,.035);
-      padding:13px;
-    }
-
-    .since-card span{
-      display:block;
-      color:var(--muted);
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      margin-bottom:8px;
-    }
-
-    .since-card strong{
-      display:block;
       color:#fff;
-      font-size:28px;
-      line-height:1;
+      font-weight:850;
+    }
+
+    .watch-line b{
+      min-width:34px;
+      height:28px;
+      display:grid;
+      place-items:center;
+      border-radius:999px;
+      background:rgba(139,44,255,.16);
+      border:1px solid rgba(195,77,255,.28);
+      color:#fff;
+      font-size:13px;
+      box-shadow:0 0 18px rgba(139,44,255,.12);
+    }
+
+    .watch-note{
+      margin-top:12px;
+      border:1px dashed rgba(195,77,255,.28);
+      border-radius:16px;
+      background:rgba(139,44,255,.07);
+      color:var(--muted);
+      padding:14px;
+      line-height:1.45;
     }
 
     .admin-setting-list{
@@ -1232,31 +1205,31 @@
         <div class="admin-tabs" role="tablist" aria-label="Modules d'administration">
           <button class="admin-tab is-active" type="button" role="tab" aria-selected="true" data-admin-tab="dashboard">
             <span>🏠 Tableau de bord</span>
-            <small>Actif</small>
+            <small>Vue</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="catalogue">
             <span>📽 Catalogue</span>
-            <small>Actif</small>
+            <small id="navCatalogueCount">—</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="communaute">
             <span>👥 Communauté</span>
-            <small>Actif</small>
+            <small id="navMembersCount">—</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="signalements">
             <span>🚩 Signalements</span>
-            <small>Actif</small>
+            <small id="navReportsCount">—</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="stats">
             <span>📊 Statistiques</span>
-            <small>Actif</small>
+            <small>Données</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="notifications">
             <span>📢 Notifications</span>
-            <small>Préparé</small>
+            <small>Prévu</small>
           </button>
           <button class="admin-tab" type="button" role="tab" aria-selected="false" data-admin-tab="parametres">
             <span>⚙ Paramètres</span>
-            <small>Actif</small>
+            <small>Réglages</small>
           </button>
         <button class="ghost admin-logout" type="button" id="adminLogoutBtn">🚪 Déconnexion</button>
         </div>
@@ -1304,19 +1277,16 @@
             </section>
 
             <aside class="admin-box">
-              <h2>Accès rapides</h2>
-              <p>Des raccourcis pour éviter de traverser trois sas juste pour ouvrir le catalogue.</p>
-              <div class="quick-actions">
-                <button class="quick-action" type="button" data-admin-jump="catalogue"><span>📽 Ouvrir le catalogue</span><small>Gestion</small></button>
-                <button class="quick-action" type="button" data-admin-jump="communaute"><span>👥 Voir la communauté</span><small>Staff</small></button>
-                <button class="quick-action" type="button" data-admin-jump="signalements"><span>🚩 Traiter les signalements</span><small>Modération</small></button>
-                <button class="quick-action" type="button" data-admin-jump="stats"><span>📊 Lire les statistiques</span><small>Données</small></button>
+              <h2>À surveiller</h2>
+              <p>Les petits voyants qui méritent l’attention du cockpit, sans ouvrir une armoire entière de boutons rouges.</p>
+              <div class="watch-list" aria-label="Tâches à surveiller">
+                <div class="watch-line"><span>🎬 Films sans embed</span><b id="watchMissingEmbeds">—</b></div>
+                <div class="watch-line"><span>🚩 Signalements ouverts</span><b id="watchOpenReports">—</b></div>
+                <div class="watch-line"><span>👥 Nouveaux membres</span><b id="sinceViewers">—</b></div>
+                <div class="watch-line"><span>💬 Nouvelles critiques</span><b id="sinceComments">—</b></div>
               </div>
-              <div class="since-grid" aria-label="Résumé depuis la dernière visite">
-                <div class="since-card"><span>Critiques</span><strong id="sinceComments">—</strong></div>
-                <div class="since-card"><span>Membres</span><strong id="sinceViewers">—</strong></div>
-                <div class="since-card"><span>Alertes</span><strong id="sinceReports">—</strong></div>
-              </div>
+              <div class="watch-note" id="watchSummary">Scan orbital en cours…</div>
+              <span id="sinceReports" hidden>—</span>
             </aside>
           </div>
         </section>
@@ -1621,6 +1591,8 @@
         const res = await fetch('data/catalogue.json', {cache:'no-store'});
         const catalogue = res.ok ? await res.json() : [];
         setText('dashMovies', Array.isArray(catalogue) ? catalogue.length : '—');
+        setText('navCatalogueCount', Array.isArray(catalogue) ? `${catalogue.length} films` : '—');
+        setText('watchMissingEmbeds', Array.isArray(catalogue) ? catalogue.filter(item => !String(item.embed || '').trim()).length : '—');
       }catch(_){ setText('dashMovies', '—'); }
 
       try{
@@ -1641,12 +1613,17 @@
             supabase.from('reports').select('id,status', {count:'exact'})
           ]);
 
-          if(profiles.status === 'fulfilled') setText('dashMembers', profiles.value.count ?? '—');
+          if(profiles.status === 'fulfilled'){
+            setText('dashMembers', profiles.value.count ?? '—');
+            setText('navMembersCount', profiles.value.count != null ? `${profiles.value.count} membres` : '—');
+          }
           if(comments.status === 'fulfilled') setText('dashReviews', comments.value.count ?? '—');
           if(reports.status === 'fulfilled'){
             const rows = reports.value.data || [];
             const open = rows.filter(r => String(r.status || 'open').toLowerCase() !== 'closed').length;
             setText('dashReports', open);
+            setText('navReportsCount', open ? `${open} ouvert${open > 1 ? 's' : ''}` : '0 alerte');
+            setText('watchOpenReports', open);
           }
 
           if(log){
@@ -1723,6 +1700,12 @@
         setText('sinceComments', since(commentRows));
         setText('sinceViewers', since(viewerRows));
         setText('sinceReports', since(reportRows));
+        const watchSummary = document.getElementById('watchSummary');
+        if(watchSummary){
+          const c = since(commentRows), v = since(viewerRows), r = since(reportRows);
+          const missing = document.getElementById('watchMissingEmbeds')?.textContent || '—';
+          watchSummary.textContent = `Depuis le dernier passage : ${c} critique${c > 1 ? 's' : ''}, ${v} membre${v > 1 ? 's' : ''}, ${r} alerte${r > 1 ? 's' : ''}. Films sans embed : ${missing}.`;
+        }
 
         const log = document.getElementById('captainLog');
         if(log){
@@ -1738,6 +1721,9 @@
         setText('sinceComments', '—');
         setText('sinceViewers', '—');
         setText('sinceReports', '—');
+        setText('watchOpenReports', '—');
+        const watchSummary = document.getElementById('watchSummary');
+        if(watchSummary) watchSummary.textContent = 'Scan orbital indisponible pour le moment.';
       }
 
       function shorten(text='', limit=80){
