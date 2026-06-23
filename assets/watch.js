@@ -44,6 +44,9 @@ let realtimeRatingsMovieId = '';
 let realtimeRatingsRefreshTimer = null;
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
+let commentReadCutoff = 0;
+let commentReadObserver = null;
+let commentReadSaveTimer = null;
 const COMMENT_MAX_VISUAL_DEPTH = 2;
 
 async function initWatch(){
@@ -204,6 +207,7 @@ async function renderWatch(item, catalogue){
       <div class="comments-list" id="commentsList">
         ${renderComments(localComments)}
       </div>
+      <div class="comments-read-sentinel" id="commentsReadSentinel" aria-hidden="true"></div>
     </section>
 
     ${related.length ? `
@@ -490,6 +494,7 @@ async function refreshCommunity(item){
   ]);
 
   currentComments = comments.online ? comments.data : getLocalComments(item.slug);
+  commentReadCutoff = loadCommentReadCutoff(item.slug);
   currentRatings = ratings.online ? ratings.data : [];
   currentUserRating = getCurrentViewerRating(currentRatings);
   syncQuickRatingSelect();
@@ -503,6 +508,7 @@ async function refreshCommunity(item){
   const sortSelect = document.querySelector('#commentsSort');
   if(sortSelect) sortSelect.value = commentSortMode;
   document.querySelector('#commentsList').innerHTML = renderComments(currentComments);
+  setupCommentReadObserver();
   scrollToCommentFromHash();
 
   updateCommunityRatingLabel(currentComments, stats, currentRatings);
@@ -2077,13 +2083,101 @@ function renderComments(comments){
 
   const topLevel = list
     .filter(comment => !comment.parent_id)
-    .map(comment => ({...comment, replies_count: countNestedReplies(comment.id, repliesByParent)}))
+    .map(comment => ({
+      ...comment,
+      replies_count: countNestedReplies(comment.id, repliesByParent),
+      latest_activity_score: getThreadLatestScore(comment, repliesByParent)
+    }))
     .sort((a,b) => sortTopLevelComments(a,b));
+
+  let newDividerPrinted = false;
+  const hasUnread = commentSortMode === 'recent' && commentReadCutoff > 0 && topLevel.some(comment => isUnreadThread(comment));
 
   return topLevel.map((comment, index) => {
     const threadTone = index % 2 === 0 ? 'light' : 'dark';
-    return renderCommentCard(comment, repliesByParent, commentsById, 0, null, {threadTone});
+    const unread = isUnreadThread(comment);
+    const divider = hasUnread && unread && !newDividerPrinted
+      ? (newDividerPrinted = true, renderNewCommentsDivider())
+      : '';
+    return divider + renderCommentCard(comment, repliesByParent, commentsById, 0, null, {threadTone, unread});
   }).join('');
+}
+
+
+function renderNewCommentsDivider(){
+  return `
+    <div class="new-comments-divider" role="separator" aria-label="Nouvelles critiques depuis votre dernière visite">
+      <span>🍿 Nouvelles critiques depuis votre dernière visite</span>
+    </div>
+  `;
+}
+
+function isUnreadThread(comment){
+  if(commentSortMode !== 'recent' || !commentReadCutoff) return false;
+  return Number(comment.latest_activity_score || dateScore(comment.date)) > Number(commentReadCutoff || 0);
+}
+
+function getThreadLatestScore(comment, repliesByParent=new Map()){
+  let latest = dateScore(comment.edited_at || comment.date);
+  const replies = repliesByParent.get(String(comment.id)) || [];
+  replies.forEach(reply => {
+    latest = Math.max(latest, getThreadLatestScore(reply, repliesByParent));
+  });
+  return latest;
+}
+
+function getCommentsNewestScore(comments=[]){
+  return (comments || []).reduce((max, comment) => Math.max(max, dateScore(comment.edited_at || comment.date)), 0);
+}
+
+function commentReadStorageKey(slug=currentItem?.slug){
+  const viewerId = currentViewer?.id || 'guest';
+  return `${storePrefix}:read-comments:${viewerId}:${slug || 'unknown'}`;
+}
+
+function loadCommentReadCutoff(slug=currentItem?.slug){
+  try{
+    return Number(localStorage.getItem(commentReadStorageKey(slug))) || 0;
+  }catch(error){
+    return 0;
+  }
+}
+
+function saveCommentReadCutoff({force=false}={}){
+  if(!currentItem?.slug || !currentComments?.length) return;
+  const newest = getCommentsNewestScore(currentComments);
+  if(!newest) return;
+  const previous = loadCommentReadCutoff(currentItem.slug);
+  if(!force && newest <= previous) return;
+  try{
+    localStorage.setItem(commentReadStorageKey(currentItem.slug), String(newest));
+    commentReadCutoff = newest;
+    document.querySelectorAll('.new-comments-divider').forEach(node => node.remove());
+    document.querySelectorAll('.comment-card.is-unread-thread').forEach(node => node.classList.remove('is-unread-thread'));
+  }catch(error){
+    console.warn('Impossible de mémoriser la dernière critique lue.', error);
+  }
+}
+
+function setupCommentReadObserver(){
+  if(commentReadObserver){
+    commentReadObserver.disconnect();
+    commentReadObserver = null;
+  }
+  if(commentReadSaveTimer){
+    clearTimeout(commentReadSaveTimer);
+    commentReadSaveTimer = null;
+  }
+  const sentinel = document.querySelector('#commentsReadSentinel');
+  const list = document.querySelector('#commentsList');
+  if(!sentinel || !list || !currentComments?.length) return;
+  commentReadObserver = new IntersectionObserver(entries => {
+    const visible = entries.some(entry => entry.isIntersecting);
+    if(!visible) return;
+    if(commentReadSaveTimer) clearTimeout(commentReadSaveTimer);
+    commentReadSaveTimer = setTimeout(() => saveCommentReadCutoff(), 900);
+  }, {root:null, threshold:0.1});
+  commentReadObserver.observe(sentinel);
 }
 
 function buildRepliesTree(list=[]){
@@ -2113,7 +2207,7 @@ function sortTopLevelComments(a,b){
   if(commentSortMode === 'popular') return (Number(b.likes_count)||0) - (Number(a.likes_count)||0) || dateScore(b.date) - dateScore(a.date);
   if(commentSortMode === 'rated') return (Number(b.rating)||0) - (Number(a.rating)||0) || dateScore(b.date) - dateScore(a.date);
   if(commentSortMode === 'replies') return (Number(b.replies_count)||0) - (Number(a.replies_count)||0) || dateScore(b.date) - dateScore(a.date);
-  return dateScore(b.date) - dateScore(a.date);
+  return (Number(b.latest_activity_score) || dateScore(b.date)) - (Number(a.latest_activity_score) || dateScore(a.date));
 }
 
 function dateScore(date){
@@ -2135,12 +2229,13 @@ function renderCommentCard(comment, repliesByParent=new Map(), commentsById=new 
   const replyLabel = isReply ? 'Répondre à cette réponse' : 'Répondre';
   const flatMode = Boolean(options.flatMode);
   const threadTone = options.threadTone || 'light';
+  const unreadClass = options.unread ? 'is-unread-thread' : '';
   const replyMarkup = (!flatMode && childReplies.length)
     ? `<div class="comment-replies is-flat-thread">${flattenThreadReplies(comment.id, repliesByParent, commentsById, depth + 1).map(item => renderCommentCard(item.comment, repliesByParent, commentsById, item.depth, item.parent, {flatMode:true, threadTone})).join('')}</div>`
     : '';
 
   return `
-    <article class="comment-card thread-tone-${threadTone} ${isReply ? 'is-reply' : 'is-root-review'} depth-${visualDepth} ${depth >= COMMENT_MAX_VISUAL_DEPTH ? 'is-flat-depth' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${visualDepth}" data-actual-depth="${Math.min(Number(depth) || 0, 20)}">
+    <article class="comment-card thread-tone-${threadTone} ${unreadClass} ${isReply ? 'is-reply' : 'is-root-review'} depth-${visualDepth} ${depth >= COMMENT_MAX_VISUAL_DEPTH ? 'is-flat-depth' : ''}" id="comment-${escapeHtml(comment.id || '')}" data-comment-id="${escapeHtml(comment.id || '')}" data-depth="${visualDepth}" data-actual-depth="${Math.min(Number(depth) || 0, 20)}">
       <div class="comment-head community-head">
         <button class="comment-author profile-trigger" type="button" ${profileAttr} ${comment.viewer_uuid ? '' : 'disabled'}>
           ${PSAuth.avatarHtml(PSAuth.displayAvatar?.(comment) || comment.avatar || 'orbiteur', 'viewer-avatar')}
@@ -2670,6 +2765,7 @@ function updateCommentsListWithoutJump(){
   const scrollY = window.scrollY;
 
   list.innerHTML = renderComments(currentComments);
+  setupCommentReadObserver();
 
   const afterTop = list.getBoundingClientRect().top;
   const delta = afterTop - beforeTop;
@@ -2693,6 +2789,8 @@ window.addEventListener('beforeunload', () => {
   if(communityPollTimer) clearInterval(communityPollTimer);
   stopRealtimeComments();
   stopRealtimeLikes();
+  if(commentReadObserver) commentReadObserver.disconnect();
+  if(commentReadSaveTimer) clearTimeout(commentReadSaveTimer);
 });
 
 
