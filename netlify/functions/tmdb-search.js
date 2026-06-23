@@ -60,10 +60,12 @@ async function enrichTmdbResult(item) {
   "?language=fr-FR";
 
   const [details, credits, videos] = await Promise.all([
-  tmdbFetch(detailsUrl),
-  tmdbFetch(creditsUrl),
-  tmdbFetch(videosUrl)
-]);
+    tmdbFetch(detailsUrl),
+    tmdbFetch(creditsUrl),
+    tmdbFetch(videosUrl)
+  ]);
+
+  const seasonsData = isMovie ? [] : await fetchSeasonsData(item.id, details.seasons || []);
 
   const title = isMovie ? details.title : details.name;
   const originalTitle = isMovie ? details.original_title : details.original_name;
@@ -110,6 +112,7 @@ async function enrichTmdbResult(item) {
 
     seasons: !isMovie ? details.number_of_seasons || 0 : 0,
     episodes: !isMovie ? details.number_of_episodes || 0 : 0,
+    seasonsData,
 
     country: (details.production_countries || [])
       .map(c => c.name)
@@ -137,6 +140,48 @@ studios: (details.production_companies || [])
 
 
   };
+}
+
+
+async function fetchSeasonsData(tvId, seasons = []) {
+  const usableSeasons = seasons
+    .filter(season => Number(season.season_number) > 0)
+    .sort((a, b) => Number(a.season_number) - Number(b.season_number));
+
+  const detailedSeasons = await Promise.all(
+    usableSeasons.map(async season => {
+      try {
+        const data = await tmdbFetch(
+          `https://api.themoviedb.org/3/tv/${tvId}/season/${season.season_number}?language=fr-FR`
+        );
+        return {
+          seasonNumber: Number(data.season_number || season.season_number),
+          title: data.name || season.name || `Saison ${season.season_number}`,
+          overview: data.overview || season.overview || "",
+          poster: buildImageUrl(data.poster_path || season.poster_path, "w500"),
+          episodes: (data.episodes || []).map(episode => ({
+            episodeNumber: Number(episode.episode_number || 0),
+            title: episode.name || `Épisode ${episode.episode_number}`,
+            overview: episode.overview || "",
+            runtime: Number(episode.runtime || 0),
+            airDate: episode.air_date || "",
+            still: buildImageUrl(episode.still_path, "w500"),
+            videoEmbed: ""
+          })).filter(episode => episode.episodeNumber > 0)
+        };
+      } catch (error) {
+        return {
+          seasonNumber: Number(season.season_number),
+          title: season.name || `Saison ${season.season_number}`,
+          overview: season.overview || "",
+          poster: buildImageUrl(season.poster_path, "w500"),
+          episodes: []
+        };
+      }
+    })
+  );
+
+  return detailedSeasons.filter(season => season.seasonNumber > 0);
 }
 
 function getDirector(credits) {

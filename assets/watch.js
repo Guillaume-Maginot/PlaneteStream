@@ -19,6 +19,7 @@ const dbTables = {
 };
 
 let currentItem = null;
+let currentPlayback = null;
 let currentCatalogue = [];
 let currentViewer = null;
 let currentComments = [];
@@ -59,6 +60,8 @@ async function initWatch(){
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
+  const requestedSeason = Number(params.get('season') || 0);
+  const requestedEpisode = Number(params.get('episode') || 0);
 
   if(!slug){
     showWatchError('Aucun film sélectionné. La salle est belle, mais vide.');
@@ -78,8 +81,9 @@ async function initWatch(){
 
     currentItem = item;
     currentCatalogue = catalogue;
+    currentPlayback = getPlaybackForItem(item, {season: requestedSeason, episode: requestedEpisode});
 
-    if(!hasBetaVideo(item)){
+    if(!currentPlayback?.embed){
       showWatchError('Aucune vidéo bêta n’est disponible pour ce contenu. La salle reste fermée, les fauteuils râlent.');
       return;
     }
@@ -108,6 +112,7 @@ async function initWatch(){
 async function renderWatch(item, catalogue){
   const year = item.year || (item.releaseDate || '').slice(0,4) || '';
   const genres = (item.genres || []).slice(0,3).join(' • ');
+  const playbackLabel = currentPlayback?.label || '';
   const tmdbRating = item.rating ? Number(item.rating).toFixed(1) : '-';
   const localComments = getLocalComments(item.slug);
   const related = getRelated(item, catalogue);
@@ -119,7 +124,7 @@ async function renderWatch(item, catalogue){
           <div class="watch-intro">
             <p class="eyebrow">Salle de projection</p>
             <h1>${escapeHtml(item.title)}</h1>
-            <p class="watch-meta-line">${[year, formatType(item.type), genres, item.runtime ? item.runtime + ' min' : ''].filter(Boolean).map(escapeHtml).join(' • ')}</p>
+            <p class="watch-meta-line">${[year, formatType(item.type), playbackLabel, genres, item.runtime && !isSeries(item) ? item.runtime + ' min' : ''].filter(Boolean).map(escapeHtml).join(' • ')}</p>
           </div>
 
           <div class="cinema-frame" id="cinemaFrame">
@@ -224,7 +229,7 @@ async function renderWatch(item, catalogue){
 }
 
 function renderVideo(item){
-  const embed = String(item.videoEmbed || item.video_embed || '').trim();
+  const embed = String(currentPlayback?.embed || getPrimaryVideoEmbed(item) || '').trim();
   const src = extractEmbedSrc(embed);
 
   if(!src){
@@ -248,8 +253,69 @@ function renderVideo(item){
   `;
 }
 
+function getMediaType(item){
+  const value = String(item?.mediaType || item?.media_type || item?.type || '').toLowerCase();
+  if(['tv','serie','series'].includes(value)) return 'tv';
+  return 'movie';
+}
+
+function isSeries(item){
+  return getMediaType(item) === 'tv';
+}
+
+function getSeasonsArray(item){
+  if(Array.isArray(item?.seasons)) return item.seasons;
+  if(Array.isArray(item?.seasonsData)) return item.seasonsData;
+  if(Array.isArray(item?.seasonList)) return item.seasonList;
+  return [];
+}
+
+function episodeEmbed(episode){
+  return String(episode?.embed || episode?.videoEmbed || episode?.video_embed || '').trim();
+}
+
+function getPlaybackForItem(item, request={}){
+  const seasons = getSeasonsArray(item);
+  if(seasons.length){
+    const sortedSeasons = [...seasons].sort((a,b) => Number(a.number || a.season || 0) - Number(b.number || b.season || 0));
+    const requestedSeason = Number(request.season || 0);
+    const requestedEpisode = Number(request.episode || 0);
+    let fallback = null;
+
+    for(const season of sortedSeasons){
+      const seasonNumber = Number(season.number || season.season || 1);
+      const episodes = Array.isArray(season.episodes) ? [...season.episodes] : [];
+      episodes.sort((a,b) => Number(a.number || a.episode || 0) - Number(b.number || b.episode || 0));
+
+      for(const episode of episodes){
+        const embed = episodeEmbed(episode);
+        if(!embed) continue;
+        const episodeNumber = Number(episode.number || episode.episode || 1);
+        const playback = {
+          embed,
+          season: seasonNumber,
+          episode: episodeNumber,
+          title: episode.title || `Épisode ${episodeNumber}`,
+          label: `S${seasonNumber} · E${episodeNumber}${episode.title ? ` · ${episode.title}` : ''}`
+        };
+        if(!fallback) fallback = playback;
+        if(seasonNumber === requestedSeason && episodeNumber === requestedEpisode) return playback;
+      }
+    }
+
+    if(fallback) return fallback;
+  }
+
+  const embed = String(item?.videoEmbed || item?.video_embed || '').trim();
+  return {embed, season: null, episode: null, title: item?.title || '', label: ''};
+}
+
+function getPrimaryVideoEmbed(item){
+  return getPlaybackForItem(item, {}).embed;
+}
+
 function hasBetaVideo(item){
-  return Boolean(String(item?.videoEmbed || item?.video_embed || '').trim());
+  return Boolean(getPrimaryVideoEmbed(item));
 }
 
 function extractEmbedSrc(embed){

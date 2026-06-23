@@ -40,7 +40,7 @@ function renderDetail(item, catalogue, isLogged=false) {
     (item.releaseDate ? String(item.releaseDate).slice(0, 4) : '') ||
     '';
 
-  const runtime = item.runtime ? `${item.runtime} min` : '';
+  const runtime = getRuntimeLabel(item);
   const rating = item.rating ? `⭐ ${Number(item.rating).toFixed(1)} / 10` : '';
 
   const badges = [];
@@ -226,8 +226,68 @@ ${
   });
 }
 
+function getMediaType(item){
+  const value = String(item?.mediaType || item?.media_type || item?.type || '').toLowerCase();
+  if(['tv','serie','series'].includes(value)) return 'tv';
+  return 'movie';
+}
+
+function isSeries(item){
+  return getMediaType(item) === 'tv';
+}
+
+function getSeasonsArray(item){
+  if(Array.isArray(item?.seasons)) return item.seasons;
+  if(Array.isArray(item?.seasonsData)) return item.seasonsData;
+  if(Array.isArray(item?.seasonList)) return item.seasonList;
+  return [];
+}
+
+function getFirstEpisode(item){
+  const seasons = getSeasonsArray(item);
+  const sortedSeasons = [...seasons].sort((a,b) => Number(a.number || a.season || 0) - Number(b.number || b.season || 0));
+  for(const season of sortedSeasons){
+    const episodes = Array.isArray(season.episodes) ? [...season.episodes] : [];
+    episodes.sort((a,b) => Number(a.number || a.episode || 0) - Number(b.number || b.episode || 0));
+    const episode = episodes.find(ep => String(ep.embed || ep.videoEmbed || ep.video_embed || '').trim());
+    if(episode){
+      return {season, episode};
+    }
+  }
+  return null;
+}
+
+function getPrimaryVideoEmbed(item){
+  const firstEpisode = getFirstEpisode(item);
+  if(firstEpisode){
+    return String(firstEpisode.episode.embed || firstEpisode.episode.videoEmbed || firstEpisode.episode.video_embed || '').trim();
+  }
+  return String(item?.videoEmbed || item?.video_embed || '').trim();
+}
+
+function getWatchUrl(item){
+  const firstEpisode = getFirstEpisode(item);
+  const base = `watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1`;
+  if(!firstEpisode) return base;
+  const seasonNumber = Number(firstEpisode.season.number || firstEpisode.season.season || 1);
+  const episodeNumber = Number(firstEpisode.episode.number || firstEpisode.episode.episode || 1);
+  return `${base}&season=${encodeURIComponent(seasonNumber)}&episode=${encodeURIComponent(episodeNumber)}`;
+}
+
+function getRuntimeLabel(item){
+  if(isSeries(item)){
+    const seasonsCount = Number(item.seasonCount || item.seasonsCount || (Array.isArray(item.seasons) ? item.seasons.length : item.seasons) || 0);
+    const episodesCount = Number(item.episodeCount || item.episodesCount || item.episodes || 0);
+    return [
+      seasonsCount ? `${seasonsCount} saison${seasonsCount > 1 ? 's' : ''}` : '',
+      episodesCount ? `${episodesCount} épisode${episodesCount > 1 ? 's' : ''}` : ''
+    ].filter(Boolean).join(' • ');
+  }
+  return item.runtime ? `${item.runtime} min` : '';
+}
+
 function hasBetaVideo(item){
-  return Boolean(String(item?.videoEmbed || item?.video_embed || '').trim());
+  return Boolean(getPrimaryVideoEmbed(item));
 }
 
 function renderWatchAction(item, isLogged){
@@ -235,7 +295,7 @@ function renderWatchAction(item, isLogged){
     return '<span class="ghost is-disabled" aria-disabled="true">🎬 Vidéo indisponible</span>';
   }
   if(isLogged){
-    return `<a class="primary" href="watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1">▶ Regarder <span class="soft-note">bêta</span></a>`;
+    return `<a class="primary" href="${getWatchUrl(item)}">▶ Regarder <span class="soft-note">bêta</span></a>`;
   }
   return '<a class="primary" href="account.html">🔐 Connexion requise pour la bêta vidéo</a>';
 }

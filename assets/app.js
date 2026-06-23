@@ -310,7 +310,31 @@ function openRandomTitle(){
 
 
 function getWatchHref(item){
-  return `watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1`;
+  const firstEpisode = getFirstEpisode(item);
+  const base = `watch.html?slug=${encodeURIComponent(item.slug)}&autoplay=1`;
+  if(!firstEpisode) return base;
+  const seasonNumber = Number(firstEpisode.season.number || firstEpisode.season.season || 1);
+  const episodeNumber = Number(firstEpisode.episode.number || firstEpisode.episode.episode || 1);
+  return `${base}&season=${encodeURIComponent(seasonNumber)}&episode=${encodeURIComponent(episodeNumber)}`;
+}
+
+function getSeasonsArray(item){
+  if(Array.isArray(item?.seasons)) return item.seasons;
+  if(Array.isArray(item?.seasonsData)) return item.seasonsData;
+  if(Array.isArray(item?.seasonList)) return item.seasonList;
+  return [];
+}
+
+function getFirstEpisode(item){
+  const seasons = getSeasonsArray(item);
+  const sortedSeasons = [...seasons].sort((a,b) => Number(a.number || a.season || 0) - Number(b.number || b.season || 0));
+  for(const season of sortedSeasons){
+    const episodes = Array.isArray(season.episodes) ? [...season.episodes] : [];
+    episodes.sort((a,b) => Number(a.number || a.episode || 0) - Number(b.number || b.episode || 0));
+    const episode = episodes.find(ep => String(ep.embed || ep.videoEmbed || ep.video_embed || '').trim());
+    if(episode) return {season, episode};
+  }
+  return null;
 }
 
 function isExternalHref(href=''){

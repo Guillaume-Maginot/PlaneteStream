@@ -22,6 +22,9 @@ const catalogueSort = document.querySelector('#catalogueSort');
 const catalogueList = document.querySelector('#catalogueList');
 const catalogueCount = document.querySelector('#catalogueCount');
 const editPanel = document.querySelector('#editPanel');
+const seriesEpisodeManager = document.querySelector('#seriesEpisodeManager');
+const seriesEpisodeList = document.querySelector('#seriesEpisodeList');
+const collapseSeasonsBtn = document.querySelector('#collapseSeasonsBtn');
 const saveEditBtn = document.querySelector('#saveEditBtn');
 const cancelEditBtn = document.querySelector('#cancelEditBtn');
 const editFields = {
@@ -77,6 +80,7 @@ async function init() {
   catalogueSort?.addEventListener('change', renderCatalogueList);
   saveEditBtn?.addEventListener('click', saveEditedItem);
   cancelEditBtn?.addEventListener('click', closeEditor);
+  collapseSeasonsBtn?.addEventListener('click', toggleAllSeasons);
 
   renderCatalogueList();
 }
@@ -211,8 +215,9 @@ function buildCatalogueEntry(item) {
     director: item.director || 'À compléter',
     cast: item.cast || [],
     runtime: item.runtime || 0,
-    seasons: item.seasons || 0,
-    episodes: item.episodes || 0,
+    seasons: Number(item.seasons || 0),
+    episodes: Number(item.episodes || 0),
+    ...(Array.isArray(item.seasonsData) ? { seasonsData: item.seasonsData } : {}),
     country: item.country || '',
     language: item.language || '',
     rating: Number(item.rating || 0),
@@ -253,6 +258,7 @@ function normalizeTmdbItem(item) {
     runtime: Number(item.runtime || 0),
     seasons: Number(item.seasons || 0),
     episodes: Number(item.episodes || 0),
+    ...(Array.isArray(item.seasonsData) ? { seasonsData: item.seasonsData } : {}),
     country: item.country || '',
     language: item.language || '',
     rating: Number(item.rating || 0),
@@ -357,12 +363,16 @@ function catalogueRow(entry, index) {
   const genres = Array.isArray(entry.genres) ? entry.genres.slice(0, 3).join(', ') : '';
   const typeLabel = (entry.mediaType || '').toLowerCase() === 'tv' || entry.type === 'serie' ? 'Série' : 'Film';
   const featured = entry.featured ? ' · À la une' : '';
-  const betaVideo = entry.videoEmbed || entry.video_embed ? ' · 🎬 Vidéo bêta' : '';
+  const mediaSummary = getMediaEmbedSummary(entry);
+  const betaVideo = mediaSummary.ready ? ' · 🎬 Vidéo bêta' : '';
+  const missingBadge = mediaSummary.missing ? `<span class="catalogue-missing-badge">${escapeHtml(mediaSummary.label)}</span>` : '';
+
+  if (mediaSummary.missing) el.classList.add('is-missing-embed');
 
   el.innerHTML = `
     ${poster ? `<img src="${escapeAttr(poster)}" alt="Affiche ${escapeAttr(entry.title || '')}">` : '<div class="catalogue-thumb">Sans affiche</div>'}
     <div>
-      <h3>${escapeHtml(entry.title || 'Sans titre')}</h3>
+      <h3>${escapeHtml(entry.title || 'Sans titre')} ${missingBadge}</h3>
       <p>${escapeHtml(typeLabel)} · ${escapeHtml(entry.year || 'Année ?')} · ${escapeHtml(entry.category || 'section ?')}${escapeHtml(featured)}${escapeHtml(betaVideo)}</p>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
     </div>
@@ -396,6 +406,8 @@ function openEditor(index) {
   editFields.slug.value = entry.slug || slugify(entry.title || 'contenu');
   editFields.overview.value = entry.overview || '';
 
+  renderSeriesEpisodeEditor(entry);
+
   editPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -411,19 +423,26 @@ function saveEditedItem() {
     return;
   }
 
+  const updatedSeasonsData = collectSeriesEpisodeData(current);
+  const isSeries = isSeriesEntry(current);
+  const firstEpisodeEmbed = getFirstEpisodeEmbed(updatedSeasonsData);
+
   draft[editingIndex] = {
     ...current,
     title: editFields.title.value.trim() || current.title,
     slug: newSlug,
     year: editFields.year.value.trim(),
-    category: editFields.category.value || current.category || 'films',
+    category: editFields.category.value || current.category || (isSeries ? 'series' : 'films'),
     featured: editFields.featured.value === 'true',
     genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
     rating: Number(editFields.rating.value || 0),
     poster: editFields.poster.value.trim(),
     backdrop: editFields.backdrop.value.trim(),
     trailer: editFields.trailer.value.trim(),
-    videoEmbed: editFields.videoEmbed ? editFields.videoEmbed.value.trim() : (current.videoEmbed || ''),
+    videoEmbed: isSeries ? firstEpisodeEmbed : (editFields.videoEmbed ? editFields.videoEmbed.value.trim() : (current.videoEmbed || '')),
+    seasonsData: isSeries ? updatedSeasonsData : current.seasonsData,
+    seasons: isSeries ? updatedSeasonsData.length : Number(current.seasons || 0),
+    episodes: isSeries ? countEpisodes(updatedSeasonsData) : Number(current.episodes || 0),
     overview: editFields.overview.value.trim()
   };
 
@@ -437,7 +456,9 @@ function saveEditedItem() {
 function closeEditor() {
   editingIndex = -1;
   editPanel?.classList.add('is-hidden');
+  seriesEpisodeManager?.classList.add('is-hidden');
 }
+
 
 function deleteCatalogueItem(index) {
   const entry = draft[index];
@@ -450,6 +471,119 @@ function deleteCatalogueItem(index) {
   renderCatalogueList();
   closeEditor();
   showMessage('Contenu supprimé du brouillon. Paix à son affiche.');
+}
+
+
+function isSeriesEntry(entry) {
+  return (entry?.mediaType || '').toLowerCase() === 'tv' || entry?.type === 'serie' || Array.isArray(entry?.seasonsData);
+}
+
+function countEpisodes(seasonsData = []) {
+  return seasonsData.reduce((total, season) => total + (Array.isArray(season.episodes) ? season.episodes.length : 0), 0);
+}
+
+function getFirstEpisodeEmbed(seasonsData = []) {
+  const firstSeason = seasonsData.find(season => Array.isArray(season.episodes) && season.episodes.length);
+  const firstEpisode = firstSeason?.episodes?.find(episode => String(episode.videoEmbed || episode.embed || '').trim());
+  return String(firstEpisode?.videoEmbed || firstEpisode?.embed || '').trim();
+}
+
+function getEpisodeEmbedStats(entry) {
+  const seasonsData = Array.isArray(entry?.seasonsData) ? entry.seasonsData : [];
+  const episodes = seasonsData.flatMap(season => Array.isArray(season.episodes) ? season.episodes : []);
+  const total = episodes.length;
+  const missing = episodes.filter(episode => !String(episode.videoEmbed || episode.embed || '').trim()).length;
+  return {total, missing, ready: total > 0 && missing < total};
+}
+
+function getMediaEmbedSummary(entry) {
+  if (isSeriesEntry(entry)) {
+    const stats = getEpisodeEmbedStats(entry);
+    if (!stats.total) return {ready:false, missing:true, label:'Épisodes à importer'};
+    if (stats.missing) return {ready:stats.ready, missing:true, label:`${stats.missing} épisode${stats.missing > 1 ? 's' : ''} sans embed`};
+    return {ready:true, missing:false, label:'Tous les épisodes prêts'};
+  }
+  const ready = Boolean(String(entry?.videoEmbed || entry?.video_embed || entry?.embed || '').trim());
+  return {ready, missing:!ready, label:'Embed manquant'};
+}
+
+function renderSeriesEpisodeEditor(entry) {
+  if (!seriesEpisodeManager || !seriesEpisodeList) return;
+  if (!isSeriesEntry(entry)) {
+    seriesEpisodeManager.classList.add('is-hidden');
+    seriesEpisodeList.innerHTML = '';
+    return;
+  }
+
+  const seasonsData = ensureSeriesData(entry);
+  seriesEpisodeManager.classList.remove('is-hidden');
+
+  if (!seasonsData.length) {
+    seriesEpisodeList.innerHTML = '<div class="admin-empty">Aucune saison récupérée. Relance l’import TMDb de la série pour générer les épisodes.</div>';
+    return;
+  }
+
+  seriesEpisodeList.innerHTML = seasonsData.map((season, seasonIndex) => {
+    const episodes = Array.isArray(season.episodes) ? season.episodes : [];
+    const missing = episodes.filter(ep => !String(ep.videoEmbed || ep.embed || '').trim()).length;
+    return `
+      <section class="season-block" data-season-index="${seasonIndex}">
+        <button class="season-toggle" type="button" data-season-toggle>
+          <span>▼ Saison ${escapeHtml(String(season.seasonNumber || season.number || seasonIndex + 1))} · ${escapeHtml(season.title || '')}</span>
+          <small>${episodes.length} épisode${episodes.length > 1 ? 's' : ''} · ${missing ? `${missing} sans embed` : 'prête'}</small>
+        </button>
+        <div class="season-episodes">
+          ${episodes.map((episode, episodeIndex) => `
+            <div class="episode-edit-row" data-episode-row data-season-index="${seasonIndex}" data-episode-index="${episodeIndex}">
+              <strong>S${escapeHtml(String(season.seasonNumber || seasonIndex + 1))}E${escapeHtml(String(episode.episodeNumber || episode.number || episodeIndex + 1))}</strong>
+              <label>Titre épisode
+                <input type="text" data-episode-title value="${escapeAttr(episode.title || '')}">
+                <span class="${String(episode.videoEmbed || episode.embed || '').trim() ? 'episode-ready' : 'episode-missing'}">${String(episode.videoEmbed || episode.embed || '').trim() ? 'Embed renseigné' : 'Embed manquant'}</span>
+              </label>
+              <label>Embed épisode
+                <textarea data-episode-embed spellcheck="false" placeholder="<iframe src=&quot;https://...&quot; allowfullscreen></iframe>">${escapeHtml(episode.videoEmbed || episode.embed || '')}</textarea>
+              </label>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
+
+  seriesEpisodeList.querySelectorAll('[data-season-toggle]').forEach(button => {
+    button.addEventListener('click', () => button.closest('.season-block')?.classList.toggle('is-collapsed'));
+  });
+}
+
+function ensureSeriesData(entry) {
+  if (Array.isArray(entry.seasonsData)) return entry.seasonsData;
+  entry.seasonsData = [];
+  return entry.seasonsData;
+}
+
+function collectSeriesEpisodeData(current) {
+  if (!isSeriesEntry(current)) return current.seasonsData;
+  const base = JSON.parse(JSON.stringify(ensureSeriesData(current)));
+  if (!seriesEpisodeList) return base;
+
+  seriesEpisodeList.querySelectorAll('[data-episode-row]').forEach(row => {
+    const seasonIndex = Number(row.dataset.seasonIndex);
+    const episodeIndex = Number(row.dataset.episodeIndex);
+    const episode = base?.[seasonIndex]?.episodes?.[episodeIndex];
+    if (!episode) return;
+    episode.title = row.querySelector('[data-episode-title]')?.value.trim() || episode.title || `Épisode ${episode.episodeNumber || episodeIndex + 1}`;
+    episode.videoEmbed = row.querySelector('[data-episode-embed]')?.value.trim() || '';
+  });
+
+  return base;
+}
+
+function toggleAllSeasons() {
+  if (!seriesEpisodeList) return;
+  const blocks = [...seriesEpisodeList.querySelectorAll('.season-block')];
+  const shouldCollapse = blocks.some(block => !block.classList.contains('is-collapsed'));
+  blocks.forEach(block => block.classList.toggle('is-collapsed', shouldCollapse));
+  if (collapseSeasonsBtn) collapseSeasonsBtn.textContent = shouldCollapse ? 'Tout ouvrir' : 'Tout replier';
 }
 
 function updateGenreSelect(item) {

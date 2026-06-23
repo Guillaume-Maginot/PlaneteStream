@@ -268,6 +268,20 @@
     .edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
     @media(max-width:900px){.catalogue-editor-grid{grid-template-columns:1fr}.catalogue-toolbar{grid-template-columns:1fr}.catalogue-item{grid-template-columns:48px 1fr}.catalogue-buttons{grid-column:1/-1;justify-content:flex-start}}
 
+    .series-episode-manager{margin-top:16px;border:1px solid rgba(195,77,255,.20);border-radius:16px;background:linear-gradient(135deg,rgba(139,44,255,.08),rgba(255,255,255,.035));padding:14px;grid-column:1/-1}
+    .series-episode-manager.is-hidden{display:none}
+    .series-episode-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .series-episode-head h3{margin:0;color:#fff;font-size:16px}.series-episode-head p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+    .season-block{border:1px solid rgba(255,255,255,.10);border-radius:14px;background:rgba(0,0,0,.18);margin-top:10px;overflow:hidden}
+    .season-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:0;background:rgba(255,255,255,.045);color:#fff;padding:12px 14px;text-align:left;font-weight:900;cursor:pointer}
+    .season-toggle small{color:var(--muted);font-weight:800}.season-block.is-collapsed .season-episodes{display:none}
+    .season-episodes{display:grid;gap:10px;padding:12px}
+    .episode-edit-row{display:grid;grid-template-columns:90px minmax(150px,1fr) minmax(220px,1.4fr);gap:10px;align-items:start;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.035);padding:10px}
+    .episode-edit-row strong{font-size:12px;color:#ffd98a;letter-spacing:.04em;text-transform:uppercase;padding-top:10px}.episode-edit-row label{font-size:11px;color:var(--muted);display:grid;gap:5px}.episode-edit-row input,.episode-edit-row textarea{width:100%;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10111f;color:#fff;padding:10px;font:inherit}.episode-edit-row textarea{min-height:76px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;resize:vertical}
+    .episode-missing{color:#ffd18a;font-size:11px;font-weight:900}.episode-ready{color:#a9ffd4;font-size:11px;font-weight:900}
+    @media(max-width:900px){.episode-edit-row{grid-template-columns:1fr}.episode-edit-row strong{padding-top:0}}
+
+
 
     textarea{
       min-height:260px;
@@ -1635,6 +1649,17 @@
             <label class="full">Bande-annonce YouTube ID<input id="editTrailer" type="text"></label>
             <label class="full">🎬 Code embed bêta vidéo<textarea id="editVideoEmbed" class="embed-field" spellcheck="false" placeholder="<iframe src=&quot;https://...&quot; allowfullscreen></iframe>"></textarea></label>
             <label class="full">Résumé<textarea id="editOverview"></textarea></label>
+
+            <div class="series-episode-manager is-hidden" id="seriesEpisodeManager">
+              <div class="series-episode-head">
+                <div>
+                  <h3>📺 Saisons & épisodes</h3>
+                  <p>Les épisodes viennent de TMDb. Colle simplement les embeds épisode par épisode, le JSON se construit tout seul.</p>
+                </div>
+                <button class="ghost" type="button" id="collapseSeasonsBtn">Tout replier</button>
+              </div>
+              <div id="seriesEpisodeList"></div>
+            </div>
           </div>
           <div class="edit-actions">
             <button class="ghost" type="button" id="cancelEditBtn">Annuler</button>
@@ -1813,7 +1838,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.0.8-embed-buttons"></script>
+  <script src="assets/admin.js?v=3.1.0-series-admin"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>
