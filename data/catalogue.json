@@ -1078,7 +1078,7 @@
     "releaseDate": "2019-07-25",
     "type": "serie",
     "mediaType": "tv",
-    "category": "series",
+    "category": "a-la-une",
     "genres": [
       "Science-Fiction & Fantastique",
       "Action & Adventure"
@@ -1095,11 +1095,414 @@
     "runtime": 0,
     "seasons": 5,
     "episodes": 40,
+    "seasonsData": [
+      {
+        "seasonNumber": 1,
+        "title": "Saison 1",
+        "overview": "THE BOYS est une variation irrévérencieuse sur des super-héros, aussi connus que des vedettes, aussi influents que des politiciens et aussi révérés que des dieux, qui abusent de leurs super-pouvoirs au lieu de faire le bien. Les sans pouvoir affrontent les surpuissants dans The Boys, qui nous entraîne dans une quête héroïque pour dévoiler la vérité sur les Sept et le redoutable soutien de Vought.",
+        "poster": "https://image.tmdb.org/t/p/w500/wEGjCJ2xWdnssIXl9szcKb5hBsh.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "La règle du jeu",
+            "overview": "Lorsqu'un super-héros tue l'amour de sa vie, Hughie Campbell, vendeur de matériel informatique, s'allie à Billy Butcher, un justicier qui n'a qu'une obsession, buter tous les super-héros corrompus. La vie de Hughie va basculer à tout jamais.",
+            "runtime": 62,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/goKrbjePcjv6eJ7covjw0MPT62V.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/pma5wf49qysq\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Cerise",
+            "overview": "Un super-héros se fait choper par la bande, Stella se venge, Le Protecteur se lâche et un sénateur s'encanaille.",
+            "runtime": 59,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/nNfmRSQp42V6AS5bO1S7LMv2QOd.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/kgd6msodonw5\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "Prends ça",
+            "overview": "C'est la course du siècle. A-Train et Onde de Choc se battent pour le titre de \"l'Homme le plus rapide du monde\". Du côté des justiciers, la bande est enfin au complet, et ça, ça fait du bien.",
+            "runtime": 55,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/mF7TK7LMbWhlLz1Q5M1662TiKvP.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xj6ia7ir4qo8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "La fille",
+            "overview": "Dans cet épisode si particulier de The Boys… on voit du sang, du gore, des détournements d'avion, de la folie, des fantômes et une femme très mystérieuse. Ah oui, et beaucoup de cœur, aussi bien celui des sentiments que l'organe sanguinolent.",
+            "runtime": 56,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/1JvhnZyeQkIUrhr0OUL6S3sN5Kt.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/kpwnyw4av9rc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Des bleus à l'âme",
+            "overview": "La bande se dirige vers \"l'expo de l'Espérance\" pour suivre une piste prometteuse dans leur guerre contre les Supers. Il se peut qu'il y ait... PEUT-ÊTRE... un bébé meurtrier, mais tu devras le regarder pour le découvrir par toi-même.",
+            "runtime": 60,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/8eimUVjdXKtVb4OMzQn3aj3I0XN.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/04jjdn8e7vm6\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Les innocents",
+            "overview": "Stella fait face aux conséquences de ses révélations à l'exposition Believe et s'affirme face à Madelyn. La Crème explique aux autres membres du groupe ce que lui et Butcher ont découvert à l'hôpital : Vought injecte le composant V à des enfants sous couvert d'un vaccin, fabriquant ainsi les super-héros. Madelyn décide d'écarter l'Homme poisson des 7 en l'envoyant dans une autre ville. Butcher tente de convaincre Hughie qu'il ne doit pas faire confiance à Stella et lui confesse pourquoi il souhaite se venger des super-héros : sa femme a été violée par le Protecteur, avant de disparaître. La Crème et le Français décident de faire appeler à un ancien super-héros, Mesmer, pour comprendre qui est la fille, dont le nom s'avère être Kimiko.",
+            "runtime": 60,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/vWZAUXUszcg4EdmptxCk0ycKOMI.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/anhn5ofj8qpe\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "Question de survie",
+            "overview": "Ne jamais faire confiance à un super-héros au bout du rouleau - les Boys apprennent cette leçon à la dure. Pendant ce temps, Le Protecteur plonge dans son passé, Stella découvre que l'amour, ça fait mal, et si jamais vous êtes à Sandusky, dans l'Ohio et qu'une fille demande si elle peut toucher vos branchies, dites NON.",
+            "runtime": 56,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/cx7dCZVzCX9pAyC6zE6lC6jkuyF.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/l2tg0lgnnt20\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "On ne prend plus de gants",
+            "overview": "C'est le grand final de la saison ! Tout est résolu ! Les secrets sont révélés ! Les conflits sont… conflictuels ! Des personnages explosent, et bien plus encore !",
+            "runtime": 66,
+            "airDate": "2019-07-25",
+            "still": "https://image.tmdb.org/t/p/w500/gGNAbWmON1zOa2mZcBdu9gYrDCg.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ypadzp0xknck\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 2,
+        "title": "Saison 2",
+        "overview": "Dans la saison 2 de THE BOYS, la tension monte. Butcher, Hughie et le reste de l'équipe se remettent des évènements de la saison 1. En fuite, ils ont du mal à se défendre contre les Superhéros. Vought, la société qui gère les héros, profite de la panique provoquée par les Supervillains pour s’enrichir. Une nouvelle héroïne, Stormfront, débarque à Vought défiant Le Protecteur, déjà sur les nerfs.",
+        "poster": "https://image.tmdb.org/t/p/w500/3RRTCSQ6uaNTBhZBnD3uW8RPD0w.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Comme à la fête foraine",
+            "overview": "La situation est plus que délicate pour les Boys : Butcher, qui reste introuvable, a été accusé du meurtre de Madelyn. Ils sont accusés de terrorisme et tous recherchés. Contraints de rester caché, Hughie tente malgré tout de revoir Annie, toujours chez les Sept. Ensemble, ils continuent de travailler à la chute de Vought, ce qui pourrait mettre la super-héroïne en grand danger. Le Protecteur compte profiter de la disparition de Madelyn pour prendre les commandes, mais c'est sans compter sur Edgar, le directeur de Vought. Pendant ce temps, l'Homme-Poisson continue de sombrer et Translucide étant officiellement mort, les Sept ont besoin de nouvelles recrues pour être au complet.",
+            "runtime": 63,
+            "airDate": "2020-09-03",
+            "still": "https://image.tmdb.org/t/p/w500/3N5CZhL6jXbuSA3qS7G46PiAZND.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/yj8da56vezz9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Préparation propre et planification",
+            "overview": "Butcher est de retour, ce qui ne plait pas à Hughie. Le Protecteur décide de passer du temps avec son fils, Ryan, sous le regard impuissant de Becca. L'Homme-Poisson reste chez l'Aigle qui lui présente sa marraine de l'Eglise du collectif pour l'aider à retrouver sa voix et peut être sa place auprès des Sept. La Reine Maeve, Stella et Stormfront doivent donner des interviews pour parler de la nouvelle recrue des Sept, mais Maeve a un empêchement, Stella doit gérer le retour de A-Train et son enquête sur le composant V. Butcher passe un accord avec la CIA pour faire tomber Vought et permettre à tous les Boys de retrouver leurs vies normales en échange d'un Super-Terroriste.",
+            "runtime": 59,
+            "airDate": "2020-09-03",
+            "still": "https://image.tmdb.org/t/p/w500/m6LSiAimRiST07sC0vsUDITojT3.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/b9erazsxth6a\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "La charge de la brigade légère",
+            "overview": "Les Boys doivent gérer la garde du Super-Terroriste, Kenji, le frère de Kimiko, le temps de le remettre à la CIA, tout en restant discret étant toujours recherchés eux même en tant que terroristes. Pendant ce temps, Stella a réussi à dévoiler anonymement l'existence du composant V et savoure sa victoire, bien que A-Train ne soit pas loin pour la faire déchanter. Le Protecteur teste les pouvoirs de son fils et, après un échec à nouer des liens avec lui, retourne auprès des Sept pour assurer sa position de leader. L'Homme-poisson a une profonde discussion avec lui-même.",
+            "runtime": 61,
+            "airDate": "2020-09-03",
+            "still": "https://image.tmdb.org/t/p/w500/theLFUijxwD0uzdiNiJVzOpCVSG.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/elnkgznbfvk3\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Rien de tel dans le monde entier",
+            "overview": "Road-Trip ! Les Boys se rendent en Caroline du Nord pour suivre la piste d’une mystérieuse Super nommée Liberty. Saviez-vous que l’on peut identifier un serial-killer par son type de barre chocolatée préférée ? Observez et apprenez à reconnaitre les signes avant-coureurs ! Cet épisode pourrait vous sauver la vie !",
+            "runtime": 70,
+            "airDate": "2020-09-10",
+            "still": "https://image.tmdb.org/t/p/w500/6cAdAEomp2I0JwSYNcobAB1NIdm.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/tfbtg1momwn4\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Quand faut y aller, faut y aller",
+            "overview": "VoughtStudios est heureux d'annoncer que le tournage de #LAubedesSept a commencé. 12 ans de films VCU l'y ont conduit. Si vous aimez les films sur Un Héros, vous adorerez un film sur Sept Héros. Retrouvez-y le nouveau membre des Sept @RealStormfront et découvrez comment la légende a commencé ! Au cinéma en été 2021 !",
+            "runtime": 63,
+            "airDate": "2020-09-17",
+            "still": "https://image.tmdb.org/t/p/w500/pn5adU2bTuMvBUZoEx2qDmSS8dv.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ztovzslctjgw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "On ne prend plus de gants",
+            "overview": "Le Sage Grove Center® se consacre à la prise en charge des personnes souffrant de maladies mentales. Nos bienveillants médecins et conseillers fournissent des services personnalisés pour que chaque patient puisse croquer la vie à pleine dent. Si vous, ou un de vos proches, avez besoin d'aide, appelez le Sage Grove Center dès aujourd'hui au 1-800-122-8585.",
+            "runtime": 66,
+            "airDate": "2020-09-24",
+            "still": "https://image.tmdb.org/t/p/w500/ApfUQLbraTvHT1ZQ5qSafKkJC9Z.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/syzbgzpdksxz\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "Le fils du boulanger",
+            "overview": "La mascarade de commission d’enquête contre Vought initiée par Victoria Neuman se tiendra dans 3 JOURS. La laisserons-nous incriminer les Super-héros qui nous protègent ? Aux armes, citoyens, et rejoignez-nous contre cette flagrante politique partisane. Envoyez 20 dollars à VOUGHTPROMISE.COM et dites ainsi à Neuman et à son tribunal fantoche qu'ils ne gagneront pas, \"Pas tant qu’on est là\".",
+            "runtime": 56,
+            "airDate": "2020-10-01",
+            "still": "https://image.tmdb.org/t/p/w500/z2npefs7R96VwfgvhGWoPYpdLFj.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3jrhnha0wnwc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "Les innocents",
+            "overview": "*** Alerte Super-vilain *** Ceci est une notification du Département de la Sécurité intérieure. Une alerte au super-vilain est en cours dans les environs. Veuillez être vigilant et signaler toute personne ou activité suspecte. Si vous pensez avoir vu un super-vilain, ne vous en approchez pas et ne tentez pas de l'appréhender. Contactez immédiatement les forces de l'ordre.",
+            "runtime": 70,
+            "airDate": "2020-10-08",
+            "still": "https://image.tmdb.org/t/p/w500/ur98U8EhoxcGD2dpnpP4dCk9W09.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/62xs6f0s076z\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 3,
+        "title": "Saison 3",
+        "overview": "Ce fût une année calme. Le Protecteur est maîtrisé, Butcher travaille pour le gouvernement, supervisé par Hughie. Mais ces deux hommes ont hâte de transformer cette paix et cette tranquilité en sang et en os. Lorsque The Boys apprennent l'existence d'une arme mystérieuse capable de détruire un super, il s'en suit un chamboulement au sein des Sept, qui va conduire à une guerre et à la poursuite…",
+        "poster": "https://image.tmdb.org/t/p/w500/2secZlYhFcFHR73LV8JFH6bEVzY.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Retour de bâton",
+            "overview": "Après sa scandaleuse liaison avec Stormfront, le Protecteur fait son mea culpa publiquement lors de l'avant-première du nouveau film sur les \"Sept\" au Lamplighter Memorial Theater de la Tour Vought. Hughie travaille désormais au sein du Bureau des affaires surhumaines avec la députée Victoria Neuman pour traquer les brebis galeuses parmi les super-héros. Depuis un an, Butcher s'efforce de se racheter une ligne de conduite en veillant sur le petit Ryan et en contrôlant sa colère...",
+            "runtime": 64,
+            "airDate": "2022-06-02",
+            "still": "https://image.tmdb.org/t/p/w500/yeAHbQ11ExTFWg34gnP4dGNwfk5.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/777g7dmo7vhv\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Le seul homme dans le ciel",
+            "overview": "Hughie partage ses récentes découvertes sur Vic avec Stella. De son côté, celle-ci est une fois de plus contrariée par le Protecteur. Toujours hanté par ses démons, Butcher peine à garder le contrôle. Persuadé qu'il existe un moyen de se débarrasser du Protecteur, il tente de convaincre la Crème de se rallier à lui pour enquêter sur la disparition du Petit Soldat et ainsi découvrir comment tuer le héros chéri de l'Amérique.",
+            "runtime": 62,
+            "airDate": "2022-06-02",
+            "still": "https://image.tmdb.org/t/p/w500/zszqaeKmSNB24q2tZigx29GH7zs.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/pzpmi3a5mdw4\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "Côte de barbarie",
+            "overview": "Le discours du Protecteur lui permet - contre toute attente - de voir sa côte de popularité remonter. Et son assurance aussi. Stella et le Protecteur doivent s'entendre sur le choix des recrues qui intègreront les Sept. Un fantôme du passé réapparaît dans la vie du Français. Et Butcher subit les effets secondaires consécutif à l'injection du composé V provisoire...",
+            "runtime": 63,
+            "airDate": "2022-06-02",
+            "still": "https://image.tmdb.org/t/p/w500/ro9cmO9k5g6ZnPYSTu31juUhpRF.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/17sddr5ffrs9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Le glorieux plan quinquennal",
+            "overview": "Acculée encore une fois dans ses retranchements lorsque le Protecteur annonce publiquement qu'ils sont en couple, Stella cherche des alliés pour contrer les agissements de cet adversaire imprévisible. Butcher et sa bande se rendent en Russie pour mettre la main sur une arme susceptible de terrasser le Protecteur. A-Train, pour sa part, rechigne de ne pas être pris au sérieux...",
+            "runtime": 62,
+            "airDate": "2022-06-09",
+            "still": "https://image.tmdb.org/t/p/w500/adNh9TIlLKh0uUug3KOiuhFINAh.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rzb9ix7ne35h\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Dernier regard sur un monde de mensonges",
+            "overview": "Butcher, la Crème et les autres sont abasourdis par leur découverte en Russie. Après les récents changements au sein du Conseil d'administration de Vought, l'Homme-poisson prend la tête de la section Analyse Criminelle. Kimiko étant au plus mal, le Français est très inquiet. Stella, dévastée par le coup d'Etat du Protecteur, n'apprécie pas les nouvelles rapportées par Hughie...",
+            "runtime": 63,
+            "airDate": "2022-06-16",
+            "still": "https://image.tmdb.org/t/p/w500/m5hFjth3uqHRdDQmFr4xDhMPyzc.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/yilb0cm5tj2u\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Hérogasme",
+            "overview": "Ayant découvert qui est derrière les dernières attaques, le Protecteur espère que l'information, qui pourrait être fatale pour Vought, ne fuitera pas. Sachant qu'il est l'un des prochains sur la liste, Black Noir, l'un des survivants de l'équipe de Petit Soldat, craint pour sa vie et se cache. Butcher passe un marché avec son nouvel allié. Et Stella tente de convaincre la Crème de l'aider à éviter le pire...",
+            "runtime": 63,
+            "airDate": "2022-06-23",
+            "still": "https://image.tmdb.org/t/p/w500/xmGw9EVZ6jSeWz0K9vyfim3KvhZ.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/b5ihrxwguxpn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "La chandelle qui éclaire la chambre à coucher",
+            "overview": "Suite à la publication de sa vidéo sur les réseaux sociaux, Stella est discréditée par Vought. Butcher et Hughie continuent de s'injecter du V provisoire pour pouvoir se défendre face à leurs adversaires. Le Protecteur est inquiet de la tournure des événements. Butcher est plongé malgré lui dans son enfer personnel, confronté seul face aux démons de son passé. Kimiko fait une demande inhabituelle à Stella...",
+            "runtime": 67,
+            "airDate": "2022-06-30",
+            "still": "https://image.tmdb.org/t/p/w500/u8PIO0omODZrNDqe5QXozBgjmAJ.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ga8yp82x23p6\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "L'Instant vieux blancs déchainés",
+            "overview": "L'opinion publique est divisée après les déclarations du Protecteur sur le live Instagram de Stella, et les actions de Vought s'effondrent. Hughie ressent de plus en plus les effets secondaires du V provisoire. Maeve saisit une opportunité. Et personne ne sait comment vont réagir Petit Soldat et le Protecteur...",
+            "runtime": 64,
+            "airDate": "2022-07-07",
+            "still": "https://image.tmdb.org/t/p/w500/9P4mzgcMj0XrmXldeuqmTlnKWbI.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2za7nbdo13kp\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 4,
+        "title": "Saison 4",
+        "overview": "Le monde est au bord du gouffre. Victoria Neuman est plus proche que jamais du Bureau Ovale et sous la coupe du Protecteur, de plus en plus puissant. Le Charcutier, à qui il ne reste que quelques mois, a perdu le fils de Becca et son rôle de leader. Les membres de l'équipe ne supportent plus ses mensonges. Mais ils doivent à tout prix s'unir pour sauver le monde avant qu'il ne soit trop tard.",
+        "poster": "https://image.tmdb.org/t/p/w500/c5uMUsVp9vFAxvlyunpUis4zAVW.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Le département des sales tours à gogo",
+            "overview": "Le monde est au bord du gouffre. Victoria Neuman est plus proche que jamais du Bureau Oval et sous la coupe musclée du Protecteur, qui consolide son pouvoir. Butcher, qui n’a plus que quelques mois à vivre, a perdu le fils de Becca et son poste de chef des Boys.",
+            "runtime": 66,
+            "airDate": "2024-06-13",
+            "still": "https://image.tmdb.org/t/p/w500/1LngDWtMVzS1Mw3os1KCDVnI7G9.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0ou63vgqen28\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "La vie parmi les sceptiques",
+            "overview": "Vous saviez que les mondialistes mettaient des produits chimiques dans la nourriture pour nous rendre homos, que Dakota Bob était un démon venu tout droit de l'enfer et que la lune n'existait pas ? Découvrez tout ce qu'ils vous cachent à #VéritéCon",
+            "runtime": 62,
+            "airDate": "2024-06-13",
+            "still": "https://image.tmdb.org/t/p/w500/3VwsB3ZXPpFnGw3omnGpqPJMkLe.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/140t9nfmynly\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "On laisse l'alarme sonner",
+            "overview": "En décembre à la Vought Coin Arena, l'histoire de Noël est présentée telle qu'elle devait être contée : sur la glace. Billets disponibles sur VoughtSurGlace.com.",
+            "runtime": 61,
+            "airDate": "2024-06-13",
+            "still": "https://image.tmdb.org/t/p/w500/k3ixtDia595oabaPZQBOmsrwiAb.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/tpvd32iya6pf\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "La sagesse des âges",
+            "overview": "Vought News Network est fière de présenter sa nouvelle série #Véritéexplosive ! Suivez la présentatrice Firecracker et ses célèbres invités pour la première de six heures en direct où ils dénoncent les Parties Adrénochromes de Stella !",
+            "runtime": 67,
+            "airDate": "2024-06-20",
+            "still": "https://image.tmdb.org/t/p/w500/n4xTP8x24KeKNhCOSuBAHrUPSNw.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/zpoxsiq7w8yr\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Fais attention au croquemitaine, mon fils",
+            "overview": "Votre attention #superfans ! Cette année à #V52, découvrez A-Train en direct et en personne qui vous fera découvrir un avant-goût de son histoire vraie et passionnante : LA FORMATION D'A-TRAIN ! V52 : Proposé par les fans, pour les fans !",
+            "runtime": 69,
+            "airDate": "2024-06-27",
+            "still": "https://image.tmdb.org/t/p/w500/fHeFRfcd21yOzCR5JBclaN8LuQs.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rumbdxpw4k0c\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Sale affaire",
+            "overview": "Les Services Pénitentiaires Vernon se proposent d'aider activement leurs prisonniers afin qu'ils réussissent leur réinsertion. Chez Vernon, ce n'est pas une question de détention, mais de famille.",
+            "runtime": 66,
+            "airDate": "2024-07-04",
+            "still": "https://image.tmdb.org/t/p/w500/cFrUAYssPVPCsgHVFzIrxrkOELW.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/e6wnq5c0n676\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "La taupe",
+            "overview": "Salut, les jeunes ! Votre voisin, votre oncle, ou même vos parents essaient de détruire l'Amérique ? Découvrez comment l'empêcher sur l'Avenue V Christmas Special ! Si vous voyez quelque chose, dénoncez-le !",
+            "runtime": 65,
+            "airDate": "2024-07-11",
+            "still": "https://image.tmdb.org/t/p/w500/8bUDuBfDouc2A8Dm0495ad21v2w.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/gy16mqz62ewq\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "Final de la saison quatre",
+            "overview": "À tous les patriotes ! Nous devons empêcher que ces élections truquées soient confirmées demain ! Mettons fin au projet anti-Sage de Bob Singer ! PRÉPAREZ-VOUS À LA GUERRE ! #LàOùUnSeulVaVoughtVa",
+            "runtime": 69,
+            "airDate": "2024-07-18",
+            "still": "https://image.tmdb.org/t/p/w500/kv7DTgyuKz5gsSwfoH92Tnam0lA.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/on9rzv88i350\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 5,
+        "title": "Saison 5",
+        "overview": "Le Protecteur contrôle l'Amérique par la terreur fasciste et l'emprisonnement des contestataires au sein des camps de la liberté. Butcher, Hughie et les Boys organisent une résistance désespérée et font face à des obstacles insurmontables afin de stopper son règne tyrannique.",
+        "poster": "https://image.tmdb.org/t/p/w500/ilM3eOVEpPFUqTRk0gxCZSF0ERF.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Quarante centimètres de pure dynamite",
+            "overview": "VOTRE ATTENTION CAMPEURS DE LA LIBERTÉ : TOUTE TENTATIVE D'ÉVASION SERA PASSIBLE DE MORT. Passez une super journée !",
+            "runtime": 64,
+            "airDate": "2026-04-08",
+            "still": "https://image.tmdb.org/t/p/w500/8IjPgjPdwHjlXbxn8ixIGrFFFef.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ihpcldjulzh0\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Teenage Kix",
+            "overview": "Ce soir à 21 h, un reportage spécial @VoughtNews : votre moitié est-elle une terroriste Stellactiviste cachée ?",
+            "runtime": 63,
+            "airDate": "2026-04-08",
+            "still": "https://image.tmdb.org/t/p/w500/6SGsPDrZlNoMz1QLMEvkJHcksGg.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/vatffqn3v3xb\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "Vous êtes tous des gros bâtards",
+            "overview": "Faites-la chavirer avec le déo Thunder mangue V-Bro de Vought ! Elle ne comprendra rien à ce qui lui arrive !",
+            "runtime": 66,
+            "airDate": "2026-04-15",
+            "still": "https://image.tmdb.org/t/p/w500/4ILWEFbicFs4uDpjwNJv4oOHr9v.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ihrwclltr1ac\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Roi des Enfers",
+            "overview": "DANS CETTE MAISON, ON A FOI EN LE PROTECTEUR !",
+            "runtime": 66,
+            "airDate": "2026-04-22",
+            "still": "https://image.tmdb.org/t/p/w500/g7OxzZjnOuh7osDYoKncDum6F05.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/l34emdj8ib10\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Cul sec",
+            "overview": "Ce soir à 21 h, un reportage spécial @VoughtNews : trahison à Hollywood ! Lesquelles de vos stars préférées sont Stellactivistes ?",
+            "runtime": 69,
+            "airDate": "2026-04-29",
+            "still": "https://image.tmdb.org/t/p/w500/jM2KeEMNZci6skzwPCYkH7wC3DT.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ezxbqkjf5a1f\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Même si le Ciel s'effondre",
+            "overview": "Disponible maintenant, EXCLUSIVEMENT dans les @cinémasVMC, le nouveau #SeauÀPopcornHommePoisson pour seulement 32,99 $ !",
+            "runtime": 65,
+            "airDate": "2026-05-06",
+            "still": "https://image.tmdb.org/t/p/w500/4TA0dxVoNmiS98rLFBx6CDCov7p.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/tbck4587wlby\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "Le Français, la Femme et un mec qu'on appelle La Crème",
+            "overview": "AVERTISSEMENT : SOYEZ PRUDENTS EN ENTRANT EN STUDIO. LES ARTISTES PEUVENT UTILISER LEURS SUPER POUVOIRS.",
+            "runtime": 71,
+            "airDate": "2026-05-13",
+            "still": "https://image.tmdb.org/t/p/w500/egwutLDfRnfVi49RiBzMTkZdYYR.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/i6cupzw2jddx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "De sang et d'os",
+            "overview": "Dimanche de Pâques. 14 h. En direct dans @VoughtNews. Assistez au reboot de l'univers par le Protecteur.",
+            "runtime": 67,
+            "airDate": "2026-05-20",
+            "still": "https://image.tmdb.org/t/p/w500/ezEbcxPgVMPRFYxRsWkokdLRUFK.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/owiwl8o2yhom\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      }
+    ],
     "country": "United States of America",
     "language": "en",
-    "rating": 8.5,
-    "popularity": 287.9306,
+    "rating": 8.451,
+    "popularity": 248.0532,
     "trailer": "yRwGoS-KPVE",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/pma5wf49qysq\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "tagline": "Ne rencontrez jamais vos héros.",
     "status": "Ended",
     "homepage": "https://www.amazon.com/dp/B07QQQHK1Y",
