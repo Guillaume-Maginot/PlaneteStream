@@ -34,6 +34,7 @@ const editFields = {
   poster: document.querySelector('#editPoster'),
   backdrop: document.querySelector('#editBackdrop'),
   trailer: document.querySelector('#editTrailer'),
+  videoEmbed: document.querySelector('#editVideoEmbed'),
   slug: document.querySelector('#editSlug'),
   overview: document.querySelector('#editOverview')
 };
@@ -213,6 +214,7 @@ function buildCatalogueEntry(item) {
     rating: Number(item.rating || 0),
     popularity: Number(item.popularity || 0),
     trailer: item.trailer || '',
+    videoEmbed: item.videoEmbed || item.video_embed || '',
     tagline: item.tagline || '',
     status: item.status || '',
     homepage: item.homepage || '',
@@ -252,6 +254,7 @@ function normalizeTmdbItem(item) {
     rating: Number(item.rating || 0),
     popularity: Number(item.popularity || 0),
     trailer: item.trailer || '',
+    videoEmbed: item.videoEmbed || item.video_embed || '',
     tagline: item.tagline || '',
     status: item.status || '',
     homepage: item.homepage || '',
@@ -350,12 +353,13 @@ function catalogueRow(entry, index) {
   const genres = Array.isArray(entry.genres) ? entry.genres.slice(0, 3).join(', ') : '';
   const typeLabel = (entry.mediaType || '').toLowerCase() === 'tv' || entry.type === 'serie' ? 'Série' : 'Film';
   const featured = entry.featured ? ' · À la une' : '';
+  const betaVideo = entry.videoEmbed || entry.video_embed ? ' · 🎬 Vidéo bêta' : '';
 
   el.innerHTML = `
     ${poster ? `<img src="${escapeAttr(poster)}" alt="Affiche ${escapeAttr(entry.title || '')}">` : '<div class="catalogue-thumb">Sans affiche</div>'}
     <div>
       <h3>${escapeHtml(entry.title || 'Sans titre')}</h3>
-      <p>${escapeHtml(typeLabel)} · ${escapeHtml(entry.year || 'Année ?')} · ${escapeHtml(entry.category || 'section ?')}${escapeHtml(featured)}</p>
+      <p>${escapeHtml(typeLabel)} · ${escapeHtml(entry.year || 'Année ?')} · ${escapeHtml(entry.category || 'section ?')}${escapeHtml(featured)}${escapeHtml(betaVideo)}</p>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
     </div>
     <div class="catalogue-buttons">
@@ -384,6 +388,7 @@ function openEditor(index) {
   editFields.poster.value = entry.poster || '';
   editFields.backdrop.value = entry.backdrop || '';
   editFields.trailer.value = entry.trailer || '';
+  if (editFields.videoEmbed) editFields.videoEmbed.value = entry.videoEmbed || entry.video_embed || '';
   editFields.slug.value = entry.slug || slugify(entry.title || 'contenu');
   editFields.overview.value = entry.overview || '';
 
@@ -414,6 +419,7 @@ function saveEditedItem() {
     poster: editFields.poster.value.trim(),
     backdrop: editFields.backdrop.value.trim(),
     trailer: editFields.trailer.value.trim(),
+    videoEmbed: editFields.videoEmbed ? editFields.videoEmbed.value.trim() : (current.videoEmbed || ''),
     overview: editFields.overview.value.trim()
   };
 

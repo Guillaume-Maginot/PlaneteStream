@@ -20,7 +20,8 @@ async function initDetail() {
       return;
     }
 
-    renderDetail(item, catalogue);
+    const isLogged = await isMemberLoggedIn();
+    renderDetail(item, catalogue, isLogged);
     document.title = `${item.title} | Planète Stream`;
 
   } catch (err) {
@@ -29,7 +30,7 @@ async function initDetail() {
   }
 }
 
-function renderDetail(item, catalogue) {
+function renderDetail(item, catalogue, isLogged=false) {
   const poster = item.poster || '';
  const backdrop = item.backdrop || '';
   const genres = item.genres || [];
@@ -90,7 +91,7 @@ if (rating) badges.push(rating);
             </p>
 
             <div class="detail-actions">
-              <a class="primary" href="watch.html?slug=${encodeURIComponent(item.slug)}">▶ Regarder</a>
+              ${renderWatchAction(item, isLogged)}
               <a class="ghost" href="index.html#catalogue">Retour catalogue</a>
             </div>
           </div>
@@ -223,6 +224,32 @@ ${
       window.location.href = `detail.html?slug=${encodeURIComponent(card.dataset.relatedSlug)}`;
     });
   });
+}
+
+function hasBetaVideo(item){
+  return Boolean(String(item?.videoEmbed || item?.video_embed || '').trim());
+}
+
+function renderWatchAction(item, isLogged){
+  if(!hasBetaVideo(item)){
+    return '<span class="ghost is-disabled" aria-disabled="true">🎬 Vidéo indisponible</span>';
+  }
+  if(isLogged){
+    return `<a class="primary" href="watch.html?slug=${encodeURIComponent(item.slug)}">▶ Regarder <span class="soft-note">bêta</span></a>`;
+  }
+  return '<a class="primary" href="account.html">🔐 Connexion requise pour la bêta vidéo</a>';
+}
+
+async function isMemberLoggedIn(){
+  try{
+    if(window.PS?.ready) await window.PS.ready;
+    const state = window.PS?.refreshAuthState
+      ? await window.PS.refreshAuthState({force:false})
+      : await window.PSAuth?.getAuthState?.();
+    return Boolean(state?.isAuthenticated && state?.viewer?.id);
+  }catch(error){
+    return false;
+  }
 }
 
 function createRelatedCard(item) {

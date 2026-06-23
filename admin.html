@@ -239,6 +239,20 @@
       transform:translate(-50%, 0);
       opacity:1;
     }
+    .catalogue-editor-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.75fr);gap:18px;margin-top:18px}
+    .catalogue-toolbar{display:grid;grid-template-columns:1fr 150px 170px;gap:10px;margin-bottom:14px}
+    .catalogue-list{display:grid;gap:12px;max-height:520px;overflow:auto;padding-right:4px}
+    .catalogue-item{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.035);padding:10px}
+    .catalogue-item img,.catalogue-thumb{width:54px;height:78px;border-radius:8px;object-fit:cover;background:#171827;display:grid;place-items:center;color:var(--muted);font-size:10px;text-align:center}
+    .catalogue-item h3{font-size:14px;margin:0 0 4px}.catalogue-item p{margin:0;color:var(--muted);font-size:12px}
+    .catalogue-buttons{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .edit-panel.is-hidden{display:none!important}.edit-panel{border:1px solid rgba(195,77,255,.22);border-radius:16px;background:rgba(12,11,25,.88);padding:16px}
+    .edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.edit-grid .full{grid-column:1/-1}
+    .edit-grid input,.edit-grid select,.edit-grid textarea{width:100%;border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;background:#10111f;padding:12px;outline:none;font:inherit}
+    .edit-grid textarea{min-height:92px;resize:vertical}.edit-grid textarea.embed-field{min-height:130px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
+    .edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+    @media(max-width:900px){.catalogue-editor-grid{grid-template-columns:1fr}.catalogue-toolbar{grid-template-columns:1fr}.catalogue-item{grid-template-columns:48px 1fr}.catalogue-buttons{grid-column:1/-1;justify-content:flex-start}}
+
 
     textarea{
       min-height:260px;
@@ -948,6 +962,54 @@
         <button class="primary" id="downloadBtn">Télécharger le catalogue</button>
         <button class="ghost" id="copyBtn" type="button">Copier le catalogue</button>
         <button class="ghost" id="clearBtn" type="button">Vider la sélection</button>
+      </div>
+
+
+
+      <div class="catalogue-editor-grid">
+        <div>
+          <div class="catalogue-toolbar">
+            <input id="catalogueSearch" type="search" placeholder="Rechercher dans le catalogue…">
+            <select id="catalogueTypeFilter">
+              <option value="all">Tous</option>
+              <option value="movie">Films</option>
+              <option value="tv">Séries</option>
+            </select>
+            <select id="catalogueSort">
+              <option value="recent">Ajout récent</option>
+              <option value="title">Titre A-Z</option>
+              <option value="year-desc">Année récente</option>
+              <option value="year-asc">Année ancienne</option>
+              <option value="rating-desc">Note TMDb</option>
+              <option value="category">Catégorie</option>
+            </select>
+          </div>
+          <p class="soft-note"><strong id="catalogueCount">0 contenu</strong> · Clique sur Modifier pour ajouter un embed bêta.</p>
+          <div class="catalogue-list" id="catalogueList"></div>
+        </div>
+
+        <aside class="edit-panel is-hidden" id="editPanel">
+          <h2>Modifier la fiche</h2>
+          <p>Ajoute ici le code embed de test. Il sera stocké dans l'objet du film, puis exporté dans <code>catalogue.json</code>.</p>
+          <div class="edit-grid">
+            <label>Titre<input id="editTitle" type="text"></label>
+            <label>Année<input id="editYear" type="text"></label>
+            <label>Catégorie<input id="editCategory" type="text"></label>
+            <label>Mise en avant<select id="editFeatured"><option value="false">Standard</option><option value="true">Mis en avant</option></select></label>
+            <label class="full">Genres<input id="editGenres" type="text" placeholder="Action, Science-fiction"></label>
+            <label>Note TMDb<input id="editRating" type="number" step="0.1"></label>
+            <label>Slug<input id="editSlug" type="text"></label>
+            <label class="full">Affiche<input id="editPoster" type="url"></label>
+            <label class="full">Image de fond<input id="editBackdrop" type="url"></label>
+            <label class="full">Bande-annonce YouTube ID<input id="editTrailer" type="text"></label>
+            <label class="full">🎬 Code embed bêta vidéo<textarea id="editVideoEmbed" class="embed-field" spellcheck="false" placeholder="<iframe src=&quot;https://...&quot; allowfullscreen></iframe>"></textarea></label>
+            <label class="full">Résumé<textarea id="editOverview"></textarea></label>
+          </div>
+          <div class="edit-actions">
+            <button class="ghost" type="button" id="cancelEditBtn">Annuler</button>
+            <button class="primary" type="button" id="saveEditBtn">Enregistrer</button>
+          </div>
+        </aside>
       </div>
 
       <textarea id="jsonOutput" spellcheck="false" placeholder="Les contenus importés apparaîtront ici."></textarea>
