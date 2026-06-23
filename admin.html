@@ -1805,37 +1805,74 @@
     <p class="admin-version">Planète Stream v4 · Centre de contrôle orbital</p>
   </main>
 
-  <script src="assets/auth.js?v=3.0.4-architecte"></script>
-  <script src="assets/admin.js?v=3.0.4-architecte"></script>
-  <script src="assets/admin-community.js?v=3.0.4-architecte"></script>
-  <script src="assets/admin-reports.js?v=3.1.4-real-data-sync"></script>
+  <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
+  <script src="assets/admin.js?v=3.0.5-real-data-rest"></script>
+  <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
+  <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>
     
+    function adminSafeText(value){
+      return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    }
+
+    function adminShorten(text='', limit=80){
+      const clean = String(text || '').replace(/\s+/g, ' ').trim();
+      return clean.length > limit ? `${clean.slice(0, limit - 1)}…` : clean || 'Message sans texte';
+    }
+
+    async function adminRows(table, query, fallback=[]){
+      try{
+        await window.PS?.ready;
+        const result = await window.PS?.restSelect?.(table, query, {auth:true});
+        if(result?.ok && Array.isArray(result.data)) return result.data;
+      }catch(error){
+        console.warn(`Admin real data ${table} indisponible`, error);
+      }
+      return fallback;
+    }
+
+    function adminCount(rows){
+      return Array.isArray(rows) ? rows.length : 0;
+    }
+
+    function adminNormalizeStatus(value){
+      return String(value || 'new')
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function adminIsOpenReport(row={}){
+      return ['new','open','opened','pending','nouveau','nouveaux','en_attente','attente'].includes(adminNormalizeStatus(row.status));
+    }
+
+    function adminTimeAgo(value){
+      if(!value) return '—';
+      const date = new Date(value);
+      if(Number.isNaN(date.getTime())) return '—';
+      const diff = Math.max(0, Date.now() - date.getTime());
+      const min = Math.floor(diff / 60000);
+      if(min < 1) return 'à l’instant';
+      if(min < 60) return `${min} min`;
+      const hours = Math.floor(min / 60);
+      if(hours < 24) return `${hours} h`;
+      const days = Math.floor(hours / 24);
+      return `${days} j`;
+    }
+
     async function hydrateAdminDashboard(){
       const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
       const setClass = (id, className) => { const el = document.getElementById(id); if(el){ el.classList.remove('trend-up','trend-warn'); el.classList.add(className); } };
-      const line = (text, tag='Info') => `<div class="captain-line"><span>${text}</span><small>${tag}</small></div>`;
+      const line = (text, tag='Info') => `<div class="captain-line"><span>${adminSafeText(text)}</span><small>${adminSafeText(tag)}</small></div>`;
       const log = document.getElementById('captainLog');
       const todayIso = new Date(new Date().setHours(0,0,0,0)).toISOString();
       const weekIso = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
       const previousVisit = localStorage.getItem('planetestream.admin.lastVisit');
       const sinceIso = previousVisit || weekIso;
 
-      const normalizeStatus = (value) => String(value || 'new')
-        .trim()
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-      const isOpenReport = (row={}) => ['new','open','opened','pending','nouveau','nouveaux','en_attente','attente'].includes(normalizeStatus(row.status));
-
       let catalogue = [];
       let missingEmbeds = 0;
-      let metrics = {
-        members:null, membersToday:null, activeToday:null, staff:null, banned:null,
-        comments:null, commentsToday:null, replies:null,
-        ratings:null, ratingsToday:null, favorites:null, favoritesToday:null, likes:null, likesToday:null,
-        reportsTotal:null, reportsOpen:null, reportsClosed:null, reportsSince:null
-      };
 
       try{
         const res = await fetch(`data/catalogue.json?v=${Date.now()}`, {cache:'no-store'});
@@ -1843,7 +1880,7 @@
         missingEmbeds = Array.isArray(catalogue) ? catalogue.filter(item => !String(item.videoEmbed || item.embed || '').trim()).length : 0;
         setText('dashMovies', Array.isArray(catalogue) ? catalogue.length : '—');
         setText('dashMoviesTrend', missingEmbeds ? `${missingEmbeds} sans embed` : 'Tous les embeds renseignés');
-        if(missingEmbeds) setClass('dashMoviesTrend', 'trend-warn'); else setClass('dashMoviesTrend', 'trend-up');
+        setClass('dashMoviesTrend', missingEmbeds ? 'trend-warn' : 'trend-up');
         setText('navCatalogueCount', Array.isArray(catalogue) ? `${catalogue.length} films` : '—');
         setText('watchMissingEmbeds', Array.isArray(catalogue) ? missingEmbeds : '—');
       }catch(_){
@@ -1862,172 +1899,119 @@
           : 'Premier passage enregistré';
         if(chip){
           const avatar = viewer.avatar ? `assets/${viewer.avatar}.png` : 'assets/orbiteur.png';
-          const name = window.PS?.escapeHtml?.(viewer.pseudo || state.user?.email || 'Administrateur') || 'Administrateur';
-          const role = window.PS?.escapeHtml?.(viewer.badge || viewer.role || 'Équipage orbital') || 'Équipage orbital';
+          const name = adminSafeText(viewer.pseudo || state.user?.email || 'Administrateur');
+          const role = adminSafeText(viewer.badge || viewer.role || 'Équipage orbital');
           chip.innerHTML = `<img src="${avatar}" alt=""><div><strong>${name}</strong><span>${role}</span><small>🟢 En ligne · Dernier passage : ${previousText}</small></div>`;
         }
 
-        const supabase = window.PS?.supabase;
-        if(supabase){
-          const [
-            viewers, viewersToday, activeToday, staffRows, bannedRows,
-            comments, commentsToday, replies,
-            ratings, ratingsToday, favorites, favoritesToday, likes, likesToday,
-            reports, reportsSince
-          ] = await Promise.allSettled([
-            supabase.from('viewers').select('id', {count:'exact', head:true}),
-            supabase.from('viewers').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('viewers').select('id', {count:'exact', head:true}).gte('last_seen', todayIso),
-            supabase.from('viewers').select('id,role,badge'),
-            supabase.from('viewers').select('id,banned_at,banned_until'),
-            supabase.from('comments').select('id,parent_id', {count:'exact'}),
-            supabase.from('comments').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('comments').select('id', {count:'exact', head:true}).not('parent_id','is', null),
-            supabase.from('ratings').select('id', {count:'exact', head:true}),
-            supabase.from('ratings').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('favorites').select('id', {count:'exact', head:true}),
-            supabase.from('favorites').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('likes').select('id', {count:'exact', head:true}),
-            supabase.from('likes').select('id', {count:'exact', head:true}).gte('created_at', todayIso),
-            supabase.from('reports').select('id,status,created_at', {count:'exact'}),
-            supabase.from('reports').select('id,status,created_at', {count:'exact'}).gte('created_at', sinceIso)
-          ]);
+        const [viewers, comments, ratings, favorites, likes, reports] = await Promise.all([
+          adminRows('viewers', 'select=id,pseudo,role,badge,avatar,created_at,last_seen,banned_at,banned_until&limit=2000'),
+          adminRows('comments', 'select=id,parent_id,created_at,movie_id,display_name,comment&order=created_at.desc&limit=2000'),
+          adminRows('movie_ratings', 'select=id,created_at,movie_id&limit=2000'),
+          adminRows('movie_favorites', 'select=id,created_at,movie_id&limit=2000'),
+          adminRows('comment_likes', 'select=id,created_at,comment_id&limit=2000'),
+          adminRows('reports', 'select=id,status,created_at&limit=2000')
+        ]);
 
-          const countOf = (result, rows=[]) => result.status === 'fulfilled' && !result.value.error ? (result.value.count ?? rows.length) : null;
-          const commentsRows = comments.status === 'fulfilled' && !comments.value.error ? (comments.value.data || []) : [];
-          const staffData = staffRows.status === 'fulfilled' && !staffRows.value.error ? (staffRows.value.data || []) : [];
-          const bannedData = bannedRows.status === 'fulfilled' && !bannedRows.value.error ? (bannedRows.value.data || []) : [];
-          const reportRows = reports.status === 'fulfilled' && !reports.value.error ? (reports.value.data || []) : [];
-          const reportSinceRows = reportsSince.status === 'fulfilled' && !reportsSince.value.error ? (reportsSince.value.data || []) : [];
+        const members = adminCount(viewers);
+        const membersToday = viewers.filter(v => v.created_at && new Date(v.created_at) >= new Date(todayIso)).length;
+        const activeToday = viewers.filter(v => v.last_seen && new Date(v.last_seen) >= new Date(todayIso)).length;
+        const staff = viewers.filter(v => ['admin','founder','fondateur','moderator','moderateur','architecte'].includes(String(v.role || v.badge || '').toLowerCase())).length;
+        const banned = viewers.filter(v => v.banned_at && (!v.banned_until || new Date(v.banned_until).getTime() > Date.now())).length;
+        const commentsToday = comments.filter(c => c.created_at && new Date(c.created_at) >= new Date(todayIso)).length;
+        const replies = comments.filter(c => c.parent_id).length;
+        const ratingsToday = ratings.filter(r => r.created_at && new Date(r.created_at) >= new Date(todayIso)).length;
+        const favoritesToday = favorites.filter(f => f.created_at && new Date(f.created_at) >= new Date(todayIso)).length;
+        const likesToday = likes.filter(l => l.created_at && new Date(l.created_at) >= new Date(todayIso)).length;
+        const reportsOpen = reports.filter(adminIsOpenReport).length;
+        const reportsClosed = Math.max(0, reports.length - reportsOpen);
+        const reportsSince = reports.filter(r => r.created_at && new Date(r.created_at) >= new Date(sinceIso)).length;
 
-          metrics.members = countOf(viewers);
-          metrics.membersToday = countOf(viewersToday);
-          metrics.activeToday = countOf(activeToday);
-          metrics.staff = staffData.filter(v => ['admin','founder','moderator','architecte'].includes(String(v.role || v.badge || '').toLowerCase())).length;
-          metrics.banned = bannedData.filter(v => v.banned_at && (!v.banned_until || new Date(v.banned_until).getTime() > Date.now())).length;
-          metrics.comments = countOf(comments, commentsRows);
-          metrics.commentsToday = countOf(commentsToday);
-          metrics.replies = countOf(replies);
-          metrics.ratings = countOf(ratings);
-          metrics.ratingsToday = countOf(ratingsToday);
-          metrics.favorites = countOf(favorites);
-          metrics.favoritesToday = countOf(favoritesToday);
-          metrics.likes = countOf(likes);
-          metrics.likesToday = countOf(likesToday);
-          metrics.reportsTotal = countOf(reports, reportRows);
-          metrics.reportsOpen = reportRows.filter(isOpenReport).length;
-          metrics.reportsClosed = Math.max(0, (metrics.reportsTotal ?? reportRows.length) - metrics.reportsOpen);
-          metrics.reportsSince = reportSinceRows.length;
+        setText('dashMembers', members);
+        setText('dashMembersTrend', `+${membersToday} aujourd’hui · ${activeToday} actif${activeToday > 1 ? 's' : ''}`);
+        setText('navMembersCount', `${members} membre${members > 1 ? 's' : ''}`);
+        setText('dashReviews', comments.length);
+        setText('dashReviewsTrend', `+${commentsToday} aujourd’hui · ${replies} réponse${replies > 1 ? 's' : ''}`);
+        setText('dashReports', reportsOpen);
+        setText('dashReportsTrend', reportsOpen ? `${reportsOpen} à traiter · ${reportsClosed} clôturé${reportsClosed > 1 ? 's' : ''}` : 'Aucun voyant rouge');
+        setClass('dashReportsTrend', reportsOpen ? 'trend-warn' : 'trend-up');
+        setText('navReportsCount', reportsOpen ? `${reportsOpen} ouvert${reportsOpen > 1 ? 's' : ''}` : '0 alerte');
+        setText('watchOpenReports', reportsOpen);
 
-          setText('dashMembers', metrics.members ?? '—');
-          setText('dashMembersTrend', metrics.membersToday != null ? `+${metrics.membersToday} aujourd’hui · ${metrics.activeToday ?? 0} actif${(metrics.activeToday || 0) > 1 ? 's' : ''}` : 'membres enregistrés');
-          setText('navMembersCount', metrics.members != null ? `${metrics.members} membres` : '—');
-          setText('dashReviews', metrics.comments ?? '—');
-          setText('dashReviewsTrend', metrics.commentsToday != null ? `+${metrics.commentsToday} aujourd’hui · ${metrics.replies ?? 0} réponses` : 'avis et réponses');
-          setText('dashReports', metrics.reportsOpen ?? '—');
-          setText('dashReportsTrend', metrics.reportsOpen ? `${metrics.reportsOpen} à traiter · ${metrics.reportsClosed ?? 0} clôturés` : 'Aucun voyant rouge');
-          if(metrics.reportsOpen) setClass('dashReportsTrend', 'trend-warn'); else setClass('dashReportsTrend', 'trend-up');
-          setText('navReportsCount', metrics.reportsOpen ? `${metrics.reportsOpen} ouvert${metrics.reportsOpen > 1 ? 's' : ''}` : '0 alerte');
-          setText('watchOpenReports', metrics.reportsOpen ?? '—');
+        const activityScore = Math.min(100, Math.round(
+          commentsToday * 8 + membersToday * 12 + activeToday * 5 + ratingsToday * 4 + favoritesToday * 4 + likesToday * 3 + reportsOpen * 6 + (missingEmbeds ? 4 : 0)
+        ));
+        setText('stationActivityScore', `${activityScore}%`);
+        const fill = document.getElementById('stationActivityFill');
+        if(fill) fill.style.width = `${activityScore}%`;
+        const mood = activityScore >= 70 ? 'Station très animée' : activityScore >= 35 ? 'Station en activité' : activityScore > 0 ? 'Station calme mais vivante' : 'Station au repos';
+        const moodText = activityScore >= 70 ? 'Le radar clignote, les projecteurs chauffent, le popcorn devient stratégique.' : activityScore >= 35 ? 'Les signaux sont réguliers. La communauté laisse des traces fraîches.' : activityScore > 0 ? 'Quelques mouvements détectés. Rien d’inquiétant, mais la station respire.' : 'Aucun remous notable. Le silence spatial, version confortable.';
+        setText('stationMood', mood);
+        setText('stationMoodText', moodText);
 
-          const activityScore = Math.min(100, Math.round(
-            (metrics.commentsToday || 0) * 8 +
-            (metrics.membersToday || 0) * 12 +
-            (metrics.activeToday || 0) * 5 +
-            (metrics.ratingsToday || 0) * 4 +
-            (metrics.favoritesToday || 0) * 4 +
-            (metrics.likesToday || 0) * 3 +
-            (metrics.reportsOpen || 0) * 6 +
-            (missingEmbeds ? 4 : 0)
-          ));
-          setText('stationActivityScore', `${activityScore}%`);
-          const fill = document.getElementById('stationActivityFill');
-          if(fill) fill.style.width = `${activityScore}%`;
-          const mood = activityScore >= 70 ? 'Station très animée' : activityScore >= 35 ? 'Station en activité' : activityScore > 0 ? 'Station calme mais vivante' : 'Station au repos';
-          const moodText = activityScore >= 70 ? 'Le radar clignote, les projecteurs chauffent, le popcorn devient stratégique.' : activityScore >= 35 ? 'Les signaux sont réguliers. La communauté laisse des traces fraîches.' : activityScore > 0 ? 'Quelques mouvements détectés. Rien d’inquiétant, mais la station respire.' : 'Aucun remous notable. Le silence spatial, version confortable.';
-          setText('stationMood', mood);
-          setText('stationMoodText', moodText);
-
-          if(log){
-            const reportLine = metrics.reportsOpen ? `${metrics.reportsOpen} signalement${metrics.reportsOpen > 1 ? 's' : ''} à traiter.` : 'Aucun signalement ouvert.';
-            const embedLine = missingEmbeds ? `${missingEmbeds} film${missingEmbeds > 1 ? 's' : ''} sans embed.` : 'Tous les films ont un embed renseigné.';
-            const memberLine = `${metrics.membersToday ?? 0} nouveau${(metrics.membersToday || 0) > 1 ? 'x' : ''} membre${(metrics.membersToday || 0) > 1 ? 's' : ''} aujourd’hui · ${metrics.activeToday ?? 0} actif${(metrics.activeToday || 0) > 1 ? 's' : ''}.`;
-            const commentLine = `${metrics.commentsToday ?? 0} critique${(metrics.commentsToday || 0) > 1 ? 's' : ''} aujourd’hui · ${metrics.ratingsToday ?? 0} note${(metrics.ratingsToday || 0) > 1 ? 's' : ''} · ${metrics.favoritesToday ?? 0} favori${(metrics.favoritesToday || 0) > 1 ? 's' : ''}.`;
-            log.innerHTML = [
-              line(memberLine, 'Communauté'),
-              line(commentLine, 'Engagement'),
-              line(reportLine, metrics.reportsOpen ? 'À traiter' : 'Modération'),
-              line(embedLine, missingEmbeds ? 'Catalogue' : 'Nominal')
-            ].join('');
-          }
+        if(log){
+          const reportLine = reportsOpen ? `${reportsOpen} signalement${reportsOpen > 1 ? 's' : ''} à traiter.` : 'Aucun signalement ouvert.';
+          const embedLine = missingEmbeds ? `${missingEmbeds} film${missingEmbeds > 1 ? 's' : ''} sans embed.` : 'Tous les films ont un embed renseigné.';
+          const memberLine = `${membersToday} nouveau${membersToday > 1 ? 'x' : ''} membre${membersToday > 1 ? 's' : ''} aujourd’hui · ${activeToday} actif${activeToday > 1 ? 's' : ''}.`;
+          const commentLine = `${commentsToday} critique${commentsToday > 1 ? 's' : ''} aujourd’hui · ${ratingsToday} note${ratingsToday > 1 ? 's' : ''} · ${favoritesToday} favori${favoritesToday > 1 ? 's' : ''}.`;
+          log.innerHTML = [
+            line(memberLine, 'Communauté'),
+            line(commentLine, 'Engagement'),
+            line(reportLine, reportsOpen ? 'À traiter' : 'Modération'),
+            line(embedLine, missingEmbeds ? 'Catalogue' : 'Nominal'),
+            line(`${staff} membre${staff > 1 ? 's' : ''} staff · ${banned} compte${banned > 1 ? 's' : ''} suspendu${banned > 1 ? 's' : ''}.`, 'Équipage')
+          ].join('');
         }
+
+        window.__psAdminDashboardRows = {viewers, comments, ratings, favorites, likes, reports, missingEmbeds, reportsSince};
       }catch(error){
         console.warn('Dashboard admin partiel', error);
         if(log) log.innerHTML = line('Tableau de bord partiellement chargé.', 'Info');
       }
     }
 
-
-
     async function hydrateAdminActivity(){
       const feed = document.getElementById('adminActivityFeed');
       const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
-      const safe = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
       const lastVisitKey = 'planetestream.admin.lastVisit';
       const previousVisit = localStorage.getItem(lastVisitKey) || new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
       const now = new Date().toISOString();
 
-      function timeAgo(value){
-        if(!value) return '—';
-        const date = new Date(value);
-        if(Number.isNaN(date.getTime())) return '—';
-        const diff = Math.max(0, Date.now() - date.getTime());
-        const min = Math.floor(diff / 60000);
-        if(min < 1) return 'à l’instant';
-        if(min < 60) return `${min} min`;
-        const hours = Math.floor(min / 60);
-        if(hours < 24) return `${hours} h`;
-        const days = Math.floor(hours / 24);
-        return `${days} j`;
-      }
-
       function item(icon, title, subtitle, date){
-        return `<article class="activity-item"><span class="activity-icon">${icon}</span><span class="activity-main"><strong>${safe(title)}</strong><span>${safe(subtitle)}</span></span><small class="activity-time">${safe(timeAgo(date))}</small></article>`;
+        return `<article class="activity-item"><span class="activity-icon">${icon}</span><span class="activity-main"><strong>${adminSafeText(title)}</strong><span>${adminSafeText(subtitle)}</span></span><small class="activity-time">${adminSafeText(adminTimeAgo(date))}</small></article>`;
       }
 
       try{
         await window.PS?.ready;
-        const ps = window.PS || window.PSAuth;
-        const supabase = window.PS?.supabase;
-        if(!supabase) throw new Error('Supabase indisponible');
-
-        const [comments, viewers, reports] = await Promise.allSettled([
-          supabase.from('comments').select('id,movie_id,display_name,comment,created_at').order('created_at', {ascending:false}).limit(5),
-          supabase.from('viewers').select('id,pseudo,created_at').order('created_at', {ascending:false}).limit(5),
-          supabase.from('reports').select('id,reason,status,created_at').order('created_at', {ascending:false}).limit(5)
-        ]);
-
-        const commentRows = comments.status === 'fulfilled' && !comments.value.error ? (comments.value.data || []) : [];
-        const viewerRows = viewers.status === 'fulfilled' && !viewers.value.error ? (viewers.value.data || []) : [];
-        const reportRows = reports.status === 'fulfilled' && !reports.value.error ? (reports.value.data || []) : [];
+        let rows = window.__psAdminDashboardRows;
+        if(!rows){
+          rows = {
+            comments: await adminRows('comments', 'select=id,movie_id,display_name,comment,created_at&order=created_at.desc&limit=50'),
+            viewers: await adminRows('viewers', 'select=id,pseudo,created_at&order=created_at.desc&limit=50'),
+            reports: await adminRows('reports', 'select=id,reason,status,created_at&order=created_at.desc&limit=50')
+          };
+        }
+        const commentRows = rows.comments || [];
+        const viewerRows = rows.viewers || [];
+        const reportRows = rows.reports || [];
 
         const recent = [
-          ...commentRows.map(row => ({type:'comment', date:row.created_at, html:item('💬', `${row.display_name || 'Un Planétien'} a publié une critique`, `${row.movie_id || 'Film'} · ${shorten(row.comment, 78)}`, row.created_at)})),
-          ...viewerRows.map(row => ({type:'viewer', date:row.created_at, html:item('👤', `${row.pseudo || 'Nouveau membre'} a rejoint la station`, 'Nouvelle arrivée dans l’orbite', row.created_at)})),
-          ...reportRows.map(row => ({type:'report', date:row.created_at, html:item('🚩', `Signalement ${String(row.status || 'new') === 'new' ? 'ouvert' : 'mis à jour'}`, row.reason || 'Motif non renseigné', row.created_at)}))
+          ...commentRows.slice(0,5).map(row => ({date:row.created_at, html:item('💬', `${row.display_name || 'Un Planétien'} a publié une critique`, `${row.movie_id || 'Film'} · ${adminShorten(row.comment, 78)}`, row.created_at)})),
+          ...viewerRows.slice(0,5).map(row => ({date:row.created_at, html:item('👤', `${row.pseudo || 'Nouveau membre'} a rejoint la station`, 'Nouvelle arrivée dans l’orbite', row.created_at)})),
+          ...reportRows.slice(0,5).map(row => ({date:row.created_at, html:item('🚩', `Signalement ${adminIsOpenReport(row) ? 'ouvert' : 'mis à jour'}`, row.reason || 'Motif non renseigné', row.created_at)}))
         ].sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0)).slice(0,8);
 
         if(feed){
           feed.innerHTML = recent.length ? recent.map(entry => entry.html).join('') : '<div class="admin-empty">Aucune activité récente. La station flotte tranquillement, presque trop sagement.</div>';
         }
 
-        const since = (rows) => rows.filter(row => row.created_at && new Date(row.created_at) > new Date(previousVisit)).length;
-        setText('sinceComments', since(commentRows));
-        setText('sinceViewers', since(viewerRows));
-        setText('sinceReports', since(reportRows));
+        const since = (list) => list.filter(row => row.created_at && new Date(row.created_at) > new Date(previousVisit)).length;
+        const c = since(commentRows), v = since(viewerRows), r = since(reportRows);
+        setText('sinceComments', c);
+        setText('sinceViewers', v);
+        setText('sinceReports', r);
         const watchSummary = document.getElementById('watchSummary');
         if(watchSummary){
-          const c = since(commentRows), v = since(viewerRows), r = since(reportRows);
           const missing = document.getElementById('watchMissingEmbeds')?.textContent || '—';
           watchSummary.textContent = `Depuis le dernier passage : ${c} critique${c > 1 ? 's' : ''}, ${v} membre${v > 1 ? 's' : ''}, ${r} alerte${r > 1 ? 's' : ''}. Films sans embed : ${missing}.`;
         }
@@ -2035,8 +2019,7 @@
         const log = document.getElementById('captainLog');
         if(log){
           const previousText = new Date(previousVisit).toLocaleString('fr-FR', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'});
-          const extra = `<div class="captain-line"><span>Dernier passage enregistré : ${safe(previousText)}.</span><small>Mémoire</small></div>`;
-          log.insertAdjacentHTML('beforeend', extra);
+          log.insertAdjacentHTML('beforeend', `<div class="captain-line"><span>Dernier passage enregistré : ${adminSafeText(previousText)}.</span><small>Mémoire</small></div>`);
         }
 
         localStorage.setItem(lastVisitKey, now);
@@ -2050,28 +2033,12 @@
         const watchSummary = document.getElementById('watchSummary');
         if(watchSummary) watchSummary.textContent = 'Scan orbital indisponible pour le moment.';
       }
-
-      function shorten(text='', limit=80){
-        const clean = String(text || '').replace(/\s+/g, ' ').trim();
-        return clean.length > limit ? `${clean.slice(0, limit - 1)}…` : clean || 'Message sans texte';
-      }
     }
 
     async function hydrateAdminStats(){
       const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
-      const safe = (value) => String(value ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-      const normalizeStatus = (value) => String(value || 'new')
-        .trim()
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-      const isOpenReport = (row={}) => ['new','open','opened','pending','nouveau','nouveaux','en_attente','attente'].includes(normalizeStatus(row.status));
-
       try{
         await window.PS?.ready;
-        const supabase = window.PS?.supabase;
-        if(!supabase) return;
-
         let titleBySlug = new Map();
         try{
           const res = await fetch(`data/catalogue.json?v=${Date.now()}`, {cache:'no-store'});
@@ -2084,40 +2051,31 @@
           }
         }catch(_){ }
 
-        const [ratings, favorites, likes, comments, reports, viewers] = await Promise.allSettled([
-          supabase.from('ratings').select('id,film_id', {count:'exact'}),
-          supabase.from('favorites').select('id,film_id', {count:'exact'}),
-          supabase.from('likes').select('id,comment_id', {count:'exact'}),
-          supabase.from('comments').select('id,film_id,movie_id,parent_id,created_at', {count:'exact'}),
-          supabase.from('reports').select('id,status', {count:'exact'}),
-          supabase.from('viewers').select('id', {count:'exact', head:true})
-        ]);
+        const rows = window.__psAdminDashboardRows || {};
+        const ratings = rows.ratings || await adminRows('movie_ratings', 'select=id,movie_id,created_at&limit=2000');
+        const favorites = rows.favorites || await adminRows('movie_favorites', 'select=id,movie_id,created_at&limit=2000');
+        const likes = rows.likes || await adminRows('comment_likes', 'select=id,comment_id,created_at&limit=2000');
+        const comments = rows.comments || await adminRows('comments', 'select=id,movie_id,parent_id,created_at&limit=2000');
+        const reports = rows.reports || await adminRows('reports', 'select=id,status&limit=2000');
+        const viewers = rows.viewers || await adminRows('viewers', 'select=id&limit=2000');
 
-        const okRows = result => result.status === 'fulfilled' && !result.value.error ? (result.value.data || []) : [];
-        const count = (result, rows=[]) => result.status === 'fulfilled' && !result.value.error ? (result.value.count ?? rows.length) : null;
-        const ratingRows = okRows(ratings);
-        const favoriteRows = okRows(favorites);
-        const likeRows = okRows(likes);
-        const commentRows = okRows(comments);
-        const reportRows = okRows(reports);
-
-        setText('statsRatings', count(ratings, ratingRows) ?? '—');
-        setText('statsFavorites', count(favorites, favoriteRows) ?? '—');
-        setText('statsLikes', count(likes, likeRows) ?? '—');
-        setText('statsHealthComments', comments.status === 'fulfilled' && !comments.value.error ? `${count(comments, commentRows)} au total` : '—');
-        setText('statsHealthReports', reports.status === 'fulfilled' && !reports.value.error ? `${reportRows.filter(isOpenReport).length} ouverts` : '—');
-        setText('statsHealthMembers', viewers.status === 'fulfilled' && !viewers.value.error ? `${viewers.value.count ?? '—'} membres` : '—');
+        setText('statsRatings', ratings.length);
+        setText('statsFavorites', favorites.length);
+        setText('statsLikes', likes.length);
+        setText('statsHealthComments', `${comments.length} au total`);
+        setText('statsHealthReports', `${reports.filter(adminIsOpenReport).length} ouverts`);
+        setText('statsHealthMembers', `${viewers.length} membres`);
 
         const byFilm = new Map();
-        commentRows.forEach(row => {
-          const key = String(row.film_id || row.movie_id || 'inconnu');
+        comments.forEach(row => {
+          const key = String(row.movie_id || row.film_id || 'inconnu');
           byFilm.set(key, (byFilm.get(key) || 0) + 1);
         });
         const top = [...byFilm.entries()].sort((a,b) => b[1] - a[1]).slice(0,5);
         const target = document.getElementById('statsActiveMovies');
         if(target){
           target.innerHTML = top.length
-            ? top.map(([film, value]) => `<div class="admin-list-line"><span>${safe(titleBySlug.get(film) || film)}</span><small>${value} critique${value > 1 ? 's' : ''}</small></div>`).join('')
+            ? top.map(([film, value]) => `<div class="admin-list-line"><span>${adminSafeText(titleBySlug.get(film) || film)}</span><small>${value} critique${value > 1 ? 's' : ''}</small></div>`).join('')
             : '<div class="admin-empty">Pas encore assez de données pour établir une tendance.</div>';
         }
       }catch(error){
@@ -2143,7 +2101,7 @@
     }
 
     document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
-      try{ await window.PS?.supabase?.auth?.signOut(); }catch(_){}
+      try{ await window.PS?.signOut?.(); }catch(_){}
       window.location.href = 'admin-login.html';
     });
 
