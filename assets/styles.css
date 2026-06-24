@@ -5949,3 +5949,29 @@ section{margin:24px 0 34px}
 #hall-cinema .hall-premium-cta:hover::before{left:145%;}
 #hallStats strong{display:block !important;visibility:visible !important;opacity:1 !important;color:#fff !important;min-height:28px !important;}
 #hallStats strong:empty::before{content:"0";}
+.dynamic-hero,
+.compact-hero{
+  height: 360px;
+  min-height: 360px;
+  max-height: 360px;
+  overflow: hidden;
+}
+
+.dynamic-hero::before,
+.compact-hero::before{
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-content,
+.hero-dynamic-content{
+  height: 100%;
+}
+@media (max-width: 760px){
+  .dynamic-hero,
+  .compact-hero{
+    height: 420px;
+    min-height: 420px;
+    max-height: 420px;
+  }
+}
