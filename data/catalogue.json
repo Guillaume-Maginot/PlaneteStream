@@ -14,12 +14,76 @@
     ],
     "director": "Bart Layton",
     "cast": [
-      "Chris Hemsworth",
-      "Mark Ruffalo",
-      "Halle Berry",
-      "Barry Keoghan",
-      "Monica Barbaro",
-      "Nick Nolte"
+      {
+        "id": 74568,
+        "name": "Chris Hemsworth",
+        "character": "Davis",
+        "profile_path": "/piQGdoIQOF3C1EI5cbYZLAW1gfj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/piQGdoIQOF3C1EI5cbYZLAW1gfj.jpg"
+      },
+      {
+        "id": 103,
+        "name": "Mark Ruffalo",
+        "character": "Lou",
+        "profile_path": "/5GilHMOt5PAQh6rlUKZzGmaKEI7.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5GilHMOt5PAQh6rlUKZzGmaKEI7.jpg"
+      },
+      {
+        "id": 4587,
+        "name": "Halle Berry",
+        "character": "Sharon",
+        "profile_path": "/yfAJMERSlDIZD1iy6Aab8bArcCK.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yfAJMERSlDIZD1iy6Aab8bArcCK.jpg"
+      },
+      {
+        "id": 1290466,
+        "name": "Barry Keoghan",
+        "character": "Ormon",
+        "profile_path": "/ngoitknM6hw8fffLywyvjzy6Iti.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ngoitknM6hw8fffLywyvjzy6Iti.jpg"
+      },
+      {
+        "id": 1525043,
+        "name": "Monica Barbaro",
+        "character": "Maya",
+        "profile_path": "/fcujBTiKyZgJzaDenhv5ryo9SyB.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fcujBTiKyZgJzaDenhv5ryo9SyB.jpg"
+      },
+      {
+        "id": 1733,
+        "name": "Nick Nolte",
+        "character": "Money",
+        "profile_path": "/jpYzFBi6zfn8CHVaXmqgiOTas4V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jpYzFBi6zfn8CHVaXmqgiOTas4V.jpg"
+      },
+      {
+        "id": 1154054,
+        "name": "Corey Hawkins",
+        "character": "Tillman",
+        "profile_path": "/wRt0Bc0chN5BSjvYzmg2evgqNzp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wRt0Bc0chN5BSjvYzmg2evgqNzp.jpg"
+      },
+      {
+        "id": 10431,
+        "name": "Jennifer Jason Leigh",
+        "character": "Angie",
+        "profile_path": "/9nT2mbQ9P8UpCXirssDxDT75jlm.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9nT2mbQ9P8UpCXirssDxDT75jlm.jpg"
+      },
+      {
+        "id": 1561485,
+        "name": "Peter Banifaz",
+        "character": "Ben Haddad",
+        "profile_path": "/fQXcGOpKU8mzkYNyzXrmtXP5In4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fQXcGOpKU8mzkYNyzXrmtXP5In4.jpg"
+      },
+      {
+        "id": 1362974,
+        "name": "Babak Tafti",
+        "character": "Ali",
+        "profile_path": "/ybXVTUHNyyvT30l8TDrh9P6LyxZ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ybXVTUHNyyvT30l8TDrh9P6LyxZ.jpg"
+      }
     ],
     "runtime": 142,
     "seasons": 0,
@@ -27,7 +91,7 @@
     "country": "United Kingdom, United States of America",
     "language": "en",
     "rating": 6.997,
-    "popularity": 44.0435,
+    "popularity": 40.8715,
     "trailer": "DQ0dpiyYhEU",
     "tagline": "Toujours prévoir une porte de sortie.",
     "status": "Released",
@@ -44,7 +108,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/kKF4gEiBDArhONlCcunHVgBp3bA.jpg",
     "overview": "Dans Crime 101, les cambriolages méticuleux à LA le long de l'autoroute 101 d'un voleur de bijoux chevronné (Chris Hemsworth) déconcertent la police. Un flic solitaire (Mark Ruffalo) est à ses trousses. Lorsque leurs chemins croisent celui d'une courtière en assurance désabusée (Halle Berry), tous trois sont confrontés à des choix déterminants face aux millions de dollars en jeu.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/v8htq91w63zc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/v8htq91w63zc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "premium": false
   },
   {
     "title": "Greenland : Migration",
@@ -293,12 +358,76 @@
     ],
     "director": "Denis Villeneuve",
     "cast": [
-      "Timothée Chalamet",
-      "Rebecca Ferguson",
-      "Oscar Isaac",
-      "Jason Momoa",
-      "Stellan Skarsgård",
-      "Stephen McKinley Henderson"
+      {
+        "id": 1190668,
+        "name": "Timothée Chalamet",
+        "character": "Paul Atreides",
+        "profile_path": "/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg"
+      },
+      {
+        "id": 933238,
+        "name": "Rebecca Ferguson",
+        "character": "Lady Jessica Atreides",
+        "profile_path": "/lJloTOheuQSirSLXNA3JHsrMNfH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lJloTOheuQSirSLXNA3JHsrMNfH.jpg"
+      },
+      {
+        "id": 25072,
+        "name": "Oscar Isaac",
+        "character": "Duke Leto Atreides",
+        "profile_path": "/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg"
+      },
+      {
+        "id": 117642,
+        "name": "Jason Momoa",
+        "character": "Duncan Idaho",
+        "profile_path": "/3troAR6QbSb6nUFMDu61YCCWLKa.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3troAR6QbSb6nUFMDu61YCCWLKa.jpg"
+      },
+      {
+        "id": 1640,
+        "name": "Stellan Skarsgård",
+        "character": "Baron Vladimir Harkonnen",
+        "profile_path": "/mW7xmtGV4y79kQGn0zkKVGDMAmw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mW7xmtGV4y79kQGn0zkKVGDMAmw.jpg"
+      },
+      {
+        "id": 196179,
+        "name": "Stephen McKinley Henderson",
+        "character": "Thufir Hawat",
+        "profile_path": "/z2weSPo4sdMNj47tP5o0me41r2z.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/z2weSPo4sdMNj47tP5o0me41r2z.jpg"
+      },
+      {
+        "id": 16851,
+        "name": "Josh Brolin",
+        "character": "Gurney Halleck",
+        "profile_path": "/sX2etBbIkxRaCsATyw5ZpOVMPTD.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/sX2etBbIkxRaCsATyw5ZpOVMPTD.jpg"
+      },
+      {
+        "id": 3810,
+        "name": "Javier Bardem",
+        "character": "Stilgar",
+        "profile_path": "/p5xjCovj1uzvA2SXrWLH78Nh1Jf.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/p5xjCovj1uzvA2SXrWLH78Nh1Jf.jpg"
+      },
+      {
+        "id": 195666,
+        "name": "Sharon Duncan-Brewster",
+        "character": "Dr. Liet Kynes",
+        "profile_path": "/gp5h6rOrqBrIGgID4AMd58O6Ow6.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gp5h6rOrqBrIGgID4AMd58O6Ow6.jpg"
+      },
+      {
+        "id": 1622,
+        "name": "張震",
+        "character": "Dr. Wellington Yueh",
+        "profile_path": "/4BOQ5pJXdsArkMHvyVhrV8Ditnr.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/4BOQ5pJXdsArkMHvyVhrV8Ditnr.jpg"
+      }
     ],
     "runtime": 155,
     "seasons": 0,
