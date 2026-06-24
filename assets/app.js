@@ -136,20 +136,25 @@ function render(){
   renderHero(false);
   renderStats();
 
-  const filtered = state.catalogue.filter(matches);
-  const featured = state.catalogue.filter(i => i.featured || i.premium).slice(0,10);
-  const latest = [...state.catalogue].sort((a,b) => b._index - a._index).slice(0,10);
-  const topRated = [...state.catalogue].sort((a,b) => b._rating - a._rating).slice(0,10);
-  const recentYears = [...state.catalogue].sort((a,b) => b._year - a._year || b._popularity - a._popularity).slice(0,10);
+  const browsing = state.filter === 'all' && !state.search;
+  const premium = state.catalogue.filter(i => i.premium).slice(0,10);
+  const standardCatalogue = state.catalogue.filter(i => !i.premium);
+  const catalogueSource = browsing ? standardCatalogue : state.catalogue;
+  const filtered = catalogueSource.filter(matches);
+  const featured = standardCatalogue.filter(i => i.featured).slice(0,10);
+  const latest = [...standardCatalogue].sort((a,b) => b._index - a._index).slice(0,10);
+  const topRated = [...standardCatalogue].sort((a,b) => b._rating - a._rating).slice(0,10);
+  const recentYears = [...standardCatalogue].sort((a,b) => b._year - a._year || b._popularity - a._popularity).slice(0,10);
 
+  mountPremium('#premiumGrid', premium);
   mount('#featuredGrid', featured);
   mount('#latestGrid', latest);
   mount('#topRatedGrid', topRated);
   mount('#recentYearsGrid', recentYears);
   mount('#catalogueGrid', filtered);
 
-  const browsing = state.filter === 'all' && !state.search;
-  document.querySelector('#featuredSection').style.display = browsing ? 'block' : 'none';
+  document.querySelector('#premiumSection').style.display = browsing && premium.length ? 'block' : 'none';
+  document.querySelector('#featuredSection').style.display = browsing && featured.length ? 'block' : 'none';
   document.querySelector('#latestSection').style.display = browsing ? 'block' : 'none';
   document.querySelector('#topRatedSection').style.display = browsing ? 'block' : 'none';
   document.querySelector('#recentYearsSection').style.display = browsing ? 'block' : 'none';
@@ -181,7 +186,7 @@ function renderHero(animate = true){
   const genres = (item.genres || []).slice(0,3).join(' • ');
   hero.style.backgroundImage = `linear-gradient(90deg, rgba(2,3,10,.97) 0%, rgba(2,3,10,.78) 35%, rgba(2,3,10,.25) 78%), url('${item.backdrop || item.poster || ''}')`;
   hero.style.backgroundPosition = state.heroDirection >= 0 ? 'center center' : 'right center';
-  hero.querySelector('#heroEyebrow').textContent = item.featured ? 'À la une' : 'Sélection Planète Stream';
+  hero.querySelector('#heroEyebrow').textContent = item.premium ? 'Fiche Premium Planète Stream' : (item.featured ? 'À la une' : 'Sélection Planète Stream');
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';
   hero.querySelector('#heroMeta').textContent = [year, formatType(item.type), genres, item._rating ? `⭐ ${item._rating.toFixed(1)}` : ''].filter(Boolean).join('   ');
   const detailHref = getDetailHref(item);
@@ -290,6 +295,42 @@ function createCard(item){
       </div>
     </div>`;
   return card;
+}
+
+function createPremiumCard(item){
+  const card = document.createElement('article');
+  card.className = 'premium-home-card';
+  const year = item.year || (item.releaseDate || '').slice(0,4);
+  const detailHref = getDetailHref(item);
+  const watchHref = getWatchHref(item);
+  const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
+  const genres = (item.genres || []).slice(0,3).map(g => `<span>${escapeHtml(g)}</span>`).join('');
+  const synopsis = item.overview || item.description || item.synopsis || '';
+  card.innerHTML = `
+    <a class="premium-home-poster" href="${detailHref}" style="background-image:url('${item.poster || item.backdrop || ''}'), ${posterFallback}" aria-label="Ouvrir la fiche Premium ${escapeHtml(item.title)}"></a>
+    <div class="premium-home-copy">
+      <p class="premium-home-kicker">⭐ Fiche Premium</p>
+      <h3>${escapeHtml(item.title || 'Titre premium')}</h3>
+      <div class="premium-home-meta">
+        ${year ? `<span>${escapeHtml(year)}</span>` : ''}
+        <span>${escapeHtml(formatType(item.type || item.mediaType || 'film'))}</span>
+        ${item._rating ? `<span>⭐ ${item._rating.toFixed(1)}</span>` : ''}
+      </div>
+      <div class="premium-home-genres">${genres}</div>
+      ${synopsis ? `<p>${escapeHtml(synopsis).slice(0, 230)}${synopsis.length > 230 ? '…' : ''}</p>` : ''}
+      <div class="premium-home-actions">
+        <a class="primary" href="${detailHref}">Ouvrir la fiche Premium</a>
+        <a class="secondary" href="${watchHref}"${watchTarget}>▶ Lecture</a>
+      </div>
+    </div>`;
+  return card;
+}
+
+function mountPremium(selector, list){
+  const grid = document.querySelector(selector);
+  if(!grid) return;
+  grid.innerHTML = '';
+  list.forEach(item => grid.appendChild(createPremiumCard(item)));
 }
 
 function mount(selector, list){
