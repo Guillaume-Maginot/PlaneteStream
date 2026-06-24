@@ -279,6 +279,52 @@
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m15v449aj17c\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
   },
   {
+    "title": "Dune - Première partie",
+    "slug": "dune-premiere-partie",
+    "originalTitle": "Dune",
+    "year": "2021",
+    "releaseDate": "2021-09-15",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "nouveautes",
+    "genres": [
+      "Science-Fiction",
+      "Aventure"
+    ],
+    "director": "Denis Villeneuve",
+    "cast": [
+      "Timothée Chalamet",
+      "Rebecca Ferguson",
+      "Oscar Isaac",
+      "Jason Momoa",
+      "Stellan Skarsgård",
+      "Stephen McKinley Henderson"
+    ],
+    "runtime": 155,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.78,
+    "popularity": 20.9244,
+    "trailer": "gHt8tCHbB2M",
+    "videoEmbed": "",
+    "tagline": "Au-delà de la peur, le destin attend.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Dune - Saga",
+    "studios": [
+      "Legendary Pictures"
+    ],
+    "tmdbId": 438631,
+    "poster": "https://image.tmdb.org/t/p/w500/qpyaW4xUPeIiYA5ckg5zAZFHvsb.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/qVgZu5BTx6pu4owCvVOm4zjTfOi.jpg",
+    "overview": "L'histoire de Paul Atreides, jeune homme aussi doué que brillant, voué à connaître un destin hors du commun qui le dépasse totalement. Car, s'il veut préserver l'avenir de sa famille et de son peuple, il devra se rendre sur Dune, la planète la plus dangereuse de l'Univers. Mais aussi la seule à même de fournir la ressource la plus précieuse capable de décupler la puissance de l'Humanité. Tandis que des forces maléfiques se disputent le contrôle de cette planète, seuls ceux qui parviennent à dominer leur peur pourront survivre…",
+    "featured": true,
+    "premium": true
+  },
+  {
     "title": "Malnazidos",
     "slug": "malnazidos",
     "originalTitle": "Malnazidos",
