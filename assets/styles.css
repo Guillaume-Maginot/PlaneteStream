@@ -1252,32 +1252,27 @@ min-width:220px;
 }
 
 .hero-controls{
-    position:absolute;
-    top:50%;
-    left:calc(50% + 510px);
-    transform:translateY(-50%);
-    display:flex;
-    gap:14px;
-    z-index:20;
+  display:flex;
+  gap:10px;
+  margin-top:24px;
 }
 
 .hero-controls button{
-    width:56px;
-    height:56px;
-    border-radius:50%;
-    background:rgba(255,255,255,.12);
-    border:1px solid rgba(255,255,255,.22);
-    backdrop-filter:blur(8px);
-    font-size:34px;
-    transition:.25s;
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.18);
+  font-size:32px;
+  line-height:1;
+  cursor:pointer;
+  transition:.25s;
 }
 
 .hero-controls button:hover{
-    transform:scale(1.08);
-    border-color:rgba(255,45,85,.55);
-    box-shadow:
-        0 0 18px rgba(255,45,85,.28),
-        0 0 28px rgba(139,44,255,.22);
+  background:rgba(255,45,85,.25);
+  border-color:rgba(255,45,85,.65);
 }
 
 .rail{
@@ -5954,221 +5949,140 @@ section{margin:24px 0 34px}
 #hall-cinema .hall-premium-cta:hover::before{left:145%;}
 #hallStats strong{display:block !important;visibility:visible !important;opacity:1 !important;color:#fff !important;min-height:28px !important;}
 #hallStats strong:empty::before{content:"0";}
-.dynamic-hero,
+
+/* === V3.2.8 : Hero stable + flèches intégrées au conteneur === */
+.dynamic-hero.compact-hero,
 .compact-hero{
-  height: 360px;
-  min-height: 360px;
-  max-height: 360px;
-  overflow: hidden;
-}
-
-.dynamic-hero::before,
-.compact-hero::before{
-  background-size: cover;
-  background-position: center;
-}
-
-.hero-content,
-.hero-dynamic-content{
-  height: 100%;
-}
-@media (max-width: 760px){
-  .dynamic-hero,
-  .compact-hero{
-    height: 420px;
-    min-height: 420px;
-    max-height: 420px;
-  }
-}
-.dynamic-hero,
-.compact-hero{
-  height:360px;
-  min-height:360px;
-  max-height:360px;
-  overflow:hidden;
-}
-
-.hero-dynamic-content{
-  min-height:360px;
-  padding-bottom:0;
-}
-
-#heroTitle{
-  max-width:720px;
-  min-height:auto;
-  font-size:clamp(38px, 4.2vw, 58px);
-  line-height:.92;
-  letter-spacing:-.04em;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.hero-meta{
-  margin-top:12px;
-}
-
-.hero-actions{
-  margin-top:18px;
-}
-
-.hero-carousel-status{
-  margin-top:18px;
-  width:380px;
-  max-width:100%;
-}
-
-#heroTitle{
-  font-size:clamp(42px, 5vw, 68px);
-  line-height:.95;
-}
-
-/* ===========================================================
-   PATCH V3.2.8 · Hero accueil stable
-   Objectif :
-   - le carrousel garde une hauteur fixe
-   - le titre ne pousse plus la barre de progression
-   - les titres longs sont réduits/clampés à 2 lignes
-   - les flèches restent centrées verticalement
-   =========================================================== */
-
-.hero.dynamic-hero.compact-hero{
   height:360px !important;
   min-height:360px !important;
   max-height:360px !important;
   padding:0 !important;
   overflow:hidden !important;
-  display:flex !important;
-  align-items:center !important;
 }
 
-.hero.dynamic-hero.compact-hero .hero-dynamic-content{
-  position:relative !important;
+/* Le conteneur redevient un vrai layout : contenu à gauche, navigation à droite. */
+.dynamic-hero .hero-dynamic-content,
+.compact-hero .hero-dynamic-content{
+  width:min(1180px, calc(100% - 40px)) !important;
+  max-width:min(1180px, calc(100% - 40px)) !important;
   height:360px !important;
   min-height:360px !important;
-  max-height:360px !important;
-  max-width:650px !important;
-  padding:38px 0 44px !important;
-  display:flex !important;
-  flex-direction:column !important;
-  justify-content:center !important;
-  overflow:visible !important;
+  margin:0 auto !important;
+  display:grid !important;
+  grid-template-columns:minmax(0, 650px) auto !important;
+  grid-template-rows:auto auto auto auto auto !important;
+  align-content:center !important;
+  align-items:center !important;
+  column-gap:34px !important;
+  position:relative !important;
+  padding:0 !important;
 }
 
-/* Le titre reste spectaculaire, mais ne devient plus un déménageur de mise en page. */
-.hero.dynamic-hero.compact-hero #heroTitle{
+.dynamic-hero .hero-dynamic-content > *:not(.hero-controls),
+.compact-hero .hero-dynamic-content > *:not(.hero-controls){
+  grid-column:1 !important;
   max-width:650px !important;
-  min-height:0 !important;
-  margin:8px 0 10px !important;
-  font-size:clamp(34px, 3.55vw, 50px) !important;
-  line-height:.94 !important;
+}
+
+.dynamic-hero .hero-dynamic-content::before,
+.compact-hero .hero-dynamic-content::before{
+  grid-column:1 !important;
+  margin-bottom:12px !important;
+}
+
+#heroTitle{
+  font-size:clamp(34px, 3.65vw, 52px) !important;
+  line-height:.92 !important;
   letter-spacing:-.055em !important;
+  margin:8px 0 10px !important;
+  max-width:650px !important;
   display:-webkit-box !important;
   -webkit-line-clamp:2 !important;
   -webkit-box-orient:vertical !important;
   overflow:hidden !important;
-  text-overflow:ellipsis !important;
 }
 
-/* Métas et boutons compactés pour libérer la zone basse. */
-.hero.dynamic-hero.compact-hero #heroMeta,
-.hero.dynamic-hero.compact-hero .hero-meta{
+.hero-meta{
   margin:0 0 12px !important;
-  font-size:clamp(14px, 1.45vw, 17px) !important;
+  font-size:16px !important;
   line-height:1.25 !important;
 }
 
-.hero.dynamic-hero.compact-hero .hero-actions{
+.hero-actions{
   margin-top:0 !important;
   gap:12px !important;
 }
 
-.hero.dynamic-hero.compact-hero .hero-actions .primary,
-.hero.dynamic-hero.compact-hero .hero-actions .secondary{
-  min-height:46px !important;
-  padding:11px 18px !important;
+.stats-strip{
+  margin-top:16px !important;
 }
 
-/* Les stats gardent leur place, sans pousser la progress bar. */
-.hero.dynamic-hero.compact-hero .stats-strip{
-  margin-top:14px !important;
-  padding:12px 15px !important;
-  gap:15px !important;
-}
-
-/* Barre verrouillée en bas du contenu, elle ne subit plus les titres longs. */
-.hero.dynamic-hero.compact-hero .hero-carousel-status{
-  position:absolute !important;
-  left:0 !important;
-  bottom:18px !important;
+.hero-carousel-status{
+  grid-column:1 !important;
   width:390px !important;
   max-width:100% !important;
-  margin:0 !important;
+  margin-top:14px !important;
 }
 
-/* Flèches centrées verticalement au lieu de traîner près de la barre. */
-.hero.dynamic-hero.compact-hero .hero-controls{
-  position:absolute !important;
-  right:-310px !important;
-  top:50% !important;
-  bottom:auto !important;
-  margin:0 !important;
-  transform:translateY(-50%) !important;
+/* Plus de coordonnées magiques : les flèches vivent dans la 2e colonne du conteneur. */
+.dynamic-hero .hero-controls,
+.compact-hero .hero-controls{
+  grid-column:2 !important;
+  grid-row:1 / -1 !important;
+  position:static !important;
+  transform:none !important;
+  justify-self:end !important;
+  align-self:center !important;
   display:flex !important;
   gap:12px !important;
+  margin:0 !important;
+  z-index:10 !important;
 }
 
-.hero.dynamic-hero.compact-hero .hero-controls button{
-  width:46px !important;
-  height:46px !important;
+.hero-controls button{
+  width:48px !important;
+  height:48px !important;
+  border-radius:50% !important;
+  display:grid !important;
+  place-items:center !important;
+  font-size:30px !important;
+  line-height:1 !important;
+  background:rgba(255,255,255,.13) !important;
+  border:1px solid rgba(255,255,255,.24) !important;
+  backdrop-filter:blur(8px) !important;
 }
 
-/* Si l'écran est trop étroit, on évite que les flèches partent dans le décor. */
-@media(max-width:1050px){
-  .hero.dynamic-hero.compact-hero .hero-controls{
-    right:-210px !important;
-  }
+.hero-controls button:hover{
+  transform:translateY(-1px) scale(1.05) !important;
 }
 
 @media(max-width:900px){
-  .hero.dynamic-hero.compact-hero{
-    height:auto !important;
-    min-height:360px !important;
-    max-height:none !important;
-    padding:28px 0 30px !important;
-    display:block !important;
+  .dynamic-hero .hero-dynamic-content,
+  .compact-hero .hero-dynamic-content{
+    grid-template-columns:1fr !important;
   }
-
-  .hero.dynamic-hero.compact-hero .hero-dynamic-content{
-    height:auto !important;
-    min-height:0 !important;
-    max-height:none !important;
-    padding:0 !important;
-    display:block !important;
-  }
-
-  .hero.dynamic-hero.compact-hero .hero-carousel-status{
-    position:static !important;
-    margin-top:16px !important;
-  }
-
-  .hero.dynamic-hero.compact-hero .hero-controls{
-    position:static !important;
-    transform:none !important;
-    margin-top:16px !important;
-    justify-content:center !important;
+  .dynamic-hero .hero-controls,
+  .compact-hero .hero-controls{
+    grid-column:1 !important;
+    grid-row:auto !important;
+    justify-self:center !important;
+    margin-top:12px !important;
   }
 }
 
 @media(max-width:620px){
-  .hero.dynamic-hero.compact-hero #heroTitle{
-    font-size:clamp(30px, 9vw, 40px) !important;
+  .dynamic-hero.compact-hero,
+  .compact-hero{
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    padding:22px 0 !important;
   }
-
-  .hero.dynamic-hero.compact-hero .hero-actions .primary,
-  .hero.dynamic-hero.compact-hero .hero-actions .secondary{
-    width:auto !important;
-    min-width:132px !important;
+  .dynamic-hero .hero-dynamic-content,
+  .compact-hero .hero-dynamic-content{
+    height:auto !important;
+    min-height:0 !important;
+    width:min(100% - 20px,1180px) !important;
+    max-width:min(100% - 20px,1180px) !important;
   }
 }
