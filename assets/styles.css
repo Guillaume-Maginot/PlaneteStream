@@ -1253,13 +1253,12 @@ min-width:220px;
 
 .hero-controls{
     position:absolute;
-    right:18px;          /* avant elles étaient trop collées au bord */
     top:50%;
+    left:calc(50% + 510px);
     transform:translateY(-50%);
     display:flex;
     gap:14px;
-    margin:0;
-    z-index:10;
+    z-index:20;
 }
 
 .hero-controls button{
