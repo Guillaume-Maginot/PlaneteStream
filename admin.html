@@ -1588,7 +1588,15 @@
             <label for="premiumSelect">Présentation</label>
             <select id="premiumSelect">
               <option value="false">Fiche standard</option>
-              <option value="true">Fiche Premium</option>
+              <option value="true">⭐ Fiche Premium</option>
+            </select>
+          </div>
+
+          <div class="admin-field">
+            <label for="homeFeaturedSelect">Film vedette accueil</label>
+            <select id="homeFeaturedSelect">
+              <option value="false">Non</option>
+              <option value="true">🎬 Oui, sous le projecteur</option>
             </select>
           </div>
         </div>
@@ -1668,6 +1676,7 @@
             <label>Catégorie<input id="editCategory" type="text"></label>
             <label>Mise en avant<select id="editFeatured"><option value="false">Standard</option><option value="true">Mis en avant</option></select></label>
             <label>Présentation<select id="editPremium"><option value="false">Fiche standard</option><option value="true">⭐ Fiche Premium</option></select></label>
+            <label>Film vedette accueil<select id="editHomeFeatured"><option value="false">Non</option><option value="true">🎬 Oui, sous le projecteur</option></select></label>
             <label class="full">Genres<input id="editGenres" type="text" placeholder="Action, Science-fiction"></label>
             <label>Note TMDb<input id="editRating" type="number" step="0.1"></label>
             <label>Slug<input id="editSlug" type="text"></label>
@@ -1865,7 +1874,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.3-tmdb-cast-refresh"></script>
+  <script src="assets/admin.js?v=3.4-home-featured"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>
