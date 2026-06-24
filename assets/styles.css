@@ -1252,27 +1252,33 @@ min-width:220px;
 }
 
 .hero-controls{
-  display:flex;
-  gap:10px;
-  margin-top:24px;
+    position:absolute;
+    right:48px;          /* avant elles étaient trop collées au bord */
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    gap:14px;
+    margin:0;
+    z-index:10;
 }
 
 .hero-controls button{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  background:rgba(255,255,255,.10);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.18);
-  font-size:32px;
-  line-height:1;
-  cursor:pointer;
-  transition:.25s;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.22);
+    backdrop-filter:blur(8px);
+    font-size:34px;
+    transition:.25s;
 }
 
 .hero-controls button:hover{
-  background:rgba(255,45,85,.25);
-  border-color:rgba(255,45,85,.65);
+    transform:scale(1.08);
+    border-color:rgba(255,45,85,.55);
+    box-shadow:
+        0 0 18px rgba(255,45,85,.28),
+        0 0 28px rgba(139,44,255,.22);
 }
 
 .rail{
