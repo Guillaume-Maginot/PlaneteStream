@@ -6111,3 +6111,77 @@ section{margin:24px 0 34px}
     width:50px !important;
     height:50px !important;
 }
+
+
+/* === Patch v3.2.9 : contrôles du carrousel attachés à la progress bar === */
+.hero-carousel-status{
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  width:min(540px, 100%) !important;
+  margin-top:16px !important;
+}
+
+.hero-carousel-status .hero-progress{
+  flex:1 1 auto !important;
+  min-width:170px !important;
+}
+
+.hero-carousel-status .hero-counter{
+  flex:0 0 auto !important;
+  min-width:58px !important;
+}
+
+.hero-carousel-status .hero-controls{
+  position:static !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  margin:0 !important;
+  z-index:5 !important;
+}
+
+.hero-carousel-status #heroPrev,
+.hero-carousel-status #heroNext{
+  position:static !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+  width:34px !important;
+  height:34px !important;
+  min-width:34px !important;
+  min-height:34px !important;
+  border-radius:999px !important;
+  font-size:23px !important;
+  line-height:1 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:0 !important;
+  margin:0 !important;
+  background:rgba(255,255,255,.10) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  backdrop-filter:blur(10px) !important;
+}
+
+.hero-carousel-status #heroPrev:hover,
+.hero-carousel-status #heroNext:hover{
+  transform:translateY(-1px) !important;
+}
+
+@media(max-width:620px){
+  .hero-carousel-status{
+    width:100% !important;
+    gap:8px !important;
+  }
+  .hero-carousel-status .hero-progress{
+    min-width:120px !important;
+  }
+}
