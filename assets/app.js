@@ -182,7 +182,7 @@ function renderHero(animate = true){
   hero.querySelector('#heroEyebrow').textContent = item.featured ? 'À la une' : 'Sélection Planète Stream';
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';
   hero.querySelector('#heroMeta').textContent = [year, formatType(item.type), genres, item._rating ? `⭐ ${item._rating.toFixed(1)}` : ''].filter(Boolean).join('   ');
-  const detailHref = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  const detailHref = getDetailHref(item);
   const watchHref = getWatchHref(item);
   const heroWatch = hero.querySelector('#heroWatch');
   heroWatch.href = watchHref;
@@ -268,7 +268,7 @@ function createCard(item){
   const card = document.createElement('article');
   card.className = 'card';
   const year = item.year || (item.releaseDate || '').slice(0,4);
-  const detailHref = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  const detailHref = getDetailHref(item);
   const watchHref = getWatchHref(item);
   const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
   card.innerHTML = `
@@ -305,7 +305,13 @@ function openRandomTitle(){
   const list = pool.length ? pool : state.catalogue;
   if(!list.length) return;
   const item = list[Math.floor(Math.random() * list.length)];
-  window.location.href = `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  window.location.href = getDetailHref(item);
+}
+
+
+function getDetailHref(item){
+  const page = item?.premium ? 'premium.html' : 'detail.html';
+  return `${page}?slug=${encodeURIComponent(item.slug)}`;
 }
 
 

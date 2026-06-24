@@ -138,7 +138,7 @@ async function renderWatch(item, catalogue){
           <div class="watch-controls">
             <button class="primary" id="startCinema">▶ Lancer la projection</button>
             <button class="ghost" id="favoriteBtn" type="button">♡ Ajouter à ma liste</button>
-            <a class="ghost" href="detail.html?slug=${encodeURIComponent(item.slug)}">Voir la fiche</a>
+            <a class="ghost" href="${getDetailHref(item)}">Voir la fiche</a>
             <a class="ghost" href="index.html#catalogue">Retour</a>
           </div>
         </div>
@@ -343,7 +343,7 @@ function showWatchLoginRequired(item){
       <p>La salle de cinéma est ouverte aux comptes enregistrés pendant les tests.</p>
       <div class="watch-controls" style="justify-content:center;margin-top:18px">
         <a class="primary" href="account.html">Se connecter</a>
-        <a class="ghost" href="detail.html?slug=${encodeURIComponent(item.slug)}">Retour à la fiche</a>
+        <a class="ghost" href="${getDetailHref(item)}">Retour à la fiche</a>
       </div>
     </section>
   `;
@@ -2378,7 +2378,7 @@ function createRelatedCard(item){
         </div>
         <div class="card-actions">
           <a class="card-play" href="watch.html?slug=${encodeURIComponent(item.slug)}">▶ Lecture</a>
-          <a class="card-detail" href="detail.html?slug=${encodeURIComponent(item.slug)}">Fiche</a>
+          <a class="card-detail" href="${getDetailHref(item)}">Fiche</a>
         </div>
       </div>
     </article>
@@ -2962,3 +2962,9 @@ function escapeAttr(str=''){
 }
 
 initWatch();
+
+
+function getDetailHref(item){
+  const page = item?.premium ? 'premium.html' : 'detail.html';
+  return `${page}?slug=${encodeURIComponent(item.slug)}`;
+}

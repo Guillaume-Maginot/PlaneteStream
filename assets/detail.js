@@ -223,7 +223,7 @@ ${
 
   document.querySelectorAll('[data-related-slug]').forEach(card => {
     card.addEventListener('click', () => {
-      window.location.href = `detail.html?slug=${encodeURIComponent(card.dataset.relatedSlug)}`;
+      window.location.href = card.dataset.relatedHref || `detail.html?slug=${encodeURIComponent(card.dataset.relatedSlug)}`;
     });
   });
 }
@@ -418,7 +418,7 @@ async function isMemberLoggedIn(){
 function createRelatedCard(item) {
   const poster = item.poster || '';
   return `
-    <button class="card" data-related-slug="${escapeHtml(item.slug)}">
+    <button class="card" data-related-slug="${escapeHtml(item.slug)}" data-related-href="${item.premium ? `premium.html?slug=${encodeURIComponent(item.slug)}` : `detail.html?slug=${encodeURIComponent(item.slug)}`}">
       <div class="poster" data-title="${escapeHtml(item.title)}" style="background-image:url('${poster}')"></div>
       <div class="info">
         <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
