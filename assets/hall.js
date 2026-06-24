@@ -192,6 +192,22 @@
     `).join('') : empty('Les membres actifs s’échauffent encore en coulisses.')}`;
   }
 
+  function activityIconHtml(type){
+    const icons = {
+      review: 'assets/ic_clap.png',
+      new_user: 'assets/ic_fauteuil.png',
+      reply: 'assets/ic_clap.png'
+    };
+    const labels = {
+      review: 'Critique publiée',
+      new_user: 'Nouveau Planétien',
+      reply: 'Réponse publiée'
+    };
+    const src = icons[type] || icons.review;
+    const alt = labels[type] || '';
+    return `<img class="hall-event-icon-img" src="${src}" alt="${escape(alt)}" loading="lazy">`;
+  }
+
   function renderTimeline(){
     const container = qs('#hallTimeline');
     if(!container) return;
@@ -203,7 +219,7 @@
       if(!movie) return;
       events.push({
         at:comment.created_at,
-        icon:comment.parent_id ? '💬' : '🎬',
+        icon:comment.parent_id ? activityIconHtml('reply') : activityIconHtml('review'),
         title:comment.parent_id ? `${viewerName(viewer)} a répondu sur ${movie.title}` : `${viewerName(viewer)} a publié une critique`,
         text:comment.parent_id ? shorten(comment.comment, 120) : `${movie.title} · ${comment.rating || '—'}/10`,
         href:`watch.html?slug=${encodeURIComponent(movie.slug)}#comment-${encodeURIComponent(comment.id)}`
@@ -213,7 +229,7 @@
     state.viewers.slice(0,12).forEach(viewer => {
       events.push({
         at:viewer.created_at,
-        icon:'🆕',
+        icon:activityIconHtml('new_user'),
         title:`${viewerName(viewer)} a rejoint les Planétiens`,
         text:'Un nouveau siège vient de s’allumer dans la salle.',
         href:'account.html'
@@ -223,7 +239,7 @@
     events.sort((a,b) => new Date(b.at) - new Date(a.at));
     container.innerHTML = events.slice(0,7).map(event => `
       <a class="hall-event" href="${escape(event.href)}">
-        <span>${escape(event.icon)}</span>
+        <span class="hall-event-icon-wrap">${event.icon}</span>
         <div><strong>${escape(event.title)}</strong><small>${escape(event.text)}</small><em>${relativeDate(event.at)}</em></div>
       </a>
     `).join('') || empty('Rien à signaler. Même les popcorns font silence.');
