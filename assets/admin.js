@@ -558,7 +558,10 @@ function deleteCatalogueItem(index) {
 
 
 function isSeriesEntry(entry) {
-  return (entry?.mediaType || '').toLowerCase() === 'tv' || entry?.type === 'serie' || Array.isArray(entry?.seasonsData);
+  const mediaType = (entry?.mediaType || entry?.media_type || '').toLowerCase();
+  const type = (entry?.type || '').toLowerCase();
+  const seasonsData = Array.isArray(entry?.seasonsData) ? entry.seasonsData : [];
+  return mediaType === 'tv' || type === 'serie' || seasonsData.length > 0;
 }
 
 function countEpisodes(seasonsData = []) {
