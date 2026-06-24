@@ -5727,9 +5727,9 @@ section{margin:24px 0 34px}
 /* Icônes personnalisées du Hall du cinéma */
 
 .hall-event-icon-wrap{
-    width:26px;
-    min-width:26px;
-    height:26px;
+    width:16px;
+    min-width:16px;
+    height:16px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -5737,8 +5737,8 @@ section{margin:24px 0 34px}
 }
 
 .hall-event-icon{
-    width:26px;
-    height:26px;
+    width:16px;
+    height:16px;
     display:block;
     object-fit:contain;
 }
