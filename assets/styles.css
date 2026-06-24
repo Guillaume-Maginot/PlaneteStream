@@ -6089,7 +6089,7 @@ section{margin:24px 0 34px}
 .hero-controls{
   position:absolute !important;
   left:auto !important;
-  right:clamp(340px, 22vw, 520px) !important;
+  right:clamp(280px, 18vw, 420px) !important;
   top:54% !important;
   transform:translateY(-50%) !important;
   display:flex !important;
