@@ -16,6 +16,7 @@ const resetBtn = document.querySelector('#resetBtn');
 const clearBtn = document.querySelector('#clearBtn');
 const sectionSelect = document.querySelector('#sectionSelect');
 const featuredSelect = document.querySelector('#featuredSelect');
+const premiumSelect = document.querySelector('#premiumSelect');
 const genreSelect = document.querySelector('#genreSelect');
 const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
@@ -38,6 +39,7 @@ const editFields = {
   year: document.querySelector('#editYear'),
   category: document.querySelector('#editCategory'),
   featured: document.querySelector('#editFeatured'),
+  premium: document.querySelector('#editPremium'),
   genres: document.querySelector('#editGenres'),
   rating: document.querySelector('#editRating'),
   poster: document.querySelector('#editPoster'),
@@ -255,7 +257,8 @@ function buildCatalogueEntry(item) {
     poster: item.poster || '',
     backdrop: item.backdrop || '',
     overview: item.overview || '',
-    featured: featuredSelect?.value === 'true'
+    featured: featuredSelect?.value === 'true',
+    premium: premiumSelect?.value === 'true'
   };
 }
 
@@ -417,6 +420,7 @@ function catalogueRow(entry, index) {
   const isSeries = isSeriesEntry(entry);
   const typeLabel = isSeries ? 'Série' : 'Film';
   const featured = entry.featured ? '<span class="catalogue-badge">À la une</span>' : '';
+  const premium = entry.premium ? '<span class="catalogue-badge premium">⭐ Premium</span>' : '';
   const mediaSummary = getMediaEmbedSummary(entry);
   const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
   const readyBadge = mediaSummary.missing
@@ -439,6 +443,7 @@ function catalogueRow(entry, index) {
         ${seriesBadge}
         ${readyBadge}
         ${featured}
+        ${premium}
       </div>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
       ${overview ? `<p class="catalogue-summary">${escapeHtml(overview)}</p>` : ''}
@@ -469,6 +474,7 @@ function openEditor(index) {
   editFields.year.value = entry.year || '';
   editFields.category.value = entry.category || '';
   editFields.featured.value = entry.featured ? 'true' : 'false';
+  if (editFields.premium) editFields.premium.value = entry.premium ? 'true' : 'false';
   editFields.genres.value = Array.isArray(entry.genres) ? entry.genres.join(', ') : '';
   editFields.rating.value = entry.rating ?? 0;
   editFields.poster.value = entry.poster || '';
@@ -506,6 +512,7 @@ function saveEditedItem() {
     year: editFields.year.value.trim(),
     category: editFields.category.value || current.category || (isSeries ? 'series' : 'films'),
     featured: editFields.featured.value === 'true',
+    premium: editFields.premium?.value === 'true',
     genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
     rating: Number(editFields.rating.value || 0),
     poster: editFields.poster.value.trim(),
