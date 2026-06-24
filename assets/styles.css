@@ -6112,43 +6112,47 @@ section{margin:24px 0 34px}
     height:50px !important;
 }
 
-
-/* === Patch v3.2.9 : contrôles du carrousel attachés à la progress bar === */
-.hero-carousel-status{
+/* === Patch v3.2.10 : contrôles du hero intégrés à la progress bar === */
+.hero-carousel-status.hero-carousel-status-inline{
   display:flex !important;
   align-items:center !important;
   gap:12px !important;
-  width:min(540px, 100%) !important;
-  margin-top:16px !important;
+  width:min(560px, 100%) !important;
+  max-width:100% !important;
+  margin-top:14px !important;
 }
-
-.hero-carousel-status .hero-progress{
-  flex:1 1 auto !important;
-  min-width:170px !important;
+.hero-carousel-status-inline .hero-progress{
+  flex:1 1 270px !important;
+  min-width:180px !important;
 }
-
-.hero-carousel-status .hero-counter{
+.hero-carousel-status-inline .hero-counter{
   flex:0 0 auto !important;
   min-width:58px !important;
 }
-
-.hero-carousel-status .hero-controls{
+.hero-carousel-status-inline .hero-controls,
+.hero-carousel-status-inline .hero-controls.hero-controls-inline{
   position:static !important;
+  inset:auto !important;
   left:auto !important;
   right:auto !important;
   top:auto !important;
   bottom:auto !important;
   transform:none !important;
+  grid-column:auto !important;
+  grid-row:auto !important;
+  justify-self:auto !important;
+  align-self:center !important;
   display:flex !important;
   align-items:center !important;
+  justify-content:flex-start !important;
   gap:8px !important;
   margin:0 !important;
   z-index:5 !important;
 }
-
-.hero-carousel-status #heroPrev,
-.hero-carousel-status #heroNext{
+.hero-carousel-status-inline #heroPrev,
+.hero-carousel-status-inline #heroNext{
   position:static !important;
+  inset:auto !important;
   left:auto !important;
   right:auto !important;
   top:auto !important;
@@ -6158,30 +6162,27 @@ section{margin:24px 0 34px}
   height:34px !important;
   min-width:34px !important;
   min-height:34px !important;
-  border-radius:999px !important;
-  font-size:23px !important;
-  line-height:1 !important;
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
   padding:0 !important;
-  margin:0 !important;
-  background:rgba(255,255,255,.10) !important;
-  border:1px solid rgba(255,255,255,.18) !important;
-  backdrop-filter:blur(10px) !important;
+  border-radius:50% !important;
+  display:grid !important;
+  place-items:center !important;
+  font-size:24px !important;
+  line-height:1 !important;
+  background:rgba(255,255,255,.12) !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  backdrop-filter:blur(8px) !important;
 }
-
-.hero-carousel-status #heroPrev:hover,
-.hero-carousel-status #heroNext:hover{
-  transform:translateY(-1px) !important;
+.hero-carousel-status-inline #heroPrev:hover,
+.hero-carousel-status-inline #heroNext:hover{
+  transform:translateY(-1px) scale(1.06) !important;
 }
 
 @media(max-width:620px){
-  .hero-carousel-status{
+  .hero-carousel-status.hero-carousel-status-inline{
     width:100% !important;
-    gap:8px !important;
+    gap:10px !important;
   }
-  .hero-carousel-status .hero-progress{
+  .hero-carousel-status-inline .hero-progress{
     min-width:120px !important;
   }
 }
