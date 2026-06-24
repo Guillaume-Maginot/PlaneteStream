@@ -6086,3 +6086,13 @@ section{margin:24px 0 34px}
     max-width:min(100% - 20px,1180px) !important;
   }
 }
+.hero-controls{
+  position:absolute !important;
+  left:auto !important;
+  right:clamp(340px, 22vw, 520px) !important;
+  top:54% !important;
+  transform:translateY(-50%) !important;
+  display:flex !important;
+  gap:12px !important;
+  z-index:30 !important;
+}
