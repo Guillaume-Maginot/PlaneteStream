@@ -42,6 +42,7 @@ function renderPremium(item, catalogue, isLogged=false){
     <section class="premium-cinema-hero" style="${backdrop ? `--premium-backdrop:url('${escapeAttr(backdrop)}')` : ''}">
       <div class="premium-grain" aria-hidden="true"></div>
       <div class="premium-aurora" aria-hidden="true"></div>
+      <div class="premium-sandstorm" aria-hidden="true">${createPremiumParticles(38)}</div>
       <div class="container premium-hero-grid">
         <aside class="premium-poster-card">
           ${poster ? `<img src="${escapeAttr(poster)}" alt="Affiche ${escapeHtml(item.title)}">` : `<div class="premium-poster-empty">${escapeHtml(item.title)}</div>`}
@@ -69,10 +70,17 @@ function renderPremium(item, catalogue, isLogged=false){
           <div class="premium-actions">
             ${renderWatchAction(item, isLogged)}
             ${item.trailer ? `<a class="ghost premium-ghost" href="#premiumTrailer">Voir la bande-annonce</a>` : ''}
-            <a class="ghost premium-ghost" href="detail.html?slug=${encodeURIComponent(item.slug)}">Fiche classique</a>
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="container premium-presentation-strip" aria-label="Présentation premium">
+      <article class="premium-panel premium-presentation-panel">
+        <p class="premium-panel-label">Présentation</p>
+        <h2>Une fiche vitrine pour les films qui méritent le fauteuil rouge</h2>
+        <p>Cette page rassemble l’affiche, l’ambiance, les informations essentielles et les accès rapides dans une présentation plus cinématographique. Le catalogue reste simple, ici on déroule le tapis lumineux.</p>
+      </article>
     </section>
 
     <section class="container premium-editorial-grid">
@@ -137,6 +145,17 @@ function renderPremium(item, catalogue, isLogged=false){
       </section>
     ` : ''}
   `;
+}
+
+function createPremiumParticles(count=34){
+  return Array.from({length: count}, (_, index) => {
+    const left = (index * 37) % 100;
+    const top = (index * 19) % 100;
+    const delay = -((index * 0.47) % 12).toFixed(2);
+    const duration = (10 + (index % 7) * 1.8).toFixed(1);
+    const size = 2 + (index % 4);
+    return `<span style="--x:${left}%;--y:${top}%;--delay:${delay}s;--duration:${duration}s;--size:${size}px"></span>`;
+  }).join('');
 }
 
 function getRelatedPremiumItems(item, catalogue){
