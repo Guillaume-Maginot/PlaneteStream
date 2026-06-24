@@ -35,7 +35,7 @@ function renderPremium(item, catalogue, isLogged=false){
   const poster = item.poster || '';
   const runtime = getRuntimeLabel(item);
   const rating = item.rating ? Number(item.rating).toFixed(1) : '';
-  const cast = (item.cast || []).slice(0, 8);
+  const cast = normalizeCast(item.cast).slice(0, 10);
   const related = getRelatedPremiumItems(item, catalogue);
 
   premiumPage.innerHTML = `
@@ -110,8 +110,8 @@ function renderPremium(item, catalogue, isLogged=false){
           <p class="premium-panel-label">Distribution</p>
           <h2>Casting principal</h2>
         </div>
-        <div class="premium-cast-grid">
-          ${cast.map(name => `<span>${escapeHtml(name)}</span>`).join('')}
+        <div class="premium-cast-grid premium-cast-portraits">
+          ${cast.map(createCastCard).join('')}
         </div>
       </section>
     ` : ''}
@@ -145,6 +145,57 @@ function renderPremium(item, catalogue, isLogged=false){
       </section>
     ` : ''}
   `;
+}
+
+function createCastCard(actor){
+  const photo = actor.profile || buildTmdbProfileUrl(actor.profile_path);
+  const searchUrl = `index.html?search=${encodeURIComponent(actor.name)}#catalogue`;
+  return `
+    <a class="premium-cast-card" href="${searchUrl}" title="Voir les contenus avec ${escapeAttr(actor.name)}">
+      <div class="premium-cast-photo">
+        ${photo ? `<img src="${escapeAttr(photo)}" alt="${escapeAttr(actor.name)}">` : `<span>${escapeHtml(getInitials(actor.name))}</span>`}
+      </div>
+      <strong>${escapeHtml(actor.name)}</strong>
+      ${actor.character ? `<em>${escapeHtml(actor.character)}</em>` : ''}
+    </a>
+  `;
+}
+
+function normalizeCast(cast = []){
+  if(!Array.isArray(cast)) return [];
+  return cast
+    .map(actor => {
+      if(typeof actor === 'string'){
+        const name = actor.trim();
+        return name ? {name, character:'', profile_path:'', profile:''} : null;
+      }
+      if(!actor || typeof actor !== 'object') return null;
+      const name = String(actor.name || '').trim();
+      if(!name) return null;
+      return {
+        id: actor.id || null,
+        name,
+        character: String(actor.character || '').trim(),
+        profile_path: actor.profile_path || '',
+        profile: actor.profile || actor.profileUrl || buildTmdbProfileUrl(actor.profile_path || '')
+      };
+    })
+    .filter(Boolean);
+}
+
+function buildTmdbProfileUrl(path){
+  if(!path) return '';
+  if(/^https?:/i.test(path)) return path;
+  return `https://image.tmdb.org/t/p/w185${path}`;
+}
+
+function getInitials(name=''){
+  return String(name)
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0]?.toUpperCase() || '')
+    .join('') || '🎭';
 }
 
 function createPremiumParticles(count=34){

@@ -77,9 +77,15 @@ async function enrichTmdbResult(item) {
     : getCreator(details);
 
   const cast = (credits.cast || [])
-    .slice(0, 6)
-    .map(actor => actor.name)
-    .filter(Boolean);
+    .slice(0, 10)
+    .map(actor => ({
+      id: actor.id || null,
+      name: actor.name || "",
+      character: actor.character || "",
+      profile_path: actor.profile_path || "",
+      profile: buildImageUrl(actor.profile_path, "w185")
+    }))
+    .filter(actor => actor.name);
 
   const trailer = (videos.results || []).find(video =>
     video.site === "YouTube" &&

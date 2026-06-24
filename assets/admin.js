@@ -237,7 +237,7 @@ function buildCatalogueEntry(item) {
     category: sectionSelect?.value || (item.mediaType === 'tv' ? 'series' : 'films'),
     genres,
     director: item.director || 'À compléter',
-    cast: item.cast || [],
+    cast: normalizeCast(item.cast),
     runtime: item.runtime || 0,
     seasons: Number(item.seasons || 0),
     episodes: Number(item.episodes || 0),
@@ -279,7 +279,7 @@ function normalizeTmdbItem(item) {
     mediaType,
     genres: Array.isArray(item.genres) ? item.genres.filter(Boolean) : [],
     director: item.director || 'À compléter',
-    cast: Array.isArray(item.cast) ? item.cast.filter(Boolean) : [],
+    cast: normalizeCast(item.cast),
     runtime: Number(item.runtime || 0),
     seasons: Number(item.seasons || 0),
     episodes: Number(item.episodes || 0),
@@ -362,7 +362,7 @@ function renderCatalogueList() {
         entry.category,
         ...(Array.isArray(entry.genres) ? entry.genres : []),
         entry.director,
-        ...(Array.isArray(entry.cast) ? entry.cast : [])
+        ...getCastSearchTerms(entry.cast)
       ].join(' ').toLowerCase();
       return haystack.includes(query);
     });
@@ -450,11 +450,13 @@ function catalogueRow(entry, index) {
     </div>
     <div class="catalogue-buttons">
       <button class="ghost" type="button" data-action="edit">Modifier</button>
+      <button class="ghost" type="button" data-action="refresh-tmdb">🔄 TMDb</button>
       <button class="danger" type="button" data-action="delete">Supprimer</button>
     </div>
   `;
 
   el.querySelector('[data-action="edit"]')?.addEventListener('click', () => openEditor(index));
+  el.querySelector('[data-action="refresh-tmdb"]')?.addEventListener('click', () => refreshCatalogueItemFromTmdb(index));
   el.querySelector('[data-action="delete"]')?.addEventListener('click', () => deleteCatalogueItem(index));
   return el;
 }
@@ -540,6 +542,175 @@ function closeEditor() {
   catalogueEditorGrid?.classList.remove('is-editing-content');
   editPanel?.classList.remove('is-series-editing');
   if (editFields.videoEmbed) editFields.videoEmbed.closest('label')?.classList.remove('is-hidden');
+}
+
+async function refreshCatalogueItemFromTmdb(index) {
+  const current = draft[index];
+  if (!current) return;
+
+  const title = current.originalTitle || current.title || '';
+  if (!title) {
+    showMessage('Impossible d’actualiser : titre absent. Même TMDb ne lit pas dans le marc de pop-corn.');
+    return;
+  }
+
+  showMessage(`Actualisation TMDb de “${current.title}” en cours…`);
+
+  try {
+    const mediaType = (current.mediaType || (current.type === 'serie' ? 'tv' : 'movie'));
+    const res = await fetch(
+      `/.netlify/functions/tmdb-search?query=${encodeURIComponent(title)}&type=${encodeURIComponent(mediaType)}`
+    );
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || data.details || 'Réponse TMDb invalide');
+
+    const results = (data.results || []).map(normalizeTmdbItem);
+    const refreshed = findBestTmdbRefreshMatch(current, results);
+
+    if (!refreshed) {
+      showMessage('Aucune correspondance TMDb fiable trouvée. Le radar a vu du sable.');
+      return;
+    }
+
+    draft[index] = mergeTmdbRefresh(current, refreshed);
+    syncOutput();
+    renderCatalogueList();
+    if (editingIndex === index) openEditor(index);
+    showMessage(`“${current.title}” actualisé depuis TMDb. Options internes conservées.`);
+  } catch (err) {
+    console.error(err);
+    showMessage(`Actualisation impossible : ${err.message}`);
+  }
+}
+
+function findBestTmdbRefreshMatch(current, results) {
+  if (!results.length) return null;
+  const currentTmdbId = String(current.tmdbId || '');
+  if (currentTmdbId) {
+    const sameId = results.find(item => String(item.tmdbId || '') === currentTmdbId);
+    if (sameId) return sameId;
+  }
+
+  const currentType = current.mediaType || (current.type === 'serie' ? 'tv' : 'movie');
+  const currentTitle = normalizeComparableTitle(current.originalTitle || current.title || '');
+  const currentYear = String(current.year || '');
+
+  return results.find(item => {
+    const sameType = (item.mediaType || (item.type === 'serie' ? 'tv' : 'movie')) === currentType;
+    const sameTitle = normalizeComparableTitle(item.originalTitle || item.title || '') === currentTitle;
+    const sameYear = !currentYear || !item.year || String(item.year) === currentYear;
+    return sameType && sameTitle && sameYear;
+  }) || results.find(item => (item.mediaType || (item.type === 'serie' ? 'tv' : 'movie')) === currentType) || results[0];
+}
+
+function mergeTmdbRefresh(current, tmdbItem) {
+  const isSeries = isSeriesEntry(current);
+  const currentVideo = current.videoEmbed || current.video_embed || current.embed || '';
+  const refreshed = {
+    ...current,
+    originalTitle: tmdbItem.originalTitle || current.originalTitle || '',
+    year: tmdbItem.year || current.year || '',
+    releaseDate: tmdbItem.releaseDate || current.releaseDate || '',
+    type: current.type || tmdbItem.type,
+    mediaType: current.mediaType || tmdbItem.mediaType,
+    genres: tmdbItem.genres?.length ? tmdbItem.genres : (current.genres || []),
+    director: tmdbItem.director || current.director || 'À compléter',
+    cast: normalizeCast(tmdbItem.cast?.length ? tmdbItem.cast : current.cast),
+    runtime: Number(tmdbItem.runtime || current.runtime || 0),
+    country: tmdbItem.country || current.country || '',
+    language: tmdbItem.language || current.language || '',
+    rating: Number(tmdbItem.rating || current.rating || 0),
+    popularity: Number(tmdbItem.popularity || current.popularity || 0),
+    trailer: tmdbItem.trailer || current.trailer || '',
+    tagline: tmdbItem.tagline || current.tagline || '',
+    status: tmdbItem.status || current.status || '',
+    homepage: tmdbItem.homepage || current.homepage || '',
+    collection: tmdbItem.collection || current.collection || '',
+    studios: tmdbItem.studios?.length ? tmdbItem.studios : (current.studios || []),
+    tmdbId: tmdbItem.tmdbId || current.tmdbId || '',
+    poster: tmdbItem.poster || current.poster || '',
+    backdrop: tmdbItem.backdrop || current.backdrop || '',
+    overview: tmdbItem.overview || current.overview || '',
+    // Options internes conservées
+    slug: current.slug,
+    category: current.category,
+    featured: Boolean(current.featured),
+    premium: Boolean(current.premium),
+    videoEmbed: currentVideo
+  };
+
+  if (isSeries) {
+    refreshed.seasonsData = Array.isArray(tmdbItem.seasonsData) && tmdbItem.seasonsData.length
+      ? preserveEpisodeEmbeds(current.seasonsData, tmdbItem.seasonsData)
+      : current.seasonsData;
+    refreshed.seasons = Array.isArray(refreshed.seasonsData) ? refreshed.seasonsData.length : Number(current.seasons || 0);
+    refreshed.episodes = Array.isArray(refreshed.seasonsData) ? countEpisodes(refreshed.seasonsData) : Number(current.episodes || 0);
+  } else {
+    refreshed.seasonsData = current.seasonsData;
+    refreshed.seasons = Number(current.seasons || 0);
+    refreshed.episodes = Number(current.episodes || 0);
+  }
+
+  return refreshed;
+}
+
+function preserveEpisodeEmbeds(oldSeasons = [], newSeasons = []) {
+  return newSeasons.map((season, seasonIndex) => {
+    const seasonNumber = Number(season.seasonNumber || season.number || seasonIndex + 1);
+    const oldSeason = (oldSeasons || []).find(item => Number(item.seasonNumber || item.number || 0) === seasonNumber);
+    return {
+      ...season,
+      episodes: (season.episodes || []).map((episode, episodeIndex) => {
+        const episodeNumber = Number(episode.episodeNumber || episode.number || episodeIndex + 1);
+        const oldEpisode = (oldSeason?.episodes || []).find(item => Number(item.episodeNumber || item.number || 0) === episodeNumber);
+        return {
+          ...episode,
+          videoEmbed: oldEpisode?.videoEmbed || oldEpisode?.embed || episode.videoEmbed || ''
+        };
+      })
+    };
+  });
+}
+
+function normalizeComparableTitle(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function normalizeCast(cast = []) {
+  if (!Array.isArray(cast)) return [];
+  return cast
+    .map(actor => {
+      if (typeof actor === 'string') {
+        const name = actor.trim();
+        return name ? { name, character: '', profile_path: '', profile: '', id: null } : null;
+      }
+      if (!actor || typeof actor !== 'object') return null;
+      const name = String(actor.name || '').trim();
+      if (!name) return null;
+      return {
+        id: actor.id || null,
+        name,
+        character: String(actor.character || '').trim(),
+        profile_path: actor.profile_path || '',
+        profile: actor.profile || actor.profileUrl || buildTmdbProfileUrl(actor.profile_path || ''),
+      };
+    })
+    .filter(Boolean);
+}
+
+function getCastSearchTerms(cast = []) {
+  return normalizeCast(cast).flatMap(actor => [actor.name, actor.character].filter(Boolean));
+}
+
+function buildTmdbProfileUrl(path) {
+  if (!path) return '';
+  if (/^https?:/i.test(path)) return path;
+  return `https://image.tmdb.org/t/p/w185${path}`;
 }
 
 

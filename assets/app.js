@@ -18,6 +18,7 @@ async function init(){
     normalizeCatalogue();
     buildGenreFilter();
     bindEvents();
+    applySearchFromUrl();
     render();
     startHeroRotation();
   }catch(error){
@@ -115,10 +116,38 @@ function buildGenreFilter(){
 }
 
 function matches(item){
-  const haystack = [item.title, item.originalTitle, item.type, item.category, item.director, item.tagline, ...(item.genres || []), ...(item.cast || [])].join(' ').toLowerCase();
+  const haystack = [
+    item.title,
+    item.originalTitle,
+    item.type,
+    item.category,
+    item.director,
+    item.tagline,
+    ...(item.genres || []),
+    ...getCastSearchTerms(item.cast)
+  ].join(' ').toLowerCase();
   const filterOk = state.filter === 'all' || item.type === state.filter || item.mediaType === state.filter || haystack.includes(state.filter);
   const searchOk = !state.search || haystack.includes(state.search);
   return filterOk && searchOk;
+}
+
+function getCastSearchTerms(cast = []){
+  if(!Array.isArray(cast)) return [];
+  return cast.flatMap(actor => {
+    if(typeof actor === 'string') return [actor];
+    if(!actor || typeof actor !== 'object') return [];
+    return [actor.name, actor.character].filter(Boolean);
+  });
+}
+
+function applySearchFromUrl(){
+  const params = new URLSearchParams(window.location.search);
+  const searchValue = params.get('search') || params.get('q') || '';
+  if(!searchValue.trim()) return;
+  state.search = searchValue.trim().toLowerCase();
+  const input = document.querySelector('#searchInput');
+  if(input) input.value = searchValue.trim();
+  window.requestAnimationFrame(focusSearchResults);
 }
 
 
