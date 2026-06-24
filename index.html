@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.2.6-hall-cta-stats" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.2.7-hall-final" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
 
   <style>
@@ -115,6 +115,53 @@
       #catalogueFullSection .catalogue-tool-pill,#catalogueFullSection .catalogue-goto{width:100%;justify-content:space-between}
       #catalogueFullSection .catalogue-goto input{flex:1;width:auto;max-width:120px}
     }
+
+    /* V3.2.7 - Hall CTA premium + compteurs zéro visibles, patch inline de sécurité */
+    #hall-cinema .hall-premium-cta{
+      position:relative !important;
+      overflow:hidden !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:8px !important;
+      padding:14px 22px !important;
+      border-radius:14px !important;
+      border:1px solid rgba(245,205,105,.82) !important;
+      background:radial-gradient(circle at 18% 0%, rgba(255,231,160,.30), transparent 40%),linear-gradient(135deg, rgba(86,56,24,.98), rgba(36,24,13,.98)) !important;
+      color:#ffe9ad !important;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 0 28px rgba(240,190,85,.22),0 14px 34px rgba(0,0,0,.32) !important;
+      text-shadow:0 1px 0 rgba(0,0,0,.45) !important;
+      white-space:nowrap !important;
+    }
+    #hall-cinema .hall-premium-cta::before{
+      content:"";
+      position:absolute;
+      top:-45%;
+      bottom:-45%;
+      left:-115%;
+      width:62%;
+      transform:skewX(-22deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
+      opacity:.8;
+      transition:left .85s ease;
+    }
+    #hall-cinema .hall-premium-cta::after{
+      content:"✦";
+      position:relative;
+      color:#ffd66c;
+      filter:drop-shadow(0 0 8px rgba(255,214,108,.65));
+    }
+    #hall-cinema .hall-premium-cta span{position:relative;z-index:1;}
+    #hall-cinema .hall-premium-cta:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,226,139,1) !important;
+      color:#fff4d1 !important;
+      box-shadow:inset 0 0 20px rgba(255,214,108,.12),0 0 40px rgba(240,190,85,.36),0 18px 40px rgba(0,0,0,.38) !important;
+    }
+    #hall-cinema .hall-premium-cta:hover::before{left:145%;}
+    #hallStats strong{display:block !important;visibility:visible !important;opacity:1 !important;color:#fff !important;min-height:28px !important;}
+    #hallStats strong:empty::before{content:"0";}
+
   </style>
 
 </head>
@@ -190,14 +237,14 @@
             <h2>Là où les films continuent après le générique.</h2>
             <p>Critiques, débats, nouveaux membres et avis qui font vibrer l’orbite Planète Stream.</p>
           </div>
-          <a class="secondary hall-cta" href="account.html">Rejoindre les Planétiens</a>
+          <a class="secondary hall-cta hall-premium-cta" href="account.html"><span>Rejoindre les Planétiens</span></a>
         </div>
 
         <div class="hall-stats" id="hallStats" aria-label="Activité communautaire">
-          <span><strong>—</strong><small>critiques aujourd’hui</small></span>
-          <span><strong>—</strong><small>réponses</small></span>
-          <span><strong>—</strong><small>likes</small></span>
-          <span><strong>—</strong><small>nouveaux membres</small></span>
+          <span><strong>0</strong><small>critiques aujourd’hui</small></span>
+          <span><strong>0</strong><small>réponses</small></span>
+          <span><strong>0</strong><small>likes</small></span>
+          <span><strong>0</strong><small>nouveaux membres</small></span>
         </div>
 
         <article class="hall-planetian-ticker" aria-label="Activité du parcours des Planétiens">
@@ -373,6 +420,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
   <script src="assets/app.js?v=3.2-home-clean"></script>
-  <script src="assets/hall.js?v=3.2.6-hall-cta-stats"></script>
+  <script src="assets/hall.js?v=3.2.7-hall-final"></script>
 </body>
 </html>

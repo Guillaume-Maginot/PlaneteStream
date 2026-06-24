@@ -23,7 +23,7 @@
   };
 
   const qs = selector => root.querySelector(selector);
-  const escape = value => window.PS?.escapeHtml ? window.PS.escapeHtml(value || '') : String(value || '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+  const escape = value => window.PS?.escapeHtml ? window.PS.escapeHtml(value == null ? '' : value) : String(value == null ? '' : value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
 
   async function boot(){
     if(window.PS?.ready) await window.PS.ready;
@@ -90,12 +90,23 @@
 
     const el = qs('#hallStats');
     if(!el) return;
-    el.innerHTML = [
+    const rows = [
       [commentsToday, 'critiques aujourd’hui'],
       [repliesToday, 'réponses'],
       [likesToday, 'likes'],
       [viewersToday, 'nouveaux membres']
-    ].map(([value, label]) => `<span><strong>${escape(value)}</strong><small>${escape(label)}</small></span>`).join('');
+    ];
+    el.replaceChildren();
+    rows.forEach(([value, label]) => {
+      const card = document.createElement('span');
+      const strong = document.createElement('strong');
+      const small = document.createElement('small');
+      const safeValue = Number.isFinite(Number(value)) ? Number(value) : 0;
+      strong.textContent = String(safeValue);
+      small.textContent = label;
+      card.append(strong, small);
+      el.appendChild(card);
+    });
   }
 
   function renderHotDiscussions(){
@@ -192,20 +203,15 @@
     `).join('') : empty('Les membres actifs s’échauffent encore en coulisses.')}`;
   }
 
-  function activityIconHtml(type){
+
+  function timelineIcon(type){
     const icons = {
-      review: 'assets/ic_clap.png',
-      new_user: 'assets/ic_fauteuil.png',
-      reply: 'assets/ic_clap.png'
+      review: {src:'assets/ic_clap.png', alt:'Critique publiée'},
+      reply: {src:'assets/ic_clap.png', alt:'Réponse publiée'},
+      join: {src:'assets/ic_fauteuil.png', alt:'Nouveau Planétien'}
     };
-    const labels = {
-      review: 'Critique publiée',
-      new_user: 'Nouveau Planétien',
-      reply: 'Réponse publiée'
-    };
-    const src = icons[type] || icons.review;
-    const alt = labels[type] || '';
-    return `<img class="hall-event-icon-img" src="${src}" alt="${escape(alt)}" loading="lazy">`;
+    const icon = icons[type] || icons.review;
+    return `<span class="hall-event-icon hall-event-icon--${escape(type || 'review')}"><img src="${icon.src}" alt="${icon.alt}" loading="lazy"></span>`;
   }
 
   function renderTimeline(){
@@ -219,7 +225,7 @@
       if(!movie) return;
       events.push({
         at:comment.created_at,
-        icon:comment.parent_id ? activityIconHtml('reply') : activityIconHtml('review'),
+        iconType:comment.parent_id ? 'reply' : 'review',
         title:comment.parent_id ? `${viewerName(viewer)} a répondu sur ${movie.title}` : `${viewerName(viewer)} a publié une critique`,
         text:comment.parent_id ? shorten(comment.comment, 120) : `${movie.title} · ${comment.rating || '—'}/10`,
         href:`watch.html?slug=${encodeURIComponent(movie.slug)}#comment-${encodeURIComponent(comment.id)}`
@@ -229,7 +235,7 @@
     state.viewers.slice(0,12).forEach(viewer => {
       events.push({
         at:viewer.created_at,
-        icon:activityIconHtml('new_user'),
+        iconType:'join',
         title:`${viewerName(viewer)} a rejoint les Planétiens`,
         text:'Un nouveau siège vient de s’allumer dans la salle.',
         href:'account.html'
@@ -239,7 +245,7 @@
     events.sort((a,b) => new Date(b.at) - new Date(a.at));
     container.innerHTML = events.slice(0,7).map(event => `
       <a class="hall-event" href="${escape(event.href)}">
-        <span class="hall-event-icon-wrap">${event.icon}</span>
+        ${timelineIcon(event.iconType)}
         <div><strong>${escape(event.title)}</strong><small>${escape(event.text)}</small><em>${relativeDate(event.at)}</em></div>
       </a>
     `).join('') || empty('Rien à signaler. Même les popcorns font silence.');
