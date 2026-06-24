@@ -299,28 +299,44 @@ function createCard(item){
 
 function createPremiumCard(item){
   const card = document.createElement('article');
-  card.className = 'premium-home-card';
+  card.className = 'premium-home-card premium-home-cinema';
   const year = item.year || (item.releaseDate || '').slice(0,4);
   const detailHref = getDetailHref(item);
   const watchHref = getWatchHref(item);
   const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
   const genres = (item.genres || []).slice(0,3).map(g => `<span>${escapeHtml(g)}</span>`).join('');
   const synopsis = item.overview || item.description || item.synopsis || '';
+  const backdrop = item.backdrop || item.poster || '';
+  const poster = item.poster || item.backdrop || '';
+  const rating = item._rating ? item._rating.toFixed(1) : (item.rating ? Number(item.rating).toFixed(1) : '');
+  card.style.setProperty('--premium-home-backdrop', backdrop ? `url('${backdrop}')` : 'none');
+  const sand = Array.from({ length: 26 }, (_, i) => {
+    const x = (i * 37) % 100;
+    const y = 8 + ((i * 23) % 82);
+    const size = 2 + (i % 4);
+    const duration = 12 + (i % 7) * 2;
+    const delay = -1 * ((i * 1.7) % 14);
+    return `<span style="--x:${x}%;--y:${y}%;--size:${size}px;--duration:${duration}s;--delay:${delay}s"></span>`;
+  }).join('');
   card.innerHTML = `
-    <a class="premium-home-poster" href="${detailHref}" style="background-image:url('${item.poster || item.backdrop || ''}'), ${posterFallback}" aria-label="Ouvrir la fiche Premium ${escapeHtml(item.title)}"></a>
+    <div class="premium-home-backdrop" aria-hidden="true"></div>
+    <div class="premium-home-sand" aria-hidden="true">${sand}</div>
+    <a class="premium-home-poster" href="${detailHref}" style="background-image:url('${poster}'), ${posterFallback}" aria-label="Ouvrir la fiche Premium ${escapeHtml(item.title)}"></a>
     <div class="premium-home-copy">
-      <p class="premium-home-kicker">⭐ Fiche Premium</p>
+      <p class="premium-home-kicker">⭐ Sélection Premium</p>
       <h3>${escapeHtml(item.title || 'Titre premium')}</h3>
+      ${item.tagline ? `<p class="premium-home-tagline">“${escapeHtml(item.tagline)}”</p>` : ''}
       <div class="premium-home-meta">
         ${year ? `<span>${escapeHtml(year)}</span>` : ''}
         <span>${escapeHtml(formatType(item.type || item.mediaType || 'film'))}</span>
-        ${item._rating ? `<span>⭐ ${item._rating.toFixed(1)}</span>` : ''}
+        ${item.runtime ? `<span>${escapeHtml(String(item.runtime))} min</span>` : ''}
+        ${rating ? `<span>⭐ ${rating}/10</span>` : ''}
       </div>
       <div class="premium-home-genres">${genres}</div>
-      ${synopsis ? `<p>${escapeHtml(synopsis).slice(0, 230)}${synopsis.length > 230 ? '…' : ''}</p>` : ''}
+      ${synopsis ? `<p class="premium-home-synopsis">${escapeHtml(synopsis).slice(0, 300)}${synopsis.length > 300 ? '…' : ''}</p>` : ''}
       <div class="premium-home-actions">
-        <a class="primary" href="${detailHref}">Ouvrir la fiche Premium</a>
-        <a class="secondary" href="${watchHref}"${watchTarget}>▶ Lecture</a>
+        <a class="primary" href="${watchHref}"${watchTarget}>▶ Lecture</a>
+        <a class="secondary" href="${detailHref}">Ouvrir la fiche Premium</a>
       </div>
     </div>`;
   return card;
