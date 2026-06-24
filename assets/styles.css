@@ -6096,18 +6096,18 @@ section{margin:24px 0 34px}
   gap:12px !important;
   z-index:30 !important;
 }
+#heroPrev{
+    right: 280px !important;
+}
+
+#heroNext{
+    right: 220px !important;
+}
+
 #heroPrev,
 #heroNext{
-  position:absolute !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-  z-index:80 !important;
-}
-
-#heroPrev{
-  right:220px !important;
-}
-
-#heroNext{
-  right:160px !important;
+    top: 46% !important;
+    transform: translateY(-50%) !important;
+    width:50px !important;
+    height:50px !important;
 }
