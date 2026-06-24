@@ -117,11 +117,7 @@ if (rating) badges.push(rating);
         <h2>Casting principal</h2>
 
         <div class="detail-cast-list">
-  ${
-    (item.cast || []).length
-      ? item.cast.map(actor => `<span>${escapeHtml(actor)}</span>`).join('')
-      : '<span>Non renseigné</span>'
-  }
+  ${renderCastList(item.cast)}
 </div>
 
     </div>
@@ -431,6 +427,27 @@ function createRelatedCard(item) {
       </div>
     </button>
   `;
+}
+
+
+function getActorDisplayName(actor) {
+  if (typeof actor === 'string') return actor.trim();
+  if (!actor || typeof actor !== 'object') return '';
+  return String(actor.name || actor.original_name || actor.title || '').trim();
+}
+
+function renderCastList(cast = []) {
+  if (!Array.isArray(cast)) return '<span>Non renseigné</span>';
+
+  const names = cast
+    .map(getActorDisplayName)
+    .filter(Boolean);
+
+  if (!names.length) return '<span>Non renseigné</span>';
+
+  return names
+    .map(name => `<span>${escapeHtml(name)}</span>`)
+    .join('');
 }
 
 function showError(message) {
