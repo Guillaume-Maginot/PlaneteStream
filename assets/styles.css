@@ -5624,43 +5624,6 @@ section{margin:24px 0 34px}
 .premium-cinema-hero .premium-hero-grid{
   z-index:3;
 }
-.premium-presentation-strip{
-  position:relative;
-  z-index:6;
-  margin-top:-70px;
-  margin-bottom:24px;
-}
-.premium-presentation-panel{
-  position:relative;
-  overflow:hidden;
-  border-color:rgba(255,214,126,.22);
-  background:
-    linear-gradient(135deg, rgba(255,198,89,.10), transparent 34%),
-    linear-gradient(145deg, rgba(29,10,48,.92), rgba(9,3,18,.96));
-}
-.premium-presentation-panel::after{
-  content:"";
-  position:absolute;
-  inset:-80px -140px auto auto;
-  width:280px;
-  height:280px;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(255,214,126,.22), transparent 68%);
-  filter:blur(10px);
-  pointer-events:none;
-}
-.premium-presentation-panel p:not(.premium-panel-label){
-  max-width:880px;
-}
-@media (max-width:860px){
-  .premium-presentation-strip{
-    margin-top:0;
-  }
-  .premium-sandstorm{
-    opacity:.55;
-  }
-}
-
 /* Premium cast portraits from TMDb */
 .premium-cast-portraits{
   grid-template-columns:repeat(auto-fit, minmax(138px, 1fr));

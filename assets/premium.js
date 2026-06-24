@@ -75,13 +75,6 @@ function renderPremium(item, catalogue, isLogged=false){
       </div>
     </section>
 
-    <section class="container premium-presentation-strip" aria-label="Présentation premium">
-      <article class="premium-panel premium-presentation-panel">
-        <p class="premium-panel-label">Présentation</p>
-        <h2>Une fiche vitrine pour les films qui méritent le fauteuil rouge</h2>
-        <p>Cette page rassemble l’affiche, l’ambiance, les informations essentielles et les accès rapides dans une présentation plus cinématographique. Le catalogue reste simple, ici on déroule le tapis lumineux.</p>
-      </article>
-    </section>
 
     <section class="container premium-editorial-grid">
       <article class="premium-panel premium-synopsis-panel">
