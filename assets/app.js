@@ -33,6 +33,8 @@ function normalizeCatalogue(){
     _year: Number(item.year || (item.releaseDate || '').slice(0,4)) || 0,
     _rating: Number(item.rating) || 0,
     _popularity: Number(item.popularity) || 0,
+    premium: item.premium === true || item.premium === 'true',
+    featured: item.featured === true || item.featured === 'true',
   }));
 }
 
@@ -135,7 +137,7 @@ function render(){
   renderStats();
 
   const filtered = state.catalogue.filter(matches);
-  const featured = state.catalogue.filter(i => i.featured).slice(0,10);
+  const featured = state.catalogue.filter(i => i.featured || i.premium).slice(0,10);
   const latest = [...state.catalogue].sort((a,b) => b._index - a._index).slice(0,10);
   const topRated = [...state.catalogue].sort((a,b) => b._rating - a._rating).slice(0,10);
   const recentYears = [...state.catalogue].sort((a,b) => b._year - a._year || b._popularity - a._popularity).slice(0,10);
@@ -156,7 +158,7 @@ function render(){
 }
 
 function getHeroItems(){
-  const source = state.catalogue.filter(item => item.backdrop && (item.featured || item._rating >= 6.5));
+  const source = state.catalogue.filter(item => item.backdrop && (item.featured || item.premium || item._rating >= 6.5));
   return (source.length ? source : state.catalogue).slice(0, 8);
 }
 
@@ -277,6 +279,7 @@ function createCard(item){
       <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
         <span>${escapeHtml(formatType(item.type || item.mediaType || 'film'))}</span>
         ${year ? `<span>${escapeHtml(year)}</span>` : ''}
+        ${item.premium ? '<span>⭐ Premium</span>' : ''}
       </div>
       <div class="compact-genres">
         ${(item.genres || []).slice(0,2).map(g => `<span>${escapeHtml(g)}</span>`).join('')}
