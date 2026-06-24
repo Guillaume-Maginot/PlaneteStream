@@ -548,6 +548,17 @@ async function refreshCatalogueItemFromTmdb(index) {
   const current = draft[index];
   if (!current) return;
 
+  const selectedRefreshItem = getSelectedTmdbRefreshItem(current);
+
+  if (selectedRefreshItem) {
+    draft[index] = mergeTmdbRefresh(current, selectedRefreshItem);
+    syncOutput();
+    renderCatalogueList();
+    if (editingIndex === index) openEditor(index);
+    showMessage(`“${current.title}” actualisé avec la fiche TMDb sélectionnée. Casting : ${normalizeCast(selectedRefreshItem.cast).length} acteur(s).`);
+    return;
+  }
+
   const title = current.originalTitle || current.title || '';
   if (!title) {
     showMessage('Impossible d’actualiser : titre absent. Même TMDb ne lit pas dans le marc de pop-corn.');
@@ -576,11 +587,26 @@ async function refreshCatalogueItemFromTmdb(index) {
     syncOutput();
     renderCatalogueList();
     if (editingIndex === index) openEditor(index);
-    showMessage(`“${current.title}” actualisé depuis TMDb. Options internes conservées.`);
+    showMessage(`“${current.title}” actualisé depuis TMDb. Casting : ${normalizeCast(refreshed.cast).length} acteur(s). Options internes conservées.`);
   } catch (err) {
     console.error(err);
     showMessage(`Actualisation impossible : ${err.message}`);
   }
+}
+
+function getSelectedTmdbRefreshItem(current) {
+  if (!selectedItem) return null;
+
+  const normalized = normalizeTmdbItem(selectedItem);
+  const currentType = current.mediaType || (current.type === 'serie' ? 'tv' : 'movie');
+  const selectedType = normalized.mediaType || (normalized.type === 'serie' ? 'tv' : 'movie');
+  if (currentType !== selectedType) return null;
+
+  const sameTmdbId = current.tmdbId && normalized.tmdbId && String(current.tmdbId) === String(normalized.tmdbId);
+  const sameTitle = normalizeComparableTitle(current.originalTitle || current.title || '') === normalizeComparableTitle(normalized.originalTitle || normalized.title || '');
+  const sameYear = !current.year || !normalized.year || String(current.year) === String(normalized.year);
+
+  return (sameTmdbId || (sameTitle && sameYear)) ? normalized : null;
 }
 
 function findBestTmdbRefreshMatch(current, results) {
