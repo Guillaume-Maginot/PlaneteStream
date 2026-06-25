@@ -166,14 +166,17 @@ function render(){
   renderStats();
 
   const browsing = state.filter === 'all' && !state.search;
-  const premium = state.catalogue.filter(i => i.premium).slice(0,10);
-  const standardCatalogue = state.catalogue.filter(i => !i.premium);
-  const catalogueSource = browsing ? standardCatalogue : state.catalogue;
+  const catalogueSource = state.catalogue;
   const filtered = catalogueSource.filter(matches);
-  const featured = standardCatalogue.filter(i => i.featured).slice(0,10);
-  const latest = [...standardCatalogue].sort((a,b) => b._index - a._index).slice(0,10);
-  const topRated = [...standardCatalogue].sort((a,b) => b._rating - a._rating).slice(0,10);
-  const recentYears = [...standardCatalogue].sort((a,b) => b._year - a._year || b._popularity - a._popularity).slice(0,10);
+
+  // Premium est uniquement une mise en avant éditoriale :
+  // un film premium reste visible dans les derniers ajouts, les mieux notés,
+  // les nouveautés et le catalogue complet.
+  const premium = state.catalogue.filter(i => i.premium && i.featured).slice(0,10);
+  const featured = state.catalogue.filter(i => i.featured && !i.premium).slice(0,10);
+  const latest = [...state.catalogue].sort((a,b) => b._index - a._index).slice(0,10);
+  const topRated = [...state.catalogue].sort((a,b) => b._rating - a._rating).slice(0,10);
+  const recentYears = [...state.catalogue].sort((a,b) => b._year - a._year || b._popularity - a._popularity).slice(0,10);
 
   mountPremium('#premiumGrid', premium);
   mount('#featuredGrid', featured);
@@ -192,8 +195,8 @@ function render(){
 }
 
 function getHeroItems(){
-  const source = state.catalogue.filter(item => item.backdrop && (item.featured || item.premium || item._rating >= 6.5));
-  return (source.length ? source : state.catalogue).slice(0, 8);
+  const source = state.catalogue.filter(item => item.backdrop && item.featured);
+  return (source.length ? source : state.catalogue.filter(item => item.backdrop)).slice(0, 8);
 }
 
 function renderHero(animate = true){
