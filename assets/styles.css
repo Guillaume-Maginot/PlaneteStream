@@ -6196,3 +6196,28 @@ section{margin:24px 0 34px}
     grid-auto-columns:minmax(150px, 150px);
   }
 }
+
+/* V3.4 - Navigation épisodes sous le lecteur */
+.episode-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:18px 0 14px;
+}
+.episode-nav-btn{
+  min-width:210px;
+  text-align:center;
+}
+.episode-nav-end{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 4px;
+}
+@media (max-width:700px){
+  .episode-nav{display:grid;grid-template-columns:1fr;}
+  .episode-nav-btn{width:100%;min-width:0;}
+  .episode-nav span:empty{display:none;}
+}

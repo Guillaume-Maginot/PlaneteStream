@@ -135,6 +135,8 @@ async function renderWatch(item, catalogue){
             ${renderVideo(item)}
           </div>
 
+          ${renderEpisodeNavigation(item)}
+
           <div class="watch-controls">
             <button class="primary" id="startCinema">▶ Lancer la projection</button>
             <button class="ghost" id="favoriteBtn" type="button">♡ Ajouter à ma liste</button>
@@ -316,6 +318,63 @@ function getPlaybackForItem(item, request={}){
 
   const embed = String(item?.videoEmbed || item?.video_embed || '').trim();
   return {embed, season: null, episode: null, title: item?.title || '', label: ''};
+}
+
+
+function getEpisodePlaybacks(item){
+  const seasons = getSeasonsArray(item);
+  if(!seasons.length) return [];
+
+  return [...seasons]
+    .sort((a,b) => getSeasonNumber(a) - getSeasonNumber(b))
+    .flatMap(season => {
+      const seasonNumber = getSeasonNumber(season);
+      return (Array.isArray(season.episodes) ? [...season.episodes] : [])
+        .sort((a,b) => getEpisodeNumber(a) - getEpisodeNumber(b))
+        .filter(episode => episodeEmbed(episode))
+        .map(episode => {
+          const episodeNumber = getEpisodeNumber(episode);
+          return {
+            season: seasonNumber,
+            episode: episodeNumber,
+            title: episode.title || `Épisode ${episodeNumber}`,
+            label: `S${seasonNumber} · E${episodeNumber}${episode.title ? ` · ${episode.title}` : ''}`
+          };
+        });
+    });
+}
+
+function getEpisodeWatchHref(item, playback){
+  const params = new URLSearchParams();
+  params.set('slug', item.slug);
+  params.set('autoplay', '1');
+  params.set('season', playback.season);
+  params.set('episode', playback.episode);
+  return `watch.html?${params.toString()}`;
+}
+
+function renderEpisodeNavigation(item){
+  if(!isSeries(item) || !currentPlayback?.season || !currentPlayback?.episode) return '';
+
+  const episodes = getEpisodePlaybacks(item);
+  if(episodes.length < 2) return '';
+
+  const currentIndex = episodes.findIndex(playback =>
+    Number(playback.season) === Number(currentPlayback.season) &&
+    Number(playback.episode) === Number(currentPlayback.episode)
+  );
+
+  if(currentIndex < 0) return '';
+
+  const previous = episodes[currentIndex - 1] || null;
+  const next = episodes[currentIndex + 1] || null;
+
+  return `
+    <div class="episode-nav" aria-label="Navigation entre les épisodes">
+      ${previous ? `<a class="ghost episode-nav-btn" href="${getEpisodeWatchHref(item, previous)}">◀ ${escapeHtml(previous.label)}</a>` : `<span></span>`}
+      ${next ? `<a class="primary episode-nav-btn" href="${getEpisodeWatchHref(item, next)}">${escapeHtml(next.label)} ▶</a>` : `<span class="soft-note episode-nav-end">Dernier épisode disponible</span>`}
+    </div>
+  `;
 }
 
 function getPrimaryVideoEmbed(item){
