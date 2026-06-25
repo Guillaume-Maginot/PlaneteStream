@@ -1549,6 +1549,7 @@
             <option value="all">Films + Séries</option>
             <option value="movie">Films uniquement</option>
             <option value="tv">Séries uniquement</option>
+            <option value="manga">Mangas uniquement</option>
           </select>
           <button class="primary" id="searchBtn">Rechercher</button>
         </div>
@@ -1646,6 +1647,12 @@
         <div class="catalogue-browser">
           <div class="catalogue-toolbar catalogue-toolbar-embed">
             <input id="catalogueSearch" type="search" placeholder="Rechercher dans le catalogue…">
+            <select id="catalogueTypeFilter">
+              <option value="all">Tous les types</option>
+              <option value="movie">Films</option>
+              <option value="tv">Séries</option>
+              <option value="manga">Mangas</option>
+            </select>
             <button class="ghost catalogue-filter-btn is-active" id="showAllEmbedsBtn" type="button">Tous les contenus</button>
             <button class="ghost catalogue-filter-btn" id="showMissingEmbedsBtn" type="button">Sans embed</button>
             <select id="catalogueSort">

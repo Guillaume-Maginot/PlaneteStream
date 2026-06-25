@@ -81,6 +81,9 @@ async function init() {
   queryInput?.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') searchTmdb();
   });
+  mediaTypeSelect?.addEventListener('change', () => {
+    if (mediaTypeSelect.value === 'manga' && sectionSelect) sectionSelect.value = 'manga';
+  });
   downloadBtn?.addEventListener('click', downloadJson);
   copyBtn?.addEventListener('click', copyJson);
   resetBtn?.addEventListener('click', resetDraft);
@@ -111,9 +114,46 @@ async function init() {
   renderCatalogueList();
 }
 
+function getCatalogueMediaType(entry = {}) {
+  const rawMediaType = String(entry.mediaType || entry.media_type || '').toLowerCase();
+  const rawType = String(entry.type || '').toLowerCase();
+  const rawCategory = String(entry.category || '').toLowerCase();
+
+  if (rawMediaType === 'manga' || rawType === 'manga' || rawCategory === 'manga') return 'manga';
+  if (rawMediaType === 'tv' || rawType === 'serie') return 'tv';
+  if (rawMediaType === 'movie' || rawType === 'film') return 'movie';
+  return rawMediaType || 'movie';
+}
+
+function getTmdbSearchType(mediaType) {
+  return mediaType === 'manga' ? 'tv' : mediaType;
+}
+
+function getMediaLabel(entry = {}) {
+  const type = getCatalogueMediaType(entry);
+  if (type === 'manga') return 'Manga';
+  if (type === 'tv') return 'Série';
+  return 'Film';
+}
+
+function prepareItemForSelectedMediaType(item, selectedMediaType) {
+  const normalized = normalizeTmdbItem(item);
+
+  if (selectedMediaType === 'manga') {
+    return {
+      ...normalized,
+      type: 'manga',
+      mediaType: 'manga'
+    };
+  }
+
+  return normalized;
+}
+
 async function searchTmdb() {
   const query = queryInput?.value.trim() || '';
   const mediaType = mediaTypeSelect?.value || 'all';
+  const tmdbSearchType = getTmdbSearchType(mediaType);
 
   if (!query) {
     showMessage('Entre un titre avant de lancer la recherche.');
@@ -144,7 +184,7 @@ async function searchTmdb() {
 
     filteredResults
       .slice(0, 8)
-      .forEach(item => results.appendChild(resultCard(normalizeTmdbItem(item))));
+      .forEach(item => results.appendChild(resultCard(prepareItemForSelectedMediaType(item, mediaType))));
   } catch (err) {
     console.error(err);
     results.innerHTML = `
@@ -159,7 +199,7 @@ async function searchTmdb() {
 
 function filterByMediaType(items, mediaType) {
   if (mediaType === 'movie') return items.filter(item => item.mediaType === 'movie' || item.type === 'film');
-  if (mediaType === 'tv') return items.filter(item => item.mediaType === 'tv' || item.type === 'serie');
+  if (mediaType === 'tv' || mediaType === 'manga') return items.filter(item => item.mediaType === 'tv' || item.type === 'serie');
   return items;
 }
 
@@ -236,7 +276,7 @@ function buildCatalogueEntry(item) {
     releaseDate: item.releaseDate || '',
     type: item.type,
     mediaType: item.mediaType,
-    category: sectionSelect?.value || (item.mediaType === 'tv' ? 'series' : 'films'),
+    category: item.mediaType === 'manga' ? 'manga' : (sectionSelect?.value || (item.mediaType === 'tv' ? 'series' : 'films')),
     genres,
     director: item.director || 'À compléter',
     cast: normalizeCast(item.cast),
@@ -308,7 +348,8 @@ function normalizeTmdbItem(item) {
 function updatePreview(item) {
   if (!preview) return;
 
-  const runtimeLabel = item.mediaType === 'tv'
+  const isEpisodeBased = item.mediaType === 'tv' || item.mediaType === 'manga';
+  const runtimeLabel = isEpisodeBased
     ? `${item.seasons || 0} saison(s) · ${item.episodes || 0} épisode(s)`
     : `${item.runtime || 0} min`;
 
@@ -319,7 +360,7 @@ function updatePreview(item) {
     <div class="preview-body">
       <h3>${escapeHtml(item.title)}</h3>
       <div class="preview-meta">
-        <span>${item.mediaType === 'tv' ? 'Série' : 'Film'}</span>
+        <span>${escapeHtml(getMediaLabel(item))}</span>
         <span>${escapeHtml(item.year || 'Année inconnue')}</span>
         <span>${escapeHtml(runtimeLabel)}</span>
         <span>${escapeHtml(item.genres[0] || 'Genre auto')}</span>
@@ -349,7 +390,7 @@ function renderCatalogueList() {
   let items = draft.map((entry, index) => ({ entry, index }));
 
   if (type !== 'all') {
-    items = items.filter(({ entry }) => (entry.mediaType || (entry.type === 'serie' ? 'tv' : 'movie')) === type);
+    items = items.filter(({ entry }) => getCatalogueMediaType(entry) === type);
   }
 
   if (catalogueMissingMode) {
@@ -421,14 +462,14 @@ function catalogueRow(entry, index) {
   const poster = entry.poster || '';
   const genres = Array.isArray(entry.genres) ? entry.genres.slice(0, 5).join(', ') : '';
   const isSeries = isSeriesEntry(entry);
-  const typeLabel = isSeries ? 'Série' : 'Film';
+  const typeLabel = getMediaLabel(entry);
   const featured = entry.featured ? '<span class="catalogue-badge">À la une</span>' : '';
   const premium = entry.premium ? '<span class="catalogue-badge premium">⭐ Premium</span>' : '';
   const mediaSummary = getMediaEmbedSummary(entry);
   const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
   const readyBadge = mediaSummary.missing
     ? `<span class="catalogue-badge missing">${escapeHtml(mediaSummary.label)}</span>`
-    : `<span class="catalogue-badge ready">${isSeries ? 'Série prête' : 'Embed OK'}</span>`;
+    : `<span class="catalogue-badge ready">${isSeries ? `${typeLabel} prêt${typeLabel === 'Série' ? 'e' : ''}` : 'Embed OK'}</span>`;
   const seriesBadge = isSeries
     ? `<span class="catalogue-badge">${escapeHtml(String(entry.seasons || (Array.isArray(entry.seasonsData) ? entry.seasonsData.length : 0)))} saison${Number(entry.seasons || 0) > 1 ? 's' : ''}</span><span class="catalogue-badge">${escapeHtml(String(entry.episodes || stats?.total || 0))} épisode${Number(entry.episodes || stats?.total || 0) > 1 ? 's' : ''}</span>`
     : '';
@@ -516,7 +557,7 @@ function saveEditedItem() {
     title: editFields.title.value.trim() || current.title,
     slug: newSlug,
     year: editFields.year.value.trim(),
-    category: editFields.category.value || current.category || (isSeries ? 'series' : 'films'),
+    category: editFields.category.value || current.category || (getCatalogueMediaType(current) === 'manga' ? 'manga' : (isSeries ? 'series' : 'films')),
     featured: editFields.featured.value === 'true',
     premium: editFields.premium?.value === 'true',
     homeFeatured: editFields.homeFeatured?.value === 'true',
@@ -573,14 +614,15 @@ async function refreshCatalogueItemFromTmdb(index) {
   showMessage(`Actualisation TMDb de “${current.title}” en cours…`);
 
   try {
-    const mediaType = (current.mediaType || (current.type === 'serie' ? 'tv' : 'movie'));
+    const mediaType = getCatalogueMediaType(current);
+    const tmdbSearchType = getTmdbSearchType(mediaType);
     const res = await fetch(
-      `/.netlify/functions/tmdb-search?query=${encodeURIComponent(title)}&type=${encodeURIComponent(mediaType)}`
+      `/.netlify/functions/tmdb-search?query=${encodeURIComponent(title)}&type=${encodeURIComponent(tmdbSearchType)}`
     );
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || data.details || 'Réponse TMDb invalide');
 
-    const results = (data.results || []).map(normalizeTmdbItem);
+    const results = (data.results || []).map(item => prepareItemForSelectedMediaType(item, getCatalogueMediaType(current)));
     const refreshed = findBestTmdbRefreshMatch(current, results);
 
     if (!refreshed) {
@@ -603,8 +645,8 @@ function getSelectedTmdbRefreshItem(current) {
   if (!selectedItem) return null;
 
   const normalized = normalizeTmdbItem(selectedItem);
-  const currentType = current.mediaType || (current.type === 'serie' ? 'tv' : 'movie');
-  const selectedType = normalized.mediaType || (normalized.type === 'serie' ? 'tv' : 'movie');
+  const currentType = getCatalogueMediaType(current);
+  const selectedType = getCatalogueMediaType(normalized);
   if (currentType !== selectedType) return null;
 
   const sameTmdbId = current.tmdbId && normalized.tmdbId && String(current.tmdbId) === String(normalized.tmdbId);
@@ -622,16 +664,16 @@ function findBestTmdbRefreshMatch(current, results) {
     if (sameId) return sameId;
   }
 
-  const currentType = current.mediaType || (current.type === 'serie' ? 'tv' : 'movie');
+  const currentType = getCatalogueMediaType(current);
   const currentTitle = normalizeComparableTitle(current.originalTitle || current.title || '');
   const currentYear = String(current.year || '');
 
   return results.find(item => {
-    const sameType = (item.mediaType || (item.type === 'serie' ? 'tv' : 'movie')) === currentType;
+    const sameType = getCatalogueMediaType(item) === currentType;
     const sameTitle = normalizeComparableTitle(item.originalTitle || item.title || '') === currentTitle;
     const sameYear = !currentYear || !item.year || String(item.year) === currentYear;
     return sameType && sameTitle && sameYear;
-  }) || results.find(item => (item.mediaType || (item.type === 'serie' ? 'tv' : 'movie')) === currentType) || results[0];
+  }) || results.find(item => getCatalogueMediaType(item) === currentType) || results[0];
 }
 
 function mergeTmdbRefresh(current, tmdbItem) {
@@ -764,7 +806,7 @@ function isSeriesEntry(entry) {
   const mediaType = (entry?.mediaType || entry?.media_type || '').toLowerCase();
   const type = (entry?.type || '').toLowerCase();
   const seasonsData = Array.isArray(entry?.seasonsData) ? entry.seasonsData : [];
-  return mediaType === 'tv' || type === 'serie' || seasonsData.length > 0;
+  return mediaType === 'tv' || mediaType === 'manga' || type === 'serie' || type === 'manga' || seasonsData.length > 0;
 }
 
 function countEpisodes(seasonsData = []) {
