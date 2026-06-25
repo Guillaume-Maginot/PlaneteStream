@@ -36,6 +36,7 @@ function normalizeCatalogue(){
     _popularity: Number(item.popularity) || 0,
     premium: item.premium === true || item.premium === 'true',
     featured: item.featured === true || item.featured === 'true',
+    homeFeatured: item.homeFeatured === true || item.homeFeatured === 'true',
   }));
 }
 
@@ -196,7 +197,9 @@ function render(){
 }
 
 function getHeroItems(){
-  const source = state.catalogue.filter(item => item.backdrop && item.homeFeatured);
+  // Carrousel principal = films marqués "À la une / Sous les projecteurs".
+  // Le flag homeFeatured sert uniquement à la vitrine Premium.
+  const source = state.catalogue.filter(item => item.backdrop && item.featured);
   return (source.length ? source : state.catalogue.filter(item => item.backdrop)).slice(0, 8);
 }
 
