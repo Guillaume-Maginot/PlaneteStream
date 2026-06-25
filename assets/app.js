@@ -121,13 +121,21 @@ function matches(item){
     item.title,
     item.originalTitle,
     item.type,
+    item.mediaType,
     item.category,
     item.director,
     item.tagline,
     ...(item.genres || []),
     ...getCastSearchTerms(item.cast)
   ].join(' ').toLowerCase();
-  const filterOk = state.filter === 'all' || item.type === state.filter || item.mediaType === state.filter || haystack.includes(state.filter);
+
+  const manga = isManga(item);
+  const filterOk = state.filter === 'manga'
+    ? manga
+    : state.filter === 'all'
+      ? isStandardCatalogueItem(item)
+      : !manga && (item.type === state.filter || item.mediaType === state.filter || haystack.includes(state.filter));
+
   const searchOk = !state.search || haystack.includes(state.search);
   return filterOk && searchOk;
 }
@@ -139,6 +147,33 @@ function getCastSearchTerms(cast = []){
     if(!actor || typeof actor !== 'object') return [];
     return [actor.name, actor.character].filter(Boolean);
   });
+}
+
+function isManga(item){
+  // Manga peut venir de l'admin sous plusieurs costumes selon la source TMDb
+  // (film Akira, série anime, catégorie forcée, ancien export, etc.).
+  const values = [
+    item?.type,
+    item?.mediaType,
+    item?.category,
+    item?.section,
+    item?.contentType,
+    item?.tmdbType
+  ].map(value => String(value || '').toLowerCase().trim());
+
+  return values.some(value =>
+    value === 'manga' ||
+    value === 'mangas' ||
+    value === 'anime' ||
+    value === 'animé' ||
+    value === 'animés' ||
+    value.includes('manga') ||
+    value.includes('anime')
+  );
+}
+
+function isStandardCatalogueItem(item){
+  return !isManga(item);
 }
 
 function applySearchFromUrl(){
@@ -167,21 +202,23 @@ function render(){
   renderStats();
 
   const browsing = state.filter === 'all' && !state.search;
-  const catalogueSource = state.catalogue;
-  const filtered = catalogueSource.filter(matches).sort(sortByTitle);
+  const standardCatalogue = state.catalogue.filter(isStandardCatalogueItem);
+  const mangaCatalogue = state.catalogue.filter(isManga);
+  const filtered = state.catalogue.filter(matches).sort(sortByTitle);
 
   // Tri général lisible : A → Z pour les rails éditoriaux et le catalogue.
-  // La Sélection Premium de l'accueil ne montre que les fiches Premium marquées Film vedette accueil.
-  // Les rails calculés gardent leur logique : derniers ajouts par date, mieux notés par note.
-  const premium = state.catalogue.filter(i => i.premium && i.homeFeatured).sort(sortByTitle).slice(0,10);
-  const featured = state.catalogue.filter(i => i.featured).sort(sortByTitle).slice(0,10);
-  const latest = [...state.catalogue].sort(sortByLatest).slice(0,10);
-  const topRated = [...state.catalogue].sort(sortByRating).slice(0,10);
-  const recentYears = [...state.catalogue].sort(sortByRecentYear).slice(0,10);
+  // Les mangas ont leur propre rail d'accueil et leur propre catalogue : ils ne remontent pas dans le catalogue général.
+  const premium = standardCatalogue.filter(i => i.premium && i.homeFeatured).sort(sortByTitle).slice(0,10);
+  const featured = standardCatalogue.filter(i => i.featured).sort(sortByTitle).slice(0,10);
+  const latest = [...standardCatalogue].sort(sortByLatest).slice(0,10);
+  const latestManga = [...mangaCatalogue].sort(sortByLatest).slice(0,10);
+  const topRated = [...standardCatalogue].sort(sortByRating).slice(0,10);
+  const recentYears = [...standardCatalogue].sort(sortByRecentYear).slice(0,10);
 
   mountPremium('#premiumGrid', premium);
   mount('#featuredGrid', featured);
   mount('#latestGrid', latest);
+  mount('#latestMangaGrid', latestManga);
   mount('#topRatedGrid', topRated);
   mount('#recentYearsGrid', recentYears);
   mount('#catalogueGrid', filtered);
@@ -189,17 +226,20 @@ function render(){
   document.querySelector('#premiumSection').style.display = browsing && premium.length ? 'block' : 'none';
   document.querySelector('#featuredSection').style.display = browsing && featured.length ? 'block' : 'none';
   document.querySelector('#latestSection').style.display = browsing ? 'block' : 'none';
+  document.querySelector('#latestMangaSection').style.display = browsing && latestManga.length ? 'block' : 'none';
   document.querySelector('#topRatedSection').style.display = browsing ? 'block' : 'none';
   document.querySelector('#recentYearsSection').style.display = browsing ? 'block' : 'none';
 
+  const catalogueTitle = document.querySelector('#catalogueFullSection .section-title');
+  if(catalogueTitle) catalogueTitle.textContent = state.filter === 'manga' ? 'Catalogue Manga' : 'Catalogue complet';
   document.querySelector('#countLabel').textContent = `${filtered.length} titre${filtered.length > 1 ? 's' : ''} affiché${filtered.length > 1 ? 's' : ''}`;
 }
 
 function getHeroItems(){
   // Carrousel principal = films marqués "À la une / Sous les projecteurs".
   // Le flag homeFeatured sert uniquement à la vitrine Premium.
-  const source = state.catalogue.filter(item => item.backdrop && item.featured).sort(sortByTitle);
-  return (source.length ? source : state.catalogue.filter(item => item.backdrop).sort(sortByTitle)).slice(0, 8);
+  const source = state.catalogue.filter(item => isStandardCatalogueItem(item) && item.backdrop && item.featured).sort(sortByTitle);
+  return (source.length ? source : state.catalogue.filter(item => isStandardCatalogueItem(item) && item.backdrop).sort(sortByTitle)).slice(0, 8);
 }
 
 function sortByTitle(a,b){
@@ -413,7 +453,8 @@ function mount(selector, list){
 
 function openRandomTitle(){
   const pool = state.catalogue.filter(matches);
-  const list = pool.length ? pool : state.catalogue;
+  const fallback = state.filter === 'manga' ? state.catalogue.filter(isManga) : state.catalogue.filter(isStandardCatalogueItem);
+  const list = pool.length ? pool : fallback;
   if(!list.length) return;
   const item = list[Math.floor(Math.random() * list.length)];
   window.location.href = getDetailHref(item);
