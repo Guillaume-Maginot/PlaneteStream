@@ -237,7 +237,7 @@ function renderWatchAction(item, isLogged){
   if(isLogged){
     return `<a class="primary premium-primary" href="${getWatchUrl(item)}">▶ Entrer dans la salle</a>`;
   }
-  return '<a class="primary premium-primary" href="account.html">🔐 Connexion requise pour la bêta vidéo</a>';
+  return '<a class="primary premium-primary" href="account.html">🔐 Connexion requise pour la  vidéo</a>';
 }
 
 function getMediaType(item){

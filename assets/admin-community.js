@@ -33,7 +33,7 @@
     {value:'moderator', label:'Modérateur'},
     {value:'vip', label:'VIP'},
     {value:'supporter', label:'Supporter'},
-    {value:'beta', label:'Bêta testeur'}
+    {value:'', label:'Bêta testeur'}
   ];
 
   const ROLE_OPTIONS = [
@@ -955,7 +955,7 @@ Le compte retrouvera son état actif.`;
     if(badge === 'moderator' || badge === 'moderateur') return 'Modérateur';
     if(badge === 'vip') return 'VIP';
     if(badge === 'supporter') return 'Supporter';
-    if(badge === 'beta') return 'Bêta testeur';
+    if(badge === '') return 'Bêta testeur';
     return roleLabel(viewer?.role);
   }
 
@@ -1008,7 +1008,7 @@ Le compte retrouvera son état actif.`;
       moderateur: 'Modérateur',
       vip: 'VIP',
       supporter: 'Supporter',
-      beta: 'Bêta testeur'
+      : 'Bêta testeur'
     };
     return labels[key] || key;
   }

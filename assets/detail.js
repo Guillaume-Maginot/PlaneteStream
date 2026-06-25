@@ -394,9 +394,9 @@ function renderWatchAction(item, isLogged){
     return '<span class="ghost is-disabled" aria-disabled="true">🎬 Vidéo indisponible</span>';
   }
   if(isLogged){
-    return `<a class="primary" href="${getWatchUrl(item)}">▶ Regarder <span class="soft-note">bêta</span></a>`;
+    return `<a class="primary" href="${getWatchUrl(item)}">▶ Regarder <span class="soft-note"></span></a>`;
   }
-  return '<a class="primary" href="account.html">🔐 Connexion requise pour la bêta vidéo</a>';
+  return '<a class="primary" href="account.html">🔐 Connexion requise pour la  vidéo</a>';
 }
 
 async function isMemberLoggedIn(){

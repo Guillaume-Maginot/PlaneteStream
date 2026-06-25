@@ -84,7 +84,7 @@ async function initWatch(){
     currentPlayback = getPlaybackForItem(item, {season: requestedSeason, episode: requestedEpisode});
 
     if(!currentPlayback?.embed){
-      showWatchError('Aucune vidéo bêta n’est disponible pour ce contenu. La salle reste fermée, les fauteuils râlent.');
+      showWatchError('Aucune vidéo n’est disponible pour ce contenu. La salle reste fermée, les fauteuils râlent.');
       return;
     }
 
@@ -235,7 +235,7 @@ function renderVideo(item){
   if(!src){
     return `
       <div class="watch-unavailable">
-        <strong>Vidéo bêta indisponible</strong>
+        <strong>Vidéo indisponible</strong>
         <p>Le code embed n’a pas pu être lu. Le projecteur tousse, on vérifie la bobine.</p>
       </div>
     `;
@@ -339,7 +339,7 @@ function showWatchLoginRequired(item){
   if(!watchPage) return;
   watchPage.innerHTML = `
     <section class="container watch-loading">
-      <h1>🎬 Bêta vidéo réservée aux membres</h1>
+      <h1>🎬 vidéo réservée aux membres</h1>
       <p>La salle de cinéma est ouverte aux comptes enregistrés pendant les tests.</p>
       <div class="watch-controls" style="justify-content:center;margin-top:18px">
         <a class="primary" href="account.html">Se connecter</a>
