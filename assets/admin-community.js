@@ -1008,7 +1008,7 @@ Le compte retrouvera son état actif.`;
       moderateur: 'Modérateur',
       vip: 'VIP',
       supporter: 'Supporter',
-      : 'Bêta testeur'
+      beta: 'Bêta testeur'
     };
     return labels[key] || key;
   }
