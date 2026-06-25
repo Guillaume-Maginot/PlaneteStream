@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 | Planète Stream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <style>
+    .lost-page{
+      min-height:calc(100vh - 86px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:56px 18px 72px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .lost-page::before{
+      content:"";
+      position:absolute;
+      inset:-20%;
+      background:
+        radial-gradient(circle at 50% 28%, rgba(170,55,255,.22), transparent 34%),
+        radial-gradient(circle at 78% 62%, rgba(255,47,146,.12), transparent 30%),
+        radial-gradient(circle at 22% 72%, rgba(119,44,255,.12), transparent 28%);
+      pointer-events:none;
+    }
+
+    .lost-card{
+      width:min(940px,100%);
+      text-align:center;
+      position:relative;
+      z-index:2;
+      padding:38px 28px 34px;
+      border:1px solid rgba(184,80,255,.42);
+      border-radius:30px;
+      background:linear-gradient(145deg, rgba(12,8,28,.88), rgba(38,13,62,.72));
+      box-shadow:0 0 46px rgba(152,52,255,.18);
+      overflow:hidden;
+    }
+
+    .lost-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,.12) 0 1px, transparent 2px),
+        radial-gradient(circle at 78% 24%, rgba(255,255,255,.16) 0 1px, transparent 2px),
+        radial-gradient(circle at 34% 74%, rgba(255,255,255,.10) 0 1px, transparent 2px),
+        radial-gradient(circle at 90% 70%, rgba(255,255,255,.14) 0 1px, transparent 2px);
+      opacity:.8;
+      pointer-events:none;
+    }
+
+    .lost-code{
+      margin:0;
+      font-size:clamp(5rem, 15vw, 12rem);
+      line-height:.85;
+      font-weight:900;
+      letter-spacing:-.08em;
+      color:#fff;
+      text-shadow:
+        0 0 18px rgba(213,53,255,.75),
+        0 0 42px rgba(255,47,146,.36);
+      position:relative;
+      z-index:2;
+    }
+
+    .lost-title{
+      margin:18px 0 0;
+      font-size:clamp(2rem, 5vw, 4.2rem);
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-.04em;
+      color:#fff;
+      position:relative;
+      z-index:2;
+    }
+
+    .lost-text{
+      max-width:640px;
+      margin:20px auto 0;
+      color:#ddd4f5;
+      font-size:1.08rem;
+      line-height:1.75;
+      position:relative;
+      z-index:2;
+    }
+
+    .lost-text strong{
+      color:#ff5bd0;
+    }
+
+    .lost-fish-wrap{
+      width:210px;
+      max-width:56vw;
+      margin:30px auto 8px;
+      position:relative;
+      z-index:2;
+    }
+
+    .lost-fish-wrap::before{
+      content:"";
+      position:absolute;
+      inset:18px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(171,73,255,.35), transparent 68%);
+      filter:blur(28px);
+      z-index:0;
+    }
+
+    .lost-fish{
+      width:100%;
+      display:block;
+      position:relative;
+      z-index:2;
+      filter:
+        drop-shadow(0 0 22px rgba(169,70,255,.48))
+        drop-shadow(0 0 42px rgba(255,40,170,.18));
+      animation:lostFishFloat 5.6s ease-in-out infinite;
+    }
+
+    .lost-bubbles span{
+      position:absolute;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.24);
+      background:rgba(255,255,255,.045);
+      box-shadow:0 0 14px rgba(206,74,255,.25);
+      animation:lostBubble linear infinite;
+      z-index:1;
+    }
+
+    .lost-bubbles span:nth-child(1){width:10px;height:10px;left:12%;top:86%;animation-duration:7s;}
+    .lost-bubbles span:nth-child(2){width:16px;height:16px;left:28%;top:94%;animation-duration:9s;}
+    .lost-bubbles span:nth-child(3){width:8px;height:8px;left:74%;top:90%;animation-duration:6s;}
+    .lost-bubbles span:nth-child(4){width:22px;height:22px;left:88%;top:82%;animation-duration:10s;}
+    .lost-bubbles span:nth-child(5){width:9px;height:9px;left:18%;top:42%;animation-duration:8s;}
+    .lost-bubbles span:nth-child(6){width:13px;height:13px;left:82%;top:36%;animation-duration:9s;}
+    .lost-bubbles span:nth-child(7){width:7px;height:7px;left:55%;top:93%;animation-duration:5.5s;}
+    .lost-bubbles span:nth-child(8){width:15px;height:15px;left:44%;top:84%;animation-duration:8.5s;}
+
+    .lost-actions{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:30px;
+      position:relative;
+      z-index:2;
+    }
+
+    .lost-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:52px;
+      padding:0 24px;
+      border-radius:14px;
+      font-weight:900;
+      text-decoration:none;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08);
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .lost-btn.primary{
+      background:linear-gradient(135deg,#8c2cff,#ff2f92);
+      box-shadow:0 0 22px rgba(185,65,255,.35);
+    }
+
+    .lost-btn:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,91,208,.75);
+      box-shadow:0 0 24px rgba(185,65,255,.25);
+    }
+
+    .lost-note{
+      margin:24px 0 0;
+      color:#bfb6d9;
+      font-size:.95rem;
+      position:relative;
+      z-index:2;
+    }
+
+    .lost-note a{
+      color:#ff5bd0;
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    @keyframes lostFishFloat{
+      0%,100%{transform:translateY(0) rotate(-2deg);}
+      50%{transform:translateY(-12px) rotate(2deg);}
+    }
+
+    @keyframes lostBubble{
+      from{transform:translateY(0) scale(.8);opacity:0;}
+      20%{opacity:.42;}
+      to{transform:translateY(-190px) scale(1.25);opacity:0;}
+    }
+
+    @media (max-width:640px){
+      .lost-page{padding:34px 14px 52px;}
+      .lost-card{padding:30px 18px 28px;border-radius:24px;}
+      .lost-fish-wrap{width:170px;}
+      .lost-actions{flex-direction:column;}
+      .lost-btn{width:100%;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#catalogue" data-nav-filter="film">Films</a>
+        <a href="index.html#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="index.html#catalogue" data-nav-filter="manga">Manga</a>
+        <a href="account.html#mon-espace">Mon Espace</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="account-link" href="account.html">Créer un compte / Se connecter</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="lost-page">
+    <section class="lost-card" aria-labelledby="lost-title">
+      <p class="lost-code">404</p>
+      <h1 class="lost-title" id="lost-title">Perdu dans l’orbite</h1>
+      <p class="lost-text">
+        Le poisson rouge a cherché partout dans son bocal spatial,<br>
+        mais cette page <strong>n’existe pas</strong>... ou plus.
+      </p>
+
+      <div class="lost-fish-wrap" aria-hidden="true">
+        <img src="assets/poisson.png" alt="" class="lost-fish">
+        <div class="lost-bubbles">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="lost-actions">
+        <a class="lost-btn primary" href="index.html">⌂ Retour à l’accueil</a>
+        <a class="lost-btn" href="index.html#catalogue">Explorer le catalogue</a>
+      </div>
+
+      <p class="lost-note">
+        Pas de panique, ça arrive même aux meilleurs explorateurs orbitaux.
+        <a href="contact.html">Nous contacter</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
