@@ -213,14 +213,12 @@ function render(){
   const latest = [...standardCatalogue].sort(sortByLatest).slice(0,10);
   const latestManga = [...mangaCatalogue].sort(sortByLatest).slice(0,10);
   const topRated = [...standardCatalogue].sort(sortByRating).slice(0,10);
-  const recentYears = [...standardCatalogue].sort(sortByRecentYear).slice(0,10);
 
   mountPremium('#premiumGrid', premium);
   mount('#featuredGrid', featured);
   mount('#latestGrid', latest);
   mount('#latestMangaGrid', latestManga);
   mount('#topRatedGrid', topRated);
-  mount('#recentYearsGrid', recentYears);
   mount('#catalogueGrid', filtered);
 
   document.querySelector('#premiumSection').style.display = browsing && premium.length ? 'block' : 'none';
@@ -228,7 +226,8 @@ function render(){
   document.querySelector('#latestSection').style.display = browsing ? 'block' : 'none';
   document.querySelector('#latestMangaSection').style.display = browsing && latestManga.length ? 'block' : 'none';
   document.querySelector('#topRatedSection').style.display = browsing ? 'block' : 'none';
-  document.querySelector('#recentYearsSection').style.display = browsing ? 'block' : 'none';
+  const sagasSection = document.querySelector('#sagasSection');
+  if(sagasSection) sagasSection.style.display = browsing ? 'block' : 'none';
 
   const catalogueTitle = document.querySelector('#catalogueFullSection .section-title');
   if(catalogueTitle) catalogueTitle.textContent = state.filter === 'manga' ? 'Catalogue Manga' : 'Catalogue complet';
