@@ -168,14 +168,12 @@ function render(){
 
   const browsing = state.filter === 'all' && !state.search;
   const catalogueSource = state.catalogue;
-  const filtered = catalogueSource.filter(matches);
+  const filtered = catalogueSource.filter(matches).sort(sortByTitle);
 
-  // Premium = habillage éditorial, pas un contenu séparé.
-  // Les titres premium restent donc dans tous les rails classiques.
-  // La vitrine Premium, elle, ne montre que les contenus explicitement
-  // marqués "Film vedette accueil / sous le projecteur".
-  const premium = state.catalogue.filter(i => i.premium && i.homeFeatured).sort(sortByTitle).slice(0,10);
-  const featured = state.catalogue.filter(i => i.featured && !i.homeFeatured).sort(sortByTitle).slice(0,10);
+  // Tri général lisible : A → Z pour les rails éditoriaux et le catalogue.
+  // Les rails calculés gardent leur logique : derniers ajouts par date, mieux notés par note.
+  const premium = state.catalogue.filter(i => i.premium).sort(sortByTitle).slice(0,10);
+  const featured = state.catalogue.filter(i => i.featured).sort(sortByTitle).slice(0,10);
   const latest = [...state.catalogue].sort(sortByLatest).slice(0,10);
   const topRated = [...state.catalogue].sort(sortByRating).slice(0,10);
   const recentYears = [...state.catalogue].sort(sortByRecentYear).slice(0,10);
