@@ -18,6 +18,8 @@ const sectionSelect = document.querySelector('#sectionSelect');
 const featuredSelect = document.querySelector('#featuredSelect');
 const premiumSelect = document.querySelector('#premiumSelect');
 const homeFeaturedSelect = document.querySelector('#homeFeaturedSelect');
+const featuredOrderInput = document.querySelector('#featuredOrderInput');
+const premiumOrderInput = document.querySelector('#premiumOrderInput');
 const genreSelect = document.querySelector('#genreSelect');
 const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
@@ -42,6 +44,8 @@ const editFields = {
   featured: document.querySelector('#editFeatured'),
   premium: document.querySelector('#editPremium'),
   homeFeatured: document.querySelector('#editHomeFeatured'),
+  featuredOrder: document.querySelector('#editFeaturedOrder'),
+  premiumOrder: document.querySelector('#editPremiumOrder'),
   genres: document.querySelector('#editGenres'),
   rating: document.querySelector('#editRating'),
   poster: document.querySelector('#editPoster'),
@@ -261,7 +265,9 @@ function buildCatalogueEntry(item) {
     overview: item.overview || '',
     featured: featuredSelect?.value === 'true',
     premium: premiumSelect?.value === 'true',
-    homeFeatured: homeFeaturedSelect?.value === 'true'
+    homeFeatured: homeFeaturedSelect?.value === 'true',
+    featuredOrder: Number(featuredOrderInput?.value || 0) || 0,
+    premiumOrder: Number(premiumOrderInput?.value || 0) || 0
   };
 }
 
@@ -481,6 +487,8 @@ function openEditor(index) {
   editFields.featured.value = entry.featured ? 'true' : 'false';
   if (editFields.premium) editFields.premium.value = entry.premium ? 'true' : 'false';
   if (editFields.homeFeatured) editFields.homeFeatured.value = entry.homeFeatured ? 'true' : 'false';
+  if (editFields.featuredOrder) editFields.featuredOrder.value = Number(entry.featuredOrder || 0) || 0;
+  if (editFields.premiumOrder) editFields.premiumOrder.value = Number(entry.premiumOrder || 0) || 0;
   editFields.genres.value = Array.isArray(entry.genres) ? entry.genres.join(', ') : '';
   editFields.rating.value = entry.rating ?? 0;
   editFields.poster.value = entry.poster || '';
@@ -520,6 +528,8 @@ function saveEditedItem() {
     featured: editFields.featured.value === 'true',
     premium: editFields.premium?.value === 'true',
     homeFeatured: editFields.homeFeatured?.value === 'true',
+    featuredOrder: Number(editFields.featuredOrder?.value || 0) || 0,
+    premiumOrder: Number(editFields.premiumOrder?.value || 0) || 0,
     genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
     rating: Number(editFields.rating.value || 0),
     poster: editFields.poster.value.trim(),
@@ -668,6 +678,8 @@ function mergeTmdbRefresh(current, tmdbItem) {
     featured: Boolean(current.featured),
     premium: Boolean(current.premium),
     homeFeatured: Boolean(current.homeFeatured),
+    featuredOrder: Number(current.featuredOrder || 0) || 0,
+    premiumOrder: Number(current.premiumOrder || 0) || 0,
     videoEmbed: currentVideo
   };
 

@@ -37,6 +37,8 @@ function normalizeCatalogue(){
     premium: item.premium === true || item.premium === 'true',
     featured: item.featured === true || item.featured === 'true',
     homeFeatured: item.homeFeatured === true || item.homeFeatured === 'true',
+    featuredOrder: Number(item.featuredOrder || item.homeOrder || 0) || 0,
+    premiumOrder: Number(item.premiumOrder || item.homePremiumOrder || 0) || 0,
   }));
 }
 
@@ -174,11 +176,11 @@ function render(){
   // Les titres premium restent donc dans tous les rails classiques.
   // La vitrine Premium, elle, ne montre que les contenus explicitement
   // marqués "Film vedette accueil / sous le projecteur".
-  const premium = state.catalogue.filter(i => i.premium && i.homeFeatured).slice(0,10);
-  const featured = state.catalogue.filter(i => i.featured && !i.homeFeatured).slice(0,10);
-  const latest = [...state.catalogue].sort((a,b) => b._index - a._index).slice(0,10);
-  const topRated = [...state.catalogue].sort((a,b) => b._rating - a._rating).slice(0,10);
-  const recentYears = [...state.catalogue].sort((a,b) => b._year - a._year || b._popularity - a._popularity).slice(0,10);
+  const premium = sortEditorial(state.catalogue.filter(i => i.premium && i.homeFeatured), 'premiumOrder').slice(0,10);
+  const featured = sortEditorial(state.catalogue.filter(i => i.featured && !i.homeFeatured), 'featuredOrder').slice(0,10);
+  const latest = [...state.catalogue].sort(sortByLatest).slice(0,10);
+  const topRated = [...state.catalogue].sort(sortByRating).slice(0,10);
+  const recentYears = [...state.catalogue].sort(sortByRecentYear).slice(0,10);
 
   mountPremium('#premiumGrid', premium);
   mount('#featuredGrid', featured);
@@ -199,8 +201,40 @@ function render(){
 function getHeroItems(){
   // Carrousel principal = films marqués "À la une / Sous les projecteurs".
   // Le flag homeFeatured sert uniquement à la vitrine Premium.
-  const source = state.catalogue.filter(item => item.backdrop && item.featured);
-  return (source.length ? source : state.catalogue.filter(item => item.backdrop)).slice(0, 8);
+  const source = sortEditorial(state.catalogue.filter(item => item.backdrop && item.featured), 'featuredOrder');
+  return (source.length ? source : state.catalogue.filter(item => item.backdrop).sort(sortByTitle)).slice(0, 8);
+}
+
+function hasManualOrder(item, key){
+  return Number(item?.[key] || 0) > 0;
+}
+
+function sortEditorial(items, orderKey){
+  return [...items].sort((a,b) => {
+    const ao = Number(a?.[orderKey] || 0);
+    const bo = Number(b?.[orderKey] || 0);
+    const aManual = ao > 0;
+    const bManual = bo > 0;
+    if(aManual !== bManual) return aManual ? -1 : 1;
+    if(aManual && bo !== ao) return ao - bo;
+    return sortByTitle(a,b);
+  });
+}
+
+function sortByTitle(a,b){
+  return String(a?.title || '').localeCompare(String(b?.title || ''), 'fr', { sensitivity:'base' });
+}
+
+function sortByLatest(a,b){
+  return (b._index || 0) - (a._index || 0) || sortByTitle(a,b);
+}
+
+function sortByRating(a,b){
+  return (Number(b._rating || 0) - Number(a._rating || 0)) || (Number(b._popularity || 0) - Number(a._popularity || 0)) || sortByTitle(a,b);
+}
+
+function sortByRecentYear(a,b){
+  return (Number(b._year || 0) - Number(a._year || 0)) || (Number(b._popularity || 0) - Number(a._popularity || 0)) || sortByTitle(a,b);
 }
 
 function renderHero(animate = true){

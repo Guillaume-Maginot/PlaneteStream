@@ -1599,6 +1599,16 @@
               <option value="true">🎬 Oui, sous le projecteur</option>
             </select>
           </div>
+
+          <div class="admin-field">
+            <label for="featuredOrderInput">Ordre carrousel</label>
+            <input id="featuredOrderInput" type="number" min="0" step="1" value="0" placeholder="0 = auto A→Z">
+          </div>
+
+          <div class="admin-field">
+            <label for="premiumOrderInput">Ordre Premium</label>
+            <input id="premiumOrderInput" type="number" min="0" step="1" value="0" placeholder="0 = auto A→Z">
+          </div>
         </div>
 
         <div class="result-list" id="results">
@@ -1677,6 +1687,8 @@
             <label>Mise en avant<select id="editFeatured"><option value="false">Standard</option><option value="true">Mis en avant</option></select></label>
             <label>Présentation<select id="editPremium"><option value="false">Fiche standard</option><option value="true">⭐ Fiche Premium</option></select></label>
             <label>Film vedette accueil<select id="editHomeFeatured"><option value="false">Non</option><option value="true">🎬 Oui, sous le projecteur</option></select></label>
+            <label>Ordre carrousel<input id="editFeaturedOrder" type="number" min="0" step="1" placeholder="0 = auto A→Z"></label>
+            <label>Ordre Premium<input id="editPremiumOrder" type="number" min="0" step="1" placeholder="0 = auto A→Z"></label>
             <label class="full">Genres<input id="editGenres" type="text" placeholder="Action, Science-fiction"></label>
             <label>Note TMDb<input id="editRating" type="number" step="0.1"></label>
             <label>Slug<input id="editSlug" type="text"></label>
@@ -1874,7 +1886,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.4.1-home-featured-wired"></script>
+  <script src="assets/admin.js?v=3.4.2-editorial-order"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>
