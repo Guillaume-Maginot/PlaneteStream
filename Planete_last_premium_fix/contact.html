@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Planète Stream</title>
+  <meta name="description" content="Contactez Planète Stream pour une question, une demande RGPD, un signalement ou une suggestion." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#catalogue" data-nav-filter="film">Films</a>
+        <a href="index.html#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="index.html#catalogue" data-nav-filter="manga">Manga</a>
+        <a class="active" href="contact.html">Contact</a>
+        <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
+          <span class="discord-icon-wrap" aria-hidden="true">
+            <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
+            <img class="discord-icon discord-icon-violet" src="assets/icons/discord_violet.png" alt="" />
+          </span>
+          <span>Discord</span>
+        </a>
+      </nav>
+      <div class="nav-actions">
+        <a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a>
+        <a class="primary" href="index.html#catalogue">Retour catalogue</a>
+      </div>
+      <button class="hamb">☰</button>
+    </div>
+  </header>
+
+  <main class="contact-page">
+    <section class="contact-hero container">
+      <div class="contact-hero-copy">
+        <p class="eyebrow">Contact</p>
+        <h1>Envoyer un message</h1>
+        <p>Une question, une demande RGPD, une suggestion ou un petit signalement de bug spatial ? Le formulaire ci-dessous est le sas officiel.</p>
+      </div>
+      <div class="contact-orb" aria-hidden="true">✉️</div>
+    </section>
+
+    <section class="container contact-layout" aria-label="Formulaire de contact">
+      <article class="contact-card contact-info-card">
+        <h2>Avant d’envoyer</h2>
+        <p>Pour les demandes liées aux données personnelles, indiquez clairement l’objet de votre demande afin de faciliter le traitement.</p>
+        <ul>
+          <li>Demande RGPD : accès, rectification, suppression ou opposition.</li>
+          <li>Signalement : bug, contenu problématique ou souci de compte.</li>
+          <li>Suggestion : titre à ajouter, amélioration ou retour utilisateur.</li>
+        </ul>
+        <p class="contact-note">Aucune adresse e-mail publique n’est affichée ici pour éviter que les robots spammeurs ne viennent planter leur tente.</p>
+      </article>
+
+      <article class="contact-card contact-form-card">
+        <form name="contact" method="POST" action="/contact-success.html" data-netlify="true" netlify netlify-honeypot="bot-field" class="contact-form">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="form-hidden">
+            <label>Ne pas remplir ce champ : <input name="bot-field"></label>
+          </p>
+
+          <div class="contact-field-grid">
+            <label for="contactName">Nom ou pseudo <span>optionnel</span></label>
+            <input id="contactName" name="name" type="text" maxlength="80" autocomplete="name" placeholder="Ex : Guillaume">
+
+            <label for="contactEmail">Adresse e-mail</label>
+            <input id="contactEmail" name="email" type="email" required autocomplete="email" placeholder="ton@email.fr">
+
+            <label for="contactSubject">Sujet</label>
+            <select id="contactSubject" name="subject" required>
+              <option value="">Choisir un sujet</option>
+              <option value="Demande RGPD">Demande RGPD</option>
+              <option value="Question compte">Question compte</option>
+              <option value="Signalement">Signalement</option>
+              <option value="Suggestion">Suggestion</option>
+              <option value="Autre demande">Autre demande</option>
+            </select>
+
+            <label for="contactMessage">Message</label>
+            <textarea id="contactMessage" name="message" required minlength="10" rows="8" placeholder="Votre message..."></textarea>
+          </div>
+
+          <label class="contact-consent">
+            <input type="checkbox" name="consent" required>
+            <span>J’accepte que les informations saisies soient utilisées uniquement pour répondre à ma demande.</span>
+          </label>
+
+          <button class="primary contact-submit" type="submit">Envoyer le message</button>
+        </form>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer footer-redesign" aria-label="Pied de page Planète Stream">
+    <div class="container footer-shell">
+      <section class="footer-brand-block" aria-label="Présentation">
+        <a class="logo footer-logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+        <p class="footer-tagline">Chaque œuvre a une histoire. Chaque spectateur aussi.</p>
+        <p class="footer-description">Découvrez, notez et partagez les films, séries et mangas qui méritent d’être vus.</p>
+        <p class="footer-meta">© 2026 Planète Stream · v3.0 RC1.7</p>
+      </section>
+
+      <nav class="footer-links-grid" aria-label="Navigation secondaire">
+        <section class="footer-col">
+          <h4>Explorer</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="index.html#catalogue" data-footer-filter="film">Films</a></li>
+            <li><a href="index.html#catalogue" data-footer-filter="serie">Séries</a></li>
+            <li><a href="index.html#catalogue" data-footer-filter="manga">Manga</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Communauté</h4>
+          <ul>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le Discord</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Suggestions de titres</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Retours et signalements</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Actualités du projet</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Planète Stream</h4>
+          <ul>
+            <li><a href="privacy.html">Confidentialité / RGPD</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>Notes des spectateurs</li>
+            <li>Critiques évolutives</li>
+            <li>Découvertes communautaires</li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
+      <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
+      <span class="footer-version">Build v3.2</span>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/auth.js?v=3.0.4-architecte"></script>
+</body>
+</html>
