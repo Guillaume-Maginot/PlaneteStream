@@ -109,7 +109,8 @@
     "overview": "Dans Crime 101, les cambriolages méticuleux à LA le long de l'autoroute 101 d'un voleur de bijoux chevronné (Chris Hemsworth) déconcertent la police. Un flic solitaire (Mark Ruffalo) est à ses trousses. Lorsque leurs chemins croisent celui d'une courtière en assurance désabusée (Halle Berry), tous trois sont confrontés à des choix déterminants face aux millions de dollars en jeu.",
     "featured": true,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/v8htq91w63zc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
-    "premium": false
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Greenland : Migration",
@@ -157,7 +158,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/cLFbDVfhllIMybpo2fkGNzehiQG.jpg",
     "overview": "Après l'impact dévastateur d'une comète qui a réduit la Terre en ruines, la famille Garrity doit quitter la sécurité de son bunker au Groenland. Commence alors un périple pour leur survie et l'avenir de l'Humanité à travers un monde dévasté à la recherche d'un nouveau foyer.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3m3gifu4om1n\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3m3gifu4om1n\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Kartavya : Le sens du devoir",
@@ -202,7 +204,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/mHm73HhpvGWfRkXNErcwc15Czrv.jpg",
     "overview": "Lorsque la vie de sa famille est menacée et que le danger se rapproche, un policier doit décider jusqu'où il est prêt à aller pour remplir son devoir.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/exs5ztjncixx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/exs5ztjncixx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Le Réveil de la Momie",
@@ -249,7 +252,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/xugEpZk9YQ0DIz1aFvH5HGkqpZK.jpg",
     "overview": "Une jeune fille disparue dans le désert égyptien réapparaît mystérieusement huit ans plus tard. Mais les retrouvailles tournent vite au cauchemar. Alors que son comportement devient de plus en plus inquiétant, sa famille se lance dans une course contre la montre pour comprendre l’origine du mal. Ce qu’ils vont découvrir dépasse tout ce qu’ils imaginaient.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qfqgk21b50bn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qfqgk21b50bn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Dune : Deuxième partie",
@@ -359,7 +363,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/eZ239CUp1d6OryZEBPnO2n87gMG.jpg",
     "overview": "Le voyage mythique de Paul Atreides qui s'allie à Chani et aux Fremen dans sa quête de vengeance envers les conspirateurs qui ont anéanti sa famille. Devant choisir entre l'amour de sa vie et le destin de l'univers, il fera tout pour éviter un terrible futur que lui seul peut prédire.",
     "featured": true,
-    "premium": true
+    "premium": true,
+    "homeFeatured": true
   },
   {
     "title": "Gran Turismo",
@@ -406,7 +411,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/xFYpUmB01nswPgbzi8EOCT1ZYFu.jpg",
     "overview": "Gran Turismo est inspiré de l'incroyable histoire vécue d'une invraisemblable bande d'infortunés – un amateur de jeu vidéo de classe ouvrière, un ex-pilote d'autos de course paumé et un idéaliste de l'industrie du sport motorisé. Ensemble, ils risquent tout pour percer dans le sport le plus prestigieux au monde. Gran Turismo est une captivante histoire et un feu roulant d'action qui prouvent que tout est possible lorsqu'on conduit avec l'énergie du désespoir.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xn4c2g5qr5oh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xn4c2g5qr5oh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Fire Island : La Grande Éruption",
@@ -451,7 +457,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/6WQZauSsXX7QFrNy0oKQnH6ZFAa.jpg",
     "overview": "Sur l'île d'Hawaï, un supervolcan entre soudainement en éruption. Toute la population est menacée par ce qui s'annonce comme le plus grand cataclysme volcanique de tous les temps. Une équipe d'experts en catastrophes naturelles est alors chargée de sauver ceux qui se trouvent sur le chemin du torrent de lave en fusion.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m15v449aj17c\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m15v449aj17c\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Dune - Première partie",
@@ -561,7 +568,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/qVgZu5BTx6pu4owCvVOm4zjTfOi.jpg",
     "overview": "L'histoire de Paul Atreides, jeune homme aussi doué que brillant, voué à connaître un destin hors du commun qui le dépasse totalement. Car, s'il veut préserver l'avenir de sa famille et de son peuple, il devra se rendre sur Dune, la planète la plus dangereuse de l'Univers. Mais aussi la seule à même de fournir la ressource la plus précieuse capable de décupler la puissance de l'Humanité. Tandis que des forces maléfiques se disputent le contrôle de cette planète, seuls ceux qui parviennent à dominer leur peur pourront survivre…",
     "featured": true,
-    "premium": true
+    "premium": true,
+    "homeFeatured": false
   },
   {
     "title": "Malnazidos",
@@ -609,7 +617,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/h6XfgbzQEV4sitsIVY63pawLI0s.jpg",
     "overview": "En pleine guerre d'Espagne, une poignée d'ennemis se voient obligés de faire alliance pour affronter de terribles créatures mangeuses de chair créées par les nazis.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/zyj152ahtjqz\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/zyj152ahtjqz\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Le Mans 66",
@@ -656,7 +665,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/2vq5GTJOahE03mNYZGxIynlHcWr.jpg",
     "overview": "Relate l’histoire vraie qui a conduit l’ingénieur automobile visionnaire américain Caroll Shelby à faire équipe avec le pilote de course britannique surdoué Ken Miles. Bravant l’ordre établi, défiant les lois de la physique et luttant contre leurs propres démons, les deux hommes n’avaient qu’un seul but : construire pour le compte de Ford Motor Company un bolide révolutionnaire capable de renverser la suprématie de l’écurie d’Enzo Ferrari sur le mythique circuit des 24 heures du Mans en 1966…",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/pjc2xj97b1cn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/pjc2xj97b1cn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Gonjiam: Haunted Asylum",
@@ -700,7 +710,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/x1j5VVU4ypEx1hM0PDYGwCJvwtS.jpg",
     "overview": "L'équipe de tournage d'un urbex d'horreur se rend dans un asile abandonné pour une diffusion en direct. Le lieu dépasse leurs attentes alors qu'ils s'enfoncent plus profondément dans le vieux bâtiment cauchemardesque.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1k2jx633koim\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1k2jx633koim\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Deepwater",
@@ -747,7 +758,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/fRT76SSQzAuZljogpsWyKphUxYX.jpg",
     "overview": "La plateforme Deepwater Horizon tourne non-stop pour tirer profit des 800 millions de litres de pétrole présents dans les profondeurs du golfe du Mexique. Mike Williams, électricien sur la plateforme et père de famille, connaît les risques de son métier mais fait confiance au professionnalisme de son patron Jimmy Harrell. En revanche, tous se méfient de la société locataire de la plateforme dirigée par Donald Vidrine, qui ne pense qu’à son bénéfice. Lorsque cette société décide contre l’avis des techniciens de la déplacer trop rapidement, il sont loin de se douter que les 5 millions de barils sous leurs pieds sont prêts à exploser...",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8mv3r7xwqbbk\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8mv3r7xwqbbk\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "La Grande Muraille",
@@ -795,7 +807,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/th26RNksfM9nn7DPH06OqiV6BA2.jpg",
     "overview": "Entre le courage et l’effroi, l’humanité et la monstruosité, il existe une frontière qui ne doit en aucun cas céder. William Garin, un mercenaire emprisonné dans les geôles de la Grande Muraille de Chine, découvre la fonction secrète de la plus colossale des merveilles du monde. L’édifice tremble sous les attaques incessantes de créatures monstrueuses, dont l’acharnement n’a d’égal que leur soif d’anéantir l’espèce humaine dans sa totalité. Il rejoint alors ses geôliers, une faction d’élite de l’armée chinoise, dans un ultime affrontement pour la survie de l’humanité. C’est en combattant cette force incommensurable qu’il trouvera sa véritable vocation : l’héroïsme.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8psrkqne65vx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8psrkqne65vx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Grave Encounters 2",
@@ -840,7 +853,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/fNLVYtHuN3QsmG1B0F2xbFACwj7.jpg",
     "overview": "Étudiant en cinéma, Alex Wright convainc quelques amis de réaliser un documentaire sur Rencontres d'outre-tombe, un film relatant l'expérience menée par une équipe de télévision dans un hôpital psychiatrique hanté. Contactée par un inconnu qui lui donne une piste, l'équipe rencontre le producteur du film puis se rend dans le bâtiment abandonné. Les jeunes gens sont attaqués par un esprit et réalisent que l'hôpital est un endroit maléfique où ceux qui y pénètrent finissent par errer pour l'éternité. Le groupe tente désespérément de quitter les lieux...",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/g573r921lx7i\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/g573r921lx7i\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Grave Encounters",
@@ -886,7 +900,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/mZdvVaC59aYRKKcl96hiia2nQp2.jpg",
     "overview": "Lance Preston et son équipe sont à la tête de Rencontres d'outre-tombe, une émission de télé-réalité consacrée à la chasse aux fantômes. Ils s'apprêtent à tourner le nouvel épisode de l'émission dans l'hôpital psychiatrique de Collingwood, une vieille bâtisse abandonnée depuis longtemps. Le bâtiment alimente les rumeurs les plus folles et de nombreux témoins assurent qu'il est hanté. Persuadés qu'ils ont trouvé le lieu parfait, Preston et son équipe décident de s'y enfermer pour la nuit, sans se douter qu'une expérience terrifiante les y attend...",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/14cz4asajtih\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/14cz4asajtih\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Gonger 2 - Le maudit",
@@ -929,7 +944,8 @@
     "backdrop": "images/backdrops/gonger-2-le-maudit.jpg",
     "overview": "Après les meurtres mystérieux de ses amis de toujours, commis par Eric le \"Gonger\", Philip quitte sa ville natale. Mais il ne parvient pas à oublier ce qui s'est passé. Son esprit en appelle à la vengeance. Bientôt, tout l'entourage de Philip disparait, ses proches décèdent tous d'accidents invraisemblables. Philip fait alors vœu de détruire Eric une bonne fois pour toutes...",
     "featured": true,
-    "videoEmbed": "gonger 2 le maudit\n<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/83jz6807plso\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "gonger 2 le maudit\n<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/83jz6807plso\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Gonger : La malédiction",
@@ -976,7 +992,8 @@
     "backdrop": "images/backdrops/gonger-la-malediction.jpg",
     "overview": "Quinze ans après l'avoir quitté, Philipp retourne dans son village natal pour y régler une affaire d'héritage. Arrivé sur place, il retrouve ses anciens amis mais son séjour ranime aussi de très mauvais souvenirs, comme la mort de ses parents. Une mort qui, il va le découvrir progressivement, n'est pas aussi accidentelle que l'on avait voulu lui faire croire.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/aezinmwfmqfp\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/aezinmwfmqfp\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Gran Torino",
@@ -1022,7 +1039,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/1uyDZmTjUQsbflqfkUJZvAGV3bv.jpg",
     "overview": "Walt Kowalski est un ancien de la guerre de Corée, un homme inflexible, amer et pétri de préjugés surannés. Après des années de travail à la chaîne, il vit replié sur lui-même, occupant ses journées à bricoler, traînasser et siroter des bières. Avant de mourir, sa femme exprima le vœu qu'il aille à confesse, mais Walt n'a rien à avouer, ni personne à qui parler. Hormis sa chienne Daisy, il ne fait confiance qu'à son M-1, toujours propre, toujours prêt à l'usage… Ses anciens voisins ont déménagé ou sont morts depuis longtemps. Son quartier est aujourd'hui peuplé d'immigrants asiatiques qu'il méprise, et Walt ressasse ses haines, innombrables - à l'encontre de ses voisins, des ados Hmong, latinos et afro-américains « qui croient faire la loi », de ses propres enfants, devenus pour lui des étrangers. Walt tue le temps comme il peut, en attendant le grand départ, jusqu'au jour où un ado Hmong du quartier tente de lui voler sa précieuse Ford Gran Torino…",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hvxqkt8glhjw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hvxqkt8glhjw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Mortal Kombat II",
@@ -1070,7 +1088,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/laR2dpcNpbv83jdlRUNAYPPjH90.jpg",
     "overview": "Les champions en arts martiaux de l'Earthrealm, secondés par le héros de films d'action Johnny Cage, s'affrontent dans un tournoi ultime. Leur but: renverser Shao Kahn, un tyran qui menace l'existence même de leur monde. L'arrivée fracassante de Kitana, princesse d'Outworld aux loyautés troubles, vient brouiller davantage les lignes séparant ennemis et alliés. Tandis que de nouvelles alliances se forment, les combattants découvrent que les règles du tournoi ont changé. Entre affrontements spectaculaires et révélations mystiques, ils devront repousser leurs limites.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ygu23okuwd5w\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ygu23okuwd5w\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Pressure",
@@ -1117,7 +1136,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/apfyLCPVFttB8oXcsLJ7q0NSFLx.jpg",
     "overview": "Dans les 72 heures précédant le jour J, alors que le destin du monde libre est en jeu, le général Dwight D. Eisenhower et le capitaine James Stagg sont confrontés à un choix impossible : lancer la plus vaste et la plus périlleuse invasion maritime de l'histoire, ou risquer de perdre la guerre.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fj02a981qfzh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fj02a981qfzh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Projet Dernière Chance",
@@ -1164,7 +1184,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg",
     "overview": "Le professeur de sciences Ryland Grace se réveille à bord d’un vaisseau spatial, à des années-lumière de la Terre, sans aucun souvenir de qui il est ni de la façon dont il est arrivé là. À mesure que sa mémoire lui revient, il commence à découvrir sa mission : résoudre l’énigme d’une mystérieuse substance qui provoque l’extinction du Soleil. Il doit faire appel à ses connaissances scientifiques et ses idées peu orthodoxes pour sauver toute vie sur Terre mais une amitié inattendue pourrait signifier qu’il n’aura pas à accomplir cette tâche seul.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ot0x3va7r7mu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ot0x3va7r7mu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Super Mario Galaxy, le film",
@@ -1213,7 +1234,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/9Z2uDYXqJrlmePznQQJhL6d92Rq.jpg",
     "overview": "Mario et Luigi gèrent les tracas du royaume Champignon, se lient d'amitié avec Yoshi, tentent de réhabiliter mini-Bowser et se préparent pour l'anniversaire de Peach. Mais quand un appel à l'aide arrive de l'autre bout de la galaxie, l'équipe part découvrir des mondes nouveaux, des menaces inattendues et des personnages emblématiques, comme Rosalina et Bowser Jr.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rvheyqz4yp8k\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rvheyqz4yp8k\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "The Punisher : One Last Kill",
@@ -1259,7 +1281,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/qO55CD8tgVL1T4WKn6zYFFiD6lL.jpg",
     "overview": "Alors que Frank Castle cherche un sens à sa vie au-delà de la vengeance, il replonge contre toute attente au cœur du combat.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2q4149be3mit\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2q4149be3mit\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Marche ou crève",
@@ -1307,7 +1330,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/2dlt9I2ga6hweywz9zsFUz1PVii.jpg",
     "overview": "Dans une Amérique totalitaire instaurée après une longue guerre fratricide, 50 jeunes hommes participent à une marche d'endurance de plus de 500 kilomètres, filmée et diffusée en direct. Les marcheurs ont l'obligation de conserver un rythme constant, avec interdiction formelle de s'arrêter. Après trois avertissements consécutifs, les contrevenants sont froidement abattus. Un seul en sortira vivant, avec une somme faramineuse et un prix de son choix. Habité par un motif secret, le jeune Raymond Garraty tente sa chance, nouant sur la route un fort lien d'amitié avec l'Afro-Américain Peter McVries.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/6ld0bx9cmrmg\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/6ld0bx9cmrmg\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Thandel",
@@ -1353,7 +1377,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/8mCApaSTpIj3y1LnHpBqzdy9rEW.jpg",
     "overview": "Raju, un pêcheur indien, est arrêté après avoir dérivé par mégarde dans des eaux étrangères, et entreprend un retour périlleux vers sa bien-aimée Sathya.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0a0rt6uyl7e8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0a0rt6uyl7e8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "The Boys",
@@ -1802,7 +1827,8 @@
     "poster": "https://image.tmdb.org/t/p/w500/4Tw8TB9ikrcgzJgR0LOvgfnXD74.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/n6vVs6z8obNbExdD3QHTr4Utu1Z.jpg",
     "overview": "Lorsque les super-héros abusent de leurs super-pouvoirs au lieu de les utiliser pour faire le bien, les Boys se lancent dans une quête héroïque pour révéler la vérité sur Les Sept et Vought, le conglomérat qui couvre leurs sales secrets.",
-    "featured": false
+    "featured": false,
+    "homeFeatured": false
   },
   {
     "title": "Titan",
@@ -1849,7 +1875,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/tNkpV19YzF5jmZVG7hmKKk0Xb9H.jpg",
     "overview": "Dans un monde où toutes les ressources sont épuisées, l’avenir de l’humanité réside dans une planète lointaine. Pour l’atteindre, quelques soldats sont notre seul espoir. Mais pour réussir il faudra choisir : évoluer ou mourir..",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3plcm81wfb12\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3plcm81wfb12\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Titanic",
@@ -1895,7 +1922,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/xnHVX37XZEp33hhCbYlQFq7ux1J.jpg",
     "overview": "Southampton, 10 avril 1912. Le paquebot le plus grand et le plus moderne du monde, réputé pour son insubmersibilité, le « Titanic », appareille pour son premier voyage. Quatre jours plus tard, il heurte un iceberg. À son bord, un artiste pauvre et une grande bourgeoise tombent amoureux.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/j19ax9tdulwn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/j19ax9tdulwn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Dirty Dancing",
@@ -1941,7 +1969,8 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/6iDQCBUSZKzY8Rnu8ECwl2gXcfG.jpg",
     "overview": "En 1963. Bébé – de son vrai prénom Frédérique – fille d’une riche famille, passe ses vacances avec ses parents et sa sœur à la pension de la famille Kellerman dans l’État de l’Oregon. Elle va être confrontée à un monde qui lui est complètement étranger, celui de la danse, et vivre une histoire d’amour avec Johnny, l’un des professeurs de danse de l’établissement, issu d’un milieu social très différent. Film à petit budget d’Émile Ardolino, il deviendra l’un des plus grand succès des années 80.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/s0f3sqs0c6a9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/s0f3sqs0c6a9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   },
   {
     "title": "Scarface",
@@ -1987,6 +2016,7 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/1qM2BYNE11Viby8ImC9LC00DgDr.jpg",
     "overview": "En 1980, le gouvernement cubain expulse plusieurs centaines de prisonniers dangereux vers la Floride. Parmi eux, Tony Montana : ambitieux et sans scrupules, il élabore un plan pour prendre la place d'un caïd de la drogue.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qa1hkdujdynu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qa1hkdujdynu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "homeFeatured": false
   }
 ]

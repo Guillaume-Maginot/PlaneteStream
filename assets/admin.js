@@ -17,6 +17,7 @@ const clearBtn = document.querySelector('#clearBtn');
 const sectionSelect = document.querySelector('#sectionSelect');
 const featuredSelect = document.querySelector('#featuredSelect');
 const premiumSelect = document.querySelector('#premiumSelect');
+const homeFeaturedSelect = document.querySelector('#homeFeaturedSelect');
 const genreSelect = document.querySelector('#genreSelect');
 const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
@@ -40,6 +41,7 @@ const editFields = {
   category: document.querySelector('#editCategory'),
   featured: document.querySelector('#editFeatured'),
   premium: document.querySelector('#editPremium'),
+  homeFeatured: document.querySelector('#editHomeFeatured'),
   genres: document.querySelector('#editGenres'),
   rating: document.querySelector('#editRating'),
   poster: document.querySelector('#editPoster'),
@@ -258,7 +260,8 @@ function buildCatalogueEntry(item) {
     backdrop: item.backdrop || '',
     overview: item.overview || '',
     featured: featuredSelect?.value === 'true',
-    premium: premiumSelect?.value === 'true'
+    premium: premiumSelect?.value === 'true',
+    homeFeatured: homeFeaturedSelect?.value === 'true'
   };
 }
 
@@ -477,6 +480,7 @@ function openEditor(index) {
   editFields.category.value = entry.category || '';
   editFields.featured.value = entry.featured ? 'true' : 'false';
   if (editFields.premium) editFields.premium.value = entry.premium ? 'true' : 'false';
+  if (editFields.homeFeatured) editFields.homeFeatured.value = entry.homeFeatured ? 'true' : 'false';
   editFields.genres.value = Array.isArray(entry.genres) ? entry.genres.join(', ') : '';
   editFields.rating.value = entry.rating ?? 0;
   editFields.poster.value = entry.poster || '';
@@ -515,6 +519,7 @@ function saveEditedItem() {
     category: editFields.category.value || current.category || (isSeries ? 'series' : 'films'),
     featured: editFields.featured.value === 'true',
     premium: editFields.premium?.value === 'true',
+    homeFeatured: editFields.homeFeatured?.value === 'true',
     genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
     rating: Number(editFields.rating.value || 0),
     poster: editFields.poster.value.trim(),
@@ -662,6 +667,7 @@ function mergeTmdbRefresh(current, tmdbItem) {
     category: current.category,
     featured: Boolean(current.featured),
     premium: Boolean(current.premium),
+    homeFeatured: Boolean(current.homeFeatured),
     videoEmbed: currentVideo
   };
 

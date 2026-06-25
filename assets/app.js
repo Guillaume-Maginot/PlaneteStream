@@ -169,11 +169,12 @@ function render(){
   const catalogueSource = state.catalogue;
   const filtered = catalogueSource.filter(matches);
 
-  // Premium est uniquement une mise en avant éditoriale :
-  // un film premium reste visible dans les derniers ajouts, les mieux notés,
-  // les nouveautés et le catalogue complet.
-  const premium = state.catalogue.filter(i => i.premium && i.featured).slice(0,10);
-  const featured = state.catalogue.filter(i => i.featured && !i.premium).slice(0,10);
+  // Premium = habillage éditorial, pas un contenu séparé.
+  // Les titres premium restent donc dans tous les rails classiques.
+  // La vitrine Premium, elle, ne montre que les contenus explicitement
+  // marqués "Film vedette accueil / sous le projecteur".
+  const premium = state.catalogue.filter(i => i.premium && i.homeFeatured).slice(0,10);
+  const featured = state.catalogue.filter(i => i.featured && !i.homeFeatured).slice(0,10);
   const latest = [...state.catalogue].sort((a,b) => b._index - a._index).slice(0,10);
   const topRated = [...state.catalogue].sort((a,b) => b._rating - a._rating).slice(0,10);
   const recentYears = [...state.catalogue].sort((a,b) => b._year - a._year || b._popularity - a._popularity).slice(0,10);
@@ -195,7 +196,7 @@ function render(){
 }
 
 function getHeroItems(){
-  const source = state.catalogue.filter(item => item.backdrop && item.featured);
+  const source = state.catalogue.filter(item => item.backdrop && item.homeFeatured);
   return (source.length ? source : state.catalogue.filter(item => item.backdrop)).slice(0, 8);
 }
 
@@ -218,7 +219,7 @@ function renderHero(animate = true){
   const genres = (item.genres || []).slice(0,3).join(' • ');
   hero.style.backgroundImage = `linear-gradient(90deg, rgba(2,3,10,.97) 0%, rgba(2,3,10,.78) 35%, rgba(2,3,10,.25) 78%), url('${item.backdrop || item.poster || ''}')`;
   hero.style.backgroundPosition = state.heroDirection >= 0 ? 'center center' : 'right center';
-  hero.querySelector('#heroEyebrow').textContent = item.premium ? 'Fiche Premium Planète Stream' : (item.featured ? 'À la une' : 'Sélection Planète Stream');
+  hero.querySelector('#heroEyebrow').textContent = item.homeFeatured ? 'Sous le projecteur' : (item.featured ? 'À la une' : 'Sélection Planète Stream');
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';
   hero.querySelector('#heroMeta').textContent = [year, formatType(item.type), genres, item._rating ? `⭐ ${item._rating.toFixed(1)}` : ''].filter(Boolean).join('   ');
   const detailHref = getDetailHref(item);
