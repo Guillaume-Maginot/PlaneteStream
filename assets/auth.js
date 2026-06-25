@@ -423,6 +423,42 @@ const PS_AUTH_CONFIG = {
     return {ok:true, session:null, viewer:null, needsEmailConfirmation:true};
   }
 
+
+  async function resetPasswordForEmail(email){
+    if(!enabled()) return {ok:false, message:'Supabase est indisponible.'};
+    const cleanEmail = String(email || '').trim();
+    if(!cleanEmail) return {ok:false, message:'Adresse email requise.'};
+
+    const redirectTo = new URL('reset-password.html', window.location.origin).href;
+    const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/recover?redirect_to=${encodeURIComponent(redirectTo)}`, {
+      method:'POST',
+      headers:{...anonHeaders(), 'Content-Type':'application/json'},
+      body: JSON.stringify({email:cleanEmail})
+    });
+    const data = await response.json().catch(() => null);
+    if(!response.ok) return {ok:false, message:authErrorMessage(data)};
+    return {ok:true};
+  }
+
+  async function updatePassword(password){
+    if(!enabled()) return {ok:false, message:'Supabase est indisponible.'};
+    const nextPassword = String(password || '');
+    if(nextPassword.length < 8) return {ok:false, message:'Le mot de passe doit contenir au moins 8 caractères.'};
+
+    const token = state.accessToken || readSession()?.access_token;
+    if(!token) return {ok:false, message:'Lien de réinitialisation expiré ou invalide.'};
+
+    const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/user`, {
+      method:'PUT',
+      headers:{apikey:PS_AUTH_CONFIG.supabaseKey, Authorization:`Bearer ${token}`, 'Content-Type':'application/json'},
+      body: JSON.stringify({password:nextPassword})
+    });
+    const data = await response.json().catch(() => null);
+    if(!response.ok) return {ok:false, message:authErrorMessage(data)};
+    await refreshAuthState({force:true});
+    return {ok:true, user:data};
+  }
+
   async function signIn({email, password}){
     if(!enabled()) return {ok:false, message:'Supabase est indisponible.'};
     const response = await fetch(`${PS_AUTH_CONFIG.supabaseUrl}/auth/v1/token?grant_type=password`, {
@@ -971,6 +1007,8 @@ const PS_AUTH_CONFIG = {
     banLabel,
     signUp,
     signIn,
+    resetPasswordForEmail,
+    updatePassword,
     signOut,
     restSelect,
     restWrite,
@@ -1014,6 +1052,8 @@ const PS_AUTH_CONFIG = {
     enabled,
     signUp,
     signIn,
+    resetPasswordForEmail,
+    updatePassword,
     signOut,
     getSession:() => state.session || readSession(),
     hydrateFromAuthRedirect,

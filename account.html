@@ -101,6 +101,15 @@
           </div>
 
           <button class="ghost" type="submit">Me connecter</button>
+          <button class="forgot-link" type="button" id="forgotPasswordToggle">Mot de passe oublié ?</button>
+        </form>
+
+        <form id="forgotPasswordForm" class="account-form forgot-password-form" hidden>
+          <p class="forgot-help">Entre ton email et Planète Stream t’envoie un lien pour choisir un nouveau mot de passe. Promis, aucun poisson rouge ne sera jugé.</p>
+          <label for="forgotEmail">Email du compte</label>
+          <input id="forgotEmail" type="email" required placeholder="ton@email.fr" autocomplete="email">
+          <button class="primary" type="submit">Envoyer le lien de réinitialisation</button>
+          <button class="forgot-link" type="button" id="forgotPasswordCancel">Annuler</button>
         </form>
       </article>
     </section>

@@ -2463,6 +2463,32 @@ min-width:220px;
 .account-status[data-status="error"]{color:#ff9fb3}
 .account-status[data-status="pending"]{color:#d9b7ff}
 
+.forgot-link{
+  appearance:none;
+  border:0;
+  background:transparent;
+  color:#d9b7ff;
+  font-weight:900;
+  text-align:left;
+  cursor:pointer;
+  padding:4px 0;
+  text-decoration:none;
+}
+.forgot-link:hover{color:#fff;text-shadow:0 0 16px rgba(195,77,255,.55)}
+.forgot-password-form{
+  margin-top:18px;
+  padding-top:18px;
+  border-top:1px solid rgba(195,77,255,.16);
+}
+.forgot-help{
+  margin:0 0 4px;
+  color:var(--muted);
+  line-height:1.55;
+}
+.reset-password-grid{grid-template-columns:minmax(0,720px);justify-content:center}
+.reset-password-card{max-width:720px;width:100%}
+.reset-back-link{display:inline-block;margin-top:2px}
+
 @media(max-width:980px){
   .account-grid{grid-template-columns:1fr}
   .account-link{width:auto}

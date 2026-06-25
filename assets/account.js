@@ -2,6 +2,9 @@ const accountState = document.querySelector('#currentViewerState');
 const accountStatus = document.querySelector('#accountStatus');
 const createForm = document.querySelector('#createAccountForm');
 const loginForm = document.querySelector('#loginAccountForm');
+const forgotPasswordForm = document.querySelector('#forgotPasswordForm');
+const forgotPasswordToggle = document.querySelector('#forgotPasswordToggle');
+const forgotPasswordCancel = document.querySelector('#forgotPasswordCancel');
 const createAvatarInput = document.querySelector('#createAvatar');
 const createAvatarGallery = document.querySelector('#createAvatarGallery');
 const currentAccountCard = document.querySelector('#currentAccountCard');
@@ -74,6 +77,37 @@ function initAccount(){
     loginForm.reset();
     renderCurrentViewer();
   });
+
+  forgotPasswordToggle?.addEventListener('click', () => {
+    const loginEmail = document.querySelector('#loginEmail')?.value.trim() || '';
+    const forgotEmail = document.querySelector('#forgotEmail');
+    if(forgotEmail && loginEmail) forgotEmail.value = loginEmail;
+    forgotPasswordForm.hidden = false;
+    forgotEmail?.focus();
+    setStatus('Saisis ton email et le lien de secours partira en mission.', 'pending');
+  });
+
+  forgotPasswordCancel?.addEventListener('click', () => {
+    forgotPasswordForm.hidden = true;
+    setStatus('', '');
+  });
+
+  forgotPasswordForm?.addEventListener('submit', async event => {
+    event.preventDefault();
+    const email = document.querySelector('#forgotEmail')?.value.trim();
+    if(!validateEmail(email)) return;
+
+    setStatus('Envoi du lien de réinitialisation...', 'pending');
+    const result = await PSAuth.resetPasswordForEmail(email);
+    if(!result.ok){
+      setStatus(result.message || 'Impossible d’envoyer le lien de réinitialisation.', 'error');
+      return;
+    }
+    forgotPasswordForm.reset();
+    forgotPasswordForm.hidden = true;
+    setStatus('Email envoyé. Vérifie ta boîte mail et clique sur le lien pour choisir un nouveau mot de passe.', 'ok');
+  });
+
 
   accountState?.addEventListener('click', async event => {
     if(event.target.closest('[data-logout]')){
