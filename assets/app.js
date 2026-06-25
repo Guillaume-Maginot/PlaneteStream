@@ -171,8 +171,9 @@ function render(){
   const filtered = catalogueSource.filter(matches).sort(sortByTitle);
 
   // Tri général lisible : A → Z pour les rails éditoriaux et le catalogue.
+  // La Sélection Premium de l'accueil ne montre que les fiches Premium marquées Film vedette accueil.
   // Les rails calculés gardent leur logique : derniers ajouts par date, mieux notés par note.
-  const premium = state.catalogue.filter(i => i.premium).sort(sortByTitle).slice(0,10);
+  const premium = state.catalogue.filter(i => i.premium && i.homeFeatured).sort(sortByTitle).slice(0,10);
   const featured = state.catalogue.filter(i => i.featured).sort(sortByTitle).slice(0,10);
   const latest = [...state.catalogue].sort(sortByLatest).slice(0,10);
   const topRated = [...state.catalogue].sort(sortByRating).slice(0,10);
