@@ -208,7 +208,7 @@ function render(){
 
   // Tri général lisible : A → Z pour les rails éditoriaux et le catalogue.
   // Les mangas ont leur propre rail d'accueil et leur propre catalogue : ils ne remontent pas dans le catalogue général.
-  const premium = standardCatalogue.filter(i => i.premium).sort(sortByTitle).slice(0,10);
+  const premium = standardCatalogue.filter(i => i.premium && i.featured).sort(sortByTitle).slice(0,10);
   const featured = standardCatalogue.filter(i => i.featured).sort(sortByTitle).slice(0,10);
   const latest = [...standardCatalogue].sort(sortByLatest).slice(0,10);
   const latestManga = [...mangaCatalogue].sort(sortByLatest).slice(0,10);
