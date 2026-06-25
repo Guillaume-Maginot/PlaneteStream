@@ -1356,6 +1356,222 @@
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0a0rt6uyl7e8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
   },
   {
+    "title": "Black Summoner",
+    "slug": "black-summoner",
+    "originalTitle": "黒の召喚士",
+    "year": "2022",
+    "releaseDate": "2022-07-09",
+    "type": "manga",
+    "mediaType": "manga",
+    "category": "manga",
+    "genres": [
+      "Animation",
+      "Action & Adventure",
+      "Science-Fiction & Fantastique"
+    ],
+    "director": "À compléter",
+    "cast": [
+      {
+        "id": 1254052,
+        "name": "Kōki Uchiyama",
+        "character": "Kelvin (voice)",
+        "profile_path": "/sllSm3iZZWVLTBrDZQRtWrZUfEj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/sllSm3iZZWVLTBrDZQRtWrZUfEj.jpg"
+      },
+      {
+        "id": 1835721,
+        "name": "Iwami Manaka",
+        "character": "Efil (voice)",
+        "profile_path": "/leKMaCBswXG8u4mfQNQ7J3y6Xow.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/leKMaCBswXG8u4mfQNQ7J3y6Xow.jpg"
+      },
+      {
+        "id": 1452028,
+        "name": "Reina Ueda",
+        "character": "Melfina (voice)",
+        "profile_path": "/2WV61uVU7y6XGYqNHLMpP0sApdu.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/2WV61uVU7y6XGYqNHLMpP0sApdu.jpg"
+      },
+      {
+        "id": 3480276,
+        "name": "蘭笛",
+        "character": "Clotho (voice)",
+        "profile_path": "/caMb2alF72YhE792rJx9KbCIU7P.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/caMb2alF72YhE792rJx9KbCIU7P.jpg"
+      },
+      {
+        "id": 84509,
+        "name": "秋元羊介",
+        "character": "Geral (voice)",
+        "profile_path": "/uzBTKym7osTko49r5odq86nPKT5.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uzBTKym7osTko49r5odq86nPKT5.jpg"
+      },
+      {
+        "id": 1606199,
+        "name": "鈴木みのり",
+        "character": "Sera (voice)",
+        "profile_path": "/jfxpGS6Bbc1PPsF2EVKXNEbzOsZ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jfxpGS6Bbc1PPsF2EVKXNEbzOsZ.jpg"
+      },
+      {
+        "id": 1772522,
+        "name": "Yume Miyamoto",
+        "character": "Rion (voice)",
+        "profile_path": "/8PzHX7owawEZKq7Eg9WwcmWYx9s.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/8PzHX7owawEZKq7Eg9WwcmWYx9s.jpg"
+      },
+      {
+        "id": 3049705,
+        "name": "稲垣好",
+        "character": "Ange (voice)",
+        "profile_path": "/qYizWDjykF0j5foMvKGYyRta037.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/qYizWDjykF0j5foMvKGYyRta037.jpg"
+      }
+    ],
+    "runtime": 24,
+    "seasons": 1,
+    "episodes": 12,
+    "seasonsData": [
+      {
+        "seasonNumber": 1,
+        "title": "Saison 1",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/7Tz42T9L9zjM6u0rqPQicmYQmH6.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Le réincarné amnésique",
+            "overview": "Après l’accident qui lui coûte la vie, un jeune homme est envoyé, en manière de dédommagement, dans un monde où la magie et les armes règnent en maîtres. Heureusement, avant de s’y réincarner, il semble qu’il se soit assuré la possession d’un certain nombre de compétences qui lui seront bien utiles.",
+            "runtime": 24,
+            "airDate": "2022-07-09",
+            "still": "https://image.tmdb.org/t/p/w500/c9gV1LIZIOgeIFdjAe9qYaXHB7s.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/srhak0nl876u\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Le revenant noir.",
+            "overview": "Kelvin et son familier, Clotho, se font tranquillement leur place au sein de la guilde. Kelvin choisit toujours des quêtes un peu au-dessus de son niveau, ce qui finit par attirer l’attention d’un autre aventurier, bien plus chevronné que lui.",
+            "runtime": 24,
+            "airDate": "2022-07-16",
+            "still": "https://image.tmdb.org/t/p/w500/qsgkMfAQYeBsZim1lAoCkuSFIEa.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/9tofimqrfks0\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "Accord secret avec le maître de guilde et achat d'une jeune esclave.",
+            "overview": "Ayant bien épaté son monde malgré son désir initial de raser les murs, Kelvin décide de renforcer son équipe, car il a compris en affrontant Gérard qu’elle ne serait pas suffisante. Et ce, d’autant plus après sa petite discussion avec son maître de guilde…",
+            "runtime": 24,
+            "airDate": "2022-07-23",
+            "still": "https://image.tmdb.org/t/p/w500/c29UTlRLRkRRNNPNigtcaLZLb1M.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8y1w9zufi6fm\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Démon",
+            "overview": "Devenue archère et mage de feu, Elfi s’épanouit au sein du groupe de Kelvin et s’enhardit même à rechercher l’amour de celui qui lui a donné un foyer. Seulement, la nouvelle star de la ville a la tête ailleurs, du moins il essaie : on lui propose une nouvelle quête très dangereuse.",
+            "runtime": 24,
+            "airDate": "2022-07-30",
+            "still": "https://image.tmdb.org/t/p/w500/94t1oDsAhk5rmbTYEMc9ASgEIhy.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xa4yzgaorpfq\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "La fille du Roi-démon",
+            "overview": "Kelvin et son équipe sont manifestement tombés dans un piège ourdi par le serviteur du Roi-démon Gustave. Quant à savoir en quoi il consiste exactement et dans quel but il a été mis en place, c’est une autre histoire…",
+            "runtime": 24,
+            "airDate": "2022-08-06",
+            "still": "https://image.tmdb.org/t/p/w500/v6UtpF2BiGYPtOv3maNkfg2sJ5a.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/w9hy75uld3ae\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Du riz, des bandits et des héros",
+            "overview": "Sans attendre, Kelvin commence à s’acquitter de sa promesse envers Victor, en faisant découvrir la mer à Sera. Il faut dire aussi qu’il a une brutale envie de riz, et que là où il emmène la fille du Roi-démon, on cultive une plante qui y ressemble assez…",
+            "runtime": 24,
+            "airDate": "2022-08-13",
+            "still": "https://image.tmdb.org/t/p/w500/z6OkAOk0kmLnxfRtWhWK22fcu3S.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m95jgwlwx9xf\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "Duel de héros",
+            "overview": "La grande passion de Kelvin, c’est la baston, mais la manipulation et l’humiliation semblent aussi faire partie de ses péchés mignons. En témoigne le drôle de test qu’il fait passer aux héros de Delamis, pendant lequel il s’amuse à les mener en bateau de bout en bout.",
+            "runtime": 24,
+            "airDate": "2022-08-20",
+            "still": "https://image.tmdb.org/t/p/w500/79BfjUfV36wWLk8gNc39vxd0uyE.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/a0xdq10ku8oj\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "Invocation de déesse et retour à Parze",
+            "overview": "Les exploits de Kelvin ont, comme il s’y attendait d'ailleurs, attiré l’attention du monarque de Traj. Convoqué à la cour, il va obtenir non seulement ce qu’il voulait, mais même ce qu’il ne voulait pas.",
+            "runtime": 24,
+            "airDate": "2022-08-27",
+            "still": "https://image.tmdb.org/t/p/w500/kbuKNVCXsluNznJOtBPNR8188Rk.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hb5vsfa7sy7a\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 9,
+            "title": "Invocation de héros",
+            "overview": "Notre Kelvin est bien songeur, surtout depuis que Melfina est revenue sous une forme humaine. Après l’avoir présentée au reste de la fine équipe, il finit par lui poser la question qui lui brûle les lèvres…",
+            "runtime": 24,
+            "airDate": "2022-09-03",
+            "still": "https://image.tmdb.org/t/p/w500/y4kK9rBiMkEtY3RdNO3zyPh2U5f.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/szvjznnmb2fw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 10,
+            "title": "Une nouvelle famille",
+            "overview": "Ryon a très vite trouvé sa place dans la famille formée par Kelvin et ses familiers, mais notre invocateur n’est pas encore satisfait. Il s'arrange pour que Luka et sa mère montent elles aussi en compétence, au cas où le manoir serait attaqué, ce qui ne tarde pas à se produire…",
+            "runtime": 24,
+            "airDate": "2022-09-10",
+            "still": "https://image.tmdb.org/t/p/w500/5A2kBXwkNwWjUbSVddAGXi3boYq.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/otyqik2egm46\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 11,
+            "title": "Passage au rang S",
+            "overview": "Les rumeurs concernant son passage imminent au rang S ont éveillé la méfiance de Kelvin, et apparemment avec raison. Le voilà envoyé au pays de Gaun sur invitation de son empereur, officiellement pour assurer la défense d’un village, officieusement pour passer le fameux examen.",
+            "runtime": 24,
+            "airDate": "2022-09-17",
+            "still": "https://image.tmdb.org/t/p/w500/erTH8nfzhHh6ym5pcyN3dFzCYyO.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/a971l6staz6j\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 12,
+            "title": "Un autre réincarné",
+            "overview": "L’examen de rang S de Kelvin se poursuit, même s’il y a de fortes chances qu’il l’ait totalement oublié. En effet, il doit affronter un très puissant mage, qui lui réserve bien des surprises.",
+            "runtime": 24,
+            "airDate": "2022-09-24",
+            "still": "https://image.tmdb.org/t/p/w500/spvybqEdZvXrbHc2jCqKDcVnqsZ.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/sihyhjzhq8s6\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      }
+    ],
+    "country": "Japan",
+    "language": "ja",
+    "rating": 7.135,
+    "popularity": 4.9958,
+    "trailer": "",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/srhak0nl876u\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "",
+    "status": "Ended",
+    "homepage": "https://kuronoshokanshi.com",
+    "collection": "",
+    "studios": [
+      "SATELIGHT",
+      "FlyingDog"
+    ],
+    "tmdbId": 157842,
+    "poster": "https://image.tmdb.org/t/p/w500/7Tz42T9L9zjM6u0rqPQicmYQmH6.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/TT1kfBoM5KGS42kXq8Tn4MXOtj.jpg",
+    "overview": "Lorsque Kelvin se réveille, il est dans un endroit inconnu, sans aucun souvenir de sa vie précédente. Il s'avère qu'il s'est réincarné dans un autre monde, mais ses souvenirs ont été échangés contre de puissantes compétences. Devenu invocateur, il part en voyage avec la déesse qui l'a amené dans le nouveau monde, devenue aussi sa toute première \"adepte\"...",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
+  },
+  {
     "title": "The Boys",
     "slug": "the-boys",
     "originalTitle": "The Boys",
@@ -1993,7 +2209,7 @@
     "rating": 7.939,
     "popularity": 8.0539,
     "trailer": "_aIJOdIWFd0",
-    "videoEmbed": "",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/4zyf8fh486wm\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "tagline": "La fin du monde n'est que le début.",
     "status": "Released",
     "homepage": "",
