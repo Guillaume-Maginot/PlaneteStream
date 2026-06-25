@@ -6186,3 +6186,13 @@ section{margin:24px 0 34px}
     min-width:120px !important;
   }
 }
+
+/* Patch Manga rail: keep single manga cards at normal poster size instead of stretching full width */
+#latestMangaGrid.rail{
+  grid-auto-columns:minmax(180px, 180px);
+}
+@media(max-width:620px){
+  #latestMangaGrid.rail{
+    grid-auto-columns:minmax(150px, 150px);
+  }
+}
