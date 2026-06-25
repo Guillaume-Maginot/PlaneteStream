@@ -327,7 +327,7 @@ function renderEpisodeRow(item, seasonNumber, episode, isLogged=false){
 
 function getMediaType(item){
   const value = String(item?.mediaType || item?.media_type || item?.type || '').toLowerCase();
-  if(['tv','serie','series'].includes(value)) return 'tv';
+  if(['tv','serie','series','manga','anime'].includes(value)) return 'tv';
   return 'movie';
 }
 
