@@ -590,6 +590,113 @@
       .saga-content{padding:14px;}
     }
 
+
+    /* === V3.4.4 - Sagas : affiches vedettes + infos compactes === */
+    .sagas-grid{
+      grid-template-columns:repeat(auto-fit,minmax(198px,1fr));
+      gap:16px;
+    }
+
+    .saga-card.saga-poster-card{
+      border-radius:20px;
+      background:
+        radial-gradient(circle at 18% 4%, var(--saga-color-soft), transparent 30%),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)),
+        #060511;
+      box-shadow:0 14px 34px rgba(0,0,0,.34);
+    }
+
+    .saga-card.saga-poster-card:hover{
+      transform:translateY(-4px);
+      box-shadow:
+        0 0 20px var(--saga-color-soft),
+        0 0 30px rgba(255,45,85,.10),
+        0 18px 42px rgba(0,0,0,.46);
+    }
+
+    .saga-poster{
+      border-radius:20px 20px 0 0;
+      aspect-ratio:2 / 3;
+      filter:saturate(1.08) brightness(1.03);
+    }
+
+    .saga-card:hover .saga-poster{
+      transform:scale(1.014);
+      filter:saturate(1.16) brightness(1.06);
+    }
+
+    .saga-poster::after{
+      opacity:.24;
+      background:
+        radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--saga-color) 24%, transparent), transparent 24%),
+        linear-gradient(to bottom, rgba(255,255,255,.035), transparent 28%, rgba(3,4,11,.035));
+    }
+
+    .saga-dust{
+      opacity:.40;
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.36) 0 1px, transparent 3px),
+        radial-gradient(circle at 76% 18%, color-mix(in srgb, var(--saga-color) 54%, white 10%) 0 2px, transparent 4px),
+        radial-gradient(circle at 58% 76%, rgba(255,45,85,.26) 0 1px, transparent 3px),
+        radial-gradient(circle at 38% 54%, color-mix(in srgb, var(--saga-color) 38%, transparent) 0 2px, transparent 5px);
+      filter:drop-shadow(0 0 3px var(--saga-color-soft));
+    }
+
+    .saga-content{
+      padding:13px 14px 15px;
+      min-height:0;
+      background:
+        radial-gradient(circle at 18% 0%, var(--saga-color-soft), transparent 34%),
+        radial-gradient(circle at 92% 88%, color-mix(in srgb, var(--saga-color) 10%, transparent), transparent 32%),
+        linear-gradient(135deg, color-mix(in srgb, var(--saga-color) 10%, transparent), transparent 42%),
+        rgba(6,5,16,.96);
+    }
+
+    .saga-description{
+      min-height:40px;
+      max-width:100%;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      color:#e3dcf4;
+      font-size:12.5px;
+      line-height:1.55;
+    }
+
+    .saga-meta{
+      display:block;
+      margin:10px 0 12px;
+    }
+
+    .saga-meta span{
+      width:100%;
+      min-height:27px;
+      padding:0 10px;
+      justify-content:center;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      border-color:color-mix(in srgb, var(--saga-color) 34%, white 12%);
+      background:rgba(255,255,255,.075);
+      font-size:11px;
+    }
+
+    .saga-link{
+      min-height:36px;
+      padding:0 13px;
+      font-size:11px;
+      border-color:color-mix(in srgb, var(--saga-color) 64%, white 14%);
+      box-shadow:0 0 14px var(--saga-color-soft);
+    }
+
+    @media(max-width:680px){
+      .sagas-grid{grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;}
+      .saga-content{padding:12px;}
+      .saga-description{font-size:12px;min-height:38px;}
+      .saga-meta span{font-size:10.5px;}
+    }
+
   </style>
 </head>
 <body>
@@ -707,7 +814,7 @@
       </a>
       <div class="footer-bottom-line">
         <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
-        <span class="footer-version">Build v3.4.3-sagas</span>
+        <span class="footer-version">Build v3.4.4-sagas</span>
       </div>
     </div>
   </footer>
@@ -915,9 +1022,7 @@
               <div class="saga-content">
                 <p class="saga-description">${escapeHtml(saga.text)}</p>
                 <div class="saga-meta">
-                  <span>${count} ${count > 1 ? "films" : "film"}</span>
-                  <span>${escapeHtml(yearsLabel)}</span>
-                  <span>${escapeHtml(saga.genre)}</span>
+                  <span>${count} ${count > 1 ? "films" : "film"} • ${escapeHtml(yearsLabel)} • ${escapeHtml(saga.genre)}</span>
                 </div>
                 <span class="saga-link">Explorer →</span>
               </div>
