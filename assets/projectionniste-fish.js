@@ -363,7 +363,10 @@
     const type = mediaLabel(item).toLowerCase();
     const haystack = `${title} ${genres.join(' ')} ${director} ${cast} ${overview}`;
     const runtime = getRuntimeMinutes(item);
-
+if (intent.wantsDirector && intent.terms.length) {
+  const hasDirectorMatch = intent.terms.some(term => director.includes(term));
+  if (!hasDirectorMatch) return -999;
+}
     if (intent.requestedType) {
       if (type.toLowerCase().includes(intent.requestedType === 'serie' ? 'série' : intent.requestedType)) score += 12;
       else return -999;
