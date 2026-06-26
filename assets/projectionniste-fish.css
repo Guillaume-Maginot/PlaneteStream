@@ -1,0 +1,377 @@
+/* Projectionniste poisson rouge - V3.4.5 lab integration */
+.ps-fish-widget,
+.ps-fish-widget *,
+.ps-fish-chat,
+.ps-fish-chat * {
+  box-sizing: border-box;
+}
+
+.ps-fish-widget {
+  position: fixed;
+  right: clamp(16px, 3.2vw, 54px);
+  bottom: clamp(72px, 10vh, 112px);
+  width: clamp(118px, 11.5vw, 176px);
+  aspect-ratio: 1 / 1;
+  z-index: 1200;
+  cursor: pointer;
+  transform-origin: 50% 64%;
+  animation: ps-fish-drift 8.5s ease-in-out infinite;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,.50));
+  --fish-facing: -1;
+  --fish-scale: .76;
+}
+
+.ps-fish-widget.is-awake { animation-duration: 6s; }
+.ps-fish-widget.is-thinking { animation-duration: 4.2s; }
+.ps-fish-widget.is-talking,
+.ps-fish-widget.is-happy { animation: ps-fish-talk 1.8s ease-in-out infinite; }
+
+.ps-fish-bowl {
+  position: absolute;
+  inset: 7% 3% 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 20%, rgba(255,255,255,.22), transparent 19%),
+    radial-gradient(circle at 42% 72%, rgba(77,169,255,.16), transparent 55%),
+    linear-gradient(145deg, rgba(255,255,255,.08), rgba(77,169,255,.04));
+  border: 1px solid rgba(153,224,255,.22);
+  box-shadow:
+    inset 9px 12px 26px rgba(255,255,255,.08),
+    inset -18px -22px 42px rgba(10,75,120,.19),
+    0 0 38px rgba(77,169,255,.18);
+  opacity: .78;
+  pointer-events: none;
+}
+
+.ps-bowl-shine {
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255,255,255,.28);
+  filter: blur(.2px);
+  opacity: .35;
+}
+
+.ps-bowl-shine-a { width: 24%; height: 7%; left: 16%; top: 19%; transform: rotate(-42deg); }
+.ps-bowl-shine-b { width: 13%; height: 4%; left: 23%; top: 31%; transform: rotate(-44deg); opacity: .24; }
+
+.ps-bowl-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(117,209,255,.8);
+  box-shadow: 0 0 10px rgba(77,169,255,.8);
+  opacity: .35;
+  animation: ps-particle-orbit 9s linear infinite;
+}
+
+.ps-particle-a { left: 18%; top: 52%; animation-delay: -1.1s; }
+.ps-particle-b { left: 80%; top: 36%; animation-delay: -3.2s; }
+.ps-particle-c { left: 42%; top: 86%; animation-delay: -5.5s; }
+
+.ps-fish-glow {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246,196,109,.28), rgba(77,169,255,.12) 48%, transparent 72%);
+  filter: blur(13px);
+  opacity: .52;
+  animation: ps-glow-breathe 5.4s ease-in-out infinite;
+}
+
+.ps-fish-widget.is-thinking .ps-fish-glow {
+  opacity: .92;
+  background: radial-gradient(circle, rgba(77,169,255,.48), rgba(246,196,109,.17) 48%, transparent 74%);
+}
+
+.ps-fish-sprite {
+  position: absolute;
+  inset: 5%;
+  transform: scaleX(var(--fish-facing)) scale(var(--fish-scale));
+  transform-origin: 50% 58%;
+  transition: transform .45s cubic-bezier(.2,.9,.2,1);
+}
+
+.ps-fish-pose {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(.965) rotate(0deg);
+  transition: opacity .56s ease, transform .56s ease;
+  will-change: opacity, transform;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ps-fish-pose.is-active {
+  opacity: 1;
+  transform: scale(1) rotate(.001deg);
+}
+
+.ps-fish-speech {
+  position: absolute;
+  right: 74%;
+  bottom: 76%;
+  width: min(238px, 72vw);
+  padding: 12px 14px;
+  border: 1px solid rgba(246,196,109,.48);
+  border-radius: 16px 16px 6px 16px;
+  background: rgba(7, 11, 24, .91);
+  backdrop-filter: blur(12px);
+  color: #f7f1e7;
+  font-size: .88rem;
+  line-height: 1.35;
+  box-shadow: 0 18px 44px rgba(0,0,0,.38), 0 0 24px rgba(246,196,109,.08);
+  opacity: 0;
+  transform: translateY(8px) scale(.96);
+  transition: opacity .22s ease, transform .22s ease;
+  pointer-events: none;
+}
+
+.ps-fish-speech::after {
+  content: "";
+  position: absolute;
+  right: 22px;
+  bottom: -10px;
+  width: 18px;
+  height: 18px;
+  border-right: 1px solid rgba(246,196,109,.48);
+  border-bottom: 1px solid rgba(246,196,109,.48);
+  background: rgba(7, 11, 24, .91);
+  transform: rotate(45deg);
+}
+
+.ps-fish-speech strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #f6c46d;
+}
+
+.ps-fish-speech span { display: block; color: rgba(247,241,231,.88); }
+
+.ps-fish-widget:hover .ps-fish-speech,
+.ps-fish-widget:focus-visible .ps-fish-speech,
+.ps-fish-widget.is-intro .ps-fish-speech,
+.ps-fish-widget.is-talking .ps-fish-speech,
+.ps-fish-widget.is-thinking .ps-fish-speech,
+.ps-fish-widget.is-happy .ps-fish-speech {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.ps-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, #fff, rgba(180,230,255,.75) 32%, rgba(77,169,255,.16) 68%, transparent 72%);
+  border: 1px solid rgba(255,255,255,.38);
+  opacity: 0;
+  pointer-events: none;
+  animation: ps-bubble-rise 5.2s ease-in-out infinite;
+}
+
+.ps-bubble-a { width: 14px; height: 14px; left: 71%; top: 1%; animation-delay: .2s; }
+.ps-bubble-b { width: 9px; height: 9px; left: 83%; top: 15%; animation-delay: 1.5s; }
+.ps-bubble-c { width: 7px; height: 7px; left: 66%; top: 20%; animation-delay: 2.4s; }
+.ps-bubble-d { width: 5px; height: 5px; left: 88%; top: 33%; animation-delay: 3.3s; }
+
+.ps-fish-widget.is-thinking .ps-bubble,
+.ps-fish-widget.is-talking .ps-bubble,
+.ps-fish-widget.is-happy .ps-bubble { animation-duration: 3.2s; }
+
+.ps-fish-chat {
+  position: fixed;
+  right: clamp(16px, 3.2vw, 54px);
+  bottom: clamp(232px, 30vh, 314px);
+  width: min(390px, calc(100vw - 32px));
+  max-height: min(560px, calc(100vh - 150px));
+  z-index: 1199;
+  display: grid;
+  grid-template-rows: auto minmax(170px, 1fr) auto auto;
+  border: 1px solid rgba(246,196,109,.36);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(8,13,28,.96), rgba(5,10,22,.90));
+  box-shadow: 0 28px 80px rgba(0,0,0,.52), 0 0 34px rgba(77,169,255,.12), inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(18px) scale(.96);
+  pointer-events: none;
+  transition: opacity .24s ease, transform .24s ease;
+}
+
+.ps-fish-chat.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.ps-fish-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  background: radial-gradient(circle at 10% 0%, rgba(77,169,255,.18), transparent 46%);
+}
+
+.ps-fish-chat-header strong {
+  display: block;
+  color: #f6c46d;
+  letter-spacing: .04em;
+}
+
+.ps-fish-chat-header span {
+  display: block;
+  margin-top: 3px;
+  color: rgba(247,241,231,.62);
+  font-size: .82rem;
+}
+
+.ps-fish-chat-close {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  background: rgba(255,255,255,.045);
+  color: #f7f1e7;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ps-fish-chat-messages {
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+}
+
+.ps-fish-message {
+  max-width: 88%;
+  padding: 11px 13px;
+  border-radius: 16px;
+  line-height: 1.42;
+  animation: ps-message-pop .18s ease both;
+  white-space: pre-wrap;
+}
+
+.ps-fish-message strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .82;
+}
+
+.ps-fish-message p { margin: 0; color: rgba(247,241,231,.88); }
+.ps-fish-message-bot { align-self: flex-start; border: 1px solid rgba(77,169,255,.20); background: rgba(77,169,255,.075); }
+.ps-fish-message-user { align-self: flex-end; border: 1px solid rgba(246,196,109,.22); background: rgba(246,196,109,.095); }
+
+.ps-fish-chat-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: rgba(0,0,0,.14);
+}
+
+.ps-fish-chat-form input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.055);
+  color: #f7f1e7;
+  outline: none;
+}
+
+.ps-fish-chat-form input:focus {
+  border-color: rgba(77,169,255,.62);
+  box-shadow: 0 0 0 3px rgba(77,169,255,.12);
+}
+
+.ps-fish-chat-form button,
+.ps-fish-suggestions button {
+  border: 1px solid rgba(77,169,255,.35);
+  border-radius: 999px;
+  background: rgba(77,169,255,.10);
+  color: #f7f1e7;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.ps-fish-chat-form button { padding: 0 14px; }
+
+.ps-fish-suggestions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 12px 14px;
+}
+
+.ps-fish-suggestions button {
+  padding: 8px 11px;
+  font-size: .78rem;
+  color: rgba(247,241,231,.82);
+}
+
+.ps-fish-suggestions button:hover,
+.ps-fish-chat-form button:hover,
+.ps-fish-chat-close:hover {
+  border-color: rgba(246,196,109,.65);
+  background: rgba(246,196,109,.10);
+}
+
+@keyframes ps-fish-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg); }
+  35% { transform: translate3d(-5px, -8px, 0) rotate(1.1deg); }
+  70% { transform: translate3d(4px, -3px, 0) rotate(-.45deg); }
+}
+
+@keyframes ps-fish-talk {
+  0%, 100% { transform: translate3d(0,0,0) rotate(-.8deg) scale(1); }
+  50% { transform: translate3d(-3px,-6px,0) rotate(1deg) scale(1.022); }
+}
+
+@keyframes ps-glow-breathe {
+  0%, 100% { transform: scale(.94); opacity: .48; }
+  50% { transform: scale(1.08); opacity: .74; }
+}
+
+@keyframes ps-bubble-rise {
+  0% { opacity: 0; transform: translateY(28px) scale(.55); }
+  18% { opacity: .74; }
+  72% { opacity: .42; }
+  100% { opacity: 0; transform: translateY(-48px) scale(1.14); }
+}
+
+@keyframes ps-particle-orbit {
+  0% { transform: translate3d(0,0,0) scale(.7); opacity: .12; }
+  30% { opacity: .55; }
+  60% { transform: translate3d(18px,-15px,0) scale(1); opacity: .28; }
+  100% { transform: translate3d(-4px,-34px,0) scale(.5); opacity: 0; }
+}
+
+@keyframes ps-message-pop {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 980px) {
+  .ps-fish-widget { width: 126px; right: 16px; bottom: 74px; --fish-scale: .74; }
+  .ps-fish-chat { right: 16px; bottom: 214px; max-height: calc(100vh - 132px); }
+}
+
+@media (max-width: 680px) {
+  .ps-fish-widget { width: 104px; right: 10px; bottom: 72px; --fish-scale: .72; }
+  .ps-fish-chat { right: 10px; bottom: 184px; width: calc(100vw - 20px); border-radius: 20px; }
+  .ps-fish-speech { right: 26%; bottom: 96%; width: min(218px, 78vw); }
+}

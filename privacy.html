@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="assets/projectionniste-fish.css?v=3.4.5-fish-local">
 </head>
 <body>
   <header>
@@ -164,5 +165,66 @@
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
+
+
+  <!-- Projectionniste poisson rouge : mascotte interactive, cerveau local -->
+  <section class="ps-fish-chat" id="psFishChat" aria-label="Chat du Projectionniste" aria-hidden="true">
+    <header class="ps-fish-chat-header">
+      <div>
+        <strong>🐠 Le Projectionniste</strong>
+        <span id="psBrainStatus">Cerveau local actif</span>
+      </div>
+      <button class="ps-fish-chat-close" id="psFishChatClose" aria-label="Fermer le chat" type="button">×</button>
+    </header>
+
+    <div class="ps-fish-chat-messages" id="psFishMessages" aria-live="polite">
+      <article class="ps-fish-message ps-fish-message-bot">
+        <strong>🐠 Projectionniste</strong>
+        <p>Bloup ! Je suis en cerveau local pour l’instant. Pose-moi une question simple, le vrai catalogue arrive bientôt dans mon bocal.</p>
+      </article>
+    </div>
+
+    <form class="ps-fish-chat-form" id="psFishForm">
+      <input id="psFishInput" type="text" autocomplete="off" placeholder="Ex : un film pour ce soir..." aria-label="Message pour le Projectionniste">
+      <button type="submit">Envoyer</button>
+    </form>
+
+    <div class="ps-fish-suggestions" aria-label="Suggestions du Projectionniste">
+      <button type="button" data-ps-fish-suggestion="Qui es-tu ?">Qui es-tu ?</button>
+      <button type="button" data-ps-fish-suggestion="Je cherche un film pour enfant">Film enfant</button>
+      <button type="button" data-ps-fish-suggestion="Que peux-tu faire ?">Aide</button>
+    </div>
+  </section>
+
+  <div class="ps-fish-widget" id="psFishWidget" aria-label="Ouvrir le Projectionniste" role="button" tabindex="0" aria-expanded="false" aria-controls="psFishChat">
+    <div class="ps-fish-speech" id="psFishTooltip">
+      <strong>Bloup !</strong>
+      <span>Clique si tu veux parler au Projectionniste.</span>
+    </div>
+
+    <div class="ps-fish-bowl" aria-hidden="true">
+      <div class="ps-bowl-shine ps-bowl-shine-a"></div>
+      <div class="ps-bowl-shine ps-bowl-shine-b"></div>
+      <div class="ps-bowl-particle ps-particle-a"></div>
+      <div class="ps-bowl-particle ps-particle-b"></div>
+      <div class="ps-bowl-particle ps-particle-c"></div>
+    </div>
+
+    <div class="ps-bubble ps-bubble-a"></div>
+    <div class="ps-bubble ps-bubble-b"></div>
+    <div class="ps-bubble ps-bubble-c"></div>
+    <div class="ps-bubble ps-bubble-d"></div>
+
+    <div class="ps-fish-glow"></div>
+
+    <div class="ps-fish-sprite" id="psFishSprite" aria-hidden="true">
+      <img class="ps-fish-pose is-active" src="assets/fish_immobile.png" alt="" data-pose="idle-1">
+      <img class="ps-fish-pose" src="assets/fish_immobile2.png" alt="" data-pose="idle-2">
+      <img class="ps-fish-pose" src="assets/fish_bulle.png" alt="" data-pose="thinking">
+      <img class="ps-fish-pose" src="assets/fish_sourire.png" alt="" data-pose="talking">
+    </div>
+  </div>
+  <script src="assets/projectionniste-fish.js?v=3.4.5-fish-local"></script>
+
 </body>
 </html>
