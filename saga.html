@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="Saga | Planète Stream">
+  <meta property="og:description" content="Explorez une saga film après film sur Planète Stream.">
+  <meta property="og:image" content="https://planetestream.fr/assets/social-card.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Saga | Planète Stream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.8-saga-detail" />
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <style>
+    .saga-detail-page{
+      min-height:100vh;
+      position:relative;
+      overflow:hidden;
+      background:#03040b;
+    }
+
+    .saga-detail-bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background-size:cover;
+      background-position:center;
+      transform:scale(1.02);
+      filter:saturate(.9) brightness(.72);
+    }
+
+    .saga-detail-bg::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg,rgba(3,4,11,.98) 0%,rgba(3,4,11,.82) 38%,rgba(3,4,11,.42) 70%,rgba(3,4,11,.72) 100%),
+        linear-gradient(180deg,rgba(3,4,11,.68) 0%,rgba(3,4,11,.78) 45%,#03040b 100%),
+        radial-gradient(circle at 72% 28%,var(--saga-soft),transparent 34%);
+    }
+
+    .saga-detail-bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:.42;
+      background-image:
+        radial-gradient(circle at 12% 20%,rgba(255,255,255,.9) 0 1px,transparent 2px),
+        radial-gradient(circle at 54% 16%,rgba(195,77,255,.8) 0 1px,transparent 2px),
+        radial-gradient(circle at 84% 62%,rgba(255,45,85,.65) 0 1px,transparent 2px);
+      background-size:260px 260px,360px 360px,430px 430px;
+      animation:sagaStars 44s linear infinite;
+    }
+
+    .saga-detail-main{
+      padding:34px 0 72px;
+    }
+
+    .saga-breadcrumb{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:10px;
+      color:#d5cdee;
+      font-size:13px;
+      font-weight:800;
+      margin:18px 0 42px;
+      opacity:.86;
+    }
+
+    .saga-breadcrumb a{color:#fff;text-decoration:none}
+    .saga-breadcrumb a:hover{color:var(--saga-color);text-shadow:0 0 18px var(--saga-soft)}
+    .saga-breadcrumb span{opacity:.55}
+
+    .saga-hero-detail{
+      max-width:980px;
+      padding:38px 0 34px;
+    }
+
+    .saga-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--saga-color);
+      font-size:13px;
+      font-weight:950;
+      text-shadow:0 0 22px var(--saga-soft);
+    }
+
+    .saga-detail-title{
+      margin:18px 0 18px;
+      font-size:clamp(58px,11vw,128px);
+      line-height:.82;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-weight:950;
+      color:#fff;
+      text-shadow:0 12px 38px rgba(0,0,0,.72),0 0 32px var(--saga-soft);
+    }
+
+    .saga-detail-lead{
+      max-width:760px;
+      color:#e7e1f3;
+      font-size:17px;
+      line-height:1.75;
+      margin:0 0 22px;
+    }
+
+    .saga-stats-row{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      max-width:920px;
+      overflow:hidden;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.035));
+      backdrop-filter:blur(16px);
+      box-shadow:0 18px 44px rgba(0,0,0,.38),0 0 36px var(--saga-soft);
+    }
+
+    .saga-stat{
+      padding:16px 18px;
+      border-right:1px solid rgba(255,255,255,.08);
+      min-width:0;
+    }
+    .saga-stat:last-child{border-right:0}
+    .saga-stat strong{
+      display:block;
+      color:#fff;
+      font-size:clamp(18px,2vw,24px);
+      line-height:1.05;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .saga-stat span{
+      display:block;
+      margin-top:6px;
+      color:#c9c2de;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .saga-section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:18px;
+      margin:42px 0 20px;
+    }
+
+    .saga-section-title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin:0;
+      color:#fff;
+      font-size:22px;
+      text-transform:uppercase;
+      letter-spacing:.02em;
+    }
+    .saga-section-title::before{
+      content:"";
+      width:4px;
+      height:26px;
+      border-radius:999px;
+      background:var(--saga-color);
+      box-shadow:0 0 18px var(--saga-soft);
+    }
+    .saga-section-head p{
+      margin:0;
+      color:#c9c1db;
+      font-size:14px;
+    }
+
+    .saga-timeline{
+      position:relative;
+      display:grid;
+      gap:14px;
+      max-width:1100px;
+      margin-left:38px;
+    }
+
+    .saga-timeline::before{
+      content:"";
+      position:absolute;
+      left:-24px;
+      top:26px;
+      bottom:26px;
+      width:2px;
+      background:linear-gradient(180deg,transparent,var(--saga-color),transparent);
+      box-shadow:0 0 18px var(--saga-soft);
+      opacity:.72;
+    }
+
+    .saga-movie-card{
+      position:relative;
+      display:grid;
+      grid-template-columns:42px 210px minmax(0,1fr) 145px;
+      align-items:center;
+      gap:18px;
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(135deg,rgba(255,255,255,.085),rgba(255,255,255,.035));
+      backdrop-filter:blur(14px);
+      box-shadow:0 16px 40px rgba(0,0,0,.32);
+      transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+      overflow:hidden;
+    }
+
+    .saga-movie-card::before{
+      content:"";
+      position:absolute;
+      left:-64px;
+      top:50%;
+      width:13px;
+      height:13px;
+      border-radius:50%;
+      border:3px solid var(--saga-color);
+      background:#070612;
+      box-shadow:0 0 0 6px rgba(255,255,255,.05),0 0 22px var(--saga-soft);
+      transform:translateY(-50%);
+    }
+
+    .saga-movie-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 85% 50%,var(--saga-soft),transparent 34%);
+      opacity:0;
+      pointer-events:none;
+      transition:.25s ease;
+    }
+
+    .saga-movie-card:hover{
+      transform:translateY(-3px);
+      border-color:color-mix(in srgb,var(--saga-color) 55%,white 12%);
+      box-shadow:0 0 26px var(--saga-soft),0 20px 50px rgba(0,0,0,.42);
+    }
+    .saga-movie-card:hover::after{opacity:.65}
+
+    .saga-movie-number{
+      position:relative;
+      z-index:2;
+      color:var(--saga-color);
+      font-size:30px;
+      font-weight:950;
+      text-align:center;
+      text-shadow:0 0 18px var(--saga-soft);
+    }
+
+    .saga-movie-poster{
+      position:relative;
+      z-index:2;
+      width:100%;
+      aspect-ratio:16/9;
+      border-radius:12px;
+      background:#080714 center/cover no-repeat;
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      box-shadow:0 12px 28px rgba(0,0,0,.45);
+    }
+
+    .saga-movie-poster::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top,rgba(0,0,0,.42),transparent 54%);
+    }
+
+    .saga-movie-info{
+      position:relative;
+      z-index:2;
+      min-width:0;
+    }
+    .saga-movie-info h2{
+      margin:0 0 8px;
+      color:#fff;
+      font-size:22px;
+      line-height:1.1;
+      letter-spacing:-.02em;
+    }
+    .saga-movie-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0 0 10px;
+    }
+    .saga-movie-badges span{
+      display:inline-flex;
+      align-items:center;
+      min-height:26px;
+      padding:0 9px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      color:#e7ddff;
+      font-size:12px;
+      font-weight:900;
+    }
+    .saga-movie-badges span:first-child{
+      color:var(--saga-color);
+      border-color:color-mix(in srgb,var(--saga-color) 44%,white 10%);
+      background:var(--saga-soft);
+    }
+    .saga-movie-overview{
+      max-width:680px;
+      margin:0;
+      color:#cfc8de;
+      font-size:13px;
+      line-height:1.55;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    .saga-movie-actions{
+      position:relative;
+      z-index:2;
+      display:grid;
+      gap:10px;
+    }
+    .saga-movie-actions a{
+      min-height:44px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:11px;
+      font-size:13px;
+      font-weight:950;
+      text-decoration:none;
+      transition:.22s ease;
+    }
+    .saga-watch-btn{
+      color:#fff;
+      background:linear-gradient(135deg,var(--purple),#7d22ff 60%,var(--red-dark));
+      box-shadow:0 0 18px rgba(139,44,255,.30);
+    }
+    .saga-detail-btn{
+      color:#eae4f7;
+      border:1px solid color-mix(in srgb,var(--saga-color) 42%,white 10%);
+      background:rgba(255,255,255,.055);
+    }
+    .saga-movie-actions a:hover{
+      transform:translateY(-2px);
+      box-shadow:0 0 22px var(--saga-soft);
+    }
+
+    .saga-empty-detail{
+      padding:28px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      color:#d8d1e8;
+      line-height:1.7;
+    }
+
+    @keyframes sagaStars{
+      from{background-position:0 0,0 0,0 0}
+      to{background-position:260px 260px,-360px 360px,430px -430px}
+    }
+
+    @media(max-width:1000px){
+      .saga-stats-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .saga-stat:nth-child(2){border-right:0}
+      .saga-stat:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.08)}
+      .saga-movie-card{grid-template-columns:38px 160px minmax(0,1fr);}
+      .saga-movie-actions{grid-column:2 / -1;grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+
+    @media(max-width:700px){
+      .saga-detail-main{padding-top:22px}
+      .saga-detail-title{font-size:clamp(44px,15vw,76px);letter-spacing:.12em}
+      .saga-hero-detail{padding-top:20px}
+      .saga-stats-row{grid-template-columns:1fr}
+      .saga-stat{border-right:0!important;border-bottom:1px solid rgba(255,255,255,.08)}
+      .saga-stat:last-child{border-bottom:0}
+      .saga-timeline{margin-left:0}
+      .saga-timeline::before{display:none}
+      .saga-movie-card{grid-template-columns:34px minmax(0,1fr);gap:12px}
+      .saga-movie-card::before{display:none}
+      .saga-movie-poster{grid-column:1 / -1;aspect-ratio:16/9;order:-1}
+      .saga-movie-info{grid-column:1 / -1}
+      .saga-movie-number{text-align:left;font-size:24px}
+      .saga-movie-actions{grid-column:1 / -1;grid-template-columns:1fr}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .saga-detail-bg::after{animation:none!important}
+      .saga-movie-card,.saga-movie-actions a{transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a href="index.html">Accueil</a>
+        <a href="index.html?filter=film#catalogue" data-nav-filter="film">Films</a>
+        <a href="index.html?filter=serie#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="index.html?filter=manga#catalogue" data-nav-filter="manga">Mangas</a>
+        <a class="active sagas-nav-link" href="sagas.html">Sagas</a>
+        <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
+          <span class="discord-icon-wrap" aria-hidden="true">
+            <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
+            <img class="discord-icon discord-icon-violet" src="assets/icons/discord_violet.png" alt="" />
+          </span>
+          <span>Discord</span>
+        </a>
+      </nav>
+      <div class="nav-actions">
+        <a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a>
+      </div>
+      <button class="hamb">☰</button>
+    </div>
+  </header>
+
+  <main id="sagaDetailPage" class="saga-detail-page" style="--saga-color:#c34dff;--saga-soft:rgba(195,77,255,.22)">
+    <div class="saga-detail-bg" id="sagaDetailBg" aria-hidden="true"></div>
+    <div class="container saga-detail-main">
+      <nav class="saga-breadcrumb" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a><span>›</span><a href="sagas.html">Sagas</a><span>›</span><strong id="sagaCrumb">Chargement</strong>
+      </nav>
+      <section class="saga-hero-detail" aria-labelledby="sagaTitle">
+        <p class="saga-kicker">Bibliothèque cinématographique</p>
+        <h1 class="saga-detail-title" id="sagaTitle">Saga</h1>
+        <p class="saga-detail-lead" id="sagaLead">Chargement de l'univers...</p>
+        <div class="saga-stats-row" aria-label="Résumé de la saga">
+          <div class="saga-stat"><strong id="sagaFilmCount">0</strong><span>Films</span></div>
+          <div class="saga-stat"><strong id="sagaRuntime">—</strong><span>Durée cumulée</span></div>
+          <div class="saga-stat"><strong id="sagaYears">—</strong><span>Années</span></div>
+          <div class="saga-stat"><strong id="sagaGenre">—</strong><span>Genre principal</span></div>
+        </div>
+      </section>
+      <section aria-labelledby="sagaMoviesTitle">
+        <div class="saga-section-head">
+          <div>
+            <h2 class="saga-section-title" id="sagaMoviesTitle">Les films</h2>
+            <p>Ordre chronologique du catalogue. Chaque affiche mène à sa projection ou à sa fiche.</p>
+          </div>
+        </div>
+        <div class="saga-timeline" id="sagaTimeline"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer footer-redesign" aria-label="Pied de page Planète Stream">
+    <div class="container footer-shell">
+      <section class="footer-brand-block" aria-label="Présentation">
+        <a class="logo footer-logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+        <p class="footer-tagline">Chaque œuvre a une histoire. Chaque spectateur aussi.</p>
+        <p class="footer-description">Découvrez, notez et partagez les films, séries et mangas qui méritent d’être vus.</p>
+        <p class="footer-meta">© 2026 Planète Stream · v3.4</p>
+      </section>
+      <nav class="footer-links-grid" aria-label="Navigation secondaire">
+        <section class="footer-col">
+          <h4>Explorer</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="index.html?filter=film#catalogue" data-footer-filter="film">Films</a></li>
+            <li><a href="index.html?filter=serie#catalogue" data-footer-filter="serie">Séries</a></li>
+            <li><a href="index.html?filter=manga#catalogue" data-footer-filter="manga">Mangas</a></li>
+            <li><a href="sagas.html">Sagas</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Communauté</h4>
+          <ul>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le Discord</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Suggestions de titres</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Retours et signalements</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Actualités du projet</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Planète Stream</h4>
+          <ul>
+            <li><a href="privacy.html">Confidentialité / RGPD</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>Notes des spectateurs</li>
+            <li>Critiques évolutives</li>
+            <li>Découvertes communautaires</li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
+      <a class="footer-studio-signature" href="https://studio.moogwai-attitude.com" target="_blank" rel="noopener noreferrer" aria-label="WebDesign by Moogwai Attitude Studio">
+        <img src="assets/logo-ma.png" alt="WebDesign by Moogwai Attitude Studio">
+      </a>
+      <div class="footer-bottom-line">
+        <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
+        <span class="footer-version">Build v3.4.8</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/auth.js?v=3.0.4-architecte"></script>
+  <script>
+    const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w1280";
+    const POSTER_BASE = "https://image.tmdb.org/t/p/w500";
+    const CATALOG_PATHS = ["data/catalogue.json","./data/catalogue.json"];
+
+    const SAGA_PROFILES = [
+      { match:["matrix"], title:"Matrix", key:"matrix", color:"#23ff7a", genre:"Science-Fiction", lead:"La réalité n'est qu'une porte. Encore faut-il l'ouvrir." },
+      { match:["seigneur des anneaux","lord of the rings"], title:"Le Seigneur des Anneaux", key:"le-seigneur-des-anneaux", color:"#ffd66b", genre:"Fantasy", lead:"Un anneau, des royaumes, et le poids du destin." },
+      { match:["avatar"], title:"Avatar", key:"avatar", color:"#26c8ff", genre:"Science-Fiction", lead:"Deux mondes. Une frontière qui finit par céder." },
+      { match:["john wick"], title:"John Wick", key:"john-wick", color:"#ff355d", genre:"Action", lead:"Une légende ne prend jamais vraiment sa retraite." },
+      { match:["alien","prometheus"], title:"Alien", key:"alien", color:"#7dffca", genre:"Science-Fiction", lead:"Dans le silence spatial, la peur a trouvé un visage." },
+      { match:["harry potter"], title:"Harry Potter", key:"harry-potter", color:"#c34dff", genre:"Fantasy", lead:"Une école, une cicatrice, et toute une magie à défendre." },
+      { match:["star wars"], title:"Star Wars", key:"star-wars", color:"#4f8cff", genre:"Science-Fiction", lead:"La galaxie tremble quand la lumière affronte l'ombre." },
+      { match:["jurassic"], title:"Jurassic Park", key:"jurassic-park", color:"#70e344", genre:"Aventure", lead:"Quand le passé reprend vie, il ne demande pas la permission." },
+      { match:["mission impossible","mission : impossible"], title:"Mission Impossible", key:"mission-impossible", color:"#ff9b2f", genre:"Action", lead:"Chaque mission commence impossible. C'est le principe." },
+      { match:["batman","dark knight"], title:"Batman", key:"batman", color:"#ffd66b", genre:"Action", lead:"Dans la nuit, une ville apprend à craindre son protecteur." }
+    ];
+
+    function normalize(str){
+      return String(str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[:’'`´.!,()?\[\]{}]/g," ").replace(/\s+/g," ").trim();
+    }
+    function slugify(str){return normalize(str).replace(/&/g,"et").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");}
+    function escapeHtml(str){return String(str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+    function hexToRgba(hex, alpha){
+      const safe = String(hex || "#c34dff").replace("#","");
+      const full = safe.length === 3 ? safe.split("").map(c => c + c).join("") : safe;
+      const num = parseInt(full,16);
+      return `rgba(${(num >> 16) & 255},${(num >> 8) & 255},${num & 255},${alpha})`;
+    }
+    function getTitle(item){return item.title || item.name || item.originalTitle || item.original_title || "Film sans titre";}
+    function getYear(item){
+      const value = item.year || item.releaseDate || item.release_date || item.date || "";
+      const match = String(value).match(/\d{4}/);
+      return match ? Number(match[0]) : null;
+    }
+    function getRuntimeMinutes(item){
+      const value = item.runtime ?? item.duration ?? item.duree ?? item.runtimeMinutes ?? 0;
+      if(typeof value === "number" && Number.isFinite(value)) return Math.max(0, Math.round(value));
+      const text = String(value || "").toLowerCase().trim();
+      const hourMatch = text.match(/(\d+)\s*h(?:\s*(\d+))?/);
+      if(hourMatch) return Number(hourMatch[1]) * 60 + Number(hourMatch[2] || 0);
+      const minMatch = text.match(/(\d+)\s*(?:min|mn|minutes?)/);
+      if(minMatch) return Number(minMatch[1]);
+      return /^\d+$/.test(text) ? Number(text) : 0;
+    }
+    function formatRuntime(minutes){
+      const total = Math.max(0, Math.round(minutes || 0));
+      if(!total) return "Durée à compléter";
+      const h = Math.floor(total / 60);
+      const m = total % 60;
+      if(h && m) return `${h} h ${String(m).padStart(2,"0")}`;
+      if(h) return `${h} h`;
+      return `${m} min`;
+    }
+    function getGenres(item){
+      if(Array.isArray(item.genres)) return item.genres.map(g => typeof g === "string" ? g : g.name).filter(Boolean);
+      if(typeof item.genre === "string") return item.genre.split(/[,&/•]+/).map(g => g.trim()).filter(Boolean);
+      return [];
+    }
+    function getPoster(item){
+      const raw = item.poster || item.posterUrl || item.poster_path || item.image || item.cover || "";
+      if(!raw) return "";
+      if(String(raw).startsWith("http")) return raw;
+      if(String(raw).startsWith("/")) return POSTER_BASE + raw;
+      return raw;
+    }
+    function getBackdrop(item){
+      const raw = item.backdrop || item.backdropUrl || item.backdrop_path || item.background || "";
+      if(!raw) return "";
+      if(String(raw).startsWith("http")) return raw;
+      if(String(raw).startsWith("/")) return TMDB_IMAGE_BASE + raw;
+      return raw;
+    }
+    function getCollectionName(item){
+      const direct = item.collection || item.collectionName || item.saga || item.franchise || item.universe;
+      if(typeof direct === "string" && direct.trim()) return direct.trim();
+      if(direct && typeof direct === "object" && direct.name) return direct.name;
+      const tmdbCollection = item.belongs_to_collection || item.belongsToCollection;
+      if(tmdbCollection && tmdbCollection.name) return tmdbCollection.name;
+      return "";
+    }
+    function getProfileForItem(item){
+      const haystack = normalize(`${getCollectionName(item)} ${getTitle(item)} ${item.originalTitle || ""}`);
+      return SAGA_PROFILES.find(profile => profile.match.some(term => haystack.includes(normalize(term))));
+    }
+    function getProfileFromQuery(value){
+      const normalized = slugify(value || "alien");
+      return SAGA_PROFILES.find(profile => profile.key === normalized || slugify(profile.title) === normalized || profile.match.some(term => slugify(term) === normalized)) || SAGA_PROFILES.find(p => p.key === "alien");
+    }
+    async function loadCatalog(){
+      for(const path of CATALOG_PATHS){
+        try{
+          const response = await fetch(path,{cache:"no-store"});
+          if(!response.ok) continue;
+          const data = await response.json();
+          if(Array.isArray(data)) return data;
+          if(Array.isArray(data.items)) return data.items;
+          if(Array.isArray(data.catalogue)) return data.catalogue;
+          if(Array.isArray(data.movies)) return data.movies;
+        }catch(error){}
+      }
+      return [];
+    }
+    function getDetailUrl(item){return `detail.html?slug=${encodeURIComponent(item.slug || slugify(getTitle(item)))}`;}
+    function getWatchUrl(item){return `watch.html?slug=${encodeURIComponent(item.slug || slugify(getTitle(item)))}`;}
+
+    function buildSaga(items, profile){
+      const movies = items.filter(item => {
+        const type = normalize(item.type || item.category || item.kind || "");
+        if(type.includes("serie") || type.includes("manga")) return false;
+        const itemProfile = getProfileForItem(item);
+        return itemProfile && itemProfile.key === profile.key;
+      }).sort((a,b) => (getYear(a) || 9999) - (getYear(b) || 9999));
+
+      const years = movies.map(getYear).filter(Boolean);
+      const totalRuntime = movies.reduce((sum,item) => sum + getRuntimeMinutes(item),0);
+      const primaryGenre = profile.genre || getGenres(movies[0] || {})[0] || "Saga";
+      const backdropMovie = [...movies].reverse().find(getBackdrop) || movies.find(getBackdrop) || {};
+
+      return {
+        ...profile,
+        movies,
+        totalRuntime,
+        startYear:years.length ? Math.min(...years) : null,
+        endYear:years.length ? Math.max(...years) : null,
+        genre:primaryGenre,
+        backdrop:getBackdrop(backdropMovie)
+      };
+    }
+
+    function renderSaga(saga){
+      const root = document.getElementById("sagaDetailPage");
+      root.style.setProperty("--saga-color",saga.color);
+      root.style.setProperty("--saga-soft",hexToRgba(saga.color,.22));
+      document.getElementById("sagaDetailBg").style.backgroundImage = saga.backdrop ? `url('${saga.backdrop.replace(/'/g,"%27")}')` : "linear-gradient(135deg,#12051d,#03040b)";
+      document.getElementById("sagaTitle").textContent = saga.title;
+      document.getElementById("sagaCrumb").textContent = saga.title;
+      document.getElementById("sagaLead").textContent = saga.lead;
+      document.getElementById("sagaFilmCount").textContent = String(saga.movies.length || 0);
+      document.getElementById("sagaRuntime").textContent = formatRuntime(saga.totalRuntime);
+      document.getElementById("sagaYears").textContent = saga.startYear && saga.endYear ? (saga.startYear === saga.endYear ? saga.startYear : `${saga.startYear} - ${saga.endYear}`) : "—";
+      document.getElementById("sagaGenre").textContent = saga.genre;
+      document.title = `${saga.title} | Planète Stream`;
+
+      const timeline = document.getElementById("sagaTimeline");
+      if(!saga.movies.length){
+        timeline.innerHTML = `<div class="saga-empty-detail">Cette saga n'est pas encore présente dans le catalogue. La base orbitale prépare les modules.</div>`;
+        return;
+      }
+
+      timeline.innerHTML = saga.movies.map((movie,index) => {
+        const poster = getPoster(movie);
+        const posterStyle = poster ? `background-image:url('${poster.replace(/'/g,"%27")}')` : "background-image:linear-gradient(135deg,#151226,#05060f)";
+        const year = getYear(movie) || "—";
+        const runtime = formatRuntime(getRuntimeMinutes(movie));
+        const rating = movie.rating ? `⭐ ${Number(movie.rating).toFixed(1)}/10` : "";
+        const overview = movie.overview || "Synopsis à compléter.";
+        const genres = getGenres(movie).slice(0,2);
+        return `
+          <article class="saga-movie-card">
+            <div class="saga-movie-number">${index + 1}</div>
+            <a class="saga-movie-poster" href="${getDetailUrl(movie)}" style="${posterStyle}" aria-label="Ouvrir la fiche ${escapeHtml(getTitle(movie))}"></a>
+            <div class="saga-movie-info">
+              <h2>${escapeHtml(getTitle(movie))}</h2>
+              <div class="saga-movie-badges">
+                <span>${escapeHtml(String(year))}</span>
+                <span>${escapeHtml(runtime)}</span>
+                ${genres.map(g => `<span>${escapeHtml(g)}</span>`).join("")}
+                ${rating ? `<span>${escapeHtml(rating)}</span>` : ""}
+              </div>
+              <p class="saga-movie-overview">${escapeHtml(overview)}</p>
+            </div>
+            <div class="saga-movie-actions">
+              <a class="saga-watch-btn" href="${getWatchUrl(movie)}">▶ Lecture</a>
+              <a class="saga-detail-btn" href="${getDetailUrl(movie)}">ⓘ Fiche</a>
+            </div>
+          </article>`;
+      }).join("");
+    }
+
+    (async function initSagaDetail(){
+      const params = new URLSearchParams(window.location.search);
+      const requested = params.get("saga") || params.get("id") || "alien";
+      const profile = getProfileFromQuery(requested);
+      const catalogue = await loadCatalog();
+      const saga = buildSaga(catalogue, profile);
+      renderSaga(saga);
+    })();
+  </script>
+</body>
+</html>
