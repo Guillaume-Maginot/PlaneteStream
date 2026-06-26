@@ -6611,3 +6611,97 @@ section{margin:24px 0 34px}
     width:calc(100% - 24px);
   }
 }
+/* ==========================================
+   BANDEAU SAGAS - Particules cosmiques
+   ========================================== */
+
+.sagas-banner{
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+}
+
+.sagas-banner::before{
+
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+
+    background:
+
+        radial-gradient(circle at 12% 22%, rgba(255,255,255,.90) 0 3px, transparent 5px),
+        radial-gradient(circle at 82% 30%, rgba(255,45,85,.28) 0 4px, transparent 7px),
+        radial-gradient(circle at 65% 72%, rgba(139,44,255,.85) 0 4px, transparent 7px),
+        radial-gradient(circle at 34% 82%, rgba(255,45,85,.20) 0 5px, transparent 8px),
+        radial-gradient(circle at 92% 60%, rgba(195,77,255,.90) 0 4px, transparent 7px),
+        radial-gradient(circle at 22% 58%, rgba(255,255,255,.22) 0 2px, transparent 5px),
+        radial-gradient(circle at 56% 18%, rgba(255,45,85,.70) 0 3px, transparent 6px),
+        radial-gradient(circle at 75% 84%, rgba(195,77,255,.70) 0 3px, transparent 6px);
+
+    background-size:
+        240px 240px,
+        320px 320px,
+        260px 260px,
+        360px 360px,
+        420px 420px,
+        280px 280px,
+        340px 340px,
+        380px 380px;
+
+    opacity:.28;
+
+    filter:
+        drop-shadow(0 0 2px rgba(255,45,85,.20))
+        drop-shadow(0 0 3px rgba(139,44,255,.25));
+
+    animation:sagasParticles 14s linear infinite;
+}
+
+.sagas-banner::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+
+    background:
+        radial-gradient(circle at center,
+        rgba(255,45,85,.10),
+        transparent 70%);
+
+    mix-blend-mode:screen;
+}
+
+@keyframes sagasParticles{
+
+    from{
+
+        background-position:
+            0 0,
+            0 0,
+            0 0,
+            0 0,
+            0 0,
+            0 0,
+            0 0,
+            0 0;
+
+    }
+
+    to{
+
+        background-position:
+            260px 80px,
+            -340px 120px,
+            180px -220px,
+            -240px 180px,
+            120px -160px,
+            180px 220px,
+            -220px 60px,
+            100px -200px;
+
+    }
+
+}
