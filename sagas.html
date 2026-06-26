@@ -824,64 +824,75 @@
     }
 
 
-    /* === V3.4.7 - Sagas : infos sur 2 lignes + durée cumulée === */
+    /* === V3.4.8 - Sagas : infos minimalistes, sans capsules === */
     .saga-content{
-      min-height:104px;
-      padding:13px 14px 15px;
+      min-height:106px;
+      padding:15px 16px 17px;
+      justify-content:center;
     }
 
     .saga-meta{
       width:100%;
-      display:grid;
-      gap:7px;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:6px;
     }
 
     .saga-years,
+    .saga-genre,
     .saga-stats-line{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:28px;
-      padding:0 10px;
-      border-radius:999px;
-      border:1px solid color-mix(in srgb, var(--saga-color) 34%, white 12%);
-      background:rgba(255,255,255,.075);
-      color:#f7f0ff;
-      font-size:11px;
-      font-weight:950;
-      line-height:1;
-      text-align:center;
-      white-space:nowrap;
-      box-shadow:inset 0 0 12px color-mix(in srgb, var(--saga-color) 11%, transparent);
+      display:block;
+      padding:0;
+      min-height:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
+      text-align:left;
+      white-space:normal;
+      line-height:1.35;
     }
 
     .saga-years{
+      color:#fff;
+      font-size:13px;
+      font-weight:950;
       letter-spacing:.01em;
+      text-shadow:0 0 12px var(--saga-color-soft);
+    }
+
+    .saga-genre{
+      color:rgba(255,255,255,.70);
+      font-size:12px;
+      font-weight:850;
     }
 
     .saga-stats-line{
+      display:flex;
+      align-items:center;
       gap:7px;
-      min-height:30px;
-      background:
-        radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--saga-color) 18%, transparent), transparent 55%),
-        rgba(255,255,255,.06);
+      color:rgba(255,255,255,.92);
+      font-size:12px;
+      font-weight:950;
     }
 
     .saga-stats-line .saga-dot{
-      opacity:.62;
+      opacity:.38;
       font-size:10px;
       transform:translateY(-.5px);
     }
 
     .saga-runtime{
-      color:#fff;
-      text-shadow:0 0 12px var(--saga-color-soft);
+      color:rgba(255,255,255,.92);
+      text-shadow:none;
     }
 
     @media(max-width:680px){
-      .saga-content{min-height:96px;}
-      .saga-years,
-      .saga-stats-line{font-size:10.5px;}
+      .saga-content{min-height:98px;padding:13px 14px 15px;}
+      .saga-years{font-size:12.5px;}
+      .saga-genre,.saga-stats-line{font-size:11.5px;}
     }
 
   </style>
@@ -1244,12 +1255,10 @@
               <div class="saga-content">
                 <div class="saga-meta">
                   <span class="saga-years">${escapeHtml(yearsLabel)}</span>
+                  <span class="saga-genre">${escapeHtml(saga.genre)}</span>
                   <span class="saga-stats-line">
-                    ${escapeHtml(saga.genre)}
-                    <i class="saga-dot" aria-hidden="true">•</i>
-                    ${count} ${count > 1 ? "films" : "film"}
-                    <i class="saga-dot" aria-hidden="true">•</i>
-                    <span class="saga-runtime">${escapeHtml(runtimeLabel)}</span>
+                    <span>${count} ${count > 1 ? "films" : "film"}</span>
+                    ${count > 1 && runtimeLabel ? `<i class="saga-dot" aria-hidden="true">•</i><span class="saga-runtime">${escapeHtml(runtimeLabel)}</span>` : ""}
                   </span>
                 </div>
               </div>
