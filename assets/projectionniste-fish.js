@@ -425,6 +425,16 @@ return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsS
     const intent = detectIntent(rawMessage);
     const results = pickResults(catalogue, intent);
 
+let intro = "J'ai trouvé ça dans le catalogue Planete Stream :";
+
+if (results.length === 1) {
+    intro = "J'ai trouvé une excellente correspondance :";
+} else if (results.length === 2) {
+    intro = "J'ai trouvé deux très bonnes pistes :";
+} else if (results.length <= 5) {
+    intro = "Voici les films qui correspondent le mieux :";
+}
+
     if (!catalogue.length) {
       return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
     }
@@ -436,16 +446,7 @@ return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsS
       return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, une durée ou un titre plus précis.';
     }
 
-    const intro = intent.wantsRandom
-      ? 'J’ai secoué le bocal et voilà ce qui remonte du catalogue :'
-      : intent.wantsBest
-        ? 'Voici les meilleures pistes que je trouve dans le catalogue :'
-        : 'J’ai trouvé ça dans le catalogue Planete Stream :';
-
-    return `${intro}\n\n${results.map(itemLine).join('\n')}`;
-  }
-
-  async function localBrain(rawMessage) {
+    async function localBrain(rawMessage) {
     const message = normalize(rawMessage.trim());
 
     if (!message) return 'Bloup ? Même moi j’ai besoin d’au moins une bulle d’information.';
