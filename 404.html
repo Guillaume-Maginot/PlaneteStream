@@ -11,25 +11,17 @@
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <style>
     .lost-page{
-      min-height:calc(100vh - 86px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:56px 18px 72px;
-      position:relative;
-      overflow:hidden;
-    }
+    min-height:calc(100vh - 86px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
 
-    .lost-page::before{
-      content:"";
-      position:absolute;
-      inset:-20%;
-      background:
-        radial-gradient(circle at 50% 28%, rgba(170,55,255,.22), transparent 34%),
-        radial-gradient(circle at 78% 62%, rgba(255,47,146,.12), transparent 30%),
-        radial-gradient(circle at 22% 72%, rgba(119,44,255,.12), transparent 28%);
-      pointer-events:none;
-    }
+    background:
+        linear-gradient(rgba(8,5,18,.35), rgba(8,5,18,.55)),
+        url("assets/wip.png") center center / cover no-repeat;
+}
 
     .lost-card{
       width:min(940px,100%);
@@ -232,32 +224,24 @@
   </header>
 
   <main class="lost-page">
-    <section class="lost-card" aria-labelledby="lost-title">
-      <p class="lost-code">404</p>
-      <h1 class="lost-title" id="lost-title">Perdu dans l’orbite</h1>
-      <p class="lost-text">
-        Le poisson rouge a cherché partout dans son bocal spatial,<br>
-        mais cette page <strong>n’existe pas</strong>... ou plus.
-      </p>
+    <section class="lost-card">
 
-      <div class="lost-fish-wrap" aria-hidden="true">
-        <img src="assets/poisson.png" alt="" class="lost-fish">
-        <div class="lost-bubbles">
-          <span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span>
-        </div>
-      </div>
+    <h1 class="lost-title">
+        Base orbitale en construction
+    </h1>
 
-      <div class="lost-actions">
-        <a class="lost-btn primary" href="index.html">⌂ Retour à l’accueil</a>
-        <a class="lost-btn" href="index.html#catalogue">Explorer le catalogue</a>
-      </div>
+    <p class="lost-text">
+        Cette destination ouvrira prochainement.
+        Nos équipes assemblent actuellement un nouvel univers.
+    </p>
 
-      <p class="lost-note">
-        Pas de panique, ça arrive même aux meilleurs explorateurs orbitaux.
-        <a href="contact.html">Nous contacter</a>
-      </p>
-    </section>
+    <div class="lost-actions">
+        <a class="lost-btn primary" href="index.html">
+            ⌂ Retour à l'accueil
+        </a>
+    </div>
+
+</section>
   </main>
 </body>
 </html>
