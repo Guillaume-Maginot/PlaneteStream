@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.4.8-saga-detail" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.9-saga-poster-bg" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <style>
     .saga-detail-page{
@@ -27,9 +27,10 @@
       inset:0;
       z-index:-3;
       background-size:cover;
-      background-position:center;
-      transform:scale(1.02);
-      filter:saturate(.9) brightness(.72);
+      background-position:center top;
+      background-repeat:no-repeat;
+      transform:scale(1.045);
+      filter:saturate(.92) brightness(.58) blur(.2px);
     }
 
     .saga-detail-bg::before{
@@ -37,9 +38,9 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg,rgba(3,4,11,.98) 0%,rgba(3,4,11,.82) 38%,rgba(3,4,11,.42) 70%,rgba(3,4,11,.72) 100%),
-        linear-gradient(180deg,rgba(3,4,11,.68) 0%,rgba(3,4,11,.78) 45%,#03040b 100%),
-        radial-gradient(circle at 72% 28%,var(--saga-soft),transparent 34%);
+        linear-gradient(90deg,rgba(3,4,11,.96) 0%,rgba(3,4,11,.86) 38%,rgba(3,4,11,.70) 68%,rgba(3,4,11,.88) 100%),
+        linear-gradient(180deg,rgba(3,4,11,.46) 0%,rgba(3,4,11,.74) 46%,#03040b 100%),
+        radial-gradient(circle at 70% 22%,var(--saga-soft),transparent 32%);
     }
 
     .saga-detail-bg::after{
@@ -500,7 +501,7 @@
       </a>
       <div class="footer-bottom-line">
         <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
-        <span class="footer-version">Build v3.4.8</span>
+        <span class="footer-version">Build v3.4.9-saga-poster-bg</span>
       </div>
     </div>
   </footer>
@@ -624,6 +625,7 @@
       const years = movies.map(getYear).filter(Boolean);
       const totalRuntime = movies.reduce((sum,item) => sum + getRuntimeMinutes(item),0);
       const primaryGenre = profile.genre || getGenres(movies[0] || {})[0] || "Saga";
+      const firstMovie = movies[0] || {};
       const backdropMovie = [...movies].reverse().find(getBackdrop) || movies.find(getBackdrop) || {};
 
       return {
@@ -633,7 +635,8 @@
         startYear:years.length ? Math.min(...years) : null,
         endYear:years.length ? Math.max(...years) : null,
         genre:primaryGenre,
-        backdrop:getBackdrop(backdropMovie)
+        backdrop:getBackdrop(backdropMovie),
+        posterBackground:getPoster(firstMovie)
       };
     }
 
@@ -641,7 +644,8 @@
       const root = document.getElementById("sagaDetailPage");
       root.style.setProperty("--saga-color",saga.color);
       root.style.setProperty("--saga-soft",hexToRgba(saga.color,.22));
-      document.getElementById("sagaDetailBg").style.backgroundImage = saga.backdrop ? `url('${saga.backdrop.replace(/'/g,"%27")}')` : "linear-gradient(135deg,#12051d,#03040b)";
+      const pageBackground = saga.posterBackground || saga.backdrop;
+      document.getElementById("sagaDetailBg").style.backgroundImage = pageBackground ? `url('${pageBackground.replace(/'/g,"%27")}')` : "linear-gradient(135deg,#12051d,#03040b)";
       document.getElementById("sagaTitle").textContent = saga.title;
       document.getElementById("sagaCrumb").textContent = saga.title;
       document.getElementById("sagaLead").textContent = saga.lead;
