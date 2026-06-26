@@ -874,3 +874,137 @@
   gap: 10px;
   align-items: stretch;
 }
+/* =========================================================
+   PATCH UI BUBULLE - RESET PROPRE DES MESSAGES
+   À coller tout en bas du CSS
+   ========================================================= */
+
+.ps-fish-chat {
+  width: min(470px, calc(100vw - 24px));
+  grid-template-rows: auto minmax(260px, 1fr) auto auto;
+}
+
+.ps-fish-chat-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+/* Reset total des bulles */
+.ps-fish-message {
+  position: static !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: auto !important;
+  min-height: unset !important;
+  max-height: none !important;
+  width: auto;
+  overflow: hidden !important;
+  box-sizing: border-box;
+  white-space: normal !important;
+  line-height: 1.45;
+  padding: 12px 14px;
+  border-radius: 16px;
+}
+
+/* Tous les contenus restent dans leur boîte */
+.ps-fish-message strong,
+.ps-fish-message p {
+  position: static !important;
+  display: block !important;
+  float: none !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  white-space: pre-wrap !important;
+  overflow: hidden !important;
+  box-sizing: border-box;
+}
+
+.ps-fish-message strong {
+  margin-bottom: 6px !important;
+  font-size: .68rem;
+  line-height: 1.1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .82;
+}
+
+.ps-fish-message p {
+  font-size: .91rem;
+  line-height: 1.42;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* Réponse Bubulle */
+.ps-fish-message-bot {
+  align-self: stretch !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  border: 1px solid rgba(77,169,255,.24);
+  background: linear-gradient(145deg, rgba(77,169,255,.105), rgba(77,169,255,.045));
+}
+
+/* Question utilisateur */
+.ps-fish-message-user {
+  align-self: flex-end !important;
+  max-width: 82% !important;
+  width: auto !important;
+  border: 1px solid rgba(246,196,109,.30);
+  background: linear-gradient(145deg, rgba(246,196,109,.14), rgba(246,196,109,.065));
+  padding: 8px 12px;
+  border-radius: 16px 16px 6px 16px;
+}
+
+/* On cache TOI proprement */
+.ps-fish-message-user strong {
+  display: none !important;
+}
+
+.ps-fish-message-user p {
+  white-space: normal !important;
+  line-height: 1.32;
+}
+
+/* Formulaire un peu compact, mais stable */
+.ps-fish-chat-form {
+  padding: 11px 12px 9px;
+}
+
+.ps-fish-suggestions {
+  padding: 0 12px 12px;
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+  .ps-fish-chat {
+    width: calc(100vw - 16px);
+    max-height: calc(100vh - 176px);
+    grid-template-rows: auto minmax(240px, 1fr) auto auto;
+  }
+
+  .ps-fish-chat-messages {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .ps-fish-message {
+    padding: 11px 12px;
+  }
+
+  .ps-fish-message p {
+    font-size: .89rem;
+    line-height: 1.38;
+  }
+
+  .ps-fish-message-user {
+    max-width: 86% !important;
+    padding: 7px 11px;
+  }
+}
