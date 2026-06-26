@@ -1541,17 +1541,17 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `Voici ce que le catalogue indique vraiment côté zombies :\n\n${results.map(itemLine).join('\n')}`;
   }
      function buildCatalogueAnswer(rawMessage, catalogue) {
-      const genreAnswer = fishAnswerGenreRequest(message, catalogue);
-if (genreAnswer) {
-  return genreAnswer;
-}
-    if (!catalogue.length) {
-      return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
-    }
+  if (!catalogue.length) {
+    return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
+  }
 
-    const message = normalize(rawMessage);
-    const records = getRecords(catalogue);
+  const message = normalize(rawMessage);
+  const records = getRecords(catalogue);
 
+  const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
+  if (genreAnswer) {
+    return genreAnswer;
+  }
     // PRIORITÉ ABSOLUE : Premium
     // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
     if (/premium|fauteuil rouge|selection premium/.test(message)) {
