@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.4.6-sagas-hover-slogan" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.7-sagas-runtime" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
 
   <style>
@@ -823,6 +823,67 @@
       .saga-content{min-height:76px;padding:12px;}
     }
 
+
+    /* === V3.4.7 - Sagas : infos sur 2 lignes + durée cumulée === */
+    .saga-content{
+      min-height:104px;
+      padding:13px 14px 15px;
+    }
+
+    .saga-meta{
+      width:100%;
+      display:grid;
+      gap:7px;
+    }
+
+    .saga-years,
+    .saga-stats-line{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:28px;
+      padding:0 10px;
+      border-radius:999px;
+      border:1px solid color-mix(in srgb, var(--saga-color) 34%, white 12%);
+      background:rgba(255,255,255,.075);
+      color:#f7f0ff;
+      font-size:11px;
+      font-weight:950;
+      line-height:1;
+      text-align:center;
+      white-space:nowrap;
+      box-shadow:inset 0 0 12px color-mix(in srgb, var(--saga-color) 11%, transparent);
+    }
+
+    .saga-years{
+      letter-spacing:.01em;
+    }
+
+    .saga-stats-line{
+      gap:7px;
+      min-height:30px;
+      background:
+        radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--saga-color) 18%, transparent), transparent 55%),
+        rgba(255,255,255,.06);
+    }
+
+    .saga-stats-line .saga-dot{
+      opacity:.62;
+      font-size:10px;
+      transform:translateY(-.5px);
+    }
+
+    .saga-runtime{
+      color:#fff;
+      text-shadow:0 0 12px var(--saga-color-soft);
+    }
+
+    @media(max-width:680px){
+      .saga-content{min-height:96px;}
+      .saga-years,
+      .saga-stats-line{font-size:10.5px;}
+    }
+
   </style>
 </head>
 <body>
@@ -935,7 +996,7 @@
       </a>
       <div class="footer-bottom-line">
         <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
-        <span class="footer-version">Build v3.4.4-sagas</span>
+        <span class="footer-version">Build v3.4.7-sagas</span>
       </div>
     </div>
   </footer>
@@ -994,6 +1055,44 @@
       const value = item.year || item.releaseYear || item.date || item.release_date || item.first_air_date || "";
       const match = String(value).match(/\d{4}/);
       return match ? Number(match[0]) : null;
+    }
+
+    function getRuntimeMinutes(item){
+      const value =
+        item.runtime ??
+        item.duration ??
+        item.duree ??
+        item.runtimeMinutes ??
+        item.runtime_minutes ??
+        item.durationMinutes ??
+        item.duration_minutes ??
+        0;
+
+      if(typeof value === "number" && Number.isFinite(value)) return Math.max(0, Math.round(value));
+
+      const text = String(value || "").toLowerCase().trim();
+      if(!text) return 0;
+
+      const hourMatch = text.match(/(\d+)\s*h(?:\s*(\d+))?/);
+      if(hourMatch){
+        return Number(hourMatch[1]) * 60 + Number(hourMatch[2] || 0);
+      }
+
+      const minMatch = text.match(/(\d+)\s*(?:min|mn|minutes?)/);
+      if(minMatch) return Number(minMatch[1]);
+
+      const plainNumber = text.match(/^\d+$/);
+      return plainNumber ? Number(text) : 0;
+    }
+
+    function formatRuntime(minutes){
+      const total = Math.max(0, Math.round(minutes || 0));
+      if(!total) return "Durée à compléter";
+      const hours = Math.floor(total / 60);
+      const mins = total % 60;
+      if(hours && mins) return `${hours} h ${String(mins).padStart(2,"0")}`;
+      if(hours) return `${hours} h`;
+      return `${mins} min`;
     }
 
     function getGenres(item){
@@ -1105,6 +1204,7 @@
         saga.years = saga.movies.map(getYear).filter(Boolean);
         saga.startYear = saga.years.length ? Math.min(...saga.years) : null;
         saga.endYear = saga.years.length ? Math.max(...saga.years) : null;
+        saga.totalRuntime = saga.movies.reduce((sum, movie) => sum + getRuntimeMinutes(movie), 0);
         return saga;
       }).sort((a,b) => FEATURED_SAGA_ORDER.indexOf(a.title) - FEATURED_SAGA_ORDER.indexOf(b.title));
     }
@@ -1132,6 +1232,7 @@
 
         const firstMovieUrl = getDetailUrl(saga.firstMovie);
         const sagaUrl = `saga.html?id=${encodeURIComponent(saga.key)}`;
+        const runtimeLabel = formatRuntime(saga.totalRuntime);
 
         return `
           <article class="saga-card saga-poster-card" style="--saga-color:${saga.color};--saga-color-soft:${hexToRgba(saga.color, .22)}" data-saga-genre="${saga.genre}">
@@ -1142,7 +1243,14 @@
               </div>
               <div class="saga-content">
                 <div class="saga-meta">
-                  <span>${escapeHtml(yearsLabel)} • ${escapeHtml(saga.genre)} • ${count} ${count > 1 ? "films" : "film"}</span>
+                  <span class="saga-years">${escapeHtml(yearsLabel)}</span>
+                  <span class="saga-stats-line">
+                    ${escapeHtml(saga.genre)}
+                    <i class="saga-dot" aria-hidden="true">•</i>
+                    ${count} ${count > 1 ? "films" : "film"}
+                    <i class="saga-dot" aria-hidden="true">•</i>
+                    <span class="saga-runtime">${escapeHtml(runtimeLabel)}</span>
+                  </span>
                 </div>
               </div>
             </a>
