@@ -96,8 +96,9 @@
       ],
       genres: ['action', 'aventure', 'fantastique', 'science-fiction', 'crime']
     },
-        {
+         {
       label: 'zombies',
+      strict: true,
       pattern: /zombie|zombies|mort vivant|morts vivants|infecte|infectes|infecté|infectés|malnazidos|resident evil|world war z|zombieland|walking dead/,
       terms: [
         'zombie',
@@ -511,7 +512,74 @@
         value.includes('sélection premium')
       );
   }
+  function isPremiumItemV2(item) {
+    if (!item) return false;
 
+    const premiumKeys = [
+      'premium',
+      'isPremium',
+      'is_premium',
+      'featured',
+      'isFeatured',
+      'is_featured',
+      'highlighted',
+      'isHighlighted',
+      'homePremium',
+      'home_premium'
+    ];
+
+    for (const key of premiumKeys) {
+      const value = item[key];
+
+      if (value === true) return true;
+      if (Number(value) === 1) return true;
+
+      if (typeof value === 'string') {
+        const v = normalize(value);
+        if (v === 'true' || v === 'yes' || v === 'oui' || v.includes('premium')) {
+          return true;
+        }
+      }
+    }
+
+    function scan(value, depth = 0) {
+      if (depth > 4 || value == null) return false;
+
+      if (typeof value === 'string') {
+        const v = normalize(value);
+
+        return (
+          v.includes('premium') ||
+          v.includes('fauteuil rouge') ||
+          v.includes('selection premium') ||
+          v.includes('selection du bocal')
+        );
+      }
+
+      if (Array.isArray(value)) {
+        return value.some(entry => scan(entry, depth + 1));
+      }
+
+      if (typeof value === 'object') {
+        return Object.entries(value).some(([key, entry]) => {
+          const k = normalize(key);
+
+          if (
+            k.includes('premium') &&
+            (entry === true || entry === 'true' || entry === 1 || entry === '1')
+          ) {
+            return true;
+          }
+
+          return scan(entry, depth + 1);
+        });
+      }
+
+      return false;
+    }
+
+    return scan(item);
+  }
   function formatRuntime(minutes) {
     if (!minutes) return '';
     const h = Math.floor(minutes / 60);
@@ -561,7 +629,7 @@
       runtime,
       rating,
       type,
-      premium: isPremiumItem(item),
+            premium: isPremiumItemV2(item),
       titleNorm: normalize(titleText),
       directorNorm: normalize(directorText),
       castNorm: normalize(castText),
@@ -819,7 +887,9 @@
     const wantsKids = /enfant|famille|familial|kids|dessin anime|dessin animé|animation/.test(m);
     const wantsShort = /court|rapide|pas trop long/.test(m);
 
-    topics.forEach(topic => {
+        topics.forEach(topic => {
+      if (topic.strict) return;
+
       topic.genres.forEach(genre => {
         if (!wantedGenres.includes(genre)) wantedGenres.push(genre);
       });
@@ -891,8 +961,15 @@
     return variants.some(variant => record.genreNorm.includes(variant));
   }
 
-  function recordMatchesTopic(record, topic) {
+    function recordMatchesTopic(record, topic) {
     const topicTerms = topic.terms.map(normalize);
+
+    if (topic.label === 'zombies') {
+      return topicTerms.some(term =>
+        record.titleNorm.includes(term) ||
+        record.storyNorm.includes(term)
+      );
+    }
 
     return topicTerms.some(term =>
       record.titleNorm.includes(term) ||
