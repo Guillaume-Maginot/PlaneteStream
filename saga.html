@@ -20,17 +20,19 @@
       position:relative;
       overflow:hidden;
       background:#03040b;
+      isolation:isolate;
     }
 
     .saga-detail-bg{
       position:fixed;
       inset:0;
-      z-index:-3;
+      z-index:0;
+      pointer-events:none;
       background-size:cover;
       background-position:center top;
       background-repeat:no-repeat;
-      transform:scale(1.045);
-      filter:saturate(.92) brightness(.58) blur(.2px);
+      transform:scale(1.055);
+      filter:saturate(.98) brightness(.72) blur(.15px);
     }
 
     .saga-detail-bg::before{
@@ -38,9 +40,9 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg,rgba(3,4,11,.96) 0%,rgba(3,4,11,.86) 38%,rgba(3,4,11,.70) 68%,rgba(3,4,11,.88) 100%),
-        linear-gradient(180deg,rgba(3,4,11,.46) 0%,rgba(3,4,11,.74) 46%,#03040b 100%),
-        radial-gradient(circle at 70% 22%,var(--saga-soft),transparent 32%);
+        linear-gradient(90deg,rgba(3,4,11,.82) 0%,rgba(3,4,11,.70) 36%,rgba(3,4,11,.48) 68%,rgba(3,4,11,.72) 100%),
+        linear-gradient(180deg,rgba(3,4,11,.28) 0%,rgba(3,4,11,.54) 48%,#03040b 100%),
+        radial-gradient(circle at 72% 18%,var(--saga-soft),transparent 34%);
     }
 
     .saga-detail-bg::after{
@@ -57,6 +59,8 @@
     }
 
     .saga-detail-main{
+      position:relative;
+      z-index:1;
       padding:34px 0 72px;
     }
 
