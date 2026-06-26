@@ -1007,8 +1007,9 @@
       return -999;
     }
 
-    if (intent.wantsPremium && !record.premium) {
-      return -999;
+        if (intent.wantsPremium) {
+      if (!record.premium) return -999;
+      score += 80;
     }
 
     if (intent.wantsKids) {
