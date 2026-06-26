@@ -516,9 +516,15 @@ if (intent.hasStrongSignal) {
     }
 if (/qui a realise|realisateur de|realise par qui|c est qui le realisateur|c'est qui le realisateur/.test(message)) {
   const catalogue = await loadCatalogue();
-  const intent = detectIntent(rawMessage);
-  const results = pickResults(catalogue, intent);
-  const item = results[0];
+  const questionTerms = message
+    .replace(/qui a realise|realisateur de|realise par qui|c est qui le realisateur|c'est qui le realisateur/g, '')
+    .split(/[^a-z0-9]+/)
+    .filter(word => word.length > 2);
+
+  const item = catalogue.find(film => {
+    const title = normalize(`${film.title || ''} ${film.originalTitle || ''}`);
+    return questionTerms.some(term => title.includes(term));
+  });
 
   if (item && item.director) {
     return `${item.title || item.originalTitle} a été réalisé par ${item.director}.`;
