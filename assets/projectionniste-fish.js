@@ -236,7 +236,7 @@
   const wantsKids = /enfant|famille|familial|kids|dessin anime|animation/.test(m);
   const wantsShort = /court|rapide|pas trop long/.test(m);
   const requestedType = /\bserie|series\b/.test(m) ? 'serie' : /manga|anime/.test(m) ? 'manga' : /\bfilm|films\b/.test(m) ? 'film' : null;
-
+  const wantsSuperHero = /super ?heros|superhero|super hero|marvel|dc comics|batman|superman|spiderman|spider man|avengers|venom|joker/.test(m);
   const genreMap = [
     ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi']],
     ['horreur', ['horreur', 'peur', 'gore', 'epouvante']],
@@ -323,7 +323,7 @@
     }
   });
 
-  return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsShort, requestedType, wantedGenres, terms };
+return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsShort, wantsSuperHero, requestedType, wantedGenres, terms };
 }
 
   function scoreItem(item, intent) {
@@ -351,6 +351,36 @@
       if (familyHit) score += 20;
       else score -= 10;
     }
+
+    if (intent.wantsSuperHero) {
+  const superheroTitles = [
+    'batman',
+    'superman',
+    'spider',
+    'spiderman',
+    'avengers',
+    'iron man',
+    'captain america',
+    'thor',
+    'hulk',
+    'x-men',
+    'x men',
+    'venom',
+    'joker',
+    'deadpool',
+    'watchmen',
+    'justice league',
+    'black panther',
+    'doctor strange',
+    'guardians of the galaxy',
+    'gardiens de la galaxie'
+  ];
+
+  const superheroHit = superheroTitles.some(key => title.includes(key));
+
+  if (superheroHit) score += 80;
+  else score -= 18;
+}
 
     for (const wanted of intent.wantedGenres) {
       if (genres.some(g => g.includes(normalize(wanted)))) score += 14;
