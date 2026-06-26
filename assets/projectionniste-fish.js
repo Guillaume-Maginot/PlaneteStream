@@ -331,7 +331,7 @@
     wantsDirector ||
     wantsActor ||
     wantsSuperHero ||
-    terms.length >= 2;
+    terms.length >= 1;
 
   return {
     m,
@@ -433,11 +433,11 @@
   function pickResults(catalogue, intent) {
   let candidates = catalogue
     .map(item => ({ item, score: scoreItem(item, intent) }))
-    .filter(entry => entry.score >= 35);
+   .filter(entry => entry.score >= 12);
 
-  if (intent.hasStrongSignal) {
-    candidates = candidates.filter(entry => entry.score >= 55);
-  }
+if (intent.hasStrongSignal) {
+  candidates = candidates.filter(entry => entry.score >= 25);
+}
 
   if (intent.wantsRandom && !candidates.length) {
     candidates = catalogue.map(item => ({
