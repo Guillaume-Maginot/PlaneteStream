@@ -295,6 +295,19 @@ function fishDetectDurationFilter(message) {
     };
   }
 
+  const moreReversed = /(\d+)\s*(h|heure|heures|min|minute|minutes)\s*(au moins|minimum|min)/.exec(m);
+
+  if (moreReversed) {
+    const value = Number(moreReversed[1]) || 0;
+    const unit = moreReversed[2] || 'h';
+    const min = unit.includes('min') ? value : value * 60;
+
+    return {
+      min,
+      label: `de plus de ${fishFormatDuration(min)}`
+    };
+  }
+
   return null;
 }
 
@@ -314,6 +327,66 @@ function fishMovieMatchesDuration(movie, durationFilter) {
   }
 
   return true;
+}
+
+function fishCleanActorQuery(query) {
+  return fishNormalize(query)
+    .replace(/\b(de|d)?\s*(moins|maximum|max|pas plus de|sous|inferieur a|plus|au moins|minimum|min)\s*\d+\s*(h|heure|heures|min|minute|minutes)?\b/g, ' ')
+    .replace(/\b\d+\s*(h|heure|heures|min|minute|minutes)\s*(au moins|minimum|min|maximum|max)?\b/g, ' ')
+    .replace(/\b(film|films|serie|series|série|séries|manga|acteur|actrice|avec)\b/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function fishExtractActorQuery(message) {
+  const m = fishNormalize(message);
+  const match = m.match(/\bavec\s+(.+)$/);
+
+  if (!match || !match[1]) {
+    return '';
+  }
+
+  return fishCleanActorQuery(match[1]);
+}
+
+function fishDisplayActorQuery(query) {
+  return fishNormalize(query)
+    .split(' ')
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function fishMovieMatchesActor(movie, actorQuery) {
+  const query = fishNormalize(actorQuery);
+  const tokens = query.split(' ').filter(Boolean);
+
+  if (!query || !tokens.length) {
+    return false;
+  }
+
+  return getCastNames(movie).some(name => {
+    const actor = fishNormalize(name);
+
+    return (
+      actor === query ||
+      actor.includes(query) ||
+      tokens.every(token => actor.includes(token))
+    );
+  });
+}
+
+function fishDetectActorFilter(message, catalogue) {
+  const actorQuery = fishExtractActorQuery(message);
+
+  if (!actorQuery) {
+    return '';
+  }
+
+  const movies = Array.isArray(catalogue) ? catalogue : [];
+  const hasRealActorMatch = movies.some(movie => fishMovieMatchesActor(movie, actorQuery));
+
+  return hasRealActorMatch ? actorQuery : '';
 }
 
 function fishSortDurationAlternatives(movies, durationFilter) {
@@ -511,7 +584,10 @@ function fishAnswerGenreRequest(message, catalogue) {
 
   const movies = Array.isArray(catalogue) ? catalogue : [];
   const durationFilter = fishDetectDurationFilter(message);
+  const actorQuery = fishDetectActorFilter(message, movies);
+  const actorLabel = actorQuery ? fishDisplayActorQuery(actorQuery) : '';
   const label = FISH_GENRE_LABELS[genreKey] || genreKey;
+  const labelWithActor = actorLabel ? `${label} avec ${actorLabel}` : label;
 
   const genreResults = movies.filter(movie => fishMovieMatchesRequestedGenre(movie, genreKey));
 
@@ -519,17 +595,25 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `Je ne trouve pas de film ${label} dans le catalogue. Je préfère ne pas inventer, mon bocal a encore deux ou trois principes.`;
   }
 
-  const results = durationFilter
-    ? genreResults.filter(movie => fishMovieMatchesDuration(movie, durationFilter))
+  const actorResults = actorQuery
+    ? genreResults.filter(movie => fishMovieMatchesActor(movie, actorQuery))
     : genreResults;
 
-    if (!results.length && durationFilter) {
-    return fishDurationFallbackAnswer(genreResults, label, durationFilter);
+  if (actorQuery && !actorResults.length) {
+    return `J’ai trouvé des titres ${label}, mais aucun avec ${actorLabel} dans le casting du JSON. Le poisson a vérifié avant de blouper.`;
+  }
+
+  const results = durationFilter
+    ? actorResults.filter(movie => fishMovieMatchesDuration(movie, durationFilter))
+    : actorResults;
+
+  if (!results.length && durationFilter) {
+    return fishDurationFallbackAnswer(actorResults, labelWithActor, durationFilter);
   }
 
   const intro = durationFilter
-    ? `Pour un film ${label} ${durationFilter.label}, j’ai trouvé :`
-    : `Pour un film ${label}, j’ai trouvé :`;
+    ? `Pour un film ${labelWithActor} ${durationFilter.label}, j’ai trouvé :`
+    : `Pour un film ${labelWithActor}, j’ai trouvé :`;
 
   return fishFormatTitleResults(results, intro);
 }
