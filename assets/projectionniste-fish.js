@@ -350,7 +350,13 @@ function fishExtractActorQuery(message) {
 }
 
 function fishDisplayActorQuery(query) {
-  return fishNormalize(query)
+  const value = String(query || '').trim();
+
+  if (!value) {
+    return '';
+  }
+
+  return value
     .split(' ')
     .filter(Boolean)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -377,16 +383,50 @@ function fishMovieMatchesActor(movie, actorQuery) {
 }
 
 function fishDetectActorFilter(message, catalogue) {
-  const actorQuery = fishExtractActorQuery(message);
+  const m = fishNormalize(message);
 
-  if (!actorQuery) {
+  const hasActorIntent =
+    /\bavec\b/.test(m) ||
+    /\bacteur\b/.test(m) ||
+    /\bactrice\b/.test(m) ||
+    /\bcasting\b/.test(m) ||
+    /\bjoue\b/.test(m) ||
+    /\bjouent\b/.test(m);
+
+  if (!hasActorIntent) {
     return '';
   }
 
   const movies = Array.isArray(catalogue) ? catalogue : [];
-  const hasRealActorMatch = movies.some(movie => fishMovieMatchesActor(movie, actorQuery));
 
-  return hasRealActorMatch ? actorQuery : '';
+  const actorNames = Array.from(
+    new Set(
+      movies
+        .flatMap(movie => getCastNames(movie))
+        .filter(Boolean)
+    )
+  ).sort((a, b) => b.length - a.length);
+
+  const found = actorNames.find(name => {
+    const actor = fishNormalize(name);
+    const tokens = actor.split(' ').filter(Boolean);
+
+    if (!actor || actor.length < 3) {
+      return false;
+    }
+
+    if (fishHasPhrase(m, actor)) {
+      return true;
+    }
+
+    if (tokens.length >= 2 && tokens.every(token => m.includes(token))) {
+      return true;
+    }
+
+    return false;
+  });
+
+  return found || '';
 }
 
 function fishSortDurationAlternatives(movies, durationFilter) {
