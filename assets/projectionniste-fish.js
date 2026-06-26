@@ -118,7 +118,6 @@
         'shaun of the dead',
         '28 jours plus tard',
         '28 semaines plus tard',
-        'rec',
         'overlord'
       ],
       genres: ['horreur', 'action', 'thriller']
@@ -1158,7 +1157,6 @@
       'shaun of the dead',
       '28 jours plus tard',
       '28 semaines plus tard',
-      'rec',
       'overlord'
     ].map(normalize);
 
@@ -1246,7 +1244,6 @@
       'shaun of the dead',
       '28 jours plus tard',
       '28 semaines plus tard',
-      'rec',
       'overlord'
     ].map(normalize);
 
@@ -1332,7 +1329,6 @@
         'shaun of the dead',
         '28 jours plus tard',
         '28 semaines plus tard',
-        'rec',
         'overlord'
       ].map(normalize);
 
