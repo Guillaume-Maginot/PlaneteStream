@@ -660,3 +660,97 @@
 .ps-fish-chat-messages::-webkit-scrollbar-track {
   background: rgba(255,255,255,.025);
 }
+/* =========================================================
+   PATCH UI BUBULLE - Mode compact du chat
+   À coller tout en bas du CSS
+   ========================================================= */
+
+.ps-fish-chat {
+  grid-template-rows: auto minmax(220px, 1fr) auto auto;
+}
+
+.ps-fish-chat-messages {
+  padding: 12px 14px;
+  gap: 9px;
+}
+
+.ps-fish-message {
+  padding: 10px 12px;
+  border-radius: 15px;
+  line-height: 1.38;
+  font-size: .9rem;
+  min-height: 0;
+}
+
+.ps-fish-message strong {
+  margin: 0 0 4px;
+  font-size: .66rem;
+  line-height: 1.1;
+  letter-spacing: .08em;
+}
+
+.ps-fish-message p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.42;
+}
+
+.ps-fish-message-user {
+  max-width: 92%;
+  padding: 10px 13px;
+}
+
+.ps-fish-message-bot {
+  max-width: 100%;
+  padding: 11px 13px;
+}
+
+.ps-fish-chat-form {
+  padding: 10px 12px 9px;
+}
+
+.ps-fish-chat-form input,
+.ps-fish-chat-form button {
+  min-height: 42px;
+}
+
+.ps-fish-suggestions {
+  padding: 0 12px 12px;
+  gap: 7px;
+}
+
+.ps-fish-suggestions button {
+  padding: 7px 11px;
+  font-size: .74rem;
+}
+
+/* Mobile : encore un peu plus compact */
+@media (max-width: 680px) {
+  .ps-fish-chat {
+    grid-template-rows: auto minmax(210px, 1fr) auto auto;
+  }
+
+  .ps-fish-chat-messages {
+    padding: 11px 12px;
+    gap: 8px;
+  }
+
+  .ps-fish-message {
+    padding: 9px 11px;
+    font-size: .88rem;
+    line-height: 1.36;
+  }
+
+  .ps-fish-message strong {
+    margin-bottom: 3px;
+    font-size: .64rem;
+  }
+
+  .ps-fish-chat-form {
+    padding: 9px 10px 8px;
+  }
+
+  .ps-fish-suggestions {
+    padding: 0 10px 10px;
+  }
+}
