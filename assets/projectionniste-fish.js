@@ -96,10 +96,30 @@
       ],
       genres: ['action', 'aventure', 'fantastique', 'science-fiction', 'crime']
     },
-    {
+        {
       label: 'zombies',
-      pattern: /zombie|mort vivant|morts vivants|infecte|infectes|infecté|infectés/,
-      terms: ['zombie', 'mort vivant', 'infecte', 'infecté'],
+      pattern: /zombie|zombies|mort vivant|morts vivants|infecte|infectes|infecté|infectés|malnazidos|resident evil|world war z|zombieland|walking dead/,
+      terms: [
+        'zombie',
+        'zombies',
+        'mort vivant',
+        'morts vivants',
+        'infecte',
+        'infecté',
+        'infectés',
+        'malnazidos',
+        'resident evil',
+        'world war z',
+        'zombieland',
+        'walking dead',
+        'train to busan',
+        'army of the dead',
+        'shaun of the dead',
+        '28 jours plus tard',
+        '28 semaines plus tard',
+        'rec',
+        'overlord'
+      ],
       genres: ['horreur', 'action', 'thriller']
     },
     {
@@ -355,23 +375,47 @@
   function getDirectorNames(item) {
     const names = [];
 
-    if (item.director) {
-      names.push(...getPersonNames(item.director));
+    function addNames(value) {
+      getPersonNames(value).forEach(name => {
+        if (name) names.push(name);
+      });
     }
 
-    if (item.directors) {
-      names.push(...getPersonNames(item.directors));
-    }
+    addNames(item.director);
+    addNames(item.directors);
+    addNames(item.realisateur);
+    addNames(item.realisateurs);
+    addNames(item.réalisateur);
+    addNames(item.réalisateurs);
+    addNames(item.directedBy);
+    addNames(item.directed_by);
+    addNames(item.createdBy);
+    addNames(item.created_by);
 
-    if (Array.isArray(item.crew)) {
-      item.crew.forEach(person => {
-        const job = normalize(`${person.job || ''} ${person.department || ''}`);
-        if (job.includes('director') || job.includes('realisation')) {
+    const crewSources = [
+      item.crew,
+      item.credits && item.credits.crew,
+      item.tmdb && item.tmdb.crew,
+      item.tmdb && item.tmdb.credits && item.tmdb.credits.crew
+    ];
+
+    crewSources.forEach(source => {
+      if (!Array.isArray(source)) return;
+
+      source.forEach(person => {
+        const job = normalize(`${person.job || ''} ${person.department || ''} ${person.known_for_department || ''}`);
+
+        if (
+          job.includes('director') ||
+          job.includes('directing') ||
+          job.includes('realisation') ||
+          job.includes('realisateur')
+        ) {
           const name = getName(person);
           if (name) names.push(name);
         }
       });
-    }
+    });
 
     return unique(names);
   }
@@ -414,6 +458,58 @@
       0;
 
     return Number(value) || 0;
+  }
+
+    function isPremiumItem(item) {
+    if (!item) return false;
+
+    if (
+      item.premium === true ||
+      item.isPremium === true ||
+      item.is_premium === true ||
+      item.featured === true ||
+      item.isFeatured === true
+    ) {
+      return true;
+    }
+
+    const fields = [
+      item.homeSection,
+      item.home_section,
+      item.homePlacement,
+      item.home_placement,
+      item.section,
+      item.zone,
+      item.badge,
+      item.ribbon,
+      item.status,
+      item.display,
+      item.highlight,
+      item.homeCategory,
+      item.home_category,
+      item.category,
+      item.categorie,
+      item.catégorie,
+      item.shelf,
+      item.collection
+    ];
+
+    if (Array.isArray(item.tags)) {
+      fields.push(...item.tags);
+    }
+
+    if (Array.isArray(item.labels)) {
+      fields.push(...item.labels);
+    }
+
+    return fields
+      .map(normalize)
+      .some(value =>
+        value.includes('premium') ||
+        value.includes('fauteuil rouge') ||
+        value.includes('selection premium') ||
+        value.includes('sélection premium')
+      );
   }
 
   function formatRuntime(minutes) {
@@ -465,7 +561,7 @@
       runtime,
       rating,
       type,
-      premium: Boolean(item.premium || item.isPremium || item.featured),
+      premium: isPremiumItem(item),
       titleNorm: normalize(titleText),
       directorNorm: normalize(directorText),
       castNorm: normalize(castText),
@@ -733,8 +829,11 @@
     const directorRequest = isDirectorRequest(rawMessage);
     const actorRequest = isActorRequest(rawMessage);
 
-    const matchedDirectors = directorRequest ? findMatchingDirectors(records, personQuery || rawMessage) : [];
-    const matchedActors = actorRequest ? findMatchingActors(records, personQuery || rawMessage) : [];
+        const directorQuery = directorRequest ? (personQuery || '') : '';
+    const actorQuery = actorRequest ? (personQuery || '') : '';
+
+    const matchedDirectors = directorRequest ? findMatchingDirectors(records, directorQuery || rawMessage) : [];
+    const matchedActors = actorRequest ? findMatchingActors(records, actorQuery || rawMessage) : [];
 
     const freeTerms = unique([
       ...tokenize(rawMessage),
@@ -767,6 +866,8 @@
       wantsPremium,
       wantsKids,
       wantsShort,
+      directorQuery,
+      actorQuery,
       directorRequest,
       actorRequest,
       matchedDirectors,
@@ -974,7 +1075,18 @@
       return answerCastOfTitle(rawMessage, records);
     }
 
-    const intent = buildIntent(rawMessage, records);
+        const intent = buildIntent(rawMessage, records);
+
+    if (
+      intent.directorRequest &&
+      intent.directorQuery &&
+      !intent.matchedDirectors.length &&
+      !intent.wantedGenres.length &&
+      !intent.topics.length
+    ) {
+      return `Bloup... je n’ai pas trouvé ${intent.directorQuery} comme réalisateur dans le JSON. Je préfère ne rien proposer plutôt que de te ressortir Peter Jackson avec une moustache de Nolan.`;
+    }
+
     const results = pickResults(records, intent);
 
     if (!results.length) {
