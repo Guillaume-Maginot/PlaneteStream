@@ -29,7 +29,11 @@ const FISH_GENRE_SYNONYMS = {
     'infecte',
     'infectes',
     'infecté',
-    'infectés'
+    'infectés',
+    'mangeur de chair',
+    'mangeurs de chair',
+    'mangeuse de chair',
+    'mangeuses de chair'
   ],
 
   horreur: [
@@ -1626,75 +1630,6 @@ function fishAnswerGenreRequest(message, catalogue) {
 
       return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
     }
-
-    // PRIORITÉ ABSOLUE : Zombies
-    // On ne passe pas par les genres horreur/action/SF.
-    if (/zombie|zombies|mort vivant|morts vivants|mangeur de chair|mangeurs de chair|mangeuse de chair|mangeuses de chair/.test(message)) {
-      const acceptedZombieTitles = [
-        'malnazidos',
-        'resident evil',
-        'world war z',
-        'zombieland',
-        'walking dead',
-        'train to busan',
-        'army of the dead',
-        'shaun of the dead',
-        '28 jours plus tard',
-        '28 semaines plus tard',
-        'overlord'
-      ].map(normalize);
-
-      const zombieStorySignals = [
-        'zombie',
-        'zombies',
-        'mort vivant',
-        'morts vivants',
-        'mangeur de chair',
-        'mangeurs de chair',
-        'mangeuse de chair',
-        'mangeuses de chair',
-        'creature mangeuse de chair',
-        'creatures mangeuses de chair',
-        'cree par les nazis',
-        'crees par les nazis',
-        'creee par les nazis',
-        'creees par les nazis'
-      ].map(normalize);
-
-      const results = catalogue
-        .filter(item => {
-          const identity = normalize([
-            item.title,
-            item.slug,
-            item.originalTitle,
-            item.original_title
-          ].filter(Boolean).join(' '));
-
-          const story = normalize([
-            item.overview,
-            item.description,
-            item.synopsis,
-            item.tagline
-          ].filter(Boolean).join(' '));
-
-          if (acceptedZombieTitles.some(term => identity.includes(term))) {
-            return true;
-          }
-
-          return zombieStorySignals.some(term => story.includes(term));
-        })
-        .sort((a, b) =>
-          String(a.title || '').localeCompare(String(b.title || ''), 'fr')
-        )
-        .slice(0, 5);
-
-      if (!results.length) {
-        return 'Bloup... je n’ai pas trouvé de vrai film de zombies dans le JSON. Si le titre existe mais n’a pas de tag ou de résumé clair, il faudra lui ajouter un indice.';
-      }
-
-      return `Voici ce que le catalogue indique vraiment côté zombies :\n\n${results.map(itemLine).join('\n')}`;
-    }
-
     // Questions réalisateur d’un titre
     if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
       return answerDirectorOfTitle(rawMessage, records);
