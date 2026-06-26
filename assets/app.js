@@ -571,10 +571,107 @@ function setText(selector, value){
   if(node) node.textContent = value;
 }
 
+
+function formatRuntimeLabel(value){
+  if(value === null || value === undefined || value === '') return '';
+  if(typeof value === 'number' && Number.isFinite(value)){
+    const total = Math.max(0, Math.round(value));
+    if(!total) return '';
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    if(h && m) return `${h}h${String(m).padStart(2,'0')}`;
+    if(h) return `${h}h`;
+    return `${m}min`;
+  }
+  const text = String(value).trim().toLowerCase();
+  if(!text) return '';
+  const hMatch = text.match(/(\d+)\s*h(?:\s*(\d+))?/);
+  if(hMatch){
+    const h = Number(hMatch[1] || 0);
+    const m = Number(hMatch[2] || 0);
+    return m ? `${h}h${String(m).padStart(2,'0')}` : `${h}h`;
+  }
+  const minMatch = text.match(/(\d+)\s*(?:min|mn|minutes?)/);
+  if(minMatch) return formatRuntimeLabel(Number(minMatch[1]));
+  const numberOnly = text.match(/^\d+$/);
+  if(numberOnly) return formatRuntimeLabel(Number(text));
+  return String(value);
+}
+
+function getCardRuntime(item){
+  return formatRuntimeLabel(
+    item.runtime ??
+    item.duration ??
+    item.duree ??
+    item.runtimeMinutes ??
+    item.runtime_minutes ??
+    item.durationMinutes ??
+    item.duration_minutes
+  );
+}
+
+function getCommunityRatingInfo(item){
+  const value =
+    item.planeteRating ??
+    item.planetRating ??
+    item.psRating ??
+    item.communityRating ??
+    item.averageRating ??
+    item.userAverageRating ??
+    item.user_rating_average;
+
+  const count = Number(
+    item.planeteRatingCount ??
+    item.planetRatingCount ??
+    item.psRatingCount ??
+    item.communityRatingCount ??
+    item.ratingCount ??
+    item.userRatingCount ??
+    item.user_rating_count ??
+    0
+  );
+
+  const rating = Number(value);
+  if(Number.isFinite(rating) && rating > 0 && count >= 5){
+    return {
+      source:'ps',
+      icon:'🪐',
+      label:`${rating.toFixed(1)}/10`,
+      title:`Note Planète Stream${count ? ` · ${count} avis` : ''}`
+    };
+  }
+  return null;
+}
+
+function getTmdbRatingInfo(item){
+  const value =
+    item.tmdbRating ??
+    item.voteAverage ??
+    item.vote_average ??
+    item.rating ??
+    item._rating;
+  const rating = Number(value);
+  if(Number.isFinite(rating) && rating > 0){
+    return {
+      source:'tmdb',
+      icon:'⭐',
+      label:`${rating.toFixed(1)}/10`,
+      title:'Note TMDb'
+    };
+  }
+  return null;
+}
+
+function getDisplayRatingInfo(item){
+  return getCommunityRatingInfo(item) || getTmdbRatingInfo(item);
+}
+
 function createCard(item){
   const card = document.createElement('article');
   card.className = 'card';
   const year = item.year || (item.releaseDate || '').slice(0,4);
+  const runtime = getCardRuntime(item);
+  const ratingInfo = getDisplayRatingInfo(item);
   const detailHref = getDetailHref(item);
   const watchHref = getWatchHref(item);
   const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
@@ -585,11 +682,13 @@ function createCard(item){
       <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
         <span>${escapeHtml(formatType(item.type || item.mediaType || 'film'))}</span>
         ${year ? `<span>${escapeHtml(year)}</span>` : ''}
+        ${runtime ? `<span>${escapeHtml(runtime)}</span>` : ''}
         ${item.premium ? '<span>⭐ Premium</span>' : ''}
       </div>
       <div class="compact-genres">
         ${(item.genres || []).slice(0,2).map(g => `<span>${escapeHtml(g)}</span>`).join('')}
       </div>
+      ${ratingInfo ? `<div class="catalog-card-rating catalog-card-rating-${ratingInfo.source}" title="${escapeHtml(ratingInfo.title)}"><span aria-hidden="true">${ratingInfo.icon}</span><strong>${escapeHtml(ratingInfo.label)}</strong></div>` : '<div class="catalog-card-rating catalog-card-rating-empty" aria-hidden="true"></div>'}
       <div class="card-actions">
         <a class="card-play" href="${watchHref}"${watchTarget}>▶ Lecture</a>
         <a class="card-detail" href="${detailHref}">Fiche</a>

@@ -6840,3 +6840,81 @@ section{margin:24px 0 34px}
   .compact-genres{font-size:9.5px;min-height:25px;}
   .card-actions a{font-size:10px!important;min-height:31px!important;}
 }
+
+/* === V3.4.6 - Catalogue : durée + note unique TMDb/Planète Stream === */
+.info{
+  min-height:148px;
+}
+
+.compact-meta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:5px 8px;
+  line-height:1.35;
+}
+
+.compact-meta span:not(:last-child)::after,
+.compact-genres span:not(:last-child)::after{
+  content:"•";
+  margin-left:8px;
+  color:rgba(255,255,255,.26);
+  font-weight:900;
+}
+
+.compact-genres{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:5px 8px;
+  min-height:22px;
+  line-height:1.35;
+}
+
+.catalog-card-rating{
+  position:relative;
+  z-index:1;
+  width:max-content;
+  max-width:100%;
+  min-height:24px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin:3px 0 10px;
+  padding:3px 9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.065);
+  color:#f7f2ff;
+  font-size:11px;
+  font-weight:950;
+  line-height:1;
+  box-shadow:inset 0 0 12px rgba(255,255,255,.035);
+}
+
+.catalog-card-rating strong{
+  font:inherit;
+}
+
+.catalog-card-rating-tmdb{
+  border-color:rgba(255,210,90,.24);
+  box-shadow:
+    inset 0 0 12px rgba(255,210,90,.055),
+    0 0 14px rgba(255,210,90,.055);
+}
+
+.catalog-card-rating-ps{
+  border-color:rgba(195,77,255,.34);
+  box-shadow:
+    inset 0 0 12px rgba(195,77,255,.075),
+    0 0 16px rgba(195,77,255,.10);
+}
+
+.catalog-card-rating-empty{
+  display:none;
+}
+
+@media(max-width:620px){
+  .info{min-height:140px;}
+  .catalog-card-rating{font-size:10.5px;min-height:22px;margin:2px 0 8px;padding:3px 8px;}
+}
