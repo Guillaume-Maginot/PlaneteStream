@@ -7,8 +7,6 @@ const state = {
   heroDirection: 1,
   heroSlideTimeout: null,
   heroPaused: false,
-  cataloguePage: 1,
-  cataloguePageSize: 'auto',
 };
 
 const posterFallback = 'linear-gradient(145deg,#3b1c70,#111), radial-gradient(circle at 60% 35%,rgba(255,255,255,.25),transparent 18%)';
@@ -45,7 +43,6 @@ function normalizeCatalogue(){
 function bindEvents(){
   document.querySelectorAll('[data-filter]').forEach(btn => btn.addEventListener('click', () => {
     state.filter = btn.dataset.filter;
-    state.cataloguePage = 1;
     syncActiveTabs();
     resetGenreFilter();
     render();
@@ -53,7 +50,6 @@ function bindEvents(){
 
   document.querySelectorAll('[data-nav-filter]').forEach(link => link.addEventListener('click', () => {
     state.filter = link.dataset.navFilter;
-    state.cataloguePage = 1;
     setActiveMenuLink(link);
     syncActiveTabs();
     resetGenreFilter();
@@ -63,7 +59,6 @@ function bindEvents(){
   const search = document.querySelector('#searchInput');
   search?.addEventListener('input', e => {
     state.search = e.target.value.trim().toLowerCase();
-    state.cataloguePage = 1;
     render();
   });
 
@@ -71,14 +66,12 @@ function bindEvents(){
     if(e.key !== 'Enter') return;
     e.preventDefault();
     state.search = e.target.value.trim().toLowerCase();
-    state.cataloguePage = 1;
     render();
     focusSearchResults();
   });
 
   document.querySelector('#genreFilter')?.addEventListener('change', e => {
     state.filter = e.target.value || 'all';
-    state.cataloguePage = 1;
     document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
     render();
   });
@@ -91,40 +84,6 @@ function bindEvents(){
   hero?.addEventListener('mouseenter', pauseHeroRotation);
   hero?.addEventListener('mouseleave', resumeHeroRotation);
   hero?.addEventListener('mousemove', handleHeroParallax);
-
-  const pageSizeSelect = document.querySelector('#cataloguePageSize');
-  if(pageSizeSelect){
-    pageSizeSelect.value = state.cataloguePageSize;
-    pageSizeSelect.addEventListener('change', e => {
-      state.cataloguePageSize = e.target.value || 'auto';
-      state.cataloguePage = 1;
-      updateCatalogueUrl();
-      render();
-    });
-  }
-
-  document.querySelector('#catalogueGotoForm')?.addEventListener('submit', e => {
-    e.preventDefault();
-    const input = document.querySelector('#catalogueGotoInput');
-    const wantedPage = Math.max(1, Number(input?.value || 1));
-    state.cataloguePage = wantedPage;
-    updateCatalogueUrl();
-    render();
-    focusSearchResults();
-  });
-
-  document.querySelector('[data-pagination]')?.addEventListener('click', e => {
-    const button = e.target.closest('button[data-page]');
-    if(!button || button.disabled) return;
-    state.cataloguePage = Math.max(1, Number(button.dataset.page || 1));
-    updateCatalogueUrl();
-    render();
-    focusSearchResults();
-  });
-
-  window.addEventListener('resize', debounce(() => {
-    if(state.cataloguePageSize === 'auto') render();
-  }, 180));
 }
 
 
@@ -221,16 +180,6 @@ function applySearchFromUrl(){
   const params = new URLSearchParams(window.location.search);
   const filterValue = (params.get('filter') || params.get('type') || '').trim().toLowerCase();
   const searchValue = params.get('search') || params.get('q') || '';
-  const pageValue = Math.max(1, Number(params.get('page') || 1));
-  const perPageValue = (params.get('perPage') || params.get('parPage') || '').trim();
-
-  if(['auto', '12', '24', '36', '48'].includes(perPageValue)){
-    state.cataloguePageSize = perPageValue;
-    const select = document.querySelector('#cataloguePageSize');
-    if(select) select.value = perPageValue;
-  }
-
-  if(pageValue > 1) state.cataloguePage = pageValue;
 
   if(['all', 'film', 'serie', 'manga'].includes(filterValue)){
     state.filter = filterValue;
@@ -283,9 +232,7 @@ function render(){
   mount('#latestGrid', latest);
   mount('#latestMangaGrid', latestManga);
   mount('#topRatedGrid', topRated);
-  const pagination = paginateCatalogue(filtered);
-  mount('#catalogueGrid', pagination.items);
-  renderCataloguePagination(pagination);
+  mount('#catalogueGrid', filtered);
 
   document.querySelector('#premiumSection').style.display = browsing && premium.length ? 'block' : 'none';
   document.querySelector('#featuredSection').style.display = browsing && featured.length ? 'block' : 'none';
@@ -296,152 +243,8 @@ function render(){
   if(sagasSection) sagasSection.style.display = browsing ? 'block' : 'none';
 
   const catalogueTitle = document.querySelector('#catalogueFullSection .section-title');
-  if(catalogueTitle){
-    catalogueTitle.textContent = state.filter === 'film'
-      ? 'Films'
-      : state.filter === 'serie'
-        ? 'Séries'
-        : state.filter === 'manga'
-          ? 'Mangas'
-          : 'Catalogue complet';
-  }
-
-  const countLabel = document.querySelector('#countLabel');
-  if(countLabel){
-    if(!filtered.length){
-      countLabel.textContent = '0 titre affiché';
-    }else{
-      countLabel.textContent = `Affichage ${pagination.start + 1}–${pagination.end} sur ${filtered.length} titre${filtered.length > 1 ? 's' : ''}`;
-    }
-  }
-}
-
-
-function paginateCatalogue(list){
-  const total = list.length;
-  const perPage = getCataloguePageSize();
-  const totalPages = Math.max(1, Math.ceil(total / perPage));
-  state.cataloguePage = Math.min(Math.max(1, state.cataloguePage), totalPages);
-
-  const start = (state.cataloguePage - 1) * perPage;
-  const end = Math.min(total, start + perPage);
-
-  const input = document.querySelector('#catalogueGotoInput');
-  if(input){
-    input.value = state.cataloguePage;
-    input.max = totalPages;
-  }
-
-  return {
-    total,
-    page: state.cataloguePage,
-    perPage,
-    totalPages,
-    start,
-    end,
-    items: list.slice(start, end)
-  };
-}
-
-function getCataloguePageSize(){
-  if(state.cataloguePageSize !== 'auto'){
-    const value = Number(state.cataloguePageSize);
-    return Number.isFinite(value) && value > 0 ? value : 24;
-  }
-
-  const grid = document.querySelector('#catalogueGrid');
-  const containerWidth = grid?.clientWidth || document.querySelector('#catalogueFullSection')?.clientWidth || window.innerWidth;
-  const cardMinWidth = 220;
-  const gap = 18;
-  const columns = Math.max(1, Math.floor((containerWidth + gap) / (cardMinWidth + gap)));
-
-  // Auto = une vraie page écran, pas un puits sans fond : assez pour respirer, pas assez pour noyer.
-  const rows = window.innerWidth >= 1180 ? 4 : window.innerWidth >= 760 ? 3 : 4;
-  return Math.max(6, columns * rows);
-}
-
-function renderCataloguePagination(pagination){
-  const nav = document.querySelector('[data-pagination]');
-  const panel = document.querySelector('#catalogueFullSection .catalogue-bottom-panel');
-  if(!nav) return;
-
-  const shouldPaginate = pagination.totalPages > 1;
-  if(panel) panel.style.display = pagination.total ? 'flex' : 'none';
-
-  nav.innerHTML = '';
-  if(!shouldPaginate) return;
-
-  const prev = createPageButton('‹ Précédent', pagination.page - 1, pagination.page <= 1, 'prev');
-  const next = createPageButton('Suivant ›', pagination.page + 1, pagination.page >= pagination.totalPages, 'next');
-  const numbers = document.createElement('div');
-  numbers.className = 'page-numbers';
-
-  getPageWindow(pagination.page, pagination.totalPages).forEach(entry => {
-    if(entry === '…'){
-      const ellipsis = document.createElement('span');
-      ellipsis.className = 'page-ellipsis';
-      ellipsis.textContent = '…';
-      numbers.appendChild(ellipsis);
-      return;
-    }
-    numbers.appendChild(createPageButton(String(entry), entry, false, 'page-number', entry === pagination.page));
-  });
-
-  nav.append(prev, numbers, next);
-}
-
-function createPageButton(label, page, disabled = false, className = '', active = false){
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.textContent = label;
-  button.dataset.page = page;
-  if(className) button.className = className;
-  if(active) button.classList.add('active');
-  if(disabled) button.disabled = true;
-  return button;
-}
-
-function getPageWindow(current, total){
-  if(total <= 7) return Array.from({length: total}, (_, index) => index + 1);
-
-  const pages = new Set([1, total, current, current - 1, current + 1]);
-  if(current <= 3){ pages.add(2); pages.add(3); pages.add(4); }
-  if(current >= total - 2){ pages.add(total - 1); pages.add(total - 2); pages.add(total - 3); }
-
-  const sorted = [...pages].filter(page => page >= 1 && page <= total).sort((a,b) => a - b);
-  const output = [];
-  sorted.forEach((page, index) => {
-    if(index && page - sorted[index - 1] > 1) output.push('…');
-    output.push(page);
-  });
-  return output;
-}
-
-function updateCatalogueUrl(){
-  const params = new URLSearchParams(window.location.search);
-  if(state.filter && state.filter !== 'all') params.set('filter', state.filter);
-  else params.delete('filter');
-
-  if(state.search) params.set('search', state.search);
-  else params.delete('search');
-
-  if(state.cataloguePage > 1) params.set('page', state.cataloguePage);
-  else params.delete('page');
-
-  if(state.cataloguePageSize && state.cataloguePageSize !== 'auto') params.set('perPage', state.cataloguePageSize);
-  else params.delete('perPage');
-
-  const query = params.toString();
-  const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash || '#catalogue'}`;
-  window.history.replaceState(null, '', url);
-}
-
-function debounce(fn, delay = 180){
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
+  if(catalogueTitle) catalogueTitle.textContent = state.filter === 'manga' ? 'Catalogue Manga' : 'Catalogue complet';
+  document.querySelector('#countLabel').textContent = `${filtered.length} titre${filtered.length > 1 ? 's' : ''} affiché${filtered.length > 1 ? 's' : ''}`;
 }
 
 function getHeroItems(){
