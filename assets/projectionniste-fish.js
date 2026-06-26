@@ -238,17 +238,17 @@
   const requestedType = /\bserie|series\b/.test(m) ? 'serie' : /manga|anime/.test(m) ? 'manga' : /\bfilm|films\b/.test(m) ? 'film' : null;
   const wantsSuperHero = /super ?heros|superhero|super hero|marvel|dc comics|batman|superman|spiderman|spider man|avengers|venom|joker/.test(m);
   const genreMap = [
-    ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi']],
-    ['horreur', ['horreur', 'peur', 'gore', 'epouvante']],
+    ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi', 'futuriste']],
+    ['horreur', ['horreur', 'horrifique', 'peur', 'gore', 'epouvante', 'épouvante']],
     ['thriller', ['thriller', 'suspense']],
     ['action', ['action', 'baston']],
     ['aventure', ['aventure']],
-    ['comédie', ['comedie', 'drôle', 'drole', 'humour', 'fun']],
-    ['drame', ['drame', 'triste']],
+    ['comédie', ['comedie', 'comique', 'humour', 'humoristique', 'drôle', 'drole', 'fun']],
+    ['drame', ['drame', 'dramatique', 'triste', 'émouvant', 'emouvant']],
     ['crime', ['crime', 'policier', 'enquete', 'enquête']],
     ['mystère', ['mystere', 'mystère']],
-    ['romance', ['romance', 'amour']],
-    ['fantastique', ['fantastique', 'fantasy']],
+    ['romance', ['romance', 'romantique', 'amour']],
+    ['fantastique', ['fantastique', 'fantasy', 'magique']],
     ['animation', ['animation', 'dessin anime', 'enfant', 'famille', 'familial']]
   ];
 
