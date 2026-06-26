@@ -233,7 +233,84 @@ function fishMovieMatchesRequestedGenre(movie, genreKey) {
 
   return aliases.some(alias => fishHasPhrase(movieText, alias));
 }
+function fishFormatDuration(minutes) {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
 
+  if (h && m) return `${h}h${String(m).padStart(2, '0')}`;
+  if (h) return `${h}h`;
+  return `${m} min`;
+}
+
+function fishDetectDurationFilter(message) {
+  const m = fishNormalize(message);
+
+  const lessHour = /(moins(?: de| d)?|maximum|max|pas plus de|sous|inferieur a)\s*(\d+)\s*h\s*(\d{1,2})?/.exec(m);
+
+  if (lessHour) {
+    const hours = Number(lessHour[2]) || 0;
+    const minutes = Number(lessHour[3]) || 0;
+    const max = hours * 60 + minutes;
+
+    return {
+      max,
+      label: `de moins de ${fishFormatDuration(max)}`
+    };
+  }
+
+  const lessSimple = /(moins(?: de| d)?|maximum|max|pas plus de|sous|inferieur a)\s*(\d+)\s*(h|heure|heures|min|minute|minutes)?/.exec(m);
+
+  if (lessSimple) {
+    const value = Number(lessSimple[2]) || 0;
+    const unit = lessSimple[3] || 'h';
+    const max = unit.includes('min') ? value : value * 60;
+
+    return {
+      max,
+      label: `de moins de ${fishFormatDuration(max)}`
+    };
+  }
+
+  if (/court|rapide|pas trop long/.test(m)) {
+    return {
+      max: 110,
+      label: 'pas trop long'
+    };
+  }
+
+  const moreSimple = /(plus(?: de| d)?|au moins|minimum|min)\s*(\d+)\s*(h|heure|heures|min|minute|minutes)?/.exec(m);
+
+  if (moreSimple) {
+    const value = Number(moreSimple[2]) || 0;
+    const unit = moreSimple[3] || 'h';
+    const min = unit.includes('min') ? value : value * 60;
+
+    return {
+      min,
+      label: `de plus de ${fishFormatDuration(min)}`
+    };
+  }
+
+  return null;
+}
+
+function fishMovieMatchesDuration(movie, durationFilter) {
+  if (!durationFilter) return true;
+
+  const runtime = getRuntimeMinutes(movie);
+
+  if (!runtime) return false;
+
+  if (durationFilter.max && runtime > durationFilter.max) {
+    return false;
+  }
+
+  if (durationFilter.min && runtime < durationFilter.min) {
+    return false;
+  }
+
+  return true;
+}
 function fishFormatTitleResults(results, intro) {
   const visibleResults = results.slice(0, 5);
   const remaining = results.length - visibleResults.length;
@@ -259,14 +336,28 @@ function fishAnswerGenreRequest(message, catalogue) {
   }
 
   const movies = Array.isArray(catalogue) ? catalogue : [];
-  const results = movies.filter(movie => fishMovieMatchesRequestedGenre(movie, genreKey));
+  const durationFilter = fishDetectDurationFilter(message);
   const label = FISH_GENRE_LABELS[genreKey] || genreKey;
 
-  if (!results.length) {
+  const genreResults = movies.filter(movie => fishMovieMatchesRequestedGenre(movie, genreKey));
+
+  if (!genreResults.length) {
     return `Je ne trouve pas de film ${label} dans le catalogue. Je préfère ne pas inventer, mon bocal a encore deux ou trois principes.`;
   }
 
-  return fishFormatTitleResults(results, `Pour un film ${label}, j’ai trouvé :`);
+  const results = durationFilter
+    ? genreResults.filter(movie => fishMovieMatchesDuration(movie, durationFilter))
+    : genreResults;
+
+  if (!results.length && durationFilter) {
+    return `J’ai trouvé des titres ${label}, mais aucun ${durationFilter.label} avec une durée fiable dans le JSON. Le poisson refuse le chronomètre au doigt mouillé.`;
+  }
+
+  const intro = durationFilter
+    ? `Pour un film ${label} ${durationFilter.label}, j’ai trouvé :`
+    : `Pour un film ${label}, j’ai trouvé :`;
+
+  return fishFormatTitleResults(results, intro);
 }
 
   if (!widget || !chat || !form || !input || !messages) return;
