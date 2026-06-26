@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.4.2-sagas-poster-cards" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.3-sagas-editorial-filter" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
 
   <style>
@@ -523,7 +523,7 @@
       </a>
       <div class="footer-bottom-line">
         <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
-        <span class="footer-version">Build v3.4.2-sagas</span>
+        <span class="footer-version">Build v3.4.3-sagas</span>
       </div>
     </div>
   </footer>
@@ -552,12 +552,13 @@
       { match:["star wars"], title:"Star Wars", color:"#4f8cff", genre:"Science-Fiction", text:"Galaxies lointaines, conflits stellaires et destinées lumineuses." },
       { match:["jurassic"], title:"Jurassic Park", color:"#70e344", genre:"Aventure", text:"Jungle humide, traces gigantesques et science qui éternue." },
       { match:["mission impossible"], title:"Mission Impossible", color:"#ff9b2f", genre:"Action", text:"Briefings impossibles, comptes à rebours et cascades en altitude." },
-      { match:["batman","dark knight"], title:"Batman", color:"#ffd66b", genre:"Action", text:"Ville noire, justice masquée et ciel percé de projecteurs." },
-      { match:["fast","furious"], title:"Fast & Furious", color:"#ff4fd8", genre:"Action", text:"Moteurs furieux, familles choisies et asphalt sous adrénaline." },
-      { match:["dune"], title:"Dune", color:"#e7b75c", genre:"Science-Fiction", text:"Déserts sacrés, maisons rivales et destin prophétique." },
-      { match:["spider-man","spiderman"], title:"Spider-Man", color:"#ff355d", genre:"Action", text:"Ville verticale, responsabilités et élans héroïques." },
-      { match:["avengers","marvel"], title:"Marvel", color:"#c34dff", genre:"Action", text:"Héros croisés, menaces cosmiques et univers partagé." }
+      { match:["batman","dark knight"], title:"Batman", color:"#ffd66b", genre:"Action", text:"Ville noire, justice masquée et ciel percé de projecteurs." }
     ];
+
+    // Sélection éditoriale volontaire : on évite que TMDb transforme chaque mini-suite
+    // en grande saga orbitale. Grave Encounters attendra son festival du nanar.
+    const FEATURED_SAGA_ORDER = SAGA_PROFILES.map(profile => profile.title);
+    const FEATURED_SAGA_KEYS = new Set(FEATURED_SAGA_ORDER.map(slugify));
 
     function normalize(str){
       return String(str || "")
@@ -669,6 +670,8 @@
         const profile = getProfile(collectionName, item);
         const key = slugify(profile.title || collectionName);
 
+        if(!FEATURED_SAGA_KEYS.has(key)) return;
+
         if(!groups.has(key)){
           groups.set(key, {
             key,
@@ -691,7 +694,7 @@
         saga.startYear = saga.years.length ? Math.min(...saga.years) : null;
         saga.endYear = saga.years.length ? Math.max(...saga.years) : null;
         return saga;
-      }).sort((a,b) => a.title.localeCompare(b.title, "fr"));
+      }).sort((a,b) => FEATURED_SAGA_ORDER.indexOf(a.title) - FEATURED_SAGA_ORDER.indexOf(b.title));
     }
 
     function renderSagas(sagas, filter = "all"){
@@ -770,8 +773,8 @@
       if(!sagas.length){
         document.getElementById("sagasGrid").innerHTML = `
           <div class="saga-empty">
-            Aucune saga détectée pour le moment. Vérifie que les films du JSON contiennent une collection TMDb
-            ou qu'ils correspondent à une saga connue. Le moteur est prêt, il attend juste sa cargaison.
+            Aucune des 10 sagas sélectionnées n'a été détectée pour le moment. Vérifie que les premiers films
+            sont bien présents dans le JSON et qu'ils correspondent à la sélection éditoriale.
           </div>`;
         return;
       }
