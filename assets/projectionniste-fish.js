@@ -323,7 +323,34 @@
     }
   });
 
-return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsShort, wantsSuperHero, requestedType, wantedGenres, terms };
+ const wantsDirector = /\b(realise par|realisateur|realisatrice|de christopher|de nolan|par nolan)\b/i.test(m);
+  const wantsActor = /avec|acteur|actrice|joue|casting/.test(m);
+
+  const hasStrongSignal =
+    wantedGenres.length > 0 ||
+    wantsDirector ||
+    wantsActor ||
+    wantsSuperHero ||
+    terms.length >= 2;
+
+  return {
+    m,
+    durationMax,
+    wantsBest,
+    wantsRandom,
+    wantsPremium,
+    wantsKids,
+    wantsShort,
+    wantsSuperHero,
+    wantsDirector,
+    wantsActor,
+    hasStrongSignal,
+    requestedType,
+    wantedGenres,
+    terms
+  };
+
+
 }
 
   function scoreItem(item, intent) {
@@ -382,19 +409,21 @@ return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsS
   else score -= 18;
 }
 
-    for (const wanted of intent.wantedGenres) {
-      if (genres.some(g => g.includes(normalize(wanted)))) score += 14;
-      else score -= 2;
-    }
+   for (const wanted of intent.wantedGenres) {
+  if (genres.some(g => g.includes(normalize(wanted)))) score += 30;
+  else score -= 10;
+}
 
-    for (const term of intent.terms) {
-      if (title.includes(term)) score += 12;
-      else if (cast.includes(term)) score += 9;
-      else if (director.includes(term)) score += 8;
-      else if (genres.some(g => g.includes(term))) score += 7;
-      else if (overview.includes(term)) score += 2;
-      else if (haystack.includes(term)) score += 1;
-    }
+ for (const term of intent.terms) {
+  if (title.includes(term)) score += 24;
+  else if (intent.wantsActor && cast.includes(term)) score += 28;
+  else if (intent.wantsDirector && director.includes(term)) score += 45;
+  else if (!intent.wantsActor && !intent.wantsDirector && cast.includes(term)) score += 14;
+  else if (!intent.wantsActor && director.includes(term)) score += 18;
+  else if (genres.some(g => g.includes(term))) score += 12;
+  else if (overview.includes(term)) score += 3;
+  else if (haystack.includes(term)) score += 1;
+}
 
     if (intent.wantsBest) score += Number(item.rating || 0);
     if (item.premium) score += .8;
@@ -402,24 +431,37 @@ return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsS
   }
 
   function pickResults(catalogue, intent) {
-    let candidates = catalogue
-      .map(item => ({ item, score: scoreItem(item, intent) }))
-      .filter(entry => entry.score > 0);
+  let candidates = catalogue
+    .map(item => ({ item, score: scoreItem(item, intent) }))
+    .filter(entry => entry.score >= 35);
 
-    if (intent.wantsRandom && !candidates.length) {
-      candidates = catalogue.map(item => ({ item, score: Math.random() * 10 + Number(item.rating || 0) }));
-    }
-
-    if (intent.wantsBest) {
-      candidates.sort((a, b) => Number(b.item.rating || 0) - Number(a.item.rating || 0) || b.score - a.score);
-    } else if (intent.wantsRandom) {
-      candidates.sort(() => Math.random() - .5);
-    } else {
-      candidates.sort((a, b) => b.score - a.score || String(a.item.title || '').localeCompare(String(b.item.title || ''), 'fr'));
-    }
-
-    return candidates.slice(0, 5).map(entry => entry.item);
+  if (intent.hasStrongSignal) {
+    candidates = candidates.filter(entry => entry.score >= 55);
   }
+
+  if (intent.wantsRandom && !candidates.length) {
+    candidates = catalogue.map(item => ({
+      item,
+      score: Math.random() * 10 + Number(item.rating || 0)
+    }));
+  }
+
+  if (intent.wantsBest) {
+    candidates.sort((a, b) =>
+      Number(b.item.rating || 0) - Number(a.item.rating || 0) ||
+      b.score - a.score
+    );
+  } else if (intent.wantsRandom) {
+    candidates.sort(() => Math.random() - .5);
+  } else {
+    candidates.sort((a, b) =>
+      b.score - a.score ||
+      String(a.item.title || '').localeCompare(String(b.item.title || ''), 'fr')
+    );
+  }
+
+  return candidates.slice(0, 5).map(entry => entry.item);
+}
 
   function buildCatalogueAnswer(rawMessage, catalogue) {
   const intent = detectIntent(rawMessage);
