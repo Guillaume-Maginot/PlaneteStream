@@ -406,6 +406,190 @@
       .saga-filter-row{width:100%}
       .saga-pill{flex:1;justify-content:center}
     }
+
+
+    /* === V3.4.2 - Sagas : cartes poster + panneau infos === */
+    .sagas-grid{
+      grid-template-columns:repeat(auto-fit,minmax(218px,1fr));
+      gap:18px;
+      align-items:start;
+    }
+
+    .saga-card.saga-poster-card{
+      min-height:0;
+      border-radius:22px;
+      background:
+        radial-gradient(circle at 20% 0%, var(--saga-color-soft), transparent 34%),
+        linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025)),
+        #070612;
+      border-color:rgba(255,255,255,.11);
+      box-shadow:0 16px 40px rgba(0,0,0,.34);
+    }
+
+    .saga-card.saga-poster-card::before{
+      opacity:.55;
+      background:
+        radial-gradient(circle at 50% 8%, var(--saga-color-soft), transparent 34%),
+        linear-gradient(180deg,rgba(255,255,255,.04),transparent 40%);
+    }
+
+    .saga-card.saga-poster-card > a{
+      position:relative;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      min-height:100%;
+      color:inherit;
+    }
+
+    .saga-card.saga-poster-card:hover{
+      transform:translateY(-5px) scale(.995);
+      border-color:color-mix(in srgb, var(--saga-color) 64%, white 16%);
+      box-shadow:
+        0 0 22px var(--saga-color-soft),
+        0 0 36px rgba(255,45,85,.12),
+        0 20px 48px rgba(0,0,0,.48);
+    }
+
+    .saga-poster{
+      position:relative;
+      inset:auto;
+      z-index:1;
+      width:100%;
+      aspect-ratio:2 / 3;
+      min-height:0;
+      background-size:cover;
+      background-position:center;
+      filter:saturate(1.08) brightness(1.02);
+      transform:none;
+      overflow:hidden;
+      border-radius:22px 22px 0 0;
+      transition:transform .45s ease,filter .45s ease;
+    }
+
+    .saga-card:hover .saga-poster{
+      transform:scale(1.018);
+      filter:saturate(1.18) brightness(1.06);
+    }
+
+    .saga-poster::before{
+      display:none;
+    }
+
+    .saga-poster::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--saga-color) 32%, transparent), transparent 26%),
+        linear-gradient(to bottom, rgba(255,255,255,.05), transparent 24%, rgba(3,4,11,.06));
+      mix-blend-mode:screen;
+      opacity:.36;
+    }
+
+    .saga-dust{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      pointer-events:none;
+      opacity:.46;
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.42) 0 1px, transparent 3px),
+        radial-gradient(circle at 76% 18%, color-mix(in srgb, var(--saga-color) 60%, white 10%) 0 2px, transparent 4px),
+        radial-gradient(circle at 58% 76%, rgba(255,45,85,.34) 0 1px, transparent 3px),
+        radial-gradient(circle at 38% 54%, color-mix(in srgb, var(--saga-color) 48%, transparent) 0 2px, transparent 5px);
+      background-size:135px 135px,190px 190px,240px 240px,310px 310px;
+      filter:drop-shadow(0 0 4px var(--saga-color-soft));
+      animation:sagaCardDust 20s linear infinite, sagaPosterTwinkle 3.2s ease-in-out infinite alternate;
+    }
+
+    .saga-badge{
+      top:12px;
+      right:12px;
+      z-index:5;
+      background:rgba(3,4,11,.70);
+      border-color:color-mix(in srgb, var(--saga-color) 48%, white 18%);
+      box-shadow:0 0 16px var(--saga-color-soft),0 8px 20px rgba(0,0,0,.35);
+    }
+
+    .saga-content{
+      position:relative;
+      z-index:3;
+      min-height:0;
+      padding:16px 16px 18px;
+      justify-content:flex-start;
+      border-top:1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(circle at 22% 8%, var(--saga-color-soft), transparent 36%),
+        linear-gradient(135deg, color-mix(in srgb, var(--saga-color) 13%, transparent), transparent 42%),
+        rgba(6,5,16,.95);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+    }
+
+    .saga-content::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.34;
+      background-image:
+        radial-gradient(circle at 20% 22%, rgba(255,255,255,.38) 0 1px, transparent 2px),
+        radial-gradient(circle at 78% 62%, color-mix(in srgb, var(--saga-color) 55%, transparent) 0 1px, transparent 2px);
+      background-size:120px 120px,170px 170px;
+    }
+
+    .saga-content h2,
+    .saga-content .eyebrow{
+      display:none;
+    }
+
+    .saga-description{
+      position:relative;
+      z-index:1;
+      min-height:44px;
+      max-width:100%;
+      color:#e0d8f4;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .saga-meta{
+      position:relative;
+      z-index:1;
+      margin:13px 0 15px;
+      gap:7px;
+    }
+
+    .saga-meta span{
+      min-height:27px;
+      padding:0 9px;
+      border-color:color-mix(in srgb, var(--saga-color) 30%, white 12%);
+      background:rgba(255,255,255,.075);
+      font-size:11px;
+      box-shadow:inset 0 0 12px color-mix(in srgb, var(--saga-color) 11%, transparent);
+    }
+
+    .saga-link{
+      position:relative;
+      z-index:1;
+      min-height:38px;
+      padding:0 14px;
+      font-size:12px;
+      background:rgba(8,6,20,.70);
+    }
+
+    @keyframes sagaPosterTwinkle{
+      from{opacity:.30;}
+      to{opacity:.52;}
+    }
+
+    @media(max-width:680px){
+      .sagas-grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;}
+      .saga-description{font-size:12px;min-height:58px;}
+      .saga-content{padding:14px;}
+    }
+
   </style>
 </head>
 <body>
@@ -722,16 +906,16 @@
         const sagaUrl = `saga.html?id=${encodeURIComponent(saga.key)}`;
 
         return `
-          <article class="saga-card" style="--saga-color:${saga.color};--saga-color-soft:${hexToRgba(saga.color, .22)}" data-saga-genre="${saga.genre}">
+          <article class="saga-card saga-poster-card" style="--saga-color:${saga.color};--saga-color-soft:${hexToRgba(saga.color, .22)}" data-saga-genre="${saga.genre}">
             <a href="${sagaUrl}" aria-label="Explorer la saga ${escapeHtml(saga.title)}">
-              <div class="saga-poster" style="${posterStyle}" aria-hidden="true"></div>
-              <div class="saga-dust" aria-hidden="true"></div>
-              <span class="saga-badge">${count} ${count > 1 ? "films" : "film"}</span>
+              <div class="saga-poster" style="${posterStyle}" aria-hidden="true">
+                <div class="saga-dust" aria-hidden="true"></div>
+                <span class="saga-badge">${count} ${count > 1 ? "films" : "film"}</span>
+              </div>
               <div class="saga-content">
-                <p class="eyebrow">Saga</p>
-                <h2>${escapeHtml(saga.title)}</h2>
                 <p class="saga-description">${escapeHtml(saga.text)}</p>
                 <div class="saga-meta">
+                  <span>${count} ${count > 1 ? "films" : "film"}</span>
                   <span>${escapeHtml(yearsLabel)}</span>
                   <span>${escapeHtml(saga.genre)}</span>
                 </div>
