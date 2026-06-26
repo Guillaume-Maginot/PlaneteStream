@@ -2021,6 +2021,1019 @@
     "featured": false
   },
   {
+    "title": "Moi, quand je me réincarne en Slime",
+    "slug": "moi-quand-je-me-reincarne-en-slime",
+    "originalTitle": "転生したらスライムだった件",
+    "year": "2018",
+    "releaseDate": "2018-10-02",
+    "type": "manga",
+    "mediaType": "manga",
+    "category": "manga",
+    "genres": [
+      "Action & Adventure",
+      "Animation",
+      "Science-Fiction & Fantastique",
+      "Comédie"
+    ],
+    "director": "À compléter",
+    "cast": [
+      {
+        "id": 2138490,
+        "name": "Okasaki Miho",
+        "character": "Rimuru (voice)",
+        "profile_path": "/6vxRulNZRaW47UFvVEq9poRekUx.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/6vxRulNZRaW47UFvVEq9poRekUx.jpg"
+      },
+      {
+        "id": 1249235,
+        "name": "Tomoaki Maeno",
+        "character": "Veldora (voice)",
+        "profile_path": "/w3lEuXSbEyzzNyO3YnxsF6wm2N5.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/w3lEuXSbEyzzNyO3YnxsF6wm2N5.jpg"
+      },
+      {
+        "id": 1248374,
+        "name": "Takuya Eguchi",
+        "character": "Souei (voice)",
+        "profile_path": "/hPPhUp0mM65Lc87Q8WXUEmGQAXx.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hPPhUp0mM65Lc87Q8WXUEmGQAXx.jpg"
+      },
+      {
+        "id": 552683,
+        "name": "Hōchū Ōtsuka",
+        "character": "Hakurou (voice)",
+        "profile_path": "/3RHQcrsWnAFK6AifSis1lMq08cR.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3RHQcrsWnAFK6AifSis1lMq08cR.jpg"
+      },
+      {
+        "id": 1849550,
+        "name": "Asuna Tomari",
+        "character": "Gobta (voice)",
+        "profile_path": "/1UrGvjjGi5p0GvVugjbzGutU6vu.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/1UrGvjjGi5p0GvVugjbzGutU6vu.jpg"
+      },
+      {
+        "id": 2020073,
+        "name": "Chikahiro Kobayashi",
+        "character": "Ranga (voice)",
+        "profile_path": "/dD0xdWLQubyRKAnI3rWpeV35XxD.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dD0xdWLQubyRKAnI3rWpeV35XxD.jpg"
+      },
+      {
+        "id": 115301,
+        "name": "福島潤",
+        "character": "Gabiru (voice)",
+        "profile_path": "/xo2A4cr8TnhC9rLFxSQvhwCbIOw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xo2A4cr8TnhC9rLFxSQvhwCbIOw.jpg"
+      },
+      {
+        "id": 89883,
+        "name": "Rie Tanaka",
+        "character": "Trainie (voice)",
+        "profile_path": "/wBWsjzwpFovyHDv027zU0oZyWHd.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wBWsjzwpFovyHDv027zU0oZyWHd.jpg"
+      },
+      {
+        "id": 1116334,
+        "name": "日高里菜",
+        "character": "Milim (voice)",
+        "profile_path": "/7JupZGvqcq4dRxiTKpPxzg8NUS4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7JupZGvqcq4dRxiTKpPxzg8NUS4.jpg"
+      },
+      {
+        "id": 1923834,
+        "name": "春野杏",
+        "character": "Rimiris (voice)",
+        "profile_path": "/bNm7W2AQbLRZs3lwsDbArSIjQMX.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/bNm7W2AQbLRZs3lwsDbArSIjQMX.jpg"
+      }
+    ],
+    "runtime": 0,
+    "seasons": 4,
+    "episodes": 96,
+    "seasonsData": [
+      {
+        "seasonNumber": 1,
+        "title": "Saison 1",
+        "overview": "Satoru Mikami, un employé lambda, se fait poignarder dans la rue et alors qu'il succombe à ses blessures, une voix incompréhensible résonne dans son esprit. Il reprend conscience seulement pour découvrir qu'il s'est réincarné en slime dans un autre monde. Il a également acquis de nouvelles compétences : le pouvoir de dévorer n'importe quoi et d'imiter son apparence et ses capacités. Il tombe soudainement sur le Dragon des Tempêtes Veldra qui avait été enfermé pendant des décennies. Satoru se lie d'amitié avec lui, promettant de l'aider à détruire son sceau. En retour, Veldra lui confère le nom de Limule Tempest pour lui accorder la protection divine. Désormais libéré de son ancienne vie, Limule se lance dans un nouveau voyage avec un objectif en tête...",
+        "poster": "https://image.tmdb.org/t/p/w500/mDpyhtI79PxvCs9zMKoTRXiUatf.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Veldra, le dragon des ouragans",
+            "overview": "Satoru Mikami, célibataire fort satisfait de son existence, meurt en pleine rue, victime d’un déséquilibré. Ayant sacrifié sa vie pour sauver celle de son jeune collègue, il reprend conscience dans un corps des plus étranges, gélatineux, sans yeux ni membres. Une voix désincarnée détaille l’évolution de ses capacités, qui s’accroissent à la demande. Satoru est devenu… un slime !",
+            "runtime": 24,
+            "airDate": "2018-10-02",
+            "still": "https://image.tmdb.org/t/p/w500/kn2O2A6yxvPNjyxJ2gJmW6l8qzs.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/4d9lnx16ko7p\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Rencontre avec des gobelins",
+            "overview": "Aux grands maux, les grands remèdes ! Pour délivrer Veldra de sa prison, notre héros n’a pas trente-six solutions : il est obligé de l’absorber pour essayer de détruire le sceau. Il y perd la présence bavarde de son ami, mais il y gagne un nom, de nouvelles compétences… Le voici prêt à sortir de la grotte !",
+            "runtime": 24,
+            "airDate": "2018-10-09",
+            "still": "https://image.tmdb.org/t/p/w500/bl7NSSaMhVQFAUdVMyyzylfZ5Be.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/9lnec5o3eihh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "La bataille du village gobelin",
+            "overview": "Limule s’est donc trouvé un village à défendre et des adorateurs à protéger. Mais aussi puissant soit-il, il ne peut pas combattre seul la sanguinaire Tribu des crocs, et ce ne sont pas ses sujets, chétifs et mal armés, qui pourront l'aider. Il ne lui reste donc que la ruse…",
+            "runtime": 24,
+            "airDate": "2018-10-16",
+            "still": "https://image.tmdb.org/t/p/w500/uB7iLDVu1DXXk8u4IOr3O4eWAY1.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/y8dv6yvrr4wi\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Au royaume des nains",
+            "overview": "Après la guerre, la reconstruction… quand on a les compétences pour, ce qui n’est pas le cas des gobelins. Limule part recruter des artisans à Dwargon, au royaume des nains. Dès son arrivée, il est contraint de sortir le grand jeu pour se défendre.",
+            "runtime": 24,
+            "airDate": "2018-10-23",
+            "still": "https://image.tmdb.org/t/p/w500/4kAo0igLqN4ql5IjOXFM1x2qE40.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/i47zkucfcbzw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Le roi héroïque, Gazehr Dwargo",
+            "overview": "La fête donnée en l’honneur de Limule tourne court lorsque l’ennemi juré de Kaijin fait irruption et insulte notre héros. Une bonne raclée plus tard, Limule retourne donc en prison. Car non seulement les bagarres sont strictement interdites à Dwargon, mais de plus, le malappris en question est un des ministres du roi.",
+            "runtime": 24,
+            "airDate": "2018-10-30",
+            "still": "https://image.tmdb.org/t/p/w500/jZiQCe4EvUZMYUqdztgzmqgNYUH.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hzsmh4qpowil\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Shizu",
+            "overview": "Banni à vie de Dwargon, mais ayant atteint son but, Limule est de retour avec ses artisans. Tout le monde se met au travail, afin de construire un village qui puisse accueillir également les cinq cents gobelins venus grossir les rangs de la tribu. Pendant ce temps, trois aventuriers en route vers la forêt de Jura sont rejoints par une mystérieuse guerrière masquée.",
+            "runtime": 24,
+            "airDate": "2018-11-06",
+            "still": "https://image.tmdb.org/t/p/w500/umRZpXoBQ6L1KbSm9g74ZSofJ9J.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/eop3cu073r4g\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "La maîtresse des flammes",
+            "overview": "Shizu s’apprête à quitter ses nouveaux amis pour poursuivre sa dernière quête. Ni ses compagnons d’aventure ni Limule ne se doutent des douloureux secrets qui emplissent son âme. Ni de la menace qu’elle représente en réalité…",
+            "runtime": 24,
+            "airDate": "2018-11-13",
+            "still": "https://image.tmdb.org/t/p/w500/eCFR8aqyILnl6sUS3QgFNFkMH6r.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/e9vp7mqdvs98\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "La transmission d'une volonté",
+            "overview": "Après avoir vaincu Ifrit, Limule demeure au chevet de Shizu, recueillant les confidences qui tombent des lèvres de la maîtresse des flammes. Touché par la tristesse de son destin, il lui fait une promesse qui va tout changer.",
+            "runtime": 24,
+            "airDate": "2018-11-20",
+            "still": "https://image.tmdb.org/t/p/w500/2rLu3nl83nHbvqE435xAlyV40yw.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/p47m32ivwzam\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 9,
+            "title": "L’attaque des ogres",
+            "overview": "Ayant enfin accès à une forme humaine, Limule récupère du même coup certains des sens dont il était privé depuis sa mort. Mais l’accalmie est de courte durée : la patrouille chargée de l’approvisionnement est attaquée par des ogres.",
+            "runtime": 24,
+            "airDate": "2018-11-27",
+            "still": "https://image.tmdb.org/t/p/w500/c3XhKRZlM7HLkhHpmzi2z2aeiZD.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/z90pm8iq1csk\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 10,
+            "title": "Le seigneur orc",
+            "overview": "Tout à la joie de savourer son premier repas depuis longtemps, Limule n’en oublie pas pour autant ses invités. S’inquiétant pour leur avenir, il leur propose de se mettre à son service, en échange de sa protection. Car, il le sait, l’attaque du village ogre est de très mauvais augure pour toutes les créatures de la forêt.",
+            "runtime": 24,
+            "airDate": "2018-12-04",
+            "still": "https://image.tmdb.org/t/p/w500/hMerUrDesUpiZyynGMsQjE5BgDq.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/zbn550nscsgv\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 11,
+            "title": "Gabiru entre en scène !",
+            "overview": "Après avoir eu un aperçu des talents culinaires de Shion, Limule reçoit une délégation d’hommes-lézards, mais le ton et les propos de leur chef agacent très vite le slime et ses amis.",
+            "runtime": 24,
+            "airDate": "2018-12-11",
+            "still": "https://image.tmdb.org/t/p/w500/8qmpYCQouyHFFC0iR77I6KBoF2u.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3yu3029f15ay\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 12,
+            "title": "Un implacable engrenage",
+            "overview": "Devant l’avancée de l’armée orque, les hommes-lézards ne sont pas les seuls à se chercher des alliés. Une des gardiennes de la forêt interrompt une réunion des chefs du village pour demander à Limule de tuer le seigneur orc. De son côté, Gabiru n’a pas dit son dernier mot, ce qui est bien dommage.",
+            "runtime": 24,
+            "airDate": "2018-12-18",
+            "still": "https://image.tmdb.org/t/p/w500/4sekRZzE4nat8VytAhTUVGEEpYK.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/jae6k3poc7nh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 13,
+            "title": "Le grand affrontement",
+            "overview": "Limule et ses troupes, enfin prêts à se frotter au fameux seigneur orc et à son armée de cannibales, ont mis le cap sur les marais des hommes-lézards. Pendant ce temps, Gabiru résiste héroïquement, mais le temps qu’il comprenne bien la situation, celle-ci échappe complètement à son contrôle.",
+            "runtime": 24,
+            "airDate": "2018-12-25",
+            "still": "https://image.tmdb.org/t/p/w500/9PcZM0qOxB5AnE6IPSGJFW9JG3V.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3gmt78dgvrly\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 14,
+            "title": "Le dévoreur",
+            "overview": "Depuis les airs, d’où il observe la bataille, Limule a repéré le seigneur orc. Au moment où il s’apprête à l’attaquer, surgit l’un des responsables de toute cette pagaille : Germudo, le démon masqué.",
+            "runtime": 24,
+            "airDate": "2019-01-08",
+            "still": "https://image.tmdb.org/t/p/w500/46oZhigxWtncWcTRtu60TWuXZiv.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/j4dcc2bzboaa\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 15,
+            "title": "La confrérie de la forêt de Jura",
+            "overview": "Limule et ses troupes sont sortis vainqueurs du conflit qui les opposait aux orcs. Il faut dorénavant s’entendre entre vainqueurs sur le sort des prisonniers et sur le devenir de la coalition. Disparaîtra-t-elle avec la menace orque, ou lui survivra-t-elle en formant une nouvelle nation ?",
+            "runtime": 24,
+            "airDate": "2019-01-15",
+            "still": "https://image.tmdb.org/t/p/w500/iFStfGwmHg8XtloFhPlIBB3XMFn.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ukm03mej93mp\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 16,
+            "title": "L’attaque du roi-démon Millim",
+            "overview": "Allié au roi Gazehr Dwargo, Limule est à présent à la tête d’une cité florissante et bien organisée, ce qui va lui permettre de souffler un peu. Enfin, c’est ce qu’il croit, car sa puissance suscite l’intérêt d’un roi-démon très joueur.",
+            "runtime": 24,
+            "airDate": "2019-01-22",
+            "still": "https://image.tmdb.org/t/p/w500/j7IZf3gTyvS8j5K1AWv8J9EpytK.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/562k4t8m41a5\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 17,
+            "title": "Ceux qui se réunirent",
+            "overview": "L’arrivée de Millim dans la ville de Limule a encore amplifié les rumeurs qui circulent au sujet du slime. Il n’est donc pas étonnant de voir débarquer des observateurs mandatés par d’autres royaumes, mais aussi une poignée de créatures peu portées sur la diplomatie.",
+            "runtime": 24,
+            "airDate": "2019-01-29",
+            "still": "https://image.tmdb.org/t/p/w500/isClSj96Vwlv1FgYpRYoNXWbejg.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fwwkxqzlai1c\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 18,
+            "title": "Le mal se rapproche insidieusement",
+            "overview": "Les sinistres Clowns modérés, déjà à la manœuvre dans l’affaire du seigneur orc, jettent cette fois leur dévolu sur Phobio, serviteur plus fier qu’avisé du roi-démon Karion, le manipulant pour ressusciter un monstre qui avait été scellé.",
+            "runtime": 24,
+            "airDate": "2019-02-05",
+            "still": "https://image.tmdb.org/t/p/w500/7RVXfIQ1erRpRdWpaYOr5VbEuYz.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xi9guvmcw41t\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 19,
+            "title": "Charybde",
+            "overview": "Heureusement alertés par une dryade de la menace à venir, Limule et sa bande ont eu le temps de demander des renforts au roi Gazehr et de préparer un joli petit comité d’accueil à Charybde. Mais pas sûr que cela suffise…",
+            "runtime": 24,
+            "airDate": "2019-02-12",
+            "still": "https://image.tmdb.org/t/p/w500/ag2XMpv9gi3EFbjsUvHMKBRT7H8.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/jux4o3eg6d6l\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 20,
+            "title": "Yûki Kagurazaka",
+            "overview": "Quelle chance que Limule soit dépourvu de poumons, car il n’a vraiment pas le temps de souffler… Sa ville étant pour le moment à l’abri de tout danger, il se lance à la poursuite d’un objectif plus personnel, mis de côté depuis déjà longtemps.",
+            "runtime": 24,
+            "airDate": "2019-02-19",
+            "still": "https://image.tmdb.org/t/p/w500/eddUGXrqpY99Y5RWpgNsy8TVorz.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/f8nyfxxgix18\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 21,
+            "title": "Les élèves de Shizu",
+            "overview": "Limule a donc quitté sa ville et ses amis pour tenter de sauver les cinq élèves de Shizu et honorer ainsi le serment fait à la mourante. Il s’aperçoit dès le premier cours que, s’ils sont doués, ils ont peu le sens de l'effort et encore moins celui de la discipline.",
+            "runtime": 24,
+            "airDate": "2019-02-26",
+            "still": "https://image.tmdb.org/t/p/w500/waETiQ7NF5Dpcy7G853myOt9piH.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8wh6pm4pwrtk\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 22,
+            "title": "À la conquête du labyrinthe",
+            "overview": "La porte de la fameuse demeure des esprits, où Limule compte trouver des esprits assez puissants pour sauver les élèves de Shizu d’une mort certaine, se dresse devant notre slime accompagné de Ranga et des enfants. Que trouvera-t-il derrière ? La Reine des esprits l’aidera-t-elle, comme Limule l’espère ?",
+            "runtime": 24,
+            "airDate": "2019-03-05",
+            "still": "https://image.tmdb.org/t/p/w500/p5o1dVBXSiy3Sn6krkuHNAxVVjS.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/kx1hpsio02up\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 23,
+            "title": "Des âmes à sauver",
+            "overview": "Limule touche au but : il s’apprête à délivrer les élèves de Shizu de la malédiction qui les condamnait à brève échéance. En cela, il est aidé par ses propres compétences et par certains esprits plutôt coopératifs. Pour autant, tout ne se passe pas exactement comme prévu.",
+            "runtime": 24,
+            "airDate": "2019-03-12",
+            "still": "https://image.tmdb.org/t/p/w500/53AyHp2PohkqITF2HMy49rMVpmP.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/eka0ne1q486r\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 24,
+            "title": "Bonus : Le noir et le masque",
+            "overview": "Il était une fois une jeune fille au destin tragique, devenue une héroïne malgré elle grâce au démon enfermé dans son âme. Au cours de son existence d’aventurière, bien avant de rencontrer un certain slime, elle se porta volontaire pour venir en aide à un royaume aux prises avec un démon sanguinaire. Et là…",
+            "runtime": 24,
+            "airDate": "2019-03-19",
+            "still": "https://image.tmdb.org/t/p/w500/1dfhbX75RXgO0hAR08PpUR2Z3nL.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/68vphvpan0ko\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 2,
+        "title": "Saison 2",
+        "overview": "La Fédération Jura Tempest, pays fondé par Limule, est en train de former lieu propice et idyllique où les humains et les monstres peuvent cohabiter à travers des accords et des échanges commerciaux avec les pays voisins. Cependant, il existe une hostilité envers les monstres dans ce monde. Comment va-t-il faire fi de cela ? Comment pourra-t-il se faire accepter des contrées voisines ? Face à cette réalité déraisonnable, Limule devra faire un choix...",
+        "poster": "https://image.tmdb.org/t/p/w500/fmTtJfO9CBNmLpsdaJDY3asU1xY.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Le quotidien bien rempli de Limule",
+            "overview": "Pendant que ses ennemis fourbissent leurs armes, Limule continue paisiblement à mener ses projets pour Tempest. Ainsi, il envoie une délégation au pays du roi-démon Karion et doit en échange accueillir la sienne. Quels émissaires ce dernier a-t-il bien pu choisir ?",
+            "runtime": 24,
+            "airDate": "2021-01-12",
+            "still": "https://image.tmdb.org/t/p/w500/3sD1UQsaRqmbQCKiNZAuyRV4s1h.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/yulz3ee9jcsc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Commerce avec le pays du roi-bête",
+            "overview": "Malgré des débuts difficiles, la délégation d’Eurasania finit par se montrer fort amicale. Après le retour de ses propres émissaires, Limule se rend chez Gazehr Dwargo, le roi des nains.",
+            "runtime": 24,
+            "airDate": "2021-01-19",
+            "still": "https://image.tmdb.org/t/p/w500/x5nhiCBBmI69PAEbttRN66nTL6d.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/129jt6zmg4o7\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "De retour au paradis",
+            "overview": "Voici donc Limule en visite officielle dans la ville de son vieil ami. Toujours aussi bourru, ce dernier l’interroge aussitôt et sans détour au sujet de l’affaire Charybde, peu convaincu par la version de Limule. Il faudra aussi à notre slime s’imposer, en dépit de son apparence, comme un allié valable aux yeux de la population.",
+            "runtime": 24,
+            "airDate": "2021-01-26",
+            "still": "https://image.tmdb.org/t/p/w500/tDu3AlVFeqQYaW4cNe5VpdRHn7f.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/a9t3g0sq2ex4\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Farmus, le royaume des complots",
+            "overview": "Limule s’apprête à laisser ses élèves aux bons soins de Mlle Tiss pour rentrer à Tempest. Juste avant son départ d’Ingracia, il est mis en garde à mots couverts par Myormile le marchand : l’essor économique fulgurant de Tempest privant le royaume de Farmus de ses revenus, celui-ci pourrait bien tenter de lui nuire. Le brave homme ne croit pas si bien dire…",
+            "runtime": 24,
+            "airDate": "2021-02-02",
+            "still": "https://image.tmdb.org/t/p/w500/rDgVd7RALIs5AddXvPxhCX3epc8.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rnh54itpybbd\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Prélude à la catastrophe",
+            "overview": "La capitale de Tempest, Limule, est en pleine effervescence. Le chef de la nation des monstres est enfin de retour après une longue absence, et ses sujets veulent l’accueillir comme il se doit. Soudain, deux très mauvaises nouvelles arrivent aux autorités de la ville, dont l’une est particulièrement surprenante. Et encore, ce n’est que la partie émergée de l’iceberg…",
+            "runtime": 24,
+            "airDate": "2021-02-09",
+            "still": "https://image.tmdb.org/t/p/w500/gxIH2VyiJii33RI01YKuyWlC5OS.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/v9369k3bh2ec\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Une beauté passe à l’action",
+            "overview": "Les communications de la capitale de Tempest avec l’extérieur ayant été coupées, c’est très paisiblement que Limule prend le chemin du retour sur le dos de Ranga, sans avoir que ses amis sont en grand danger. Soudain…",
+            "runtime": 24,
+            "airDate": "2021-02-16",
+            "still": "https://image.tmdb.org/t/p/w500/t0pVgAn54d8hEM8jlXKR6mo78d8.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/4n1sstav9419\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "Désespoir",
+            "overview": "Bien qu’ayant échappé de peu à la mort, Limule n’en tient pas spécialement rigueur à Hinata et ne s’inquiète pas non plus outre mesure pour ses concitoyens. Mais quand il constate qu’il ne peut plus se téléporter dans sa capitale, il comprend que quelque chose de grave est arrivé.",
+            "runtime": 24,
+            "airDate": "2021-02-23",
+            "still": "https://image.tmdb.org/t/p/w500/9USrLwMcUYAsEf23FsUhkA9MXuu.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ua1wr603gnfo\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "Espoir",
+            "overview": "Malgré les destructions et les morts, Limule garde assez d’empire sur lui-même pour écouter sans colère les aveux de Myulan. Comment réagira-t-il quand il découvrira qu’on ne lui a pas montré tous les cadavres ?",
+            "runtime": 24,
+            "airDate": "2021-03-02",
+            "still": "https://image.tmdb.org/t/p/w500/oevQGAJLWW1pSCnrWIzz1WQu3hw.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/jp52g99d8c6a\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 9,
+            "title": "Le tout pour le tout",
+            "overview": "Le petit conte d’Ellen n’est pas tombé dans l’oreille d’un sourd. Pour ressusciter ses amis, Limule n’hésite pas une seconde : s’il doit devenir un roi-démon, roi-démon il deviendra. Et s’il lui faut pour cela franchir une ligne qu’il n’avait jamais franchie, tant pis…",
+            "runtime": 24,
+            "airDate": "2021-03-09",
+            "still": "https://image.tmdb.org/t/p/w500/oSSUuI7fI1GtHX9eBhIdNprsgsV.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1gje1oax2c0m\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 10,
+            "title": "Colère divine",
+            "overview": "Les soldats de Farmus se réjouissent à l’idée de piller la capitale de Tempest, et sur la route qui dessert la ville à l’ouest, on s’impatiente de ne pas voir de convoi de fuyards, qui feraient des proies faciles. Les malheureux, s’ils savaient…",
+            "runtime": 24,
+            "airDate": "2021-03-16",
+            "still": "https://image.tmdb.org/t/p/w500/llymxkqLyxv7G7SJUB8Kp3HQsw6.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/6kxs88tjp5nd\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 11,
+            "title": "Avènement du roi-démon",
+            "overview": "La colère froide de Limule s’abat sur l’armée de Farmus, mais sans atteindre le roi Edmaris, principal responsable du carnage. Malgré le spectacle qu’il a sous les yeux, le souverain ne semble toujours pas avoir compris à qui il avait affaire et s’imagine avoir la situation en main. Pas pour très longtemps…",
+            "runtime": 24,
+            "airDate": "2021-03-23",
+            "still": "https://image.tmdb.org/t/p/w500/mJJZ9fQ2kCZtEooOYaDteLBbVg6.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qfgofi6nz3kf\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 12,
+            "title": "Libération",
+            "overview": "Sa transformation en roi-démon a changé un certain nombre de choses chez Limule et a même eu des répercussions sur ses subordonnées, la première étant de permettre la résurrection d’une bonne partie d’entre eux. On peut toutefois se demander si ce sera assez pour régler tous les problèmes qui s’empilent sur la tête du slime. Il faudra sans doute rien moins qu’un nouveau serviteur plein de zèle et un ancien ami revenu à la vie pour pouvoir faire face.",
+            "runtime": 24,
+            "airDate": "2021-03-30",
+            "still": "https://image.tmdb.org/t/p/w500/oJNmEBZbQbYJ23CKs4ez6F4X1NU.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ocukan8nsqjv\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 13,
+            "title": "Visiteurs",
+            "overview": "Le slime si pacifique du début semble avoir disparu corps et biens. Limule, qui n’a jamais été aussi fort ni aussi bien entouré, prépare la riposte de Tempest à l’agression inqualifiable perpétrée par le royaume de Farmus, mais compte bien aussi régler son compte à Clayman.",
+            "runtime": 24,
+            "airDate": "2021-07-06",
+            "still": "https://image.tmdb.org/t/p/w500/jBI5jxywljEpn2rRJ4Za638l94U.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/k5pu45h7o4s5\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 14,
+            "title": "Conférence humains-monstres",
+            "overview": "Tandis que de vieux amis se retrouvent après une séparation de deux siècles, Limule et ses alliés se réunissent pour discuter de l’avenir de Tempest. L’irruption de Veldra va quelque peu changer la donne…",
+            "runtime": 24,
+            "airDate": "2021-07-13",
+            "still": "https://image.tmdb.org/t/p/w500/2Bhta8n31W6N5BYyWZGioHwcf2r.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ct4to61pm7p0\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 15,
+            "title": "Le message de Lamilis",
+            "overview": "La fée du labyrinthe, venue en catastrophe avertir Limule d’un danger imminent, devra attendre un peu. En reconnaissant le dragon des ouragans, elle est tombée évanouie… Le slime va pouvoir entrer dans le vif du sujet, à savoir l’adoption d’un scénario cohérent, pour à la fois justifier le massacre de 20 000 soldats et expliquer le retour de Veldra.",
+            "runtime": 24,
+            "airDate": "2021-07-20",
+            "still": "https://image.tmdb.org/t/p/w500/rV0yfsBqoCbRZf93h1MbfEImGqW.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/044quminh8bk\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 16,
+            "title": "Le congrès s’amuse",
+            "overview": "Lamilis apprend à Limule que Clayman, soutenu par Frey et Millim, demande la tenue d’un Walpurgis, réunion de rois-démons au cours de laquelle différents sujets sont abordés. En l’occurrence, Clayman chercherait à attirer l’attention de ses confrères sur l’avènement du slime en tant que roi-démon… même si officiellement, ses intentions sont tout autres.",
+            "runtime": 24,
+            "airDate": "2021-07-27",
+            "still": "https://image.tmdb.org/t/p/w500/zVYNjYBsrBVZZaVz8x3uO1TSx5Z.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/uoenuen8396f\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 17,
+            "title": "La veille de la bataille",
+            "overview": "Limule donne ses dernières instructions. Veldra devra rester à Tempest pour protéger la population, ce qu’il a un peu de mal à digérer, tandis que Shion et Ranga accompagneront Limule au Walpurgis. En effet, sur une suggestion de sa secrétaire, le slime a décidé de se rendre lui-même au fameux banquet…",
+            "runtime": 24,
+            "airDate": "2021-08-03",
+            "still": "https://image.tmdb.org/t/p/w500/5Q9Y5d5V8xSJ9hyhWEOkSviNPS8.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/q722wih1kz1x\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 18,
+            "title": "Les rois-démons",
+            "overview": "Les choses s’accélèrent. Clayman a mordu à l’hameçon et croit dur comme fer que l’armée de Farmus a été massacrée par Veldra. Mais d’autres rois-démons, plus futés ou mieux renseignés, ne s’y sont guère laissé prendre. Leon Cromwell, en particulier, a l’air très désireux de rencontrer enfin Limule.",
+            "runtime": 24,
+            "airDate": "2021-08-10",
+            "still": "https://image.tmdb.org/t/p/w500/36fEVDsd90B2nmMOvjxgmMrooG8.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ue9yop9tqkec\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 19,
+            "title": "Ouverture du banquet",
+            "overview": "Les troupes de Limule, lâchées sur l’armée de Clayman, semblent vouées à une victoire écrasante. Le slime finit par se laisser convaincre d’envoyer Shuna, Hakurô et Sôei attaquer le château de Clayman en profitant de l’absence de ce dernier. Sur le champ de bataille, un duel à mort s'engage entre Albis et Yamza, l’Épéiste de glace…",
+            "runtime": 24,
+            "airDate": "2021-08-17",
+            "still": "https://image.tmdb.org/t/p/w500/myX4iY2MSXFqzQwDdZ9NY5WnEWu.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/5uv96fb8o3ft\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 20,
+            "title": "Sur la terre fatidique",
+            "overview": "La fourberie de Yamza ne lui permet pas de résister à la puissance d’Albis et il est rapidement vaincu. Son adversaire, magnanime, s’engage à lui laisser la vie sauve en échange de sa reddition. Mais Clayman, comme le sait pertinemment Yamza, ne supporte pas les subordonnés incompétents…",
+            "runtime": 24,
+            "airDate": "2021-08-24",
+            "still": "https://image.tmdb.org/t/p/w500/grvpiSfzWRVsjKm7T9g0eGjZDeJ.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/powtqarmpzb4\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 21,
+            "title": "Adalman l'Index",
+            "overview": "Laissons Benimaru et son armée prendre leur revanche, et intéressons-nous à présent à deux autres champs de bataille. D’une part, le château de Clayman, dont Sôei, Shuna et Hakurô vont tenter de s’emparer, et d’autre part, la salle du banquet de Walpurgis, où Limule va prendre place en tant que roi-démon. Et justement, voici les autres invités qui arrivent..",
+            "runtime": 24,
+            "airDate": "2021-08-31",
+            "still": "https://image.tmdb.org/t/p/w500/uOfZ4vpjzLmrxwQLD0xNtc752lQ.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/e21h23sx0bir\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 22,
+            "title": "Walpurgis",
+            "overview": "Entouré de rois-démons plus intimidants les uns que les autres, Limule écoute Clayman l’accuser de tous les maux. Mais en l’absence de preuves formelles, la diatribe du maître marionnettiste semble tomber à plat, et il est évident qu’il ne convainc pas grand monde. Voyant que les discours n’ont pas l’effet attendu, il va passer aux actes…",
+            "runtime": 24,
+            "airDate": "2021-09-07",
+            "still": "https://image.tmdb.org/t/p/w500/8qorHFrntCGKcb5VEMKTek9tAbW.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/g6xblm4adyd7\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 23,
+            "title": "Retour en force",
+            "overview": "Avec l’irruption de Veldra, le combat s’équilibre quelque peu, et Limule en profite pour confier à son ami le soin d’affronter Millim. Ainsi, il peut admirer le duel entre Shion et Clayman, nettement dominé par la kijin.",
+            "runtime": 24,
+            "airDate": "2021-09-14",
+            "still": "https://image.tmdb.org/t/p/w500/xagCdFgh27KPDG6myv3uG3BrZpD.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/n6pfvydplphq\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 24,
+            "title": "Octagramme",
+            "overview": "C’est la fin du chemin pour Clayman. Lui qui croyait se servir des autres rois-démons pour éliminer Limule, il a été ridiculisé en combat par Shion et affronte à présent un slime bien plus fort qu’il l’aurait imaginé. Va-t-il sortir de sa manche un dernier tour de passe-passe pour échapper à la colère de son adversaire et ainsi sauver sa peau ?",
+            "runtime": 24,
+            "airDate": "2021-09-21",
+            "still": "https://image.tmdb.org/t/p/w500/zZmkBDXs1qgTgL9ajzcRTnEZM6p.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m6fm722l0rpn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 3,
+        "title": "Saison 3",
+        "overview": "Limule est officiellement devenu un Roi Démon après avoir vaincu Clayman. Après Walpurgis, le banquet des Seigneurs Démons, le domaine de Limule s'étend pour inclure toute la Grande Forêt de Jura. Anticipant un flot de représentants de toutes les races venus lui rendre hommage, Limule décide d'organiser un festival pour commémorer l'ouverture de Tempest, l'utilisant comme une opportunité de gagner de nouveaux citoyens. Pendant ce temps, dans le Saint-Empire de Lubelius, base du culte du Luminisme qui déteste les monstres, Hinata reçoit une fausse déclaration de guerre de Limule. Ainsi commence un nouveau défi pour Limule, s'efforçant de distinguer les amis des ennemis dans sa quête de la nation idéale où les humains et les monstres peuvent prospérer ensemble.",
+        "poster": "https://image.tmdb.org/t/p/w500/cb5qLwrpMz4w0o7Dds7iqmJDVAL.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Les machinations du démon",
+            "overview": "Pendant que Limule est au banquet de Walpurgis, Diablo se rend au royaume de Farmus avec Yômu et les prisonniers dans le but de prendre le contrôle du pays. Menaces, mensonges et manipulations… Le démon ne recule devant rien pour arriver à ses fins.",
+            "runtime": 24,
+            "airDate": "2024-04-05",
+            "still": "https://image.tmdb.org/t/p/w500/qGdvJCuZLL3XTlaVcokjmjOYwVT.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xzybwlkn7qfd\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "La réunion des saints",
+            "overview": "À Ruberios, Hinata, Louis et Luminus se retrouvent pour discuter des changements que vont apporter la mort de Roy Valentin, la naissance d’un nouveau roi-démon, la réapparition de Veldra et le développement de Tempest. Afin de préserver leurs plans, des contre-mesures s’imposent.",
+            "runtime": 24,
+            "airDate": "2024-04-12",
+            "still": "https://image.tmdb.org/t/p/w500/gnkxMRfTMvM4MINia242eUwC2BC.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/eb8mr07l1xqu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "Des jours paisibles",
+            "overview": "La paix est revenue dans la Grande Forêt de Jura. Les subordonnés de Limule reviennent à Tempest les uns après les autres après avoir accompli leurs missions respectives. Alors que chacun lui fait son rapport, certains lui réservent quelques surprises.",
+            "runtime": 24,
+            "airDate": "2024-04-19",
+            "still": "https://image.tmdb.org/t/p/w500/oX5lgWyfgFytnF4CMd54iiSZk4z.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0g4qussxr1em\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Chacun son rôle",
+            "overview": "Kaijin et Vester dévoilent à Limule leur dernière invention qui permettra de résoudre plusieurs problèmes. En outre, Limule et ses subordonnés spéculent sur l’identité de la personne qui tire les ficelles dans l’ombre afin de détruire Tempest.",
+            "runtime": 24,
+            "airDate": "2024-04-26",
+            "still": "https://image.tmdb.org/t/p/w500/jxataJe0pYR1TsO6XdmALL9ANxw.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/s4srpwa2tvbc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Le conseil des deux factions",
+            "overview": "Les chevaliers sacrés et la garde impériale de Ruberios se réunissent sous la houlette de Hinata pour faire le point sur la situation concernant Limule, Veldra et le royaume de Farmus et décider de la conduite à tenir.",
+            "runtime": 24,
+            "airDate": "2024-05-03",
+            "still": "https://image.tmdb.org/t/p/w500/kzmSrgouF94DQPtUDh4Kz5TKWD8.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/yss4rfieccpt\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Les assaillants en approche",
+            "overview": "Alors que Hinata et les chevaliers sacrés se dirigent vers Tempest, Limule et ses alliés se préparent à leur arrivée. En outre, ils doivent trouver une parade à l’armée de Templiers qui se rend à Farmus dans le but d’éliminer Diablo.",
+            "runtime": 24,
+            "airDate": "2024-05-10",
+            "still": "https://image.tmdb.org/t/p/w500/b8A5oHCMXL1jjuO2M03JscJdzuS.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/4gjdzx6le1mm\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "Le choc des saints et des monstres",
+            "overview": "En chemin vers Tempest, Hinata et ses compagnons découvrent les avancées technologiques et autres nouveautés mises en place par les habitants de la Grande Forêt de Jura. Pendant ce temps, les chevaliers sacrés, menés par Leonard, s’apprêtent à attaquer Limule.",
+            "runtime": 24,
+            "airDate": "2024-05-17",
+            "still": "https://image.tmdb.org/t/p/w500/6mNV55ohN64U7aJwEmJjjp4hGKi.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2bc9xlm1rwq5\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "Une succession de malentendus",
+            "overview": "Après que les chevaliers sacrés ont lancé un assaut sur Tempest, Hinata se retrouve obligée d’affronter Limule en duel. Pendant ce temps, Shion essaie à sa manière de convaincre ses adversaires de rendre les armes.",
+            "runtime": 24,
+            "airDate": "2024-05-24",
+            "still": "https://image.tmdb.org/t/p/w500/c3Jj3Xb99fSvJJpvddxZnq3dy0c.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fkgc4sp32v5s\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 9,
+            "title": "Le complot des Septenniens",
+            "overview": "À Farmus, le roi Edward a reçu l’appui des gardes impériaux de Ruberios et des chasseurs de démons de l’Est. Certain de sa victoire, il ordonne un assaut contre Yômu, mais c’est sans compter l’intervention de Diablo et des troupes de Tempest.",
+            "runtime": 24,
+            "airDate": "2024-05-31",
+            "still": "https://image.tmdb.org/t/p/w500/bGT0jO2TjNWLg3OiDkGdaSJP6g9.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/z80tg5e04tl3\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 10,
+            "title": "La déesse et le roi-démon",
+            "overview": "Les Septenniens interviennent dans les conflits qui ont éclaté simultanément à Farmus et à Tempest et ils comptent bien éliminer tout le monde présent afin qu’il ne reste aucune preuve de leurs agissements. Cependant, ils sous-estiment gravement Limule et ses subordonnés.",
+            "runtime": 24,
+            "airDate": "2024-06-07",
+            "still": "https://image.tmdb.org/t/p/w500/9jYxy649Hdhsq8h5TvuLHiAAv7B.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1o7ti9zzg9pl\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 11,
+            "title": "Réconciliation et accord",
+            "overview": "Les représentants de Tempest et de Ruberios se réunissent pour faire le point sur la situation et décider ensemble de la meilleure façon d’annoncer officiellement leur réconciliation sans aller à l’encontre de la doctrine luministe.",
+            "runtime": 24,
+            "airDate": "2024-06-14",
+            "still": "https://image.tmdb.org/t/p/w500/wwHzXThhY1lXcMWSRbVStjdpLEw.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/atppapa65p7l\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 12,
+            "title": "Préparatifs festifs",
+            "overview": "Tandis qu’approche la fête en l’honneur de l’avènement de Limule au rang de roi-démon, les habitants de Tempest travaillent dur pour la préparer. De son côté, Limule rend visite au marchand Myormile pour mettre en place un nouveau projet.",
+            "runtime": 24,
+            "airDate": "2024-06-21",
+            "still": "https://image.tmdb.org/t/p/w500/hPGZS4IGBxTQVZJmhgUwIIFXslH.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/kv0zxijs7uj6\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 13,
+            "title": "Invitation aux différents pays",
+            "overview": "Le roi Gazehr et l’impératrice de Salion reçoivent une invitation de Limule au grand festival qu’il organise pour fêter son avènement au rang de roi-démon. Pendant ce temps, Lamilis fait son retour à Tempest.",
+            "runtime": 24,
+            "airDate": "2024-06-28",
+            "still": "https://image.tmdb.org/t/p/w500/3zBjNDMUpcRVjgFjZocBEGqAT9F.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/a75582rb77om\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 14,
+            "title": "Le donjon et le dragon des ouragans",
+            "overview": "Limule projette de transformer le labyrinthe de Lamilis en donjon destiné aux aventuriers. Tandis que tous deux réfléchissent aux diverses installations à mettre en place, ils décident d’enrôler Veldra pour les aider.",
+            "runtime": 24,
+            "airDate": "2024-07-05",
+            "still": "https://image.tmdb.org/t/p/w500/r2etwUKAEWtBwpS1IxawnFGUXDL.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/lay1r4rd5oap\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 15,
+            "title": "Audience",
+            "overview": "Tandis que les préparatifs du festival touchent à leur fin, Limule doit d’abord tenir une audience pour recevoir les représentants des différentes espèces qui résident dans la Grande Forêt de Jura.",
+            "runtime": 24,
+            "airDate": "2024-07-19",
+            "still": "https://image.tmdb.org/t/p/w500/3sNFkBcw2Voe9B7vNj2EZw9f5KM.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0690yo000fzx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 16,
+            "title": "Les tribulations de Benimaru",
+            "overview": "C'est le dernier jour de l'audience et Rimuru rencontre Momiji, la représentante du clan Tengu. Leur rencontre a lieu après que Rimuru ait envoyé Benimaru au village des Tengu pour leur demander la permission de construire un tunnel à travers les montagnes de Kusha.",
+            "runtime": 24,
+            "airDate": "2024-07-26",
+            "still": "https://image.tmdb.org/t/p/w500/pimVG6E4gDUEpttY4OZCXDLZmbb.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/48vowm80aoe4\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 17,
+            "title": "Le brave surnommé l’Éclair",
+            "overview": "Tandis que Tempest s’attelle aux derniers préparatifs avant le début du festival, Masayuki, brave renommé, fait route vers la Grande Forêt de Jura avec son équipe. Mais ses intentions sont-elles pacifiques ?",
+            "runtime": 24,
+            "airDate": "2024-08-02",
+            "still": "https://image.tmdb.org/t/p/w500/7xUiEXbNU4yWw4r8XWmBrrC6wsB.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/12qml202o0f2\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 18,
+            "title": "Foule de visiteurs",
+            "overview": "Alors que le festival est programmé pour le lendemain, Limule accueille des invités de marque, avant d’aller chercher des amis qu’il n’avait pas vus depuis longtemps. Cependant, l’arrivée de Masayuki et de son groupe pourrait assombrir l’atmosphère.",
+            "runtime": 24,
+            "airDate": "2024-08-16",
+            "still": "https://image.tmdb.org/t/p/w500/er7j1Py01CRLM8ZOtzv5yBVREjX.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2fvu1ievgo3k\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 19,
+            "title": "La veille du festival",
+            "overview": "Limule a invité les représentants de chaque pays à un dîner officiel, mais certains d’entre eux se font davantage remarquer que d’autres. En outre, la cuisine de Tempest pourrait ne pas être au goût de tout le monde…",
+            "runtime": 24,
+            "airDate": "2024-08-23",
+            "still": "https://image.tmdb.org/t/p/w500/sDHYySPS447hY31ukvDRAar0ODo.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/nbnnwlwfg244\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 20,
+            "title": "Le festival de la fondation",
+            "overview": "Tandis que les enfants s’amusent au festival, Limule assiste aux divers événements organisés en compagnie de ses invités. Ces derniers ne sont pas les seuls à être surpris et émerveillés par ce qu’ils découvrent.",
+            "runtime": 24,
+            "airDate": "2024-08-30",
+            "still": "https://image.tmdb.org/t/p/w500/ibk5z7Byfgqi1J9Fv2iZ0iMqizh.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1mq03imm7k2h\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 21,
+            "title": "Le tournoi d’arts martiaux",
+            "overview": "Le deuxième jour du festival s’ouvre avec le tournoi d’arts martiaux. S’ils gagnent, les concurrents pourront défier Limule en duel ou obtenir un poste privilégié à ses côtés. Le roi-démon, quant à lui, espère bien profiter de l’occasion pour observer Masayuki en action.",
+            "runtime": 24,
+            "airDate": "2024-09-06",
+            "still": "https://image.tmdb.org/t/p/w500/eeBoOXCFaClxOoZYkVjxQejtRVe.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/9cvf4pjg1c4e\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 22,
+            "title": "Mise au point avec le brave",
+            "overview": "Des alliés haut placés prêtent main-forte à Limule aux prises à des problèmes financiers. Pour conclure le tournoi d’arts martiaux, Gobuta et Masayuki s’affrontent en finale. L’issue du combat semble courue d’avance, mais le public n’est pas au bout de ses surprises.",
+            "runtime": 24,
+            "airDate": "2024-09-13",
+            "still": "https://image.tmdb.org/t/p/w500/cvHGEtq9GNlCw881vxQGdiMKVSh.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/uoa6vtda9k81\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 23,
+            "title": "Inauguration du donjon",
+            "overview": "Tempest inaugure son tout nouveau donjon lors du troisième et dernier jour du festival. Plusieurs équipes, dont celle du brave Masayuki, partent l’explorer, pour le plus grand plaisir des spectateurs.",
+            "runtime": 24,
+            "airDate": "2024-09-20",
+            "still": "https://image.tmdb.org/t/p/w500/W2cb5PfYVUTZyxskYTnTWw93Ps.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8xznf5ldfzui\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 24,
+            "title": "Après le festival",
+            "overview": "Une fois la fête finie, il est temps pour Limule de payer leur dû aux marchands, tout en déjouant le piège qu’on lui a tendu. Ensuite, il lui faudra discuter des prochains projets de Tempest avec ses alliés.",
+            "runtime": 24,
+            "airDate": "2024-09-27",
+            "still": "https://image.tmdb.org/t/p/w500/uP8ocjWcFCWazhPpP8wVpGfezYM.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/uoszfnh5cqih\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          }
+        ]
+      },
+      {
+        "seasonNumber": 4,
+        "title": "Saison 4",
+        "overview": "",
+        "poster": "https://image.tmdb.org/t/p/w500/tSxFSxESOvhFH1vfEQoNqNiv5fW.jpg",
+        "episodes": [
+          {
+            "episodeNumber": 1,
+            "title": "Un nouveau quotidien",
+            "overview": "Le donjon flambant neuf rencontre quelques difficultés. Limule décide de l’améliorer.",
+            "runtime": 24,
+            "airDate": "2026-04-03",
+            "still": "https://image.tmdb.org/t/p/w500/gb4p6xHYwN3c4gYlnVzvpFtlOB8.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ar2n2xotqent\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 2,
+            "title": "Le donjon évolue",
+            "overview": "Alors que le donjon amélioré fait un tabac, une mystérieuse équipe semble déterminée à le conquérir.",
+            "runtime": 24,
+            "airDate": "2026-04-10",
+            "still": "https://image.tmdb.org/t/p/w500/nRLCpzRP359dz7u475PlzOuT9zW.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fohvcp6287lf\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 3,
+            "title": "Le lancement des Avatars",
+            "overview": "L’équipe d’avatars de Limule doit s’entraîner et s’équiper avant de se mesurer aux Rebelles verts.",
+            "runtime": 24,
+            "airDate": "2026-04-17",
+            "still": "https://image.tmdb.org/t/p/w500/tm0pmQIOdzW5choXRITpHgYGGSC.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/43gpf82m3nxr\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 4,
+            "title": "Invitation",
+            "overview": "Les membres du conseil des pays de l’Ouest délibèrent sur le bien-fondé de l’adhésion de Tempest.",
+            "runtime": 24,
+            "airDate": "2026-04-24",
+            "still": "https://image.tmdb.org/t/p/w500/wzYc59SeMxQUIrb01D3BwIAj90c.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/b6552abm20bn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 5,
+            "title": "Le premier pas",
+            "overview": "Limule se rend en Ingracia dans l’espoir d’intégrer le conseil des pays de l’Ouest.",
+            "runtime": 24,
+            "airDate": "2026-05-08",
+            "still": "https://image.tmdb.org/t/p/w500/ztpuWTZbiM0aXFlUSGdhk1Q17zk.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1jz5ka58yqpf\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 6,
+            "title": "Le conseil des pays de l’Ouest",
+            "overview": "Les exigences plus absurdes les unes que les autres des députés provoquent la colère de Limule.",
+            "runtime": 24,
+            "airDate": "2026-05-15",
+            "still": "https://image.tmdb.org/t/p/w500/27GSNADh5MnmkTwHC8pmi3SOW7G.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/b83xhlzhmqo9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 7,
+            "title": "L’identité du cerveau",
+            "overview": "Sôei capture Glenda après la tentative d’assassinat du prince Elrick, puis Hinata et Limule l’interroge.",
+            "runtime": 24,
+            "airDate": "2026-05-22",
+            "still": "https://image.tmdb.org/t/p/w500/edUKB10nnw9BBK0dyoJNiAlSR56.jpg",
+            "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rdc35nyuthjv\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+          },
+          {
+            "episodeNumber": 8,
+            "title": "Le piège de l'avidité",
+            "overview": "Les ennemis de Limule comptent profiter d’une expédition dans des ruines pour le piéger.",
+            "runtime": 24,
+            "airDate": "2026-05-29",
+            "still": "https://image.tmdb.org/t/p/w500/bs2vK9WUOQKvwj8KEC3Ra3WXDQV.jpg",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 9,
+            "title": "Enquête sur les ruines",
+            "overview": "L’enquête sur les ruines antiques d’Amrita commence.",
+            "runtime": 24,
+            "airDate": "2026-06-05",
+            "still": "https://image.tmdb.org/t/p/w500/1hrPaiyrBjC9jpB5n43VOzZ8SFA.jpg",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 10,
+            "title": "L'avidité personnifiée",
+            "overview": "Mariabell renonce à contrôler Limule et tente de le tuer, tandis que Yûki affronte Shion.",
+            "runtime": 24,
+            "airDate": "2026-06-12",
+            "still": "https://image.tmdb.org/t/p/w500/zv5JGGOQl9Rii3NrVip295TyVyE.jpg",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 11,
+            "title": "L'ami de Millim",
+            "overview": "Confronté au dragon du chaos, Limule chercher un moyen de le neutraliser sans le tuer.",
+            "runtime": 24,
+            "airDate": "2026-06-19",
+            "still": "https://image.tmdb.org/t/p/w500/w5bBroiKoeCe69CHew0y6Q1edQ8.jpg",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 12,
+            "title": "L'évolution de Tempest",
+            "overview": "",
+            "runtime": 24,
+            "airDate": "2026-06-26",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 13,
+            "title": "Épisode 13",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-07-03",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 14,
+            "title": "Épisode 14",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-07-10",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 15,
+            "title": "Épisode 15",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-07-17",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 16,
+            "title": "Épisode 16",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-07-24",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 17,
+            "title": "Épisode 17",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-07-31",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 18,
+            "title": "Épisode 18",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-08-07",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 19,
+            "title": "Épisode 19",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-08-14",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 20,
+            "title": "Épisode 20",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-08-21",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 21,
+            "title": "Épisode 21",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-08-28",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 22,
+            "title": "Épisode 22",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-09-04",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 23,
+            "title": "Épisode 23",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-09-11",
+            "still": "",
+            "videoEmbed": ""
+          },
+          {
+            "episodeNumber": 24,
+            "title": "Épisode 24",
+            "overview": "",
+            "runtime": 0,
+            "airDate": "2026-09-18",
+            "still": "",
+            "videoEmbed": ""
+          }
+        ]
+      }
+    ],
+    "country": "Japan",
+    "language": "ja",
+    "rating": 8.4,
+    "popularity": 36.7008,
+    "trailer": "1zx3SE_tPCY",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/4d9lnx16ko7p\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "",
+    "status": "Returning Series",
+    "homepage": "https://www.ten-sura.com/anime/tensura",
+    "collection": "",
+    "studios": [
+      "8bit",
+      "Bandai Namco Filmworks",
+      "Kodansha",
+      "MICRO MAGAZINE"
+    ],
+    "tmdbId": 82684,
+    "poster": "https://image.tmdb.org/t/p/w500/vFCKoryd6keo4iziLlRHhHuO5Wc.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/eJOy7YWAHgOS3V477sdTsq4v9jp.jpg",
+    "overview": "Satoru, employé de bureau lambda, se fait assassiner par un criminel en pleine rue. Son histoire aurait dû s'arrêter là, mais il se retrouve soudain réincarné dans un autre monde sous la forme d'un Slime, le monstre le plus faible du bestiaire fantastique. Le voilà équipé de deux compétences uniques : « Prédateur », lui permettant de récupérer les aptitudes de ses adversaires, et « Grand Sage », grâce à laquelle il acquiert une compréhension aiguë de son environnement. Mais même muni de ces armes, ses chances de survie semblent cependant limitées...",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
+  },
+  {
     "title": "Titan",
     "slug": "titan",
     "originalTitle": "The Titan",
