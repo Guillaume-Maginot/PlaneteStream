@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.4.9-saga-poster-bg" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.10-saga-poster-bg-framed" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <style>
     .saga-detail-page{
@@ -28,11 +28,13 @@
       inset:0;
       z-index:0;
       pointer-events:none;
-      background-size:cover;
-      background-position:center top;
+      /* Affiche verticale cadrée : on évite le cover qui zoomait dans l’image. */
+      background-size:min(720px, 64vw) auto;
+      background-position:right 6vw top 96px;
       background-repeat:no-repeat;
-      transform:scale(1.055);
-      filter:saturate(.98) brightness(.72) blur(.15px);
+      transform:none;
+      filter:saturate(1.08) brightness(.94);
+      opacity:.72;
     }
 
     .saga-detail-bg::before{
@@ -40,8 +42,8 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg,rgba(3,4,11,.82) 0%,rgba(3,4,11,.70) 36%,rgba(3,4,11,.48) 68%,rgba(3,4,11,.72) 100%),
-        linear-gradient(180deg,rgba(3,4,11,.28) 0%,rgba(3,4,11,.54) 48%,#03040b 100%),
+        linear-gradient(90deg,rgba(3,4,11,.82) 0%,rgba(3,4,11,.66) 38%,rgba(3,4,11,.34) 68%,rgba(3,4,11,.56) 100%),
+        linear-gradient(180deg,rgba(3,4,11,.10) 0%,rgba(3,4,11,.28) 42%,rgba(3,4,11,.78) 76%,#03040b 100%),
         radial-gradient(circle at 72% 18%,var(--saga-soft),transparent 34%);
     }
 
@@ -505,7 +507,7 @@
       </a>
       <div class="footer-bottom-line">
         <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
-        <span class="footer-version">Build v3.4.9-saga-poster-bg</span>
+        <span class="footer-version">Build v3.4.10-saga-bg-framed</span>
       </div>
     </div>
   </footer>
