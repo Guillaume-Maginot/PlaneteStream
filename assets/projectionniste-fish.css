@@ -376,507 +376,8 @@
   .ps-fish-speech { right: 26%; bottom: 96%; width: min(218px, 78vw); }
 }
 /* =========================================================
-   PATCH UI BUBULLE - Cabine de projection plus confortable
-   À coller tout en bas de projectionniste-fish.css
-   ========================================================= */
-
-.ps-fish-chat {
-  width: min(470px, calc(100vw - 28px));
-  max-height: min(680px, calc(100vh - 118px));
-  grid-template-rows: auto minmax(260px, 1fr) auto auto;
-  border-radius: 26px;
-  border-color: rgba(77,169,255,.34);
-  background:
-    radial-gradient(circle at 12% 0%, rgba(77,169,255,.18), transparent 38%),
-    radial-gradient(circle at 90% 100%, rgba(246,196,109,.10), transparent 42%),
-    linear-gradient(145deg, rgba(8,13,28,.98), rgba(5,10,22,.94));
-  box-shadow:
-    0 32px 90px rgba(0,0,0,.62),
-    0 0 38px rgba(77,169,255,.16),
-    inset 0 1px 0 rgba(255,255,255,.07);
-}
-
-.ps-fish-chat-header {
-  padding: 15px 18px 14px;
-  background:
-    linear-gradient(90deg, rgba(77,169,255,.16), transparent 58%),
-    rgba(255,255,255,.018);
-}
-
-.ps-fish-chat-header strong {
-  font-size: 1.02rem;
-}
-
-.ps-fish-chat-header span {
-  font-size: .78rem;
-  color: rgba(247,241,231,.58);
-}
-
-.ps-fish-chat-close {
-  flex: 0 0 auto;
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
-}
-
-.ps-fish-chat-close:hover {
-  transform: rotate(8deg) scale(1.04);
-}
-
-.ps-fish-chat-messages {
-  padding: 18px;
-  gap: 14px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(77,169,255,.35) rgba(255,255,255,.045);
-}
-
-.ps-fish-chat-messages::-webkit-scrollbar {
-  width: 8px;
-}
-
-.ps-fish-chat-messages::-webkit-scrollbar-track {
-  background: rgba(255,255,255,.035);
-  border-radius: 999px;
-}
-
-.ps-fish-chat-messages::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(77,169,255,.55), rgba(246,196,109,.35));
-  border-radius: 999px;
-  border: 2px solid rgba(8,13,28,.98);
-}
-
-.ps-fish-message {
-  max-width: 96%;
-  padding: 14px 15px;
-  border-radius: 18px;
-  line-height: 1.55;
-  font-size: .94rem;
-  word-break: normal;
-  overflow-wrap: anywhere;
-}
-
-.ps-fish-message strong {
-  margin-bottom: 7px;
-  font-size: .72rem;
-  letter-spacing: .09em;
-}
-
-.ps-fish-message p {
-  margin: 0;
-  color: rgba(247,241,231,.91);
-}
-
-.ps-fish-message-bot {
-  max-width: 100%;
-  border-color: rgba(77,169,255,.24);
-  background:
-    linear-gradient(145deg, rgba(77,169,255,.105), rgba(77,169,255,.045));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.045);
-}
-
-.ps-fish-message-user {
-  max-width: 88%;
-  border-color: rgba(246,196,109,.30);
-  background:
-    linear-gradient(145deg, rgba(246,196,109,.14), rgba(246,196,109,.065));
-}
-
-.ps-fish-chat-form {
-  padding: 14px 14px 12px;
-  gap: 10px;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.20));
-}
-
-.ps-fish-chat-form input {
-  min-height: 46px;
-  padding: 13px 16px;
-  border-color: rgba(255,255,255,.14);
-  background: rgba(255,255,255,.065);
-  font-size: .94rem;
-}
-
-.ps-fish-chat-form input::placeholder {
-  color: rgba(247,241,231,.42);
-}
-
-.ps-fish-chat-form button {
-  min-height: 46px;
-  padding: 0 18px;
-  border-color: rgba(77,169,255,.46);
-  background:
-    linear-gradient(145deg, rgba(77,169,255,.22), rgba(77,169,255,.10));
-  box-shadow: 0 0 18px rgba(77,169,255,.08);
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
-}
-
-.ps-fish-chat-form button:hover {
-  transform: translateY(-1px);
-}
-
-.ps-fish-suggestions {
-  padding: 0 14px 16px;
-  gap: 9px;
-}
-
-.ps-fish-suggestions button {
-  padding: 8px 13px;
-  border-color: rgba(77,169,255,.38);
-  background: rgba(77,169,255,.08);
-  color: rgba(247,241,231,.86);
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
-}
-
-.ps-fish-suggestions button:hover {
-  transform: translateY(-1px);
-}
-
-/* Desktop large : on laisse Bubulle respirer */
-@media (min-width: 981px) {
-  .ps-fish-chat {
-    right: clamp(24px, 4vw, 70px);
-    bottom: clamp(242px, 29vh, 326px);
-  }
-}
-
-/* Tablette / petit laptop */
-@media (max-width: 980px) {
-  .ps-fish-chat {
-    width: min(450px, calc(100vw - 24px));
-    right: 12px;
-    bottom: 210px;
-    max-height: calc(100vh - 126px);
-  }
-
-  .ps-fish-chat-messages {
-    padding: 16px;
-  }
-}
-
-/* Mobile : priorité lisibilité */
-@media (max-width: 680px) {
-  .ps-fish-chat {
-    right: 8px;
-    bottom: 176px;
-    width: calc(100vw - 16px);
-    max-height: calc(100vh - 190px);
-    border-radius: 22px;
-    grid-template-rows: auto minmax(250px, 1fr) auto auto;
-  }
-
-  .ps-fish-chat-header {
-    padding: 13px 15px;
-  }
-
-  .ps-fish-chat-messages {
-    padding: 14px;
-    gap: 12px;
-  }
-
-  .ps-fish-message {
-    max-width: 100%;
-    padding: 13px 14px;
-    font-size: .93rem;
-    line-height: 1.52;
-  }
-
-  .ps-fish-message-user {
-    max-width: 92%;
-  }
-
-  .ps-fish-chat-form {
-    padding: 12px;
-  }
-
-  .ps-fish-chat-form input {
-    min-height: 44px;
-    padding: 12px 14px;
-  }
-
-  .ps-fish-chat-form button {
-    min-height: 44px;
-    padding: 0 15px;
-  }
-
-  .ps-fish-suggestions {
-    padding: 0 12px 14px;
-  }
-
-  .ps-fish-suggestions button {
-    padding: 8px 12px;
-    font-size: .76rem;
-  }
-}
-
-/* Très petit écran : éviter l'étouffement du bocal */
-@media (max-width: 430px) {
-  .ps-fish-chat {
-    bottom: 164px;
-    max-height: calc(100vh - 176px);
-  }
-
-  .ps-fish-chat-header strong {
-    font-size: .96rem;
-  }
-
-  .ps-fish-chat-header span {
-    font-size: .74rem;
-  }
-
-  .ps-fish-message {
-    font-size: .91rem;
-  }
-}
-/* =========================================================
-   PATCH UI BUBULLE - Finition lisibilité messages
-   ========================================================= */
-
-.ps-fish-message-bot {
-  width: 100%;
-}
-
-.ps-fish-message-user {
-  width: fit-content;
-  max-width: 88%;
-}
-
-.ps-fish-message p {
-  font-weight: 560;
-  letter-spacing: .005em;
-}
-
-.ps-fish-chat-messages {
-  padding-right: 14px;
-}
-
-/* Scrollbar encore plus discrète */
-.ps-fish-chat-messages::-webkit-scrollbar {
-  width: 6px;
-}
-
-.ps-fish-chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(77,169,255,.34);
-  border: 1px solid rgba(8,13,28,.98);
-}
-
-.ps-fish-chat-messages::-webkit-scrollbar-track {
-  background: rgba(255,255,255,.025);
-}
-/* =========================================================
-   PATCH UI BUBULLE - Mode compact du chat
-   À coller tout en bas du CSS
-   ========================================================= */
-
-.ps-fish-chat {
-  grid-template-rows: auto minmax(220px, 1fr) auto auto;
-}
-
-.ps-fish-chat-messages {
-  padding: 12px 14px;
-  gap: 9px;
-}
-
-.ps-fish-message {
-  padding: 10px 12px;
-  border-radius: 15px;
-  line-height: 1.38;
-  font-size: .9rem;
-  min-height: 0;
-}
-
-.ps-fish-message strong {
-  margin: 0 0 4px;
-  font-size: .66rem;
-  line-height: 1.1;
-  letter-spacing: .08em;
-}
-
-.ps-fish-message p {
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1.42;
-}
-
-.ps-fish-message-user {
-  max-width: 92%;
-  padding: 10px 13px;
-}
-
-.ps-fish-message-bot {
-  max-width: 100%;
-  padding: 11px 13px;
-}
-
-.ps-fish-chat-form {
-  padding: 10px 12px 9px;
-}
-
-.ps-fish-chat-form input,
-.ps-fish-chat-form button {
-  min-height: 42px;
-}
-
-.ps-fish-suggestions {
-  padding: 0 12px 12px;
-  gap: 7px;
-}
-
-.ps-fish-suggestions button {
-  padding: 7px 11px;
-  font-size: .74rem;
-}
-
-/* Mobile : encore un peu plus compact */
-@media (max-width: 680px) {
-  .ps-fish-chat {
-    grid-template-rows: auto minmax(210px, 1fr) auto auto;
-  }
-
-  .ps-fish-chat-messages {
-    padding: 11px 12px;
-    gap: 8px;
-  }
-
-  .ps-fish-message {
-    padding: 9px 11px;
-    font-size: .88rem;
-    line-height: 1.36;
-  }
-
-  .ps-fish-message strong {
-    margin-bottom: 3px;
-    font-size: .64rem;
-  }
-
-  .ps-fish-chat-form {
-    padding: 9px 10px 8px;
-  }
-
-  .ps-fish-suggestions {
-    padding: 0 10px 10px;
-  }
-}
-/* =========================================================
-   PATCH UI BUBULLE - Questions utilisateur compactes
-   ========================================================= */
-
-.ps-fish-message-user {
-  align-self: flex-end;
-  width: auto;
-  max-width: 82%;
-  min-width: 0;
-  padding: 8px 12px;
-  border-radius: 16px 16px 6px 16px;
-}
-
-/* On masque le label "TOI" pour gagner de la hauteur */
-.ps-fish-message-user strong {
-  display: none;
-}
-
-.ps-fish-message-user p {
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1.32;
-  white-space: normal;
-  word-break: normal;
-  overflow-wrap: break-word;
-}
-
-/* Les messages courts ne doivent pas se casser bêtement */
-.ps-fish-message-user p {
-  text-wrap: pretty;
-}
-
-/* On garde les réponses du Projectionniste plus posées */
-.ps-fish-message-bot strong {
-  margin-bottom: 5px;
-}
-
-/* Mobile : encore plus serré côté utilisateur */
-@media (max-width: 680px) {
-  .ps-fish-message-user {
-    max-width: 86%;
-    padding: 7px 11px;
-    font-size: .86rem;
-  }
-
-  .ps-fish-message-user p {
-    line-height: 1.28;
-  }
-}
-/* =========================================================
-   PATCH UI BUBULLE - Correction texte qui sort des bulles
-   À coller tout en bas du CSS
-   ========================================================= */
-
-.ps-fish-message {
-  position: relative;
-  display: block;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  overflow: visible;
-  white-space: normal !important;
-}
-
-.ps-fish-message strong,
-.ps-fish-message p {
-  position: static !important;
-  display: block;
-  transform: none !important;
-}
-
-.ps-fish-message p {
-  margin: 0 !important;
-  padding: 0 !important;
-  white-space: pre-line !important;
-  line-height: 1.42;
-  overflow: visible;
-}
-
-/* Réponses du Projectionniste : boîte complète autour du texte */
-.ps-fish-message-bot {
-  width: 100%;
-  max-width: 100%;
-  padding: 12px 14px;
-  border-radius: 16px;
-}
-
-/* Questions utilisateur : compacte, mais sans sortir du cadre */
-.ps-fish-message-user {
-  align-self: flex-end;
-  width: auto !important;
-  max-width: 82%;
-  padding: 8px 12px;
-  border-radius: 16px 16px 6px 16px;
-  overflow: visible;
-}
-
-/* On cache TOI, mais sans casser la hauteur */
-.ps-fish-message-user strong {
-  display: none !important;
-}
-
-.ps-fish-message-user p {
-  white-space: normal !important;
-  line-height: 1.32;
-  overflow-wrap: break-word;
-}
-
-/* On garde le label Projectionniste visible */
-.ps-fish-message-bot strong {
-  display: block !important;
-  margin-bottom: 6px;
-  line-height: 1.1;
-}
-
-/* Un peu moins d'air entre les messages, mais pas trop */
-.ps-fish-chat-messages {
-  gap: 10px;
-  align-items: stretch;
-}
-/* =========================================================
-   BUBULLE CHAT UI - VERSION PROPRE
-   Remplace tous les anciens patchs UI empilés
+   BUBULLE CHAT UI - VERSION FINALE PROPRE
+   Aucun autre patch UI ne doit être placé après celui-ci
    ========================================================= */
 
 .ps-fish-chat {
@@ -889,74 +390,26 @@
     radial-gradient(circle at 12% 0%, rgba(77,169,255,.16), transparent 40%),
     radial-gradient(circle at 92% 100%, rgba(246,196,109,.09), transparent 44%),
     linear-gradient(145deg, rgba(8,13,28,.98), rgba(5,10,22,.94));
-  box-shadow:
-    0 30px 82px rgba(0,0,0,.60),
-    0 0 34px rgba(77,169,255,.14),
-    inset 0 1px 0 rgba(255,255,255,.07);
 }
 
-/* Header */
-.ps-fish-chat-header {
-  padding: 14px 16px;
-  background:
-    linear-gradient(90deg, rgba(77,169,255,.15), transparent 58%),
-    rgba(255,255,255,.018);
-}
-
-.ps-fish-chat-header strong {
-  font-size: 1rem;
-  color: #f6c46d;
-}
-
-.ps-fish-chat-header span {
-  margin-top: 3px;
-  font-size: .78rem;
-  color: rgba(247,241,231,.58);
-}
-
-.ps-fish-chat-close {
-  flex: 0 0 auto;
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
-}
-
-.ps-fish-chat-close:hover {
-  transform: rotate(8deg) scale(1.04);
-}
-
-/* Zone messages */
 .ps-fish-chat-messages {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   gap: 10px;
   padding: 14px;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(77,169,255,.34) rgba(255,255,255,.035);
+  align-items: stretch;
 }
 
-.ps-fish-chat-messages::-webkit-scrollbar {
-  width: 6px;
-}
-
-.ps-fish-chat-messages::-webkit-scrollbar-track {
-  background: rgba(255,255,255,.025);
-  border-radius: 999px;
-}
-
-.ps-fish-chat-messages::-webkit-scrollbar-thumb {
-  background: rgba(77,169,255,.34);
-  border-radius: 999px;
-}
-
-/* Reset sain des bulles */
+/* Message : base stable */
 .ps-fish-message {
-  position: static;
+  position: relative;
   display: block;
+  flex: 0 0 auto;
+  width: auto;
   height: auto;
   min-height: 0;
   max-height: none;
-  box-sizing: border-box;
   margin: 0;
   padding: 11px 13px;
   border-radius: 16px;
@@ -964,6 +417,7 @@
   font-size: .91rem;
   white-space: normal;
   overflow: visible;
+  box-sizing: border-box;
   animation: ps-message-pop .18s ease both;
 }
 
@@ -971,12 +425,14 @@
 .ps-fish-message p {
   position: static;
   display: block;
+  float: none;
   width: auto;
   height: auto;
+  min-height: 0;
+  max-height: none;
   margin: 0;
   padding: 0;
   transform: none;
-  float: none;
   box-sizing: border-box;
 }
 
@@ -999,7 +455,7 @@
   word-break: normal;
 }
 
-/* Réponses du Projectionniste */
+/* Réponse Projectionniste */
 .ps-fish-message-bot {
   align-self: stretch;
   width: 100%;
@@ -1010,7 +466,7 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,.045);
 }
 
-/* Questions utilisateur */
+/* Question utilisateur */
 .ps-fish-message-user {
   align-self: flex-end;
   width: fit-content;
@@ -1031,6 +487,24 @@
   line-height: 1.32;
 }
 
+/* Header plus compact */
+.ps-fish-chat-header {
+  padding: 14px 16px;
+  background:
+    linear-gradient(90deg, rgba(77,169,255,.15), transparent 58%),
+    rgba(255,255,255,.018);
+}
+
+.ps-fish-chat-header strong {
+  font-size: 1rem;
+}
+
+.ps-fish-chat-header span {
+  margin-top: 3px;
+  font-size: .78rem;
+  color: rgba(247,241,231,.58);
+}
+
 /* Formulaire */
 .ps-fish-chat-form {
   padding: 11px 12px 9px;
@@ -1047,22 +521,12 @@
   font-size: .92rem;
 }
 
-.ps-fish-chat-form input::placeholder {
-  color: rgba(247,241,231,.42);
-}
-
 .ps-fish-chat-form button {
   min-height: 42px;
   padding: 0 17px;
   border-color: rgba(77,169,255,.46);
   background:
     linear-gradient(145deg, rgba(77,169,255,.22), rgba(77,169,255,.10));
-  box-shadow: 0 0 18px rgba(77,169,255,.08);
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
-}
-
-.ps-fish-chat-form button:hover {
-  transform: translateY(-1px);
 }
 
 /* Suggestions */
@@ -1076,15 +540,29 @@
   font-size: .74rem;
   border-color: rgba(77,169,255,.38);
   background: rgba(77,169,255,.08);
-  color: rgba(247,241,231,.86);
-  transition: transform .18s ease, border-color .18s ease, background .18s ease;
 }
 
-.ps-fish-suggestions button:hover {
-  transform: translateY(-1px);
+/* Scrollbar discrète */
+.ps-fish-chat-messages {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(77,169,255,.34) rgba(255,255,255,.035);
 }
 
-/* Desktop */
+.ps-fish-chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ps-fish-chat-messages::-webkit-scrollbar-track {
+  background: rgba(255,255,255,.025);
+  border-radius: 999px;
+}
+
+.ps-fish-chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(77,169,255,.34);
+  border-radius: 999px;
+}
+
+/* Responsive */
 @media (min-width: 981px) {
   .ps-fish-chat {
     right: clamp(24px, 4vw, 70px);
@@ -1092,7 +570,6 @@
   }
 }
 
-/* Tablette */
 @media (max-width: 980px) {
   .ps-fish-chat {
     width: min(450px, calc(100vw - 24px));
@@ -1102,7 +579,6 @@
   }
 }
 
-/* Mobile */
 @media (max-width: 680px) {
   .ps-fish-chat {
     right: 8px;
@@ -1156,7 +632,6 @@
   }
 }
 
-/* Très petit écran */
 @media (max-width: 430px) {
   .ps-fish-chat {
     bottom: 164px;
@@ -1174,39 +649,4 @@
   .ps-fish-message {
     font-size: .88rem;
   }
-}
-/* =========================================================
-   BUBULLE UI - Anti-disparition des messages
-   Les bulles gardent leur vraie hauteur et le scroll fait son travail
-   ========================================================= */
-
-.ps-fish-chat-messages {
-  overflow-y: auto;
-  align-items: stretch;
-}
-
-/* Très important : les messages ne doivent PAS être compressés */
-.ps-fish-message {
-  flex: 0 0 auto !important;
-  height: auto !important;
-  min-height: max-content !important;
-  overflow: visible !important;
-}
-
-/* Le texte doit participer à la hauteur de la bulle */
-.ps-fish-message p,
-.ps-fish-message strong {
-  height: auto !important;
-  max-height: none !important;
-  overflow: visible !important;
-}
-
-/* Réponses longues : elles restent lisibles et créent du scroll */
-.ps-fish-message-bot {
-  flex-shrink: 0 !important;
-}
-
-/* Questions utilisateur : compactes mais non écrasées */
-.ps-fish-message-user {
-  flex-shrink: 0 !important;
 }
