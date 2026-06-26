@@ -803,3 +803,74 @@
     line-height: 1.28;
   }
 }
+/* =========================================================
+   PATCH UI BUBULLE - Correction texte qui sort des bulles
+   À coller tout en bas du CSS
+   ========================================================= */
+
+.ps-fish-message {
+  position: relative;
+  display: block;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible;
+  white-space: normal !important;
+}
+
+.ps-fish-message strong,
+.ps-fish-message p {
+  position: static !important;
+  display: block;
+  transform: none !important;
+}
+
+.ps-fish-message p {
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: pre-line !important;
+  line-height: 1.42;
+  overflow: visible;
+}
+
+/* Réponses du Projectionniste : boîte complète autour du texte */
+.ps-fish-message-bot {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px 14px;
+  border-radius: 16px;
+}
+
+/* Questions utilisateur : compacte, mais sans sortir du cadre */
+.ps-fish-message-user {
+  align-self: flex-end;
+  width: auto !important;
+  max-width: 82%;
+  padding: 8px 12px;
+  border-radius: 16px 16px 6px 16px;
+  overflow: visible;
+}
+
+/* On cache TOI, mais sans casser la hauteur */
+.ps-fish-message-user strong {
+  display: none !important;
+}
+
+.ps-fish-message-user p {
+  white-space: normal !important;
+  line-height: 1.32;
+  overflow-wrap: break-word;
+}
+
+/* On garde le label Projectionniste visible */
+.ps-fish-message-bot strong {
+  display: block !important;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+
+/* Un peu moins d'air entre les messages, mais pas trop */
+.ps-fish-chat-messages {
+  gap: 10px;
+  align-items: stretch;
+}
