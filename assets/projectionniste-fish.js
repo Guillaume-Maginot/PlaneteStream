@@ -215,18 +215,9 @@
   }
 
   function itemLine(item, index) {
-    const bits = [];
-    const year = item.year || (item.releaseDate || '').slice(0, 4);
-    const runtime = formatRuntime(getRuntimeMinutes(item));
-    const rating = Number(item.rating || 0);
-    bits.push(mediaLabel(item));
-    if (year) bits.push(String(year));
-    if (runtime) bits.push(runtime);
-    if (rating) bits.push(`⭐ ${rating.toFixed(1).replace('.', ',')}/10`);
-    const genres = Array.isArray(item.genres) ? item.genres.slice(0, 2).join(', ') : '';
-    const link = itemUrl(item);
-    return `${index + 1}. ${item.title || item.originalTitle || 'Titre sans nom'} (${bits.join(' · ')})${genres ? ` — ${genres}` : ''}${link ? `\n   ${link}` : ''}`;
-  }
+  const title = item.title || item.originalTitle || 'Titre sans nom';
+  return `${index + 1}. ${title}`;
+}
 
   function parseDurationLimit(message) {
     const less = /(moins de|max(?:imum)?|pas plus de|sous)\s*(\d+)\s*(h|heure|heures|min|minutes)?/i.exec(message);
@@ -354,7 +345,7 @@
         ? 'Voici les meilleures pistes que je trouve dans le catalogue :'
         : 'J’ai trouvé ça dans le catalogue Planete Stream :';
 
-    return `${intro}\n\n${results.map(itemLine).join('\n\n')}`;
+    return `${intro}\n\n${results.map(itemLine).join('\n')}`;
   }
 
   async function localBrain(rawMessage) {
