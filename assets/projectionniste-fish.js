@@ -311,6 +311,79 @@ function fishMovieMatchesDuration(movie, durationFilter) {
 
   return true;
 }
+function fishDisplayLabel(value) {
+  const label = String(value || '').trim();
+
+  if (!label) return '';
+
+  const specialLabels = {
+    'science fiction': 'Science-fiction',
+    'science-fiction': 'Science-fiction',
+    'comedie': 'Comédie',
+    'comédie': 'Comédie',
+    'epouvante': 'Épouvante',
+    'épouvante': 'Épouvante'
+  };
+
+  const normalized = fishNormalize(label);
+
+  if (specialLabels[normalized]) {
+    return specialLabels[normalized];
+  }
+
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
+function fishMovieGenresForDisplay(movie) {
+  if (!movie) return [];
+
+  const source = movie.item
+    ? movie.genres || movie.item.genres || movie.item.genre
+    : movie.genres || movie.genre;
+
+  return Array.from(
+    new Set(
+      fishToArray(source)
+        .map(fishDisplayLabel)
+        .filter(Boolean)
+    )
+  );
+}
+
+function fishMovieRuntimeForDisplay(movie) {
+  if (!movie) return 0;
+
+  if (movie.runtime) {
+    return Number(movie.runtime) || getRuntimeMinutes({ runtime: movie.runtime });
+  }
+
+  if (movie.item) {
+    return getRuntimeMinutes(movie.item);
+  }
+
+  return getRuntimeMinutes(movie);
+}
+
+function fishMovieDetailsForDisplay(movie) {
+  const details = [];
+  const genres = fishMovieGenresForDisplay(movie).slice(0, 2);
+  const runtime = fishMovieRuntimeForDisplay(movie);
+
+  if (genres.length) {
+    details.push(genres.join(', '));
+  }
+
+  if (runtime) {
+    details.push(fishFormatDuration(runtime));
+  }
+
+  return details.length ? ` — ${details.join(' — ')}` : '';
+}
+
+function fishMovieLine(movie, index) {
+  return `${index + 1}. ${fishMovieTitle(movie)}${fishMovieDetailsForDisplay(movie)}`;
+}
+
 function fishFormatTitleResults(results, intro) {
   const visibleResults = results.slice(0, 5);
   const remaining = results.length - visibleResults.length;
@@ -318,7 +391,7 @@ function fishFormatTitleResults(results, intro) {
   let answer = `${intro}\n`;
 
   answer += visibleResults
-    .map((movie, index) => `${index + 1}. ${fishMovieTitle(movie)}`)
+    .map(fishMovieLine)
     .join('\n');
 
   if (remaining > 0) {
@@ -994,9 +1067,9 @@ function fishAnswerGenreRequest(message, catalogue) {
     return recordsCache;
   }
 
-  function itemLine(record, index) {
-    return `${index + 1}. ${record.title}`;
-  }
+ function itemLine(record, index) {
+  return fishMovieLine(record, index);
+}
 
   function personLine(name, index) {
     return `${index + 1}. ${name}`;
