@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.4.3-sagas-editorial-filter" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.5-sagas-clean-cards" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
 
   <style>
@@ -55,9 +55,9 @@
       position:relative;
       z-index:2;
       display:grid;
-      grid-template-columns:minmax(0,1fr) minmax(260px,.34fr);
+      grid-template-columns:minmax(0,1fr);
       gap:34px;
-      align-items:end;
+      align-items:center;
     }
 
     .sagas-hero-copy h1{
@@ -75,7 +75,7 @@
     }
 
     .sagas-hero-copy p{
-      max-width:780px;
+      max-width:860px;
       color:#ded7ef;
       font-size:18px;
       line-height:1.7;
@@ -697,6 +697,60 @@
       .saga-meta span{font-size:10.5px;}
     }
 
+
+    /* === V3.4.5 - Sagas : affiches libérées, carte entière cliquable === */
+    .sagas-hero-inner{
+      grid-template-columns:minmax(0,1fr);
+    }
+
+    .sagas-stats,
+    .saga-badge,
+    .saga-link{
+      display:none!important;
+    }
+
+    .saga-poster{
+      overflow:hidden;
+    }
+
+    .saga-content{
+      padding:13px 14px 16px;
+      min-height:128px;
+      justify-content:flex-start;
+    }
+
+    .saga-description{
+      min-height:38px;
+      margin-bottom:10px;
+    }
+
+    .saga-meta{
+      display:block;
+      margin:0;
+    }
+
+    .saga-meta span{
+      width:100%;
+      min-height:30px;
+      justify-content:center;
+      border-radius:999px;
+      color:#f7f0ff;
+      letter-spacing:-.01em;
+    }
+
+    .saga-card a{
+      display:block;
+      height:100%;
+    }
+
+    .saga-card:hover .saga-content{
+      background:
+        radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--saga-color) 30%, transparent), transparent 36%),
+        radial-gradient(circle at 92% 88%, color-mix(in srgb, var(--saga-color) 16%, transparent), transparent 32%),
+        linear-gradient(135deg, color-mix(in srgb, var(--saga-color) 14%, transparent), transparent 42%),
+        rgba(6,5,16,.98);
+    }
+
   </style>
 </head>
 <body>
@@ -730,13 +784,8 @@
         <div class="sagas-hero-copy">
           <p class="eyebrow">Catalogue orbital</p>
           <h1>Les grandes <span>Sagas</span></h1>
-          <p>Choisis un univers, puis retrouve tous les films de la franchise dans l'ordre. Chaque carte utilise l'affiche du premier film présent dans le catalogue.</p>
+          <p>Chaque saga est une porte ouverte vers un univers. Les affiches donnent le ton, le catalogue fait le reste.</p>
         </div>
-        <aside class="sagas-stats" aria-label="Résumé des sagas">
-          <span>Sagas détectées</span>
-          <strong id="sagaCount">—</strong>
-          <span id="sagaMovieCount">Lecture du catalogue...</span>
-        </aside>
       </div>
     </section>
 
@@ -1017,14 +1066,12 @@
             <a href="${sagaUrl}" aria-label="Explorer la saga ${escapeHtml(saga.title)}">
               <div class="saga-poster" style="${posterStyle}" aria-hidden="true">
                 <div class="saga-dust" aria-hidden="true"></div>
-                <span class="saga-badge">${count} ${count > 1 ? "films" : "film"}</span>
               </div>
               <div class="saga-content">
                 <p class="saga-description">${escapeHtml(saga.text)}</p>
                 <div class="saga-meta">
-                  <span>${count} ${count > 1 ? "films" : "film"} • ${escapeHtml(yearsLabel)} • ${escapeHtml(saga.genre)}</span>
+                  <span>${escapeHtml(yearsLabel)} • ${escapeHtml(saga.genre)} • ${count} ${count > 1 ? "films" : "film"}</span>
                 </div>
-                <span class="saga-link">Explorer →</span>
               </div>
             </a>
           </article>
@@ -1055,9 +1102,11 @@
       const items = await loadCatalog();
       const sagas = buildSagas(items);
 
-      document.getElementById("sagaCount").textContent = sagas.length;
       const totalMovies = sagas.reduce((sum,saga) => sum + saga.movies.length, 0);
-      document.getElementById("sagaMovieCount").textContent = `${totalMovies} ${totalMovies > 1 ? "films regroupés" : "film regroupé"}`;
+      const sagaCountEl = document.getElementById("sagaCount");
+      const sagaMovieCountEl = document.getElementById("sagaMovieCount");
+      if(sagaCountEl) sagaCountEl.textContent = sagas.length;
+      if(sagaMovieCountEl) sagaMovieCountEl.textContent = `${totalMovies} ${totalMovies > 1 ? "films regroupés" : "film regroupé"}`;
 
       if(!sagas.length){
         document.getElementById("sagasGrid").innerHTML = `
