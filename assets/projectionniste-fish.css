@@ -754,3 +754,52 @@
     padding: 0 10px 10px;
   }
 }
+/* =========================================================
+   PATCH UI BUBULLE - Questions utilisateur compactes
+   ========================================================= */
+
+.ps-fish-message-user {
+  align-self: flex-end;
+  width: auto;
+  max-width: 82%;
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: 16px 16px 6px 16px;
+}
+
+/* On masque le label "TOI" pour gagner de la hauteur */
+.ps-fish-message-user strong {
+  display: none;
+}
+
+.ps-fish-message-user p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.32;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Les messages courts ne doivent pas se casser bêtement */
+.ps-fish-message-user p {
+  text-wrap: pretty;
+}
+
+/* On garde les réponses du Projectionniste plus posées */
+.ps-fish-message-bot strong {
+  margin-bottom: 5px;
+}
+
+/* Mobile : encore plus serré côté utilisateur */
+@media (max-width: 680px) {
+  .ps-fish-message-user {
+    max-width: 86%;
+    padding: 7px 11px;
+    font-size: .86rem;
+  }
+
+  .ps-fish-message-user p {
+    line-height: 1.28;
+  }
+}
