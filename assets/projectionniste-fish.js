@@ -10,6 +10,265 @@
   const brainStatus = document.querySelector('#psBrainStatus');
   const suggestions = Array.from(document.querySelectorAll('[data-ps-fish-suggestion]'));
 
+/* =========================================================
+   PATCH POISSON - NORMALISATION GENRES / MOTS-CLES
+   Objectif : éviter les faux positifs du type "Resurrections"
+   quand on demande un film de zombie.
+   ========================================================= */
+
+const FISH_GENRE_SYNONYMS = {
+  zombie: [
+    'zombie',
+    'zombies',
+    'mort vivant',
+    'morts vivants',
+    'mort-vivant',
+    'morts-vivants',
+    'undead',
+    'living dead',
+    'infecte',
+    'infectes',
+    'infecté',
+    'infectés'
+  ],
+
+  horreur: [
+    'horreur',
+    'épouvante',
+    'epouvante',
+    'horror',
+    'film d horreur',
+    'film de peur'
+  ],
+
+  science_fiction: [
+    'science fiction',
+    'science-fiction',
+    'sci fi',
+    'sci-fi',
+    'sf',
+    'anticipation'
+  ],
+
+  comedie: [
+    'comedie',
+    'comédie',
+    'humour',
+    'humor',
+    'comedy',
+    'film drole',
+    'film drôle'
+  ],
+
+  drame: [
+    'drame',
+    'dramatique',
+    'drama'
+  ],
+
+  action: ['action'],
+  aventure: ['aventure', 'adventure'],
+  thriller: ['thriller', 'suspense'],
+  fantastique: ['fantastique', 'fantasy'],
+  animation: ['animation', 'anime', 'dessin anime', 'dessin animé'],
+  romance: ['romance', 'romantique'],
+  guerre: ['guerre', 'war'],
+  crime: ['crime', 'policier', 'polar'],
+  western: ['western'],
+  documentaire: ['documentaire', 'docu', 'documentary']
+};
+
+const FISH_GENRE_LABELS = {
+  zombie: 'zombie',
+  horreur: 'd’horreur',
+  science_fiction: 'de science-fiction',
+  comedie: 'de comédie',
+  drame: 'dramatique',
+  action: 'd’action',
+  aventure: 'd’aventure',
+  thriller: 'thriller',
+  fantastique: 'fantastique',
+  animation: 'd’animation',
+  romance: 'romantique',
+  guerre: 'de guerre',
+  crime: 'policier',
+  western: 'western',
+  documentaire: 'documentaire'
+};
+
+/*
+  Corrections connues sans toucher au JSON.
+  Utile pour les sous-genres que TMDb ne range pas toujours proprement,
+  comme "zombie".
+*/
+const FISH_FORCE_GENRES_BY_TITLE = {
+  zombie: [
+    'malnazidos',
+    'world war z',
+    'zombieland',
+    'shaun of the dead',
+    'army of the dead',
+    'train to busan',
+    'dernier train pour busan',
+    '28 jours plus tard',
+    '28 semaines plus tard'
+  ]
+};
+
+function fishNormalize(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[’']/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function fishEscapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function fishHasPhrase(haystack, phrase) {
+  const cleanHaystack = ` ${fishNormalize(haystack)} `;
+  const cleanPhrase = fishNormalize(phrase);
+
+  if (!cleanPhrase) return false;
+
+  /*
+    Cas spécial zombie :
+    on accepte "zombie", "zombies", "zombieland",
+    mais PAS "résurrection", "resurrections", etc.
+  */
+  if (cleanPhrase === 'zombie' || cleanPhrase === 'zombies') {
+    return /(^|\s)zombies?[a-z0-9]*(\s|$)/.test(cleanHaystack);
+  }
+
+  const regex = new RegExp(`(^|\\s)${fishEscapeRegExp(cleanPhrase)}(\\s|$)`);
+  return regex.test(cleanHaystack);
+}
+
+function fishToArray(value) {
+  if (!value) return [];
+
+  if (Array.isArray(value)) {
+    return value.flatMap(fishToArray);
+  }
+
+  if (typeof value === 'object') {
+    return [
+      value.name,
+      value.title,
+      value.label,
+      value.value
+    ].filter(Boolean).map(String);
+  }
+
+  return String(value)
+    .split(/[;,|]/)
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+function fishMovieTitle(movie) {
+  return movie.title ||
+    movie.titre ||
+    movie.name ||
+    movie.originalTitle ||
+    movie.original_title ||
+    'Titre inconnu';
+}
+
+function fishMovieTextForGenre(movie) {
+  const parts = [
+    movie.title,
+    movie.titre,
+    movie.name,
+    movie.originalTitle,
+    movie.original_title,
+    movie.overview,
+    movie.synopsis,
+    movie.description,
+
+    ...fishToArray(movie.genres),
+    ...fishToArray(movie.genre),
+    ...fishToArray(movie.keywords),
+    ...fishToArray(movie.tags),
+    ...fishToArray(movie.themes),
+    ...fishToArray(movie.thematiques)
+  ];
+
+  return parts.filter(Boolean).join(' ');
+}
+
+function fishDetectRequestedGenre(message) {
+  for (const [genreKey, aliases] of Object.entries(FISH_GENRE_SYNONYMS)) {
+    if (aliases.some(alias => fishHasPhrase(message, alias))) {
+      return genreKey;
+    }
+  }
+
+  return null;
+}
+
+function fishMovieHasForcedGenre(movie, genreKey) {
+  const forcedTitles = FISH_FORCE_GENRES_BY_TITLE[genreKey] || [];
+  const title = fishNormalize(fishMovieTitle(movie));
+
+  return forcedTitles.some(forcedTitle => {
+    return title === fishNormalize(forcedTitle);
+  });
+}
+
+function fishMovieMatchesRequestedGenre(movie, genreKey) {
+  if (!movie || !genreKey) return false;
+
+  if (fishMovieHasForcedGenre(movie, genreKey)) {
+    return true;
+  }
+
+  const aliases = FISH_GENRE_SYNONYMS[genreKey] || [];
+  const movieText = fishMovieTextForGenre(movie);
+
+  return aliases.some(alias => fishHasPhrase(movieText, alias));
+}
+
+function fishFormatTitleResults(results, intro) {
+  const visibleResults = results.slice(0, 5);
+  const remaining = results.length - visibleResults.length;
+
+  let answer = `${intro}\n`;
+
+  answer += visibleResults
+    .map((movie, index) => `${index + 1}. ${fishMovieTitle(movie)}`)
+    .join('\n');
+
+  if (remaining > 0) {
+    answer += `\n... et ${remaining} autre${remaining > 1 ? 's' : ''} titre${remaining > 1 ? 's' : ''}.`;
+  }
+
+  return answer;
+}
+
+function fishAnswerGenreRequest(message, catalogue) {
+  const genreKey = fishDetectRequestedGenre(message);
+
+  if (!genreKey) {
+    return null;
+  }
+
+  const movies = Array.isArray(catalogue) ? catalogue : [];
+  const results = movies.filter(movie => fishMovieMatchesRequestedGenre(movie, genreKey));
+  const label = FISH_GENRE_LABELS[genreKey] || genreKey;
+
+  if (!results.length) {
+    return `Je ne trouve pas de film ${label} dans le catalogue. Je préfère ne pas inventer, mon bocal a encore deux ou trois principes.`;
+  }
+
+  return fishFormatTitleResults(results, `Pour un film ${label}, j’ai trouvé :`);
+}
+
   if (!widget || !chat || !form || !input || !messages) return;
 
   const STORAGE_KEY = 'planeteStreamProjectionnisteIntroSeen';
@@ -1282,6 +1541,10 @@
     return `Voici ce que le catalogue indique vraiment côté zombies :\n\n${results.map(itemLine).join('\n')}`;
   }
      function buildCatalogueAnswer(rawMessage, catalogue) {
+      const genreAnswer = fishAnswerGenreRequest(message, catalogue);
+if (genreAnswer) {
+  return genreAnswer;
+}
     if (!catalogue.length) {
       return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
     }
