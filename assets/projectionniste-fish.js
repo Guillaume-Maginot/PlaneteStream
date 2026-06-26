@@ -1284,16 +1284,17 @@
 
     return `Voici ce que le catalogue indique vraiment côté zombies :\n\n${results.map(itemLine).join('\n')}`;
   }
-    function buildCatalogueAnswer(rawMessage, catalogue) {
+     function buildCatalogueAnswer(rawMessage, catalogue) {
     if (!catalogue.length) {
       return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
     }
 
     const message = normalize(rawMessage);
+    const records = getRecords(catalogue);
 
     // PRIORITÉ ABSOLUE : Premium
-    // Ici on ne regarde QUE item.premium, surtout pas featured.
-    if (/premium|fauteuil rouge|selection premium|sélection premium/.test(message)) {
+    // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
+    if (/premium|fauteuil rouge|selection premium/.test(message)) {
       const results = catalogue
         .filter(item => {
           if (item.premium === true) return true;
@@ -1318,7 +1319,7 @@
     }
 
     // PRIORITÉ ABSOLUE : Zombies
-    // Ici on ne passe PAS par les genres horreur/action/SF.
+    // On ne passe pas par les genres horreur/action/SF.
     if (/zombie|zombies|mort vivant|morts vivants|mangeur de chair|mangeurs de chair|mangeuse de chair|mangeuses de chair/.test(message)) {
       const acceptedZombieTitles = [
         'malnazidos',
@@ -1346,10 +1347,10 @@
         'mangeuses de chair',
         'creature mangeuse de chair',
         'creatures mangeuses de chair',
-        'creee par les nazis',
-        'creees par les nazis',
         'cree par les nazis',
-        'crees par les nazis'
+        'crees par les nazis',
+        'creee par les nazis',
+        'creees par les nazis'
       ].map(normalize);
 
       const results = catalogue
@@ -1386,29 +1387,74 @@
       return `Voici ce que le catalogue indique vraiment côté zombies :\n\n${results.map(itemLine).join('\n')}`;
     }
 
-    // Moteur général pour tout le reste
-    const intent = detectIntent(rawMessage);
-    const results = pickResults(catalogue, intent);
-
-    if (!results.length) {
-      if (intent.wantsKids) {
-        return 'Bloup... j’ai vérifié dans le catalogue et je ne trouve pas de vrai film enfant/famille correspondant. Je préfère être honnête plutôt que d’inventer un titre qui n’est pas sur Planete Stream.';
-      }
-
-      return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, une durée ou un titre plus précis.';
+    // Questions réalisateur d’un titre
+    if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
+      return answerDirectorOfTitle(rawMessage, records);
     }
 
-    let intro = "J'ai trouvé ça dans le catalogue Planete Stream :";
+    // Questions casting d’un titre
+    if (/casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(message)) {
+      return answerCastOfTitle(rawMessage, records);
+    }
+
+    // Moteur général pour tout le reste
+    const intent = buildIntent(rawMessage, records);
+    const results = pickResults(records, intent);
+
+    if (!results.length) {
+      return explainNoResult(intent);
+    }
+
+    let intro = 'J’ai trouvé ça dans le catalogue Planete Stream :';
 
     if (results.length === 1) {
-      intro = "J'ai trouvé une excellente correspondance :";
-    } else if (results.length === 2) {
-      intro = "J'ai trouvé deux très bonnes pistes :";
+      intro = 'J’ai trouvé une excellente correspondance :';
+    } else if (intent.matchedDirectors.length) {
+      intro = `Voici ce que le catalogue indique pour ${intent.matchedDirectors.join(', ')} :`;
+    } else if (intent.matchedActors.length) {
+      intro = `Voici ce que le catalogue indique avec ${intent.matchedActors.join(', ')} :`;
+    } else if (intent.wantsBest) {
+      intro = 'Voici les titres les mieux placés dans le catalogue :';
+    } else if (intent.wantsRandom) {
+      intro = 'Le bocal a remué les bobines, voici une suggestion :';
     } else if (results.length <= 5) {
-      intro = "Voici les films qui correspondent le mieux :";
+      intro = 'Voici les titres qui correspondent le mieux :';
     }
 
     return `${intro}\n\n${results.map(itemLine).join('\n')}`;
+  }
+
+  async function localBrain(rawMessage) {
+    const clean = rawMessage.trim();
+    const message = normalize(clean);
+
+    if (!message) {
+      return 'Bloup ? Même moi j’ai besoin d’au moins une bulle d’information.';
+    }
+
+    if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(message)) {
+      return 'Bloup ! Je suis réveillé. Enfin, autant qu’un poisson rouge peut l’être sans café.';
+    }
+
+    if (/merci|thanks/.test(message)) {
+      return 'Avec plaisir. Je retourne surveiller les bobines depuis mon bocal.';
+    }
+
+    if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle/.test(message)) {
+      return 'Je suis le Projectionniste de Planete Stream : petit poisson, cerveau JSON. Je vérifie le catalogue avant de répondre, donc je préfère dire “je ne sais pas” plutôt que d’inventer un film sorti d’une palourde.';
+    }
+
+    if (/aide|help|comment|que peux tu faire/.test(message)) {
+      return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou une suggestion au hasard. Exemple : “un film de SF de moins de 2h”, “un film avec Sigourney Weaver” ou “qui a réalisé Titanic ?”.';
+    }
+
+    try {
+      const catalogue = await loadCatalogue();
+      return buildCatalogueAnswer(clean, catalogue);
+    } catch (error) {
+      console.error(error);
+      return 'Bloup... impossible de lire le catalogue pour le moment. Le poisson garde son calme, mais pas son honneur.';
+    }
   }
   async function askFish(message) {
     const clean = message.trim();
