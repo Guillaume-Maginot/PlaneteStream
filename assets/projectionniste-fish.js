@@ -228,36 +228,103 @@
   }
 
   function detectIntent(message) {
-    const m = normalize(message);
-    const durationMax = parseDurationLimit(message);
-    const wantsBest = /meilleur|mieux note|bien note|note|top/.test(m);
-    const wantsRandom = /surprise|hasard|n importe|je ne sais pas|quoi regarder/.test(m);
-    const wantsPremium = /premium|fauteuil rouge|selection premium/.test(m);
-    const wantsKids = /enfant|famille|familial|kids|dessin anime|animation/.test(m);
-    const wantsShort = /court|rapide|pas trop long/.test(m);
-    const requestedType = /\bserie|series\b/.test(m) ? 'serie' : /manga|anime/.test(m) ? 'manga' : /\bfilm|films\b/.test(m) ? 'film' : null;
+  const m = normalize(message);
+  const durationMax = parseDurationLimit(message);
+  const wantsBest = /meilleur|mieux note|bien note|note|top/.test(m);
+  const wantsRandom = /surprise|hasard|n importe|je ne sais pas|quoi regarder/.test(m);
+  const wantsPremium = /premium|fauteuil rouge|selection premium/.test(m);
+  const wantsKids = /enfant|famille|familial|kids|dessin anime|animation/.test(m);
+  const wantsShort = /court|rapide|pas trop long/.test(m);
+  const requestedType = /\bserie|series\b/.test(m) ? 'serie' : /manga|anime/.test(m) ? 'manga' : /\bfilm|films\b/.test(m) ? 'film' : null;
 
-    const genreMap = [
-      ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi']],
-      ['horreur', ['horreur', 'peur', 'gore', 'epouvante']],
-      ['thriller', ['thriller', 'suspense']],
-      ['action', ['action', 'baston']],
-      ['aventure', ['aventure']],
-      ['comédie', ['comedie', 'drôle', 'drole', 'humour', 'fun']],
-      ['drame', ['drame', 'triste']],
-      ['crime', ['crime', 'policier', 'enquete', 'enquête']],
-      ['mystère', ['mystere', 'mystère']],
-      ['romance', ['romance', 'amour']],
-      ['fantastique', ['fantastique', 'fantasy']],
-      ['animation', ['animation', 'dessin anime', 'enfant', 'famille', 'familial']]
-    ];
-    const wantedGenres = genreMap.filter(([, keys]) => keys.some(key => m.includes(key))).map(([genre]) => genre);
+  const genreMap = [
+    ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi']],
+    ['horreur', ['horreur', 'peur', 'gore', 'epouvante']],
+    ['thriller', ['thriller', 'suspense']],
+    ['action', ['action', 'baston']],
+    ['aventure', ['aventure']],
+    ['comédie', ['comedie', 'drôle', 'drole', 'humour', 'fun']],
+    ['drame', ['drame', 'triste']],
+    ['crime', ['crime', 'policier', 'enquete', 'enquête']],
+    ['mystère', ['mystere', 'mystère']],
+    ['romance', ['romance', 'amour']],
+    ['fantastique', ['fantastique', 'fantasy']],
+    ['animation', ['animation', 'dessin anime', 'enfant', 'famille', 'familial']]
+  ];
 
-    const stop = new Set('je tu il elle on nous vous ils elles un une des de du le la les l d dans avec sans pour sur sous par au aux ce cet cette ces qui que quoi quel quelle quels quelles est suis veux voudrais cherche recherche propose conseille montre moi as tu avez moins plus pas trop tres très film films serie series manga acteur actrice realisateur realisatrice genre duree heure heures min minutes'.split(' '));
-    const terms = m.split(/[^a-z0-9]+/).filter(word => word.length > 2 && !stop.has(word));
+  const wantedGenres = genreMap
+    .filter(([, keys]) => keys.some(key => m.includes(key)))
+    .map(([genre]) => genre);
 
-    return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsShort, requestedType, wantedGenres, terms };
-  }
+  const stop = new Set('je tu il elle on nous vous ils elles un une des de du le la les l d dans avec sans pour sur sous par au aux ce cet cette ces qui que quoi quel quelle quels quelles est suis veux voudrais cherche recherche propose conseille montre moi as tu avez moins plus pas trop tres très film films serie series manga acteur actrice realisateur realisatrice genre duree heure heures min minutes'.split(' '));
+  const terms = m.split(/[^a-z0-9]+/).filter(word => word.length > 2 && !stop.has(word));
+
+  const semanticMap = [
+    {
+      match: /super ?heros|superhero|super hero|marvel|dc comics|batman|superman|spiderman|spider man|avengers|venom|joker/,
+      genres: ['action', 'aventure', 'fantastique', 'science-fiction', 'crime'],
+      terms: ['batman', 'superman', 'spider', 'spiderman', 'marvel', 'avengers', 'venom', 'joker', 'gotham', 'dc']
+    },
+    {
+      match: /zombie|mort vivant|morts vivants|infecte|infectes/,
+      genres: ['horreur', 'action', 'thriller'],
+      terms: ['zombie', 'mort', 'vivant', 'infecte']
+    },
+    {
+      match: /dinosaure|dinosaure|jurassic/,
+      genres: ['aventure', 'science-fiction', 'action'],
+      terms: ['jurassic', 'dinosaure']
+    },
+    {
+      match: /espace|spatial|galaxie|vaisseau|planete|extraterrestre|alien/,
+      genres: ['science-fiction', 'aventure'],
+      terms: ['espace', 'galaxie', 'alien', 'avatar', 'prometheus']
+    },
+    {
+      match: /robot|androide|intelligence artificielle|ia/,
+      genres: ['science-fiction', 'action'],
+      terms: ['robot', 'androide', 'intelligence', 'artificielle']
+    },
+    {
+      match: /magie|sorcier|sorciere|magicien/,
+      genres: ['fantastique', 'aventure'],
+      terms: ['magie', 'sorcier', 'fantastique']
+    },
+    {
+      match: /vampire|dracula/,
+      genres: ['horreur', 'fantastique'],
+      terms: ['vampire', 'dracula']
+    },
+    {
+      match: /pirate|corsaire/,
+      genres: ['aventure', 'action'],
+      terms: ['pirate', 'corsaire']
+    },
+    {
+      match: /guerre|militaire|soldat|armee/,
+      genres: ['action', 'drame', 'thriller'],
+      terms: ['guerre', 'militaire', 'soldat']
+    },
+    {
+      match: /espion|agent secret|mission secrete/,
+      genres: ['action', 'thriller', 'aventure'],
+      terms: ['espion', 'agent', 'mission']
+    }
+  ];
+
+  semanticMap.forEach(rule => {
+    if (rule.match.test(m)) {
+      rule.genres.forEach(genre => {
+        if (!wantedGenres.includes(genre)) wantedGenres.push(genre);
+      });
+      rule.terms.forEach(term => {
+        if (!terms.includes(term)) terms.push(term);
+      });
+    }
+  });
+
+  return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsShort, requestedType, wantedGenres, terms };
+}
 
   function scoreItem(item, intent) {
     let score = 0;
@@ -369,7 +436,7 @@
       return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou même une suggestion au hasard. Exemple : “un film de SF de moins de 2h” ou “un film avec Tom Cruise”.';
     }
 
-    if (/catalogue|json|film|films|serie|series|manga|acteur|actrice|realisateur|realisatrice|genre|duree|moins de|sf|science fiction|comedie|horreur|thriller|action|aventure|premium|enfant|famille|familial|kids|dessin anime|animation|surprise|hasard|quoi regarder|meilleur|mieux note|note|top|court|rapide/.test(message)) {
+    if (/catalogue|json|film|films|serie|series|manga|acteur|actrice|realisateur|realisatrice|genre|duree|moins de|sf|science fiction|comedie|horreur|thriller|action|aventure|premium|enfant|famille|familial|kids|dessin anime|animation|surprise|hasard|quoi regarder|meilleur|mieux note|note|top|court|rapide|super ?heros|superhero|marvel|dc comics|batman|superman|spiderman|spider man|avengers|joker|venom|zombie|dinosaure|jurassic|espace|spatial|galaxie|robot|androide|vampire|pirate|guerre|espion/.test(message)) {
       const catalogue = await loadCatalogue();
       return buildCatalogueAnswer(rawMessage, catalogue);
     }
