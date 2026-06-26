@@ -1136,19 +1136,18 @@
 
     return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, un réalisateur, une durée ou un titre plus précis.';
   }
+ 
   function isZombieRequest(message) {
-    return /zombie|zombies|mort vivant|morts vivants|infecte|infectes|infecté|infectés|malnazidos|resident evil|world war z|zombieland|walking dead/i.test(message);
+    return /zombie|zombies|mort vivant|morts vivants|infecte|infectes|infecté|infectés|mangeuse de chair|mangeuses de chair/i.test(message);
   }
 
   function isZombieRecord(record) {
-    const zombieTerms = [
-      'zombie',
-      'zombies',
-      'mort vivant',
-      'morts vivants',
-      'infecte',
-      'infecté',
-      'infectés',
+    const title = normalize(record.title || '');
+    const slug = normalize(record.item?.slug || '');
+    const originalTitle = normalize(record.originalTitle || record.item?.originalTitle || record.item?.original_title || '');
+    const story = normalize(record.storyNorm || record.item?.overview || '');
+
+    const zombieTitles = [
       'malnazidos',
       'resident evil',
       'world war z',
@@ -1163,26 +1162,39 @@
       'overlord'
     ].map(normalize);
 
-    return zombieTerms.some(term =>
-      record.titleNorm.includes(term) ||
-      record.storyNorm.includes(term)
-    );
+    const zombieStorySignals = [
+      'zombie',
+      'zombies',
+      'mort vivant',
+      'morts vivants',
+      'mangeur de chair',
+      'mangeurs de chair',
+      'mangeuse de chair',
+      'mangeuses de chair'
+    ].map(normalize);
+
+    const identity = `${title} ${slug} ${originalTitle}`;
+
+    if (zombieTitles.some(term => identity.includes(term))) {
+      return true;
+    }
+
+    return zombieStorySignals.some(term => story.includes(term));
   }
 
   function answerZombieRequest(records) {
     const results = records
       .filter(isZombieRecord)
-      .sort((a, b) =>
-        a.title.localeCompare(b.title, 'fr')
-      )
+      .sort((a, b) => a.title.localeCompare(b.title, 'fr'))
       .slice(0, 5);
 
     if (!results.length) {
-      return 'Bloup... je n’ai pas trouvé de vrai film de zombies dans le JSON. Si le film existe mais que le résumé ne parle pas de zombies, mon bocal ne peut pas le deviner.';
+      return 'Bloup... je n’ai pas trouvé de vrai film de zombies dans le JSON. Si le titre existe mais n’a pas de mot-clé zombie, il faudra lui ajouter un tag.';
     }
 
     return `Voici ce que le catalogue indique vraiment côté zombies :\n\n${results.map(itemLine).join('\n')}`;
   }
+
   function buildCatalogueAnswer(rawMessage, catalogue) {
     if (!catalogue.length) {
       return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
