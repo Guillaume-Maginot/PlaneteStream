@@ -422,29 +422,32 @@ return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsS
   }
 
   function buildCatalogueAnswer(rawMessage, catalogue) {
-    const intent = detectIntent(rawMessage);
-    const results = pickResults(catalogue, intent);
+  const intent = detectIntent(rawMessage);
+  const results = pickResults(catalogue, intent);
 
-let intro = "J'ai trouvé ça dans le catalogue Planete Stream :";
+  if (!catalogue.length) {
+    return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
+  }
 
-if (results.length === 1) {
+  if (!results.length) {
+    if (intent.wantsKids) {
+      return 'Bloup... j’ai vérifié dans le catalogue et je ne trouve pas de vrai film enfant/famille correspondant. Je préfère être honnête plutôt que d’inventer un titre qui n’est pas sur Planete Stream.';
+    }
+    return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, une durée ou un titre plus précis.';
+  }
+
+  let intro = "J'ai trouvé ça dans le catalogue Planete Stream :";
+
+  if (results.length === 1) {
     intro = "J'ai trouvé une excellente correspondance :";
-} else if (results.length === 2) {
+  } else if (results.length === 2) {
     intro = "J'ai trouvé deux très bonnes pistes :";
-} else if (results.length <= 5) {
+  } else if (results.length <= 5) {
     intro = "Voici les films qui correspondent le mieux :";
+  }
+
+  return `${intro}\n\n${results.map(itemLine).join('\n')}`;
 }
-
-    if (!catalogue.length) {
-      return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
-    }
-
-    if (!results.length) {
-      if (intent.wantsKids) {
-        return 'Bloup... j’ai vérifié dans le catalogue et je ne trouve pas de vrai film enfant/famille correspondant. Je préfère être honnête plutôt que d’inventer un titre qui n’est pas sur Planete Stream.';
-      }
-      return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, une durée ou un titre plus précis.';
-    }
 
     async function localBrain(rawMessage) {
     const message = normalize(rawMessage.trim());
