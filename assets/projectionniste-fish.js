@@ -1135,7 +1135,53 @@
 
     return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, un réalisateur, une durée ou un titre plus précis.';
   }
+  function isZombieRequest(message) {
+    return /zombie|zombies|mort vivant|morts vivants|infecte|infectes|infecté|infectés|malnazidos|resident evil|world war z|zombieland|walking dead/i.test(message);
+  }
 
+  function isZombieRecord(record) {
+    const zombieTerms = [
+      'zombie',
+      'zombies',
+      'mort vivant',
+      'morts vivants',
+      'infecte',
+      'infecté',
+      'infectés',
+      'malnazidos',
+      'resident evil',
+      'world war z',
+      'zombieland',
+      'walking dead',
+      'train to busan',
+      'army of the dead',
+      'shaun of the dead',
+      '28 jours plus tard',
+      '28 semaines plus tard',
+      'rec',
+      'overlord'
+    ].map(normalize);
+
+    return zombieTerms.some(term =>
+      record.titleNorm.includes(term) ||
+      record.storyNorm.includes(term)
+    );
+  }
+
+  function answerZombieRequest(records) {
+    const results = records
+      .filter(isZombieRecord)
+      .sort((a, b) =>
+        a.title.localeCompare(b.title, 'fr')
+      )
+      .slice(0, 5);
+
+    if (!results.length) {
+      return 'Bloup... je n’ai pas trouvé de vrai film de zombies dans le JSON. Si le film existe mais que le résumé ne parle pas de zombies, mon bocal ne peut pas le deviner.';
+    }
+
+    return `Voici ce que le catalogue indique vraiment côté zombies :\n\n${results.map(itemLine).join('\n')}`;
+  }
   function buildCatalogueAnswer(rawMessage, catalogue) {
     if (!catalogue.length) {
       return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
@@ -1143,6 +1189,10 @@
 
     const records = getRecords(catalogue);
     const normalizedMessage = normalize(rawMessage);
+
+        if (isZombieRequest(rawMessage)) {
+      return answerZombieRequest(records);
+    }
 
     if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(normalizedMessage)) {
       return answerDirectorOfTitle(rawMessage, records);
