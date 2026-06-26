@@ -625,3 +625,38 @@
     font-size: .91rem;
   }
 }
+/* =========================================================
+   PATCH UI BUBULLE - Finition lisibilité messages
+   ========================================================= */
+
+.ps-fish-message-bot {
+  width: 100%;
+}
+
+.ps-fish-message-user {
+  width: fit-content;
+  max-width: 88%;
+}
+
+.ps-fish-message p {
+  font-weight: 560;
+  letter-spacing: .005em;
+}
+
+.ps-fish-chat-messages {
+  padding-right: 14px;
+}
+
+/* Scrollbar encore plus discrète */
+.ps-fish-chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ps-fish-chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(77,169,255,.34);
+  border: 1px solid rgba(8,13,28,.98);
+}
+
+.ps-fish-chat-messages::-webkit-scrollbar-track {
+  background: rgba(255,255,255,.025);
+}
