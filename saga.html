@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.4.11-saga-bg-fade" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.12-saga-bg-contained" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <style>
     .saga-detail-page{
@@ -24,7 +24,7 @@
     }
 
     .saga-detail-bg{
-      position:fixed;
+      position:absolute;
       inset:0;
       z-index:0;
       pointer-events:none;
@@ -78,7 +78,7 @@
 
     .saga-detail-page::before{
       content:"";
-      position:fixed;
+      position:absolute;
       inset:0;
       z-index:0;
       pointer-events:none;
@@ -92,6 +92,15 @@
       position:relative;
       z-index:1;
       padding:34px 0 72px;
+    }
+
+
+
+    /* Le fond de saga reste dans la page saga, pas sous le footer. */
+    .saga-detail-page + .site-footer{
+      position:relative;
+      z-index:3;
+      background:#03040b;
     }
 
     .saga-breadcrumb{
@@ -547,7 +556,7 @@
       </a>
       <div class="footer-bottom-line">
         <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
-        <span class="footer-version">Build v3.4.11-saga-bg-fade</span>
+        <span class="footer-version">Build v3.4.12-saga-bg-contained</span>
       </div>
     </div>
   </footer>
