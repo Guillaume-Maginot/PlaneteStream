@@ -514,7 +514,18 @@ if (intent.hasStrongSignal) {
     if (/aide|help|comment|que peux tu faire/.test(message)) {
       return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou même une suggestion au hasard. Exemple : “un film de SF de moins de 2h” ou “un film avec Tom Cruise”.';
     }
+if (/qui a realise|realisateur de|realise par qui|c est qui le realisateur|c'est qui le realisateur/.test(message)) {
+  const catalogue = await loadCatalogue();
+  const intent = detectIntent(rawMessage);
+  const results = pickResults(catalogue, intent);
+  const item = results[0];
 
+  if (item && item.director) {
+    return `${item.title || item.originalTitle} a été réalisé par ${item.director}.`;
+  }
+
+  return 'Bloup... je ne trouve pas le réalisateur dans le catalogue pour ce titre.';
+}
     if (/catalogue|json|film|films|serie|series|manga|acteur|actrice|realisateur|realisatrice|genre|duree|moins de|sf|science fiction|comedie|horreur|thriller|action|aventure|premium|enfant|famille|familial|kids|dessin anime|animation|surprise|hasard|quoi regarder|meilleur|mieux note|note|top|court|rapide|super ?heros|superhero|marvel|dc comics|batman|superman|spiderman|spider man|avengers|joker|venom|zombie|dinosaure|jurassic|espace|spatial|galaxie|robot|androide|vampire|pirate|guerre|espion/.test(message)) {
       const catalogue = await loadCatalogue();
       return buildCatalogueAnswer(rawMessage, catalogue);
