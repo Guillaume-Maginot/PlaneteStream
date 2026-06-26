@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=3.4.5-sagas-clean-cards" />
+  <link rel="stylesheet" href="assets/styles.css?v=3.4.6-sagas-hover-slogan" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
 
   <style>
@@ -751,6 +751,78 @@
         rgba(6,5,16,.98);
     }
 
+
+    /* === V3.4.6 - Sagas : slogan premium au survol === */
+    .saga-poster{
+      position:relative;
+    }
+
+    .saga-hover-slogan{
+      position:absolute;
+      left:14px;
+      right:14px;
+      bottom:14px;
+      z-index:4;
+      margin:0;
+      padding:12px 13px;
+      border-radius:15px;
+      border:1px solid color-mix(in srgb, var(--saga-color) 38%, white 10%);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--saga-color) 18%, transparent), transparent 55%),
+        rgba(5,4,13,.78);
+      color:#fff;
+      font-size:12px;
+      font-weight:850;
+      line-height:1.35;
+      text-shadow:0 2px 14px rgba(0,0,0,.85);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.04),
+        0 0 22px var(--saga-color-soft),
+        0 12px 24px rgba(0,0,0,.38);
+      backdrop-filter:blur(10px);
+      opacity:0;
+      transform:translateY(12px) scale(.98);
+      transition:opacity .28s ease, transform .28s ease;
+      pointer-events:none;
+    }
+
+    .saga-card:hover .saga-hover-slogan,
+    .saga-card:focus-within .saga-hover-slogan{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .saga-content{
+      min-height:82px;
+      padding:14px 14px 15px;
+      justify-content:center;
+    }
+
+    .saga-description{
+      display:none!important;
+    }
+
+    .saga-meta{
+      margin:0;
+    }
+
+    .saga-meta span{
+      min-height:32px;
+      font-size:11px;
+      letter-spacing:-.015em;
+    }
+
+    @media(max-width:680px){
+      .saga-hover-slogan{
+        left:11px;
+        right:11px;
+        bottom:11px;
+        padding:10px 11px;
+        font-size:11.5px;
+      }
+      .saga-content{min-height:76px;padding:12px;}
+    }
+
   </style>
 </head>
 <body>
@@ -782,9 +854,9 @@
     <section class="sagas-hero" aria-label="Présentation des sagas">
       <div class="container sagas-hero-inner">
         <div class="sagas-hero-copy">
-          <p class="eyebrow">Catalogue orbital</p>
+          <p class="eyebrow">Bibliothèque cinématographique</p>
           <h1>Les grandes <span>Sagas</span></h1>
-          <p>Chaque saga est une porte ouverte vers un univers. Les affiches donnent le ton, le catalogue fait le reste.</p>
+          <p>Les plus grandes aventures commencent toujours par un premier film.</p>
         </div>
       </div>
     </section>
@@ -883,16 +955,16 @@
     ];
 
     const SAGA_PROFILES = [
-      { match:["matrix"], title:"Matrix", color:"#23ff7a", genre:"Science-Fiction", text:"Réalité fracturée, code vert et vertige numérique." },
-      { match:["seigneur des anneaux","lord of the rings","hobbit"], title:"Le Seigneur des Anneaux", color:"#ffd66b", genre:"Fantasy", text:"Quêtes anciennes, royaumes brumeux et fantasy monumentale." },
-      { match:["avatar"], title:"Avatar", color:"#26c8ff", genre:"Science-Fiction", text:"Jungle bioluminescente, lunes bleues et exploration sensorielle." },
-      { match:["john wick"], title:"John Wick", color:"#ff355d", genre:"Action", text:"Néons, pluie froide et ballet d'action millimétré." },
-      { match:["alien","prometheus"], title:"Alien", color:"#7dffca", genre:"Science-Fiction", text:"Couloirs spatiaux, signaux d'alerte et horreur organique." },
-      { match:["harry potter","animaux fantastiques","fantastic beasts"], title:"Harry Potter", color:"#c34dff", genre:"Fantasy", text:"Châteaux lointains, livres anciens et magie en clair-obscur." },
-      { match:["star wars"], title:"Star Wars", color:"#4f8cff", genre:"Science-Fiction", text:"Galaxies lointaines, conflits stellaires et destinées lumineuses." },
-      { match:["jurassic"], title:"Jurassic Park", color:"#70e344", genre:"Aventure", text:"Jungle humide, traces gigantesques et science qui éternue." },
-      { match:["mission impossible"], title:"Mission Impossible", color:"#ff9b2f", genre:"Action", text:"Briefings impossibles, comptes à rebours et cascades en altitude." },
-      { match:["batman","dark knight"], title:"Batman", color:"#ffd66b", genre:"Action", text:"Ville noire, justice masquée et ciel percé de projecteurs." }
+      { match:["matrix"], title:"Matrix", color:"#23ff7a", genre:"Science-Fiction", text:"La réalité n'est qu'une porte. Encore faut-il l'ouvrir." },
+      { match:["seigneur des anneaux","lord of the rings","hobbit"], title:"Le Seigneur des Anneaux", color:"#ffd66b", genre:"Fantasy", text:"Un anneau, des royaumes, et le poids du destin." },
+      { match:["avatar"], title:"Avatar", color:"#26c8ff", genre:"Science-Fiction", text:"Deux mondes. Une frontière qui finit par céder." },
+      { match:["john wick"], title:"John Wick", color:"#ff355d", genre:"Action", text:"Une légende ne prend jamais vraiment sa retraite." },
+      { match:["alien","prometheus"], title:"Alien", color:"#7dffca", genre:"Science-Fiction", text:"Dans le silence spatial, la peur a trouvé un visage." },
+      { match:["harry potter","animaux fantastiques","fantastic beasts"], title:"Harry Potter", color:"#c34dff", genre:"Fantasy", text:"Une école, une cicatrice, et toute une magie à défendre." },
+      { match:["star wars"], title:"Star Wars", color:"#4f8cff", genre:"Science-Fiction", text:"La galaxie tremble quand la lumière affronte l'ombre." },
+      { match:["jurassic"], title:"Jurassic Park", color:"#70e344", genre:"Aventure", text:"Quand le passé reprend vie, il ne demande pas la permission." },
+      { match:["mission impossible"], title:"Mission Impossible", color:"#ff9b2f", genre:"Action", text:"Chaque mission commence impossible. C'est le principe." },
+      { match:["batman","dark knight"], title:"Batman", color:"#ffd66b", genre:"Action", text:"Dans la nuit, une ville apprend à craindre son protecteur." }
     ];
 
     // Sélection éditoriale volontaire : on évite que TMDb transforme chaque mini-suite
@@ -1066,9 +1138,9 @@
             <a href="${sagaUrl}" aria-label="Explorer la saga ${escapeHtml(saga.title)}">
               <div class="saga-poster" style="${posterStyle}" aria-hidden="true">
                 <div class="saga-dust" aria-hidden="true"></div>
+                <p class="saga-hover-slogan">${escapeHtml(saga.text)}</p>
               </div>
               <div class="saga-content">
-                <p class="saga-description">${escapeHtml(saga.text)}</p>
                 <div class="saga-meta">
                   <span>${escapeHtml(yearsLabel)} • ${escapeHtml(saga.genre)} • ${count} ${count > 1 ? "films" : "film"}</span>
                 </div>
