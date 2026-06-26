@@ -978,6 +978,73 @@
       transform:none !important;
     }
 
+
+    /* === V3.4.10 - Sagas : hover final, zoom affiche + lueur ascendante === */
+    .saga-card.saga-poster-card{
+      overflow:hidden !important;
+    }
+
+    .saga-card.saga-poster-card > a{
+      position:relative !important;
+      display:block !important;
+      height:100% !important;
+      overflow:hidden !important;
+      border-radius:inherit !important;
+    }
+
+    .saga-card.saga-poster-card > a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-34%;
+      height:58%;
+      z-index:2;
+      pointer-events:none;
+      background:
+        radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--saga-color) 34%, transparent), transparent 62%),
+        linear-gradient(to top, color-mix(in srgb, var(--saga-color) 18%, transparent), transparent 72%);
+      opacity:0;
+      transform:translateY(34%);
+      transition:opacity .42s ease, transform .52s cubic-bezier(.2,.8,.2,1);
+      mix-blend-mode:screen;
+    }
+
+    .saga-card.saga-poster-card:hover > a::after,
+    .saga-card.saga-poster-card:focus-within > a::after{
+      opacity:.82;
+      transform:translateY(0);
+    }
+
+    .saga-card.saga-poster-card .saga-poster{
+      transform:scale(1.005) !important;
+      transform-origin:center center !important;
+      transition:transform .55s cubic-bezier(.2,.8,.2,1), filter .45s ease !important;
+      will-change:transform;
+    }
+
+    .saga-card.saga-poster-card:hover .saga-poster,
+    .saga-card.saga-poster-card:focus-within .saga-poster{
+      transform:scale(1.04) !important;
+      filter:saturate(1.13) brightness(1.045) !important;
+    }
+
+    .saga-card.saga-poster-card .saga-content{
+      position:relative !important;
+      z-index:3 !important;
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .saga-card.saga-poster-card > a::after,
+      .saga-card.saga-poster-card .saga-poster{
+        transition:none !important;
+      }
+      .saga-card.saga-poster-card:hover .saga-poster,
+      .saga-card.saga-poster-card:focus-within .saga-poster{
+        transform:scale(1.005) !important;
+      }
+    }
+
   </style>
 </head>
 <body>
