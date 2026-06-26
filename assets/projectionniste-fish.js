@@ -730,18 +730,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return values.filter(Boolean).join(' ');
   }
 
-  function includesAllTokens(haystack, tokens) {
-    if (!tokens.length) return false;
-    const h = normalize(haystack);
-    return tokens.every(token => h.includes(normalize(token)));
-  }
-
-  function includesAnyToken(haystack, tokens) {
-    if (!tokens.length) return false;
-    const h = normalize(haystack);
-    return tokens.some(token => h.includes(normalize(token)));
-  }
-
+  
   function showPose(poseName) {
     poses.forEach(img => {
       img.classList.toggle('is-active', img.dataset.pose === poseName);
@@ -980,57 +969,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return Number(value) || 0;
   }
 
-    function isPremiumItem(item) {
-    if (!item) return false;
-
-    if (
-      item.premium === true ||
-      item.isPremium === true ||
-      item.is_premium === true ||
-      item.featured === true ||
-      item.isFeatured === true
-    ) {
-      return true;
-    }
-
-    const fields = [
-      item.homeSection,
-      item.home_section,
-      item.homePlacement,
-      item.home_placement,
-      item.section,
-      item.zone,
-      item.badge,
-      item.ribbon,
-      item.status,
-      item.display,
-      item.highlight,
-      item.homeCategory,
-      item.home_category,
-      item.category,
-      item.categorie,
-      item.catégorie,
-      item.shelf,
-      item.collection
-    ];
-
-    if (Array.isArray(item.tags)) {
-      fields.push(...item.tags);
-    }
-
-    if (Array.isArray(item.labels)) {
-      fields.push(...item.labels);
-    }
-
-    return fields
-      .map(normalize)
-      .some(value =>
-        value.includes('premium') ||
-        value.includes('fauteuil rouge') ||
-        value.includes('selection premium') ||
-        value.includes('sélection premium')
-      );
-  }
+   
   function isPremiumItemV2(item) {
     if (!item) return false;
 
@@ -1099,13 +1038,7 @@ function fishAnswerGenreRequest(message, catalogue) {
 
     return scan(item);
   }
-  function formatRuntime(minutes) {
-    if (!minutes) return '';
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    return h ? `${h}h${String(m).padStart(2, '0')}` : `${m} min`;
-  }
-
+ 
   function mediaLabel(item) {
     const value = normalize(
       item.type ||
