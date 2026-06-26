@@ -178,12 +178,25 @@ function isStandardCatalogueItem(item){
 
 function applySearchFromUrl(){
   const params = new URLSearchParams(window.location.search);
+  const filterValue = (params.get('filter') || params.get('type') || '').trim().toLowerCase();
   const searchValue = params.get('search') || params.get('q') || '';
-  if(!searchValue.trim()) return;
-  state.search = searchValue.trim().toLowerCase();
-  const input = document.querySelector('#searchInput');
-  if(input) input.value = searchValue.trim();
-  window.requestAnimationFrame(focusSearchResults);
+
+  if(['all', 'film', 'serie', 'manga'].includes(filterValue)){
+    state.filter = filterValue;
+    syncActiveTabs();
+    const activeLink = document.querySelector(`[data-nav-filter="${filterValue}"]`);
+    if(activeLink) setActiveMenuLink(activeLink);
+  }
+
+  if(searchValue.trim()){
+    state.search = searchValue.trim().toLowerCase();
+    const input = document.querySelector('#searchInput');
+    if(input) input.value = searchValue.trim();
+  }
+
+  if(filterValue || searchValue.trim() || window.location.hash === '#catalogue'){
+    window.requestAnimationFrame(focusSearchResults);
+  }
 }
 
 
