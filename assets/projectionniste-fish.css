@@ -1175,3 +1175,38 @@
     font-size: .88rem;
   }
 }
+/* =========================================================
+   BUBULLE UI - Anti-disparition des messages
+   Les bulles gardent leur vraie hauteur et le scroll fait son travail
+   ========================================================= */
+
+.ps-fish-chat-messages {
+  overflow-y: auto;
+  align-items: stretch;
+}
+
+/* Très important : les messages ne doivent PAS être compressés */
+.ps-fish-message {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: max-content !important;
+  overflow: visible !important;
+}
+
+/* Le texte doit participer à la hauteur de la bulle */
+.ps-fish-message p,
+.ps-fish-message strong {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Réponses longues : elles restent lisibles et créent du scroll */
+.ps-fish-message-bot {
+  flex-shrink: 0 !important;
+}
+
+/* Questions utilisateur : compactes mais non écrasées */
+.ps-fish-message-user {
+  flex-shrink: 0 !important;
+}
