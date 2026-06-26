@@ -1455,6 +1455,222 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `Dans ${record.title}, le catalogue indique notamment :\n\n${record.cast.slice(0, 8).map(personLine).join('\n')}`;
   }
 
+    function fishIsSimilarityRequest(message) {
+    const m = normalize(message);
+
+    return (
+      /\bcomme\b/.test(m) ||
+      /\bmeme genre que\b/.test(m) ||
+      /\bmeme style que\b/.test(m) ||
+      /\bdans le meme genre que\b/.test(m) ||
+      /\bdans le style de\b/.test(m) ||
+      /\bsimilaire a\b/.test(m) ||
+      /\bressemble a\b/.test(m) ||
+      /\bj ai aime\b/.test(m) ||
+      /\bj ai bien aime\b/.test(m) ||
+      /\bj ai adore\b/.test(m) ||
+      /\bj adore\b/.test(m) ||
+      /\bj aime\b/.test(m)
+    );
+  }
+
+  function fishCleanSimilarityTitleQuery(query) {
+    return normalize(query)
+      .replace(/\b(tu me proposes quoi|tu proposes quoi|quoi regarder ensuite|je regarde quoi ensuite|tu as quoi|qu est ce que tu proposes|que proposes tu)\b/g, ' ')
+      .replace(/\b(dans le meme style|dans le meme genre|du meme genre|similaire|semblable|proche)\b/g, ' ')
+      .replace(/\b(de|d)?\s*(moins|maximum|max|pas plus de|sous|inferieur a|plus|au moins|minimum|min)\s*\d+\s*(h|heure|heures|min|minute|minutes)?\b/g, ' ')
+      .replace(/\b\d+\s*(h|heure|heures|min|minute|minutes)\s*(au moins|minimum|min|maximum|max)?\b/g, ' ')
+      .replace(/\b(pas trop long|court|rapide|long|longue duree|longue durée)\b/g, ' ')
+      .replace(/\b(un|une|des|le|la|les|film|films|serie|series|série|séries|manga|anime|truc|quelque chose)\b/g, ' ')
+      .trim()
+      .replace(/\s+/g, ' ');
+  }
+
+  function fishExtractSimilarityTitleQuery(rawMessage) {
+    const m = normalize(rawMessage);
+
+    const patterns = [
+      /\b(?:dans le meme genre que|meme genre que|dans le meme style que|meme style que|dans le style de|similaire a|semblable a|ressemble a|un truc comme|quelque chose comme|comme)\s+(.+)$/,
+      /\b(?:j ai bien aime|j ai aime|j ai adore|j adore|j aime)\s+(.+)$/
+    ];
+
+    for (const pattern of patterns) {
+      const match = m.match(pattern);
+
+      if (match && match[1]) {
+        const cleaned = fishCleanSimilarityTitleQuery(match[1]);
+
+        if (cleaned.length > 1) {
+          return cleaned;
+        }
+      }
+    }
+
+    return '';
+  }
+
+  function fishNormalizeList(values) {
+    return unique(asArray(values).map(normalize).filter(Boolean));
+  }
+
+  function fishSharedCount(a, b) {
+    const left = fishNormalizeList(a);
+    const right = new Set(fishNormalizeList(b));
+
+    return left.filter(value => right.has(value)).length;
+  }
+
+  function fishImportantTitleTokens(record) {
+    return tokenize(record.titleNorm)
+      .filter(token =>
+        token.length > 3 &&
+        ![
+          'film',
+          'retour',
+          'partie',
+          'chapitre',
+          'episode',
+          'final',
+          'version'
+        ].includes(token)
+      );
+  }
+
+  function fishScoreSimilarRecord(candidate, source) {
+    if (!candidate || !source || candidate.index === source.index) {
+      return -999;
+    }
+
+    let score = 0;
+
+    const sharedGenres = fishSharedCount(candidate.genres, source.genres);
+    const sharedDirectors = fishSharedCount(candidate.directors, source.directors);
+    const sharedCast = fishSharedCount(candidate.cast, source.cast);
+
+    if (candidate.type === source.type) {
+      score += 12;
+    }
+
+    if (sharedGenres) {
+      score += sharedGenres * 45;
+    }
+
+    if (sharedDirectors) {
+      score += sharedDirectors * 22;
+    }
+
+    if (sharedCast) {
+      score += Math.min(sharedCast * 7, 35);
+    }
+
+    fishImportantTitleTokens(source).forEach(token => {
+      if (candidate.titleNorm.includes(token)) {
+        score += 24;
+      }
+    });
+
+    if (candidate.runtime && source.runtime) {
+      const diff = Math.abs(candidate.runtime - source.runtime);
+
+      if (diff <= 20) score += 8;
+      else if (diff <= 45) score += 4;
+    }
+
+    if (candidate.rating) {
+      score += candidate.rating * 2;
+    }
+
+    if (candidate.premium) {
+      score += 1;
+    }
+
+    if (score < 25) {
+      return -999;
+    }
+
+    return score;
+  }
+
+  function fishPickSimilarRecords(records, source) {
+    return records
+      .map(record => ({
+        record,
+        score: fishScoreSimilarRecord(record, source)
+      }))
+      .filter(entry => entry.score > 0)
+      .sort((a, b) =>
+        b.score - a.score ||
+        b.record.rating - a.record.rating ||
+        a.record.title.localeCompare(b.record.title, 'fr')
+      )
+      .map(entry => entry.record);
+  }
+
+  function fishRecordMatchesDurationFilter(record, durationFilter) {
+    if (!durationFilter) {
+      return true;
+    }
+
+    const runtime = fishMovieRuntimeForDisplay(record);
+
+    if (!runtime) {
+      return false;
+    }
+
+    if (durationFilter.max && runtime > durationFilter.max) {
+      return false;
+    }
+
+    if (durationFilter.min && runtime < durationFilter.min) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function answerSimilarRequest(rawMessage, records) {
+    if (!fishIsSimilarityRequest(rawMessage)) {
+      return null;
+    }
+
+    const titleQuery = fishExtractSimilarityTitleQuery(rawMessage);
+
+    if (!titleQuery) {
+      return null;
+    }
+
+    const source = findBestTitleMatch(records, titleQuery);
+
+    if (!source) {
+      return `Bloup... je ne trouve pas "${titleQuery}" dans le catalogue, donc je ne peux pas proposer un voisin fiable.`;
+    }
+
+    const durationFilter = fishDetectDurationFilter(rawMessage);
+    const similarRecords = fishPickSimilarRecords(records, source);
+
+    if (!similarRecords.length) {
+      return `J’ai bien trouvé ${source.title}, mais pas assez de titres proches dans le catalogue pour faire une recommandation honnête. Le poisson refuse le cousinage au hasard.`;
+    }
+
+    const filteredRecords = durationFilter
+      ? similarRecords.filter(record => fishRecordMatchesDurationFilter(record, durationFilter))
+      : similarRecords;
+
+    const results = (filteredRecords.length ? filteredRecords : similarRecords).slice(0, 5);
+
+    const intro = durationFilter && filteredRecords.length
+      ? `Si tu as aimé ${source.title}, voici des titres proches ${durationFilter.label} :`
+      : durationFilter
+        ? `J’ai trouvé des titres proches de ${source.title}, mais aucun ${durationFilter.label}. Voici les plus proches malgré tout :`
+        : `Si tu as aimé ${source.title}, je te propose :`;
+
+    const comment = durationFilter && !filteredRecords.length
+      ? '\n\nJe n’ai pas forcé la durée demandée : mieux vaut une recommandation honnête qu’un poisson qui maquille une baleine en sardine.'
+      : '\n\nJe me base surtout sur les genres, le type, et quand le JSON le permet, les proximités de casting ou de réalisation.';
+
+    return `${intro}\n\n${results.map(itemLine).join('\n')}${comment}`;
+  }
+
   function buildIntent(rawMessage, records) {
     const m = normalize(rawMessage);
     const durationMax = parseDurationLimit(rawMessage);
@@ -1722,13 +1938,19 @@ function fishAnswerGenreRequest(message, catalogue) {
     return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
   }
 
-  const message = normalize(rawMessage);
+    const message = normalize(rawMessage);
   const records = getRecords(catalogue);
+
+  const similarAnswer = answerSimilarRequest(rawMessage, records);
+  if (similarAnswer) {
+    return similarAnswer;
+  }
 
   const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
   if (genreAnswer) {
     return genreAnswer;
   }
+  
     // PRIORITÉ ABSOLUE : Premium
     // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
     if (/premium|fauteuil rouge|selection premium/.test(message)) {
