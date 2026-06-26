@@ -311,6 +311,51 @@ function fishMovieMatchesDuration(movie, durationFilter) {
 
   return true;
 }
+
+function fishSortDurationAlternatives(movies, durationFilter) {
+  const list = Array.isArray(movies) ? movies.filter(Boolean) : [];
+
+  const withRuntime = list.filter(movie => {
+    return fishMovieRuntimeForDisplay(movie) > 0;
+  });
+
+  if (!durationFilter) {
+    return withRuntime;
+  }
+
+  if (durationFilter.max) {
+    return withRuntime.sort((a, b) => {
+      return fishMovieRuntimeForDisplay(a) - fishMovieRuntimeForDisplay(b);
+    });
+  }
+
+  if (durationFilter.min) {
+    return withRuntime.sort((a, b) => {
+      return fishMovieRuntimeForDisplay(b) - fishMovieRuntimeForDisplay(a);
+    });
+  }
+
+  return withRuntime;
+}
+
+function fishDurationFallbackAnswer(genreResults, label, durationFilter) {
+  const alternatives = fishSortDurationAlternatives(genreResults, durationFilter).slice(0, 5);
+
+  if (!alternatives.length) {
+    return `J’ai trouvé des titres ${label}, mais aucune durée fiable dans le JSON. Le poisson refuse le chronomètre au doigt mouillé.`;
+  }
+
+  const intro = durationFilter.max
+    ? `Je n’ai pas trouvé de film ${label} ${durationFilter.label}. Les plus proches côté durée sont :`
+    : `Je n’ai pas trouvé de film ${label} ${durationFilter.label}. Les plus longs disponibles sont :`;
+
+  const comment = durationFilter.max
+    ? '\n\nCe n’est pas exactement la durée demandée, mais ce sont les options les plus courtes que le catalogue propose dans ce genre. Le poisson négocie avec le réel, pas avec Netflix.'
+    : '\n\nCe n’est pas exactement la durée demandée, mais ce sont les options les plus longues disponibles dans ce genre. Prévois le plaid diplomatique.';
+
+  return `${intro}\n${alternatives.map(fishMovieLine).join('\n')}${comment}`;
+}
+
 function fishDisplayLabel(value) {
   const label = String(value || '').trim();
 
@@ -474,8 +519,8 @@ function fishAnswerGenreRequest(message, catalogue) {
     ? genreResults.filter(movie => fishMovieMatchesDuration(movie, durationFilter))
     : genreResults;
 
-  if (!results.length && durationFilter) {
-    return `J’ai trouvé des titres ${label}, mais aucun ${durationFilter.label} avec une durée fiable dans le JSON. Le poisson refuse le chronomètre au doigt mouillé.`;
+    if (!results.length && durationFilter) {
+    return fishDurationFallbackAnswer(genreResults, label, durationFilter);
   }
 
   const intro = durationFilter
