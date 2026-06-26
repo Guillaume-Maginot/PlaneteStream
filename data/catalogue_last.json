@@ -1262,6 +1262,120 @@
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2q4149be3mit\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
   },
   {
+    "title": "Avatar : De feu et de cendres",
+    "slug": "avatar-de-feu-et-de-cendres",
+    "originalTitle": "Avatar: Fire and Ash",
+    "year": "2025",
+    "releaseDate": "2025-12-17",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Science-Fiction",
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "James Cameron",
+    "cast": [
+      {
+        "id": 65731,
+        "name": "Sam Worthington",
+        "character": "Jake",
+        "profile_path": "/vM1WIfYQ1HUBtlVPwB9Hp9fLcn8.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/vM1WIfYQ1HUBtlVPwB9Hp9fLcn8.jpg"
+      },
+      {
+        "id": 8691,
+        "name": "Zoe Saldaña",
+        "character": "Neytiri",
+        "profile_path": "/fCJuIn1PMUQtYdRRSnnoZeMJVWs.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fCJuIn1PMUQtYdRRSnnoZeMJVWs.jpg"
+      },
+      {
+        "id": 10205,
+        "name": "Sigourney Weaver",
+        "character": "Kiri",
+        "profile_path": "/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+      },
+      {
+        "id": 32747,
+        "name": "Stephen Lang",
+        "character": "Quaritch",
+        "profile_path": "/gnO5VfkDgA2fsHweD0622LUY3Hu.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gnO5VfkDgA2fsHweD0622LUY3Hu.jpg"
+      },
+      {
+        "id": 566331,
+        "name": "Oona Chaplin",
+        "character": "Varang",
+        "profile_path": "/uYnBSVKcFgw48Wxts01Dh5Gxlar.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uYnBSVKcFgw48Wxts01Dh5Gxlar.jpg"
+      },
+      {
+        "id": 1895760,
+        "name": "Jack Champion",
+        "character": "Spider",
+        "profile_path": "/8PXFKzhjFJ0oYP60Bj1kA44XBjY.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/8PXFKzhjFJ0oYP60Bj1kA44XBjY.jpg"
+      },
+      {
+        "id": 204,
+        "name": "Kate Winslet",
+        "character": "Ronal",
+        "profile_path": "/9xDnfZrWhM67wJlQJEsOOjQzDUQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9xDnfZrWhM67wJlQJEsOOjQzDUQ.jpg"
+      },
+      {
+        "id": 7248,
+        "name": "Cliff Curtis",
+        "character": "Tonowari",
+        "profile_path": "/dfaElGoyJWseFWxXwEMLL9WTi7V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dfaElGoyJWseFWxXwEMLL9WTi7V.jpg"
+      },
+      {
+        "id": 59231,
+        "name": "Joel David Moore",
+        "character": "Norm",
+        "profile_path": "/mMVhVglj6BZFuvqAXnEibce08k7.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mMVhVglj6BZFuvqAXnEibce08k7.jpg"
+      },
+      {
+        "id": 30485,
+        "name": "CCH Pounder",
+        "character": "Mo'at",
+        "profile_path": "/mr6BLDN75T8DJl9dNK3hN4YwqJa.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mr6BLDN75T8DJl9dNK3hN4YwqJa.jpg"
+      }
+    ],
+    "runtime": 198,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.603,
+    "popularity": 121.6775,
+    "trailer": "Zegl3vxOPjM",
+    "videoEmbed": "",
+    "tagline": "Le monde de Pandora changera à jamais.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Avatar - Saga",
+    "studios": [
+      "20th Century Studios",
+      "Lightstorm Entertainment",
+      "TSG Entertainment"
+    ],
+    "tmdbId": 83533,
+    "poster": "https://image.tmdb.org/t/p/w500/kG3N8oQ10qiw2MsnSHFGJpQNyEy.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/u8DU5fkLoM5tTRukzPC31oGPxaQ.jpg",
+    "overview": "Après la mort de Neteyam, Jake et Neytiri affrontent leur chagrin tout en faisant face au Peuple des Cendres, une tribu Na’vi redoutable menée par la fougueuse Varang, alors que le conflit sur Pandora s’intensifie et qu’une nouvelle quête morale s’amorce.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
+  },
+  {
     "title": "Marche ou crève",
     "slug": "marche-ou-creve",
     "originalTitle": "The Long Walk",
@@ -1354,6 +1468,120 @@
     "overview": "Raju, un pêcheur indien, est arrêté après avoir dérivé par mégarde dans des eaux étrangères, et entreprend un retour périlleux vers sa bien-aimée Sathya.",
     "featured": false,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0a0rt6uyl7e8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+  },
+  {
+    "title": "Avatar : La Voie de l'eau",
+    "slug": "avatar-la-voie-de-l-eau",
+    "originalTitle": "Avatar: The Way of Water",
+    "year": "2022",
+    "releaseDate": "2022-12-14",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Action",
+      "Aventure",
+      "Science-Fiction"
+    ],
+    "director": "James Cameron",
+    "cast": [
+      {
+        "id": 65731,
+        "name": "Sam Worthington",
+        "character": "Jake Sully",
+        "profile_path": "/vM1WIfYQ1HUBtlVPwB9Hp9fLcn8.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/vM1WIfYQ1HUBtlVPwB9Hp9fLcn8.jpg"
+      },
+      {
+        "id": 8691,
+        "name": "Zoe Saldaña",
+        "character": "Neytiri",
+        "profile_path": "/fCJuIn1PMUQtYdRRSnnoZeMJVWs.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fCJuIn1PMUQtYdRRSnnoZeMJVWs.jpg"
+      },
+      {
+        "id": 10205,
+        "name": "Sigourney Weaver",
+        "character": "Kiri",
+        "profile_path": "/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+      },
+      {
+        "id": 32747,
+        "name": "Stephen Lang",
+        "character": "Colonel Miles Quaritch",
+        "profile_path": "/gnO5VfkDgA2fsHweD0622LUY3Hu.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gnO5VfkDgA2fsHweD0622LUY3Hu.jpg"
+      },
+      {
+        "id": 204,
+        "name": "Kate Winslet",
+        "character": "Ronal",
+        "profile_path": "/9xDnfZrWhM67wJlQJEsOOjQzDUQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9xDnfZrWhM67wJlQJEsOOjQzDUQ.jpg"
+      },
+      {
+        "id": 7248,
+        "name": "Cliff Curtis",
+        "character": "Tonowari",
+        "profile_path": "/dfaElGoyJWseFWxXwEMLL9WTi7V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dfaElGoyJWseFWxXwEMLL9WTi7V.jpg"
+      },
+      {
+        "id": 59231,
+        "name": "Joel David Moore",
+        "character": "Norm Spellman",
+        "profile_path": "/mMVhVglj6BZFuvqAXnEibce08k7.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mMVhVglj6BZFuvqAXnEibce08k7.jpg"
+      },
+      {
+        "id": 30485,
+        "name": "CCH Pounder",
+        "character": "Mo'at",
+        "profile_path": "/mr6BLDN75T8DJl9dNK3hN4YwqJa.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mr6BLDN75T8DJl9dNK3hN4YwqJa.jpg"
+      },
+      {
+        "id": 36190,
+        "name": "Edie Falco",
+        "character": "General Frances Ardmore",
+        "profile_path": "/jS2Hnr5OmntpX0J7EpH70zAG0mz.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jS2Hnr5OmntpX0J7EpH70zAG0mz.jpg"
+      },
+      {
+        "id": 55936,
+        "name": "Jemaine Clement",
+        "character": "Dr. Ian Garvin",
+        "profile_path": "/6eiNbeurpHb2fxIeT0RrJ0wRI25.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/6eiNbeurpHb2fxIeT0RrJ0wRI25.jpg"
+      }
+    ],
+    "runtime": 192,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.594,
+    "popularity": 23.5602,
+    "trailer": "Lhnu_kY765M",
+    "videoEmbed": "",
+    "tagline": "Retournez sur Pandora.",
+    "status": "Released",
+    "homepage": "https://www.avatar.com/",
+    "collection": "Avatar - Saga",
+    "studios": [
+      "20th Century Studios",
+      "Lightstorm Entertainment",
+      "TSG Entertainment"
+    ],
+    "tmdbId": 76600,
+    "poster": "https://image.tmdb.org/t/p/w500/7TOaaKbSYfilIpZsRCS1AyFCxaJ.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/kJsPVzdyBrYHLomuNv5SJDXUQ2f.jpg",
+    "overview": "Une dizaine d'années s'est écoulée depuis les précédents évènements survenus sur Pandora. Jake Sully et Neytiri sont devenus parents. Leur vie idyllique, proche de la nature, est menacée lorsque la « Ressources Développement Administration », dangereuse organisation non-gouvernementale, est de retour sur Pandora. Contraints de quitter leur habitat naturel, Jake et sa famille se rendent sur les récifs, où ils pensent trouver asile. Mais ils tombent sur un clan, les Metkayina, aux mœurs différentes des leurs.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Black Summoner",

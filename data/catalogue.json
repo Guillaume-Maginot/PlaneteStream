@@ -1470,6 +1470,120 @@
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0a0rt6uyl7e8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
   },
   {
+    "title": "Alien : Romulus",
+    "slug": "alien-romulus",
+    "originalTitle": "Alien: Romulus",
+    "year": "2024",
+    "releaseDate": "2024-08-13",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Science-Fiction"
+    ],
+    "director": "Fede Álvarez",
+    "cast": [
+      {
+        "id": 1683343,
+        "name": "Cailee Spaeny",
+        "character": "Rain",
+        "profile_path": "/lFHI90dbgMXwKtVDYR4NzbVTWMy.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lFHI90dbgMXwKtVDYR4NzbVTWMy.jpg"
+      },
+      {
+        "id": 2761308,
+        "name": "David Jonsson",
+        "character": "Andy",
+        "profile_path": "/2ZZNGZw57KKMrVIr27g7W16G0jV.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/2ZZNGZw57KKMrVIr27g7W16G0jV.jpg"
+      },
+      {
+        "id": 2164506,
+        "name": "Archie Renaux",
+        "character": "Tyler",
+        "profile_path": "/uTd18t2VJovN2jSJyhuG8Yy3PV6.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uTd18t2VJovN2jSJyhuG8Yy3PV6.jpg"
+      },
+      {
+        "id": 1428070,
+        "name": "Isabela Merced",
+        "character": "Kay",
+        "profile_path": "/4SolFI9dwyPm6BXcb3PDcOYzSEl.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/4SolFI9dwyPm6BXcb3PDcOYzSEl.jpg"
+      },
+      {
+        "id": 2304140,
+        "name": "Spike Fearn",
+        "character": "Bjorn",
+        "profile_path": "/a03zZnBwK3DyCam01AuN0DLYVDs.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/a03zZnBwK3DyCam01AuN0DLYVDs.jpg"
+      },
+      {
+        "id": 3948018,
+        "name": "Aileen Wu",
+        "character": "Navarro",
+        "profile_path": "/yRMY9MWcPp0PDTDj6iOWvIqBe7f.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yRMY9MWcPp0PDTDj6iOWvIqBe7f.jpg"
+      },
+      {
+        "id": 1737976,
+        "name": "Rosie Ede",
+        "character": "WY Officer",
+        "profile_path": "/h6HTwvixLAq9HMGVyoAlWwahuA0.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/h6HTwvixLAq9HMGVyoAlWwahuA0.jpg"
+      },
+      {
+        "id": 4848544,
+        "name": "Soma Simon",
+        "character": "10-Year-Old Punk #1",
+        "profile_path": "",
+        "profile": ""
+      },
+      {
+        "id": 4848546,
+        "name": "Bence Okeke",
+        "character": "10-Year-Old Punk #2",
+        "profile_path": "",
+        "profile": ""
+      },
+      {
+        "id": 4848547,
+        "name": "Viktor Orizu",
+        "character": "10-Year-Old Punk #3",
+        "profile_path": "",
+        "profile": ""
+      }
+    ],
+    "runtime": 119,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.162,
+    "popularity": 10.7957,
+    "trailer": "dEGpLTxEHe8",
+    "videoEmbed": "",
+    "tagline": "Ils rêvaient d'une nouvelle vie, ils l'ont trouvée.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Alien Romulus - Saga",
+    "studios": [
+      "20th Century Studios",
+      "Scott Free Productions",
+      "Brandywine Productions",
+      "TSG Entertainment"
+    ],
+    "tmdbId": 945961,
+    "poster": "https://image.tmdb.org/t/p/w500/xmDypImhT0OOloQIj3JLslUrBw8.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/iYqSQaWDttQIQzsxg9xHyg0bttG.jpg",
+    "overview": "Quelques années après les événements sur le vaisseau Nostromo, un groupe de jeunes colons de l'espace travaillent en tant que mineurs dans l'espoir de rejoindre une autre planète verdoyante, Yvaga. Un des membres propose d'utiliser une station spatiale abandonnée en orbite autour de leur planète actuelle afin de se rendre sur Yvaga. Cependant, ils se retrouvent face-à-face avec la forme de vie la plus terrifiante de l'univers alors qu'ils fouillent les profondeurs de cette station.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
+  },
+  {
     "title": "Avatar : La Voie de l'eau",
     "slug": "avatar-la-voie-de-l-eau",
     "originalTitle": "Avatar: The Way of Water",
@@ -3309,6 +3423,119 @@
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3plcm81wfb12\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
   },
   {
+    "title": "Alien : Covenant",
+    "slug": "alien-covenant",
+    "originalTitle": "Alien: Covenant",
+    "year": "2017",
+    "releaseDate": "2017-05-09",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Science-Fiction"
+    ],
+    "director": "Ridley Scott",
+    "cast": [
+      {
+        "id": 17288,
+        "name": "Michael Fassbender",
+        "character": "David / Walter",
+        "profile_path": "/xvbnUiB2ZBR3QIt595OzNy657Vw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xvbnUiB2ZBR3QIt595OzNy657Vw.jpg"
+      },
+      {
+        "id": 77795,
+        "name": "Katherine Waterston",
+        "character": "Daniels",
+        "profile_path": "/5fIEhBldLuIkFK0R3USTzngyE3c.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5fIEhBldLuIkFK0R3USTzngyE3c.jpg"
+      },
+      {
+        "id": 8289,
+        "name": "Billy Crudup",
+        "character": "Oram",
+        "profile_path": "/4kHvUUVFMW8GJTHJtoAiskqhcyO.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/4kHvUUVFMW8GJTHJtoAiskqhcyO.jpg"
+      },
+      {
+        "id": 62862,
+        "name": "Danny McBride",
+        "character": "Tennessee",
+        "profile_path": "/sVFPzl2t5QlGudQKWAszIWZCXZv.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/sVFPzl2t5QlGudQKWAszIWZCXZv.jpg"
+      },
+      {
+        "id": 76961,
+        "name": "Demián Bichir",
+        "character": "Lope",
+        "profile_path": "/dur9tX8tbDDJE5mSOZkuW2VDGz4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dur9tX8tbDDJE5mSOZkuW2VDGz4.jpg"
+      },
+      {
+        "id": 37158,
+        "name": "Carmen Ejogo",
+        "character": "Karine",
+        "profile_path": "/b2qi5NxOwoxK67LPz0MjVwjRcFp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/b2qi5NxOwoxK67LPz0MjVwjRcFp.jpg"
+      },
+      {
+        "id": 181081,
+        "name": "Jussie Smollett",
+        "character": "Ricks",
+        "profile_path": "/Mhecg0ylH55rTdC48SyX5IxjGM.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/Mhecg0ylH55rTdC48SyX5IxjGM.jpg"
+      },
+      {
+        "id": 1486488,
+        "name": "Callie Hernandez",
+        "character": "Upworth",
+        "profile_path": "/doMXlhTAYCy8gH43yYA6m9ymxhd.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/doMXlhTAYCy8gH43yYA6m9ymxhd.jpg"
+      },
+      {
+        "id": 139150,
+        "name": "Amy Seimetz",
+        "character": "Faris",
+        "profile_path": "/qa7vCi7TViddGjuYEszLdi8DRqN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/qa7vCi7TViddGjuYEszLdi8DRqN.jpg"
+      },
+      {
+        "id": 37290,
+        "name": "Nathaniel Dean",
+        "character": "Hallett",
+        "profile_path": "/akebwx7M4HJc3q2UnC6mKymKlkO.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/akebwx7M4HJc3q2UnC6mKymKlkO.jpg"
+      }
+    ],
+    "runtime": 122,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 6.176,
+    "popularity": 9.8628,
+    "trailer": "Vp4RqF8SWXk",
+    "videoEmbed": "",
+    "tagline": "Courez !",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Prometheus - Saga",
+    "studios": [
+      "20th Century Fox",
+      "Brandywine Productions",
+      "Scott Free Productions"
+    ],
+    "tmdbId": 126889,
+    "poster": "https://image.tmdb.org/t/p/w500/gJL4noFkpXHkNBX2MgzEo6PbYUy.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/iXXPaQPfQowpQ5UvhsHLj9BgFhe.jpg",
+    "overview": "Les membres d’équipage du vaisseau Covenant, à destination d’une planète située au fin fond de notre galaxie, découvrent ce qu’ils pensent être un paradis encore intouché. Il s’agit en fait d’un monde sombre et dangereux, cachant une menace terrible. Ils vont tout tenter pour s’échapper.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
+  },
+  {
     "title": "John Wick",
     "slug": "john-wick",
     "originalTitle": "John Wick",
@@ -3418,6 +3645,121 @@
     "poster": "https://image.tmdb.org/t/p/w500/7yCzmVL0BI1aSvzgN3jCtXLtyFR.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/ff2ti5DkA9UYLzyqhQfI2kZqEuh.jpg",
     "overview": "Depuis la mort de sa femme bien‐aimée, John Wick passe ses journées à retaper sa Ford Mustang de 1969, avec pour seule compagnie sa chienne Daisy. Il mène une vie sans histoire, jusqu’à ce qu’un malfrat sadique nommé Iosef Tarasof remarque sa voiture. John refuse de la lui vendre. Iosef n’acceptant pas qu’on lui résiste, s’introduit chez John avec deux complices pour voler la Mustang, et tuer sauvagement Daisy… John remonte la piste de Iosef jusqu’à New York. Un ancien contact, Aurelio, lui apprend que le malfrat est le fils unique d’un grand patron de la pègre, Viggo Tarasof. La rumeur se répand rapidement dans le milieu : le légendaire tueur cherche Iosef. Viggo met à prix la tête de John : quiconque l’abattra touchera une énorme récompense. John a désormais tous les assassins de New York aux trousses.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
+  },
+  {
+    "title": "Prometheus",
+    "slug": "prometheus",
+    "originalTitle": "Prometheus",
+    "year": "2012",
+    "releaseDate": "2012-05-30",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Science-Fiction",
+      "Mystère",
+      "Horreur"
+    ],
+    "director": "Ridley Scott",
+    "cast": [
+      {
+        "id": 87722,
+        "name": "Noomi Rapace",
+        "character": "Elizabeth Shaw",
+        "profile_path": "/zkg9wfbXZi9OqvwW2ku38zNC1Hk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zkg9wfbXZi9OqvwW2ku38zNC1Hk.jpg"
+      },
+      {
+        "id": 17288,
+        "name": "Michael Fassbender",
+        "character": "David",
+        "profile_path": "/xvbnUiB2ZBR3QIt595OzNy657Vw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xvbnUiB2ZBR3QIt595OzNy657Vw.jpg"
+      },
+      {
+        "id": 6885,
+        "name": "Charlize Theron",
+        "character": "Meredith Vickers",
+        "profile_path": "/gd7ShD0yt4bsR2STeQ19KQ6hvXL.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gd7ShD0yt4bsR2STeQ19KQ6hvXL.jpg"
+      },
+      {
+        "id": 17605,
+        "name": "Idris Elba",
+        "character": "Janek",
+        "profile_path": "/be1bVF7qGX91a6c5WeRPs5pKXln.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/be1bVF7qGX91a6c5WeRPs5pKXln.jpg"
+      },
+      {
+        "id": 529,
+        "name": "Guy Pearce",
+        "character": "Peter Weyland",
+        "profile_path": "/vTqk6Nh3WgqPubkS23eOlMAwmwa.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/vTqk6Nh3WgqPubkS23eOlMAwmwa.jpg"
+      },
+      {
+        "id": 130253,
+        "name": "Logan Marshall-Green",
+        "character": "Charlie Holloway",
+        "profile_path": "/oogXh2Osxw43bfjMVCcCH8SGsUB.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/oogXh2Osxw43bfjMVCcCH8SGsUB.jpg"
+      },
+      {
+        "id": 16702,
+        "name": "Sean Harris",
+        "character": "Fifield",
+        "profile_path": "/jouyaTu0UuZMNBrADRRkCQX1VX1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jouyaTu0UuZMNBrADRRkCQX1VX1.jpg"
+      },
+      {
+        "id": 28847,
+        "name": "Rafe Spall",
+        "character": "Millburn",
+        "profile_path": "/zcqUqAvO7RQnitcCNNfTVPaiQtS.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zcqUqAvO7RQnitcCNNfTVPaiQtS.jpg"
+      },
+      {
+        "id": 228968,
+        "name": "Emun Elliott",
+        "character": "Chance",
+        "profile_path": "/A0PGkWHpgbus4t76hKSTqoey8HP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A0PGkWHpgbus4t76hKSTqoey8HP.jpg"
+      },
+      {
+        "id": 30082,
+        "name": "Benedict Wong",
+        "character": "Ravel",
+        "profile_path": "/yYfLyrC2CE6vBWSJfkpuVKL2POM.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yYfLyrC2CE6vBWSJfkpuVKL2POM.jpg"
+      }
+    ],
+    "runtime": 124,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America, United Kingdom",
+    "language": "en",
+    "rating": 6.598,
+    "popularity": 8.8246,
+    "trailer": "6FFkZfhkkCI",
+    "videoEmbed": "",
+    "tagline": "La recherche de nos origines pourrait mener à notre fin.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Prometheus - Saga",
+    "studios": [
+      "Dune Entertainment",
+      "20th Century Fox",
+      "Brandywine Productions",
+      "Scott Free Productions"
+    ],
+    "tmdbId": 70981,
+    "poster": "https://image.tmdb.org/t/p/w500/p3B5dRNXnpBNGR16r0zdLiMuvMb.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/sM42bpH73dmf3kJrE8xr4kztYqR.jpg",
+    "overview": "Lorsque Elisabeth Shaw découvre un mystérieux lien entre plusieurs artefacts au cours de ses recherches, elle est persuadée qu'il s'agit d'un indice remettant en cause l'origine de l'humanité sur Terre. Une équipe de scientifiques supervisée par Meredith Vickers et l'androïde David se lance alors dans un voyage spatial fascinant aux confins de l'univers, vers un monde inconnu. Là-bas, un affrontement terrifiant qui décidera de l'avenir de l'humanité les attend…",
     "featured": false,
     "premium": false,
     "homeFeatured": false
@@ -3874,6 +4216,119 @@
     "poster": "https://image.tmdb.org/t/p/w500/pEoqbqtLc4CcwDUDqxmEDSWpWTZ.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/tlm8UkiQsitc8rSuIAscQDCnP8d.jpg",
     "overview": "Programmeur anonyme dans un service administratif le jour, Thomas Anderson devient Neo la nuit venue. Sous ce pseudonyme, il est l'un des pirates les plus recherchés du cyber‐espace. À cheval entre deux mondes, Neo est assailli par d'étranges songes et des messages cryptés provenant d'un certain Morpheus. Celui‐ci l'exhorte à aller au‐delà des apparences et à trouver la réponse à la question qui hante constamment ses pensées : qu'est‐ce que la Matrice ? Nul ne le sait, et aucun homme n'est encore parvenu à en percer les défenses. Mais Morpheus est persuadé que Neo est l'Élu, le libérateur mythique de l'humanité annoncé selon la prophétie. Ensemble, ils se lancent dans une lutte sans retour contre la Matrice et ses terribles agents…",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
+  },
+  {
+    "title": "Alien, la résurrection",
+    "slug": "alien-la-resurrection",
+    "originalTitle": "Alien Resurrection",
+    "year": "1997",
+    "releaseDate": "1997-11-12",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Science-Fiction",
+      "Horreur",
+      "Action"
+    ],
+    "director": "Jean-Pierre Jeunet",
+    "cast": [
+      {
+        "id": 10205,
+        "name": "Sigourney Weaver",
+        "character": "Ripley",
+        "profile_path": "/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+      },
+      {
+        "id": 1920,
+        "name": "Winona Ryder",
+        "character": "Call",
+        "profile_path": "/8RVrlgtua8b53wmK7oZAAkm0N5O.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/8RVrlgtua8b53wmK7oZAAkm0N5O.jpg"
+      },
+      {
+        "id": 2413,
+        "name": "Dominique Pinon",
+        "character": "Vriess",
+        "profile_path": "/rIPUhNwGSglgKLgMQWz0JNCqIzf.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/rIPUhNwGSglgKLgMQWz0JNCqIzf.jpg"
+      },
+      {
+        "id": 2372,
+        "name": "Ron Perlman",
+        "character": "Johner",
+        "profile_path": "/pOgMRdJhbBsvwGLRFXPRASTfcay.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pOgMRdJhbBsvwGLRFXPRASTfcay.jpg"
+      },
+      {
+        "id": 40276,
+        "name": "Gary Dourdan",
+        "character": "Christie",
+        "profile_path": "/xsxjlW98I8ml4FCHV040b3XaBOi.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xsxjlW98I8ml4FCHV040b3XaBOi.jpg"
+      },
+      {
+        "id": 7486,
+        "name": "Michael Wincott",
+        "character": "Elgyn",
+        "profile_path": "/z6FtWACKaIivi0khxM6vEHoUH0.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/z6FtWACKaIivi0khxM6vEHoUH0.jpg"
+      },
+      {
+        "id": 170146,
+        "name": "Kim Flowers",
+        "character": "Hillard",
+        "profile_path": "/lntMwiai5rL0Prr7DxOk724KnsN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lntMwiai5rL0Prr7DxOk724KnsN.jpg"
+      },
+      {
+        "id": 6486,
+        "name": "Dan Hedaya",
+        "character": "General Perez",
+        "profile_path": "/evL3mV8hNIjZOb1XG3qtgmiTgS5.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/evL3mV8hNIjZOb1XG3qtgmiTgS5.jpg"
+      },
+      {
+        "id": 5169,
+        "name": "J.E. Freeman",
+        "character": "Dr. Wren",
+        "profile_path": "/75VHiPXkan70jXZF247yOCdCROV.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/75VHiPXkan70jXZF247yOCdCROV.jpg"
+      },
+      {
+        "id": 1370,
+        "name": "Brad Dourif",
+        "character": "Gediman",
+        "profile_path": "/ex7AmuHM3owhUetYZAyOmN1ehWS.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ex7AmuHM3owhUetYZAyOmN1ehWS.jpg"
+      }
+    ],
+    "runtime": 109,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 6.169,
+    "popularity": 6.2873,
+    "trailer": "15g12dGxWX4",
+    "videoEmbed": "",
+    "tagline": "Il est déjà trop tard.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Alien - Saga",
+    "studios": [
+      "20th Century Fox",
+      "Brandywine Productions"
+    ],
+    "tmdbId": 8078,
+    "poster": "https://image.tmdb.org/t/p/w500/ePPdAnGJk9mR1qNxHhGrIhLAo4Q.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/zQI8yxl61JTpjCB3MrTbcQBOT82.jpg",
+    "overview": "Deux cents ans après le suicide de l’officier Ellen Ripley, une équipe de généticiens clone la jeune femme afin de récupérer l’alien vivant en elle, qui n’est autre qu’une reine. À leur grande surprise, le clone de Ripley a hérité de certaines caractéristiques génétiques de l’alien et ce dernier possède en partie la mémoire de Ripley. Afin d’étudier cette fascinante espèce et de lui permettre de se reproduire, les scientifiques font appel à des pirates de l’espace qui leur fournissent des « cobayes humains » pour héberger les embryons d’alien. Les généticiens arriveront‐ils à apprivoiser ces « bébés » ?",
     "featured": false,
     "premium": false,
     "homeFeatured": false
@@ -4423,6 +4878,120 @@
     "overview": "En 1963. Bébé – de son vrai prénom Frédérique – fille d’une riche famille, passe ses vacances avec ses parents et sa sœur à la pension de la famille Kellerman dans l’État de l’Oregon. Elle va être confrontée à un monde qui lui est complètement étranger, celui de la danse, et vivre une histoire d’amour avec Johnny, l’un des professeurs de danse de l’établissement, issu d’un milieu social très différent. Film à petit budget d’Émile Ardolino, il deviendra l’un des plus grand succès des années 80.",
     "featured": false,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/s0f3sqs0c6a9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+  },
+  {
+    "title": "Aliens, le retour",
+    "slug": "aliens-le-retour",
+    "originalTitle": "Aliens",
+    "year": "1986",
+    "releaseDate": "1986-07-18",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Action",
+      "Thriller",
+      "Science-Fiction"
+    ],
+    "director": "James Cameron",
+    "cast": [
+      {
+        "id": 10205,
+        "name": "Sigourney Weaver",
+        "character": "Ripley",
+        "profile_path": "/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+      },
+      {
+        "id": 10206,
+        "name": "Carrie Henn",
+        "character": "Newt",
+        "profile_path": "/iNaYp4liKvKsEZp5g5xjd94OFCz.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/iNaYp4liKvKsEZp5g5xjd94OFCz.jpg"
+      },
+      {
+        "id": 2712,
+        "name": "Michael Biehn",
+        "character": "Corporal Hicks",
+        "profile_path": "/9oFLsADWQm2TvU8XzLIzBbjdMkU.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9oFLsADWQm2TvU8XzLIzBbjdMkU.jpg"
+      },
+      {
+        "id": 781,
+        "name": "Paul Reiser",
+        "character": "Burke",
+        "profile_path": "/rGryzG00uSk8LsidacSBXVgo3iv.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/rGryzG00uSk8LsidacSBXVgo3iv.jpg"
+      },
+      {
+        "id": 2714,
+        "name": "Lance Henriksen",
+        "character": "Bishop",
+        "profile_path": "/1PkFmD5HdjmRa2DumtwINnnAjTH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/1PkFmD5HdjmRa2DumtwINnnAjTH.jpg"
+      },
+      {
+        "id": 2053,
+        "name": "Bill Paxton",
+        "character": "Private Hudson",
+        "profile_path": "/aLdNe6mt1cSi2zWlUYRregzfis5.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/aLdNe6mt1cSi2zWlUYRregzfis5.jpg"
+      },
+      {
+        "id": 10207,
+        "name": "William Hope",
+        "character": "Lieutenant Gorman",
+        "profile_path": "/blKMEeCftWVBPI2hqvzycmdE9nS.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/blKMEeCftWVBPI2hqvzycmdE9nS.jpg"
+      },
+      {
+        "id": 3981,
+        "name": "Jenette Goldstein",
+        "character": "Private Vasquez",
+        "profile_path": "/4YZVLLWEFtxPLaOAlndfzxH1WG1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/4YZVLLWEFtxPLaOAlndfzxH1WG1.jpg"
+      },
+      {
+        "id": 10208,
+        "name": "Al Matthews",
+        "character": "Sergeant Apone",
+        "profile_path": "/ugW320vaF9XdIaowEDIwcF3CXyU.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ugW320vaF9XdIaowEDIwcF3CXyU.jpg"
+      },
+      {
+        "id": 6576,
+        "name": "Mark Rolston",
+        "character": "Private Drake",
+        "profile_path": "/hcrNRIptYMRXgkJ9k76BlQu6DQp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hcrNRIptYMRXgkJ9k76BlQu6DQp.jpg"
+      }
+    ],
+    "runtime": 137,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.963,
+    "popularity": 10.9364,
+    "trailer": "gaJFi3LiFOQ",
+    "videoEmbed": "",
+    "tagline": "Cette fois c'est la guerre.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Alien - Saga",
+    "studios": [
+      "SLM Production Group",
+      "20th Century Fox",
+      "Brandywine Productions"
+    ],
+    "tmdbId": 679,
+    "poster": "https://image.tmdb.org/t/p/w500/uafMg29wVV4XvxPS59s8nBBbP4i.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/4kix6fAblJIH6eMs0Ku2loyZJXK.jpg",
+    "overview": "Après 57 ans de dérive dans l’espace, Ellen Ripley est secourue par la corporation Weyland‐Yutani. Malgré son rapport concernant l’incident survenu sur le Nostromo, elle n’est pas prise au sérieux par les militaires quant à la présence de xénomorphes sur la planète LV‐426 où se posa son équipage… planète où plusieurs familles de colons ont été envoyées en mission de « terraformage ». Après la disparition de ces derniers, Ripley décide d’accompagner une escouade de marines dans leur mission de sauvetage… et d’affronter à nouveau la Bête.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Scarface",
