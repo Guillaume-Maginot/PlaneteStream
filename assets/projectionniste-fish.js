@@ -1,1 +1,1158 @@
-(function () { const widget = document.querySelector('#psFishWidget'); const tooltip = document.querySelector('#psFishTooltip'); const poses = Array.from(document.querySelectorAll('.ps-fish-pose')); const chat = document.querySelector('#psFishChat'); const chatClose = document.querySelector('#psFishChatClose'); const form = document.querySelector('#psFishForm'); const input = document.querySelector('#psFishInput'); const messages = document.querySelector('#psFishMessages'); const brainStatus = document.querySelector('#psBrainStatus'); const suggestions = Array.from(document.querySelectorAll('[data-ps-fish-suggestion]')); if (!widget || !chat || !form || !input || !messages) return; const STORAGE_KEY = 'planeteStreamProjectionnisteIntroSeen'; let mode = 'idle'; let idleIndex = 0; let idleLoop = null; let microLifeLoop = null; let autoReturnTimer = null; let isHovering = false; let isChatOpen = false; const states = { idle: { pose: null, html: '<strong>Bloup !</strong><span>Clique si tu veux parler au Projectionniste.</span>' }, thinking: { pose: 'thinking', html: '<strong>Bloup...</strong><span>Je vérifie dans le catalogue avant de parler.</span>' }, talking: { pose: 'talking', html: '<strong>Verdict du bocal</strong><span>J’ai quelque chose à te dire.</span>' }, happy: { pose: 'talking', html: '<strong>Bloup bloup !</strong><span>Le Projectionniste est réveillé.</span>' } }; function randomBetween(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; } function showPose(poseName) { poses.forEach(img => img.classList.toggle('is-active', img.dataset.pose === poseName)); } function clearLoops() { clearInterval(idleLoop); clearTimeout(microLifeLoop); clearTimeout(autoReturnTimer); } function setMode(nextMode, options = {}) { const state = states[nextMode] || states.idle; mode = nextMode; widget.classList.toggle('is-thinking', mode === 'thinking'); widget.classList.toggle('is-talking', mode === 'talking'); widget.classList.toggle('is-happy', mode === 'happy'); widget.classList.toggle('is-awake', mode !== 'idle' || isHovering || isChatOpen); if (tooltip) tooltip.innerHTML = state.html; clearLoops(); if (state.pose) showPose(state.pose); else startIdleLoop(); if (mode !== 'idle' && options.autoReturn !== false) { autoReturnTimer = setTimeout(() => setMode('idle'), options.duration || 3600); } } function startIdleLoop() { const idlePoses = ['idle-1', 'idle-2']; showPose(idlePoses[idleIndex]); idleLoop = setInterval(() => { idleIndex = (idleIndex + 1) % idlePoses.length; showPose(idlePoses[idleIndex]); }, 5200); scheduleMicroLife(); } function scheduleMicroLife() { microLifeLoop = setTimeout(() => { if (mode !== 'idle') return; if (Math.random() < .55) { widget.classList.add('is-awake'); setTimeout(() => { if (!isHovering && !isChatOpen && mode === 'idle') widget.classList.remove('is-awake'); }, 1500); } else { showPose('idle-2'); setTimeout(() => { if (mode === 'idle') showPose('idle-1'); }, 1200); } scheduleMicroLife(); }, randomBetween(7000, 14500)); } function openChat() { isChatOpen = true; chat.classList.add('is-open'); chat.setAttribute('aria-hidden', 'false'); widget.setAttribute('aria-expanded', 'true'); widget.classList.add('is-awake'); widget.classList.remove('is-intro'); try { localStorage.setItem(STORAGE_KEY, '1'); } catch (error) {} setMode('happy', { duration: 1600 }); setTimeout(() => input.focus(), 120); } function closeChat() { isChatOpen = false; chat.classList.remove('is-open'); chat.setAttribute('aria-hidden', 'true'); widget.setAttribute('aria-expanded', 'false'); setMode('idle'); } function toggleChat() { if (isChatOpen) closeChat(); else openChat(); } function escapeHtml(text) { return String(text) .replaceAll('&', '&amp;') .replaceAll('<', '&lt;') .replaceAll('>', '&gt;') .replaceAll('"', '&quot;') .replaceAll("'", '&#039;'); } function addMessage(author, text) { const article = document.createElement('article'); article.className = `ps-fish-message ps-fish-message-${author}`; article.innerHTML = ` <strong>${author === 'bot' ? '🐠 Projectionniste' : 'Toi'}</strong> <p>${escapeHtml(text)}</p> `; messages.appendChild(article); messages.scrollTop = messages.scrollHeight; } function normalize(text) { return String(text || '') .toLowerCase() .replaceAll('œ', 'oe') .replaceAll('æ', 'ae') .normalize('NFD') .replace(/[\u0300-\u036f]/g, '') .replace(/[’']/g, ' ') .replace(/[^a-z0-9]+/g, ' ') .replace(/\s+/g, ' ') .trim(); } function compact(text) { return normalize(text).replace(/\s+/g, ''); } function uniq(list) { return Array.from(new Set(list.filter(Boolean))); } function cleanTitleQuery(text) { return normalize(text) .replace(/\b(le|la|les|un|une|des|du|de|d|film|films|titre|stp|svp|s il te plait|please)\b/g, ' ') .replace(/\s+/g, ' ') .trim(); } let cataloguePromise = null; let catalogueCache = null; function getCatalogueUrls() { const fromWindow = window.PS_CATALOGUE_URL; const fromWidget = widget.dataset.catalogue || widget.dataset.catalogueUrl; const fromBody = document.body?.dataset?.catalogue || document.body?.dataset?.catalogueUrl; const rawCandidates = [ fromWindow, fromWidget, fromBody, 'data/catalogue.json', '/data/catalogue.json', 'catalogue.json', '/catalogue.json' ].filter(Boolean); const base = document.querySelector('base')?.href || window.location.href; return uniq(rawCandidates.map(url => { try { return new URL(url, base).toString(); } catch (error) { return url; } })); } function normalizeCatalogueData(data) { if (Array.isArray(data)) return data; if (Array.isArray(data?.items)) return data.items; if (Array.isArray(data?.films)) return data.films; if (Array.isArray(data?.movies)) return data.movies; if (Array.isArray(data?.catalogue)) return data.catalogue; if (Array.isArray(data?.data)) return data.data; return []; } async function fetchJson(url) { const response = await fetch(url, { cache: 'no-store' }); if (!response.ok) throw new Error(`Catalogue introuvable (${response.status})`); return response.json(); } async function loadCatalogue() { if (Array.isArray(catalogueCache)) return catalogueCache; if (!cataloguePromise) { cataloguePromise = (async () => { const urls = getCatalogueUrls(); let lastError = null; for (const url of urls) { try { const data = await fetchJson(url); const catalogue = normalizeCatalogueData(data); catalogueCache = catalogue.filter(Boolean); return catalogueCache; } catch (error) { lastError = error; } } throw lastError || new Error('Catalogue indisponible'); })(); } return cataloguePromise; } function pluckNames(value) { if (!value) return []; if (typeof value === 'string') return [value]; if (Array.isArray(value)) { return value.flatMap(pluckNames); } if (typeof value === 'object') { return [ value.name, value.fullName, value.title, value.label, value.original_name, value.originalName ].filter(Boolean); } return []; } function getPersonNames(list) { return uniq(pluckNames(list).map(name => String(name).trim()).filter(Boolean)); } function getDirectors(item) { const directFields = [ item.director, item.directors, item.realisateur, item.realisateurs, item.réalisation, item.realisation ]; const crewFields = [ item.crew, item.credits?.crew, item.tmdb?.crew, item.tmdb?.credits?.crew ]; const crewDirectors = crewFields .filter(Array.isArray) .flat() .filter(person => { const job = normalize(`${person.job || ''} ${person.department || ''} ${person.known_for_department || ''}`); return job.includes('director') || job.includes('realisation') || job.includes('directing'); }); return uniq([ ...directFields.flatMap(pluckNames), ...pluckNames(crewDirectors) ].map(name => String(name).trim())); } function getCast(item) { const castFields = [ item.cast, item.actors, item.acteurs, item.actrices, item.starring, item.credits?.cast, item.tmdb?.cast, item.tmdb?.credits?.cast ]; return uniq(castFields.flatMap(pluckNames).map(name => String(name).trim())); } function getGenres(item) { return uniq(pluckNames(item.genres || item.genre || item.categories || item.category) .map(genre => normalize(genre)) .filter(Boolean)); } function getTitle(item) { return String(item.title || item.name || item.titre || item.originalTitle || item.original_title || 'Titre sans nom').trim(); } function getOriginalTitle(item) { return String(item.originalTitle || item.original_title || item.originalName || item.original_name || '').trim(); } function getAllTitles(item) { return uniq([ getTitle(item), getOriginalTitle(item), item.slug ].filter(Boolean).map(String)); } function getRuntimeMinutes(item) { const candidates = [ item.runtime, item.duration, item.duree, item.durée, item.tmdb?.runtime ]; for (const candidate of candidates) { if (Number(candidate)) return Number(candidate); if (typeof candidate === 'string') { const text = normalize(candidate); const hours = text.match(/(\d+)\s*h/); const mins = text.match(/(\d+)\s*(min|minute|minutes)/); const compactRuntime = text.match(/(\d+)h(\d{1,2})/); const total = compactRuntime ? Number(compactRuntime[1]) * 60 + Number(compactRuntime[2]) : (hours ? Number(hours[1]) * 60 : 0) + (mins ? Number(mins[1]) : 0); if (total) return total; const loneNumber = text.match(/\b(\d{2,3})\b/); if (loneNumber) return Number(loneNumber[1]); } } return 0; } function formatRuntime(minutes) { if (!minutes) return ''; const h = Math.floor(minutes / 60); const m = minutes % 60; return h ? `${h}h${String(m).padStart(2, '0')}` : `${m} min`; } function getRating(item) { return Number( item.rating || item.note || item.vote_average || item.tmdbRating || item.tmdb?.vote_average || 0 ); } function isPremium(item) { return item.premium === true || item.isPremium === true || normalize(item.status || item.section || '').includes('premium'); } function mediaLabel(item) { const value = normalize(`${item.type || ''} ${item.mediaType || ''} ${item.media_type || ''} ${item.category || ''}`); if (value.includes('serie') || value.includes('tv')) return 'Série'; if (value.includes('manga') || value.includes('anime')) return 'Manga'; return 'Film'; } function itemUrl(item) { if (!item?.slug) return ''; const label = normalize(`${item.type || ''} ${item.mediaType || ''} ${item.category || ''}`); if (label.includes('serie') || label.includes('tv')) return `saga.html?slug=${encodeURIComponent(item.slug)}`; return `detail.html?slug=${encodeURIComponent(item.slug)}`; } function itemLine(item, index) { return `${index + 1}. ${getTitle(item)}`; } function parseDurationLimit(message) { const m = normalize(message); const less = /\b(moins de|max(?:imum)?|pas plus de|sous|inferieur a|inférieur a)\s*(\d+)\s*(h|heure|heures|min|minute|minutes)?\b/.exec(m); if (less) { const value = Number(less[2]); const unit = less[3] || ''; return unit.includes('min') ? value : value * 60; } const compactHour = /\b(\d+)h(?:\s*(\d{1,2}))?\s*(max|maximum)?\b/.exec(m); if (compactHour && compactHour[3]) { return Number(compactHour[1]) * 60 + Number(compactHour[2] || 0); } return null; } function tokenize(text) { const stop = new Set(` je tu il elle on nous vous ils elles un une des de du le la les l d dans avec sans pour sur sous par au aux ce cet cette ces ca ça qui que quoi quel quelle quels quelles est suis veux voudrais cherche recherche propose conseille montre donne moi as avez peux peut peux tu avez vous moins plus pas trop tres très bien film films serie series séries manga anime acteur actrice acteurs actrices realisateur réalisateurs realisatrice réalisatrice realise réalisé realisee réalisée genre genres duree durée heure heures min minute minutes catalogue json planete stream planetestream premium hasard surprise top meilleur mieux note stp svp please `.split(/\s+/).filter(Boolean)); return normalize(text) .split(/\s+/) .filter(word => word.length > 1 && !stop.has(word)); } function levenshtein(a, b) { if (a === b) return 0; if (!a || !b) return Math.max(a.length, b.length); const matrix = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) matrix[0][j] = j; for (let i = 1; i <= a.length; i++) { for (let j = 1; j <= b.length; j++) { const cost = a[i - 1] === b[j - 1] ? 0 : 1; matrix[i][j] = Math.min( matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost ); } } return matrix[a.length][b.length]; } function fuzzyTokenMatch(needle, hayTokens) { if (!needle) return false; return hayTokens.some(token => { if (token === needle) return true; if (token.includes(needle) || needle.includes(token)) return needle.length >= 4 || token.length >= 4; const tolerance = needle.length >= 7 ? 2 : needle.length >= 5 ? 1 : 0; return tolerance > 0 && levenshtein(needle, token) <= tolerance; }); } function nameMatchesMessage(name, message, messageTokens) { const cleanName = normalize(name); if (!cleanName) return false; if (compact(message).includes(compact(cleanName))) return true; const nameTokens = cleanName.split(/\s+/).filter(token => token.length > 1); if (!nameTokens.length) return false; return nameTokens.every(token => fuzzyTokenMatch(token, messageTokens)); } function surnameMatchesMessage(name, messageTokens) { const nameTokens = normalize(name).split(/\s+/).filter(token => token.length > 1); const lastName = nameTokens[nameTokens.length - 1]; if (!lastName || lastName.length < 4) return false; return fuzzyTokenMatch(lastName, messageTokens); } function hasSamePerson(targetName, itemNames) { const target = normalize(targetName); const targetCompact = compact(targetName); const targetTokens = tokenize(targetName); return itemNames.some(name => { const current = normalize(name); if (compact(current) === targetCompact) return true; if (targetCompact.length >= 6 && compact(current).includes(targetCompact)) return true; const currentTokens = tokenize(current); if (!targetTokens.length || !currentTokens.length) return false; return targetTokens.every(token => fuzzyTokenMatch(token, currentTokens)); }); } function collectKnownNames(catalogue, getter) { return uniq(catalogue.flatMap(getter)) .filter(name => normalize(name).split(/\s+/).length >= 2) .sort((a, b) => normalize(b).length - normalize(a).length); } const GENRE_GROUPS = [ { id: 'science-fiction', label: 'science-fiction', ask: ['science fiction', 'sf', 'sci fi', 'sci-fi', 'futuriste'], match: ['science fiction', 'science-fiction', 'sci fi', 'sci-fi', 'sf'] }, { id: 'horreur', label: 'horreur', ask: ['horreur', 'horrifique', 'peur', 'gore', 'epouvante'], match: ['horreur', 'horror', 'epouvante'] }, { id: 'thriller', label: 'thriller', ask: ['thriller', 'suspense'], match: ['thriller', 'suspense'] }, { id: 'action', label: 'action', ask: ['action', 'baston'], match: ['action'] }, { id: 'aventure', label: 'aventure', ask: ['aventure'], match: ['aventure', 'adventure'] }, { id: 'comédie', label: 'comédie', ask: ['comedie', 'comique', 'humour', 'humoristique', 'drole', 'fun', 'marrant'], match: ['comedie', 'comedy', 'humour'] }, { id: 'drame', label: 'drame', ask: ['drame', 'dramatique', 'triste', 'emouvant'], match: ['drame', 'drama'] }, { id: 'crime', label: 'crime', ask: ['crime', 'policier', 'enquete', 'polar'], match: ['crime', 'policier', 'detective'] }, { id: 'mystère', label: 'mystère', ask: ['mystere', 'mysterieux'], match: ['mystere', 'mystery'] }, { id: 'romance', label: 'romance', ask: ['romance', 'romantique', 'amour'], match: ['romance', 'romantic'] }, { id: 'fantastique', label: 'fantastique', ask: ['fantastique', 'fantasy', 'magique'], match: ['fantastique', 'fantasy', 'fantasy adventure'] }, { id: 'animation', label: 'animation', ask: ['animation', 'dessin anime', 'enfant', 'famille', 'familial', 'kids'], match: ['animation', 'familial', 'famille', 'family'] } ]; const TOPIC_RULES = [ { id: 'super-héros', terms: ['super heros', 'superhero', 'super hero', 'marvel', 'dc comics', 'batman', 'superman', 'spiderman', 'spider man', 'avengers', 'venom', 'joker', 'deadpool'], match: ['batman', 'superman', 'spider', 'spiderman', 'avengers', 'iron man', 'captain america', 'thor', 'hulk', 'x men', 'x-men', 'venom', 'joker', 'deadpool', 'watchmen', 'justice league', 'black panther', 'doctor strange', 'gardiens de la galaxie', 'guardians of the galaxy', 'marvel', 'gotham'] }, { id: 'zombie', terms: ['zombie', 'mort vivant', 'morts vivants', 'infecte', 'infectes'], match: ['zombie', 'mort vivant', 'infecte', 'infection'] }, { id: 'dinosaure', terms: ['dinosaure', 'jurassic'], match: ['dinosaure', 'jurassic'] }, { id: 'espace', terms: ['espace', 'spatial', 'galaxie', 'vaisseau', 'planete', 'extraterrestre', 'alien'], match: ['espace', 'spatial', 'galaxie', 'vaisseau', 'planete', 'extraterrestre', 'alien', 'avatar', 'prometheus'] }, { id: 'robot', terms: ['robot', 'androide', 'intelligence artificielle', 'ia'], match: ['robot', 'androide', 'intelligence artificielle'] }, { id: 'vampire', terms: ['vampire', 'dracula'], match: ['vampire', 'dracula'] }, { id: 'pirate', terms: ['pirate', 'corsaire'], match: ['pirate', 'corsaire'] }, { id: 'guerre', terms: ['guerre', 'militaire', 'soldat', 'armee'], match: ['guerre', 'militaire', 'soldat', 'armee'] }, { id: 'espionnage', terms: ['espion', 'agent secret', 'mission secrete'], match: ['espion', 'agent secret', 'mission secrete'] } ]; function genreAsked(message, group) { return group.ask.some(term => { const clean = normalize(term); return normalize(message).includes(clean); }); } function genreMatchesItem(itemGenres, group) { return itemGenres.some(genre => group.match.some(alias => genre.includes(normalize(alias)))); } function topicAsked(message, rule) { return rule.terms.some(term => normalize(message).includes(normalize(term))); } function topicMatchesItem(item, rule) { const haystack = normalize([ getAllTitles(item).join(' '), getGenres(item).join(' '), item.overview, item.description, item.synopsis, item.tagline ].join(' ')); return rule.match.some(term => haystack.includes(normalize(term))); } function requestedMediaType(message) { const m = normalize(message); if (/\b(series?|saga|saisons?)\b/.test(m)) return 'serie'; if (/\b(manga|anime|animation japonaise)\b/.test(m)) return 'manga'; if (/\b(film|films|long metrage)\b/.test(m)) return 'film'; return null; } function mediaTypeMatches(item, requestedType) { if (!requestedType) return true; const label = normalize(mediaLabel(item)); if (requestedType === 'serie') return label.includes('serie'); if (requestedType === 'manga') return label.includes('manga'); return label.includes('film'); } function extractIntent(rawMessage, catalogue) { const m = normalize(rawMessage); const messageTokens = tokenize(m); const directors = collectKnownNames(catalogue, getDirectors); const actors = collectKnownNames(catalogue, getCast); const actorCue = /\b(avec|acteur|actrice|acteurs|actrices|casting|joue|jouent|interprete|interprète)\b/.test(m); const directorCueSeed = /\b(realise|realisee|realises|realisateur|realisatrice|realisation|par|films?\s+(de|du|d))\b/.test(m); const matchedDirectors = directors.filter(name => nameMatchesMessage(name, m, messageTokens) || (directorCueSeed && surnameMatchesMessage(name, messageTokens)) ); const matchedActors = actors.filter(name => nameMatchesMessage(name, m, messageTokens) || (actorCue && surnameMatchesMessage(name, messageTokens)) ); const directorCue = directorCueSeed || matchedDirectors.some(name => new RegExp(`\\b(film|films|long metrage|longs metrages)\\s+(de|du|d)\\s+${normalize(name).split(/\s+/)[0]}\\b`).test(m)); const hardGenres = GENRE_GROUPS.filter(group => genreAsked(m, group)); const topics = TOPIC_RULES.filter(rule => topicAsked(m, rule)); let targetDirectors = []; let targetActors = []; if (directorCue && matchedDirectors.length) { targetDirectors = matchedDirectors; } if (actorCue && matchedActors.length) { targetActors = matchedActors; } if (!targetDirectors.length && !targetActors.length) { if (matchedDirectors.length && !actorCue) targetDirectors = matchedDirectors; if (matchedActors.length && !directorCue) targetActors = matchedActors; } const durationMax = parseDurationLimit(m); const wantsBest = /\b(meilleur|meilleurs|mieux note|bien note|note|top)\b/.test(m); const wantsRandom = /\b(surprise|hasard|n importe|je ne sais pas|quoi regarder|choisis|choisi)\b/.test(m); const wantsPremium = /\b(premium|fauteuil rouge|selection premium)\b/.test(m); const wantsKids = /\b(enfant|famille|familial|kids|dessin anime|animation)\b/.test(m); const wantsShort = /\b(court|rapide|pas trop long)\b/.test(m); const requestedType = requestedMediaType(m); const terms = tokenize(m).filter(term => { const inKnownDirector = targetDirectors.some(name => normalize(name).split(/\s+/).includes(term)); const inKnownActor = targetActors.some(name => normalize(name).split(/\s+/).includes(term)); const inGenre = hardGenres.some(group => group.ask.some(alias => normalize(alias).split(/\s+/).includes(term))); const inTopic = topics.some(rule => rule.terms.some(alias => normalize(alias).split(/\s+/).includes(term))); return !inKnownDirector && !inKnownActor && !inGenre && !inTopic; }); const hasHardSignal = targetDirectors.length > 0 || targetActors.length > 0 || hardGenres.length > 0 || topics.length > 0 || Boolean(durationMax) || wantsPremium || wantsKids || requestedType; return { rawMessage, m, messageTokens, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsShort, requestedType, hardGenres, topics, targetDirectors, targetActors, actorCue, directorCue, terms, hasHardSignal }; } function passesHardFilters(item, intent) { if (!mediaTypeMatches(item, intent.requestedType)) return false; const runtime = getRuntimeMinutes(item); if (intent.durationMax && runtime && runtime > intent.durationMax) return false; if (intent.wantsPremium && !isPremium(item)) return false; const genres = getGenres(item); if (intent.hardGenres.length) { const hasGenre = intent.hardGenres.some(group => genreMatchesItem(genres, group)); if (!hasGenre) return false; } if (intent.wantsKids) { const familyGroup = GENRE_GROUPS.find(group => group.id === 'animation'); const familyHit = familyGroup && genreMatchesItem(genres, familyGroup); if (!familyHit) return false; } if (intent.targetDirectors.length) { const directors = getDirectors(item); const hasDirector = intent.targetDirectors.some(name => hasSamePerson(name, directors)); if (!hasDirector) return false; } if (intent.targetActors.length) { const cast = getCast(item); const hasActor = intent.targetActors.some(name => hasSamePerson(name, cast)); if (!hasActor) return false; } if (intent.topics.length) { const hasTopic = intent.topics.some(rule => topicMatchesItem(item, rule)); const hasExplicitGenre = intent.hardGenres.length > 0; if (!hasTopic && !hasExplicitGenre) return false; } return true; } function scoreItem(item, intent) { if (!passesHardFilters(item, intent)) return -999; let score = 0; const titleText = normalize(getAllTitles(item).join(' ')); const directorText = normalize(getDirectors(item).join(' ')); const castText = normalize(getCast(item).join(' ')); const genreText = getGenres(item).join(' '); const overviewText = normalize(`${item.overview || ''} ${item.description || ''} ${item.synopsis || ''} ${item.tagline || ''}`); const haystack = `${titleText} ${directorText} ${castText} ${genreText} ${overviewText}`; if (intent.requestedType) score += 6; if (intent.wantsPremium && isPremium(item)) score += 18; const runtime = getRuntimeMinutes(item); if (intent.wantsShort && runtime && runtime <= 110) score += 8; if (intent.durationMax && runtime) score += Math.max(0, 10 - Math.floor(runtime / 30)); intent.hardGenres.forEach(group => { if (genreMatchesItem(getGenres(item), group)) score += 36; }); intent.topics.forEach(rule => { if (topicMatchesItem(item, rule)) score += 34; }); intent.targetDirectors.forEach(name => { if (hasSamePerson(name, getDirectors(item))) score += 70; }); intent.targetActors.forEach(name => { if (hasSamePerson(name, getCast(item))) score += 62; }); intent.terms.forEach(term => { if (titleText.includes(term)) score += 28; else if (directorText.includes(term)) score += intent.directorCue ? 42 : 14; else if (castText.includes(term)) score += intent.actorCue ? 38 : 12; else if (genreText.includes(term)) score += 16; else if (overviewText.includes(term)) score += 5; else if (haystack.includes(term)) score += 2; }); if (intent.wantsBest) score += getRating(item) * 2; if (isPremium(item)) score += .8; if (!intent.hasHardSignal && intent.terms.length) { const termHits = intent.terms.filter(term => haystack.includes(term)).length; if (!termHits) return -999; } return score; } function pickResults(catalogue, intent) { let candidates = catalogue .map(item => ({ item, score: scoreItem(item, intent) })) .filter(entry => entry.score >= 1); if (intent.hasHardSignal) { candidates = candidates.filter(entry => entry.score >= 20); } else if (intent.terms.length) { candidates = candidates.filter(entry => entry.score >= 12); } if (intent.wantsRandom && !candidates.length) { candidates = catalogue .filter(item => passesHardFilters(item, intent)) .map(item => ({ item, score: Math.random() * 10 + getRating(item) })); } if (intent.wantsBest) { candidates.sort((a, b) => getRating(b.item) - getRating(a.item) || b.score - a.score || getTitle(a.item).localeCompare(getTitle(b.item), 'fr') ); } else if (intent.wantsRandom) { candidates.sort(() => Math.random() - .5); } else { candidates.sort((a, b) => b.score - a.score || getTitle(a.item).localeCompare(getTitle(b.item), 'fr') ); } return candidates.slice(0, 5).map(entry => entry.item); } function titleMatchScore(item, query) { const cleanQuery = cleanTitleQuery(query); if (!cleanQuery) return 0; const queryCompact = compact(cleanQuery); const queryTokens = tokenize(cleanQuery); let best = 0; getAllTitles(item).forEach(title => { const cleanTitle = normalize(title); const titleCompact = compact(title); const titleTokens = tokenize(cleanTitle); if (titleCompact === queryCompact) best = Math.max(best, 100); if (titleCompact.includes(queryCompact) && queryCompact.length >= 4) best = Math.max(best, 90); if (queryCompact.includes(titleCompact) && titleCompact.length >= 4) best = Math.max(best, 86); const hits = queryTokens.filter(token => fuzzyTokenMatch(token, titleTokens)).length; if (queryTokens.length) { best = Math.max(best, Math.round((hits / queryTokens.length) * 80)); } }); return best; } function findBestTitle(catalogue, query) { const matches = catalogue .map(item => ({ item, score: titleMatchScore(item, query) })) .filter(entry => entry.score >= 55) .sort((a, b) => b.score - a.score || getTitle(a.item).localeCompare(getTitle(b.item), 'fr')); return matches[0]?.item || null; } function extractTitleAfterPatterns(message, patterns) { const m = normalize(message); for (const pattern of patterns) { const match = m.match(pattern); if (match?.[1]) return cleanTitleQuery(match[1]); } return ''; } function buildDirectorInfo(rawMessage, catalogue) { const titleQuery = extractTitleAfterPatterns(rawMessage, [ /(?:qui a realise|qui realise|realisateur de|realisatrice de|c est qui le realisateur de|c est qui la realisatrice de|qui est le realisateur de|qui est la realisatrice de|realise par qui)\s+(.+)/, /(.+)\s+(?:a ete realise par qui|est realise par qui|est de quel realisateur|est de quelle realisatrice)$/ ]); if (!titleQuery) return null; const item = findBestTitle(catalogue, titleQuery); if (!item) return 'Bloup... je ne trouve pas ce titre dans le catalogue, donc je ne vais pas inventer son réalisateur avec un coquillage.'; const directors = getDirectors(item); if (!directors.length) return `Bloup... ${getTitle(item)} est bien dans le catalogue, mais je n’ai pas son réalisateur dans le JSON.`; return `${getTitle(item)} a été réalisé par ${directors.join(', ')}.`; } function buildCastInfo(rawMessage, catalogue) { const titleQuery = extractTitleAfterPatterns(rawMessage, [ /(?:qui joue dans|casting de|acteurs de|actrices de|distribution de)\s+(.+)/, /(.+)\s+(?:casting|acteurs|actrices|distribution)$/ ]); if (!titleQuery) return null; const item = findBestTitle(catalogue, titleQuery); if (!item) return 'Bloup... je ne trouve pas ce titre dans le catalogue, donc je ne vais pas fabriquer un casting en algues.'; const cast = getCast(item); if (!cast.length) return `Bloup... ${getTitle(item)} est bien dans le catalogue, mais je n’ai pas son casting dans le JSON.`; return `Dans ${getTitle(item)}, j’ai ces noms dans le catalogue :\n\n${cast.slice(0, 10).map((name, index) => `${index + 1}. ${name}`).join('\n')}`; } function buildRuntimeInfo(rawMessage, catalogue) { const titleQuery = extractTitleAfterPatterns(rawMessage, [ /(?:duree de|durée de|combien dure)\s+(.+)/, /(.+)\s+(?:dure combien|quelle duree|quelle durée)$/ ]); if (!titleQuery) return null; const item = findBestTitle(catalogue, titleQuery); if (!item) return 'Bloup... je ne trouve pas ce titre dans le catalogue. Impossible de chronométrer un fantôme.'; const runtime = getRuntimeMinutes(item); if (!runtime) return `Bloup... ${getTitle(item)} est dans le catalogue, mais la durée n’est pas renseignée.`; return `${getTitle(item)} dure ${formatRuntime(runtime)}.`; } function buildCatalogueAnswer(rawMessage, catalogue) { if (!catalogue.length) { return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.'; } const directDirector = buildDirectorInfo(rawMessage, catalogue); if (directDirector) return directDirector; const directCast = buildCastInfo(rawMessage, catalogue); if (directCast) return directCast; const directRuntime = buildRuntimeInfo(rawMessage, catalogue); if (directRuntime) return directRuntime; const intent = extractIntent(rawMessage, catalogue); const results = pickResults(catalogue, intent); if (!results.length) { if (intent.targetDirectors.length) { return `Bloup... j’ai bien cherché les films de ${intent.targetDirectors.join(', ')} dans le catalogue, mais je n’ai rien trouvé. Je préfère me taire plutôt que de coller son nom sur le mauvais clap.`; } if (intent.targetActors.length) { return `Bloup... j’ai bien cherché les titres avec ${intent.targetActors.join(', ')} dans le catalogue, mais je n’ai rien trouvé. Pas de faux casting dans mon bocal.`; } if (intent.hardGenres.length) { const genres = intent.hardGenres.map(group => group.label).join(', '); return `Bloup... j’ai vérifié le catalogue et je ne trouve pas de résultat fiable pour : ${genres}. Je ne vais pas déguiser Dune en comédie, même avec un très beau chapeau.`; } if (intent.wantsKids) { return 'Bloup... j’ai vérifié dans le catalogue et je ne trouve pas de vrai film enfant/famille correspondant. Je préfère être honnête plutôt que d’inventer un titre qui n’est pas sur Planete Stream.'; } return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, un réalisateur, une durée ou un titre plus précis.'; } let intro = "J'ai trouvé ça dans le catalogue Planete Stream :"; if (intent.targetDirectors.length) { intro = `Dans le catalogue, pour ${intent.targetDirectors.join(', ')}, j’ai trouvé :`; } else if (intent.targetActors.length) { intro = `Dans le catalogue, avec ${intent.targetActors.join(', ')}, j’ai trouvé :`; } else if (results.length === 1) { intro = "J'ai trouvé une excellente correspondance :"; } else if (results.length === 2) { intro = "J'ai trouvé deux très bonnes pistes :"; } else if (results.length <= 5) { intro = "Voici les titres qui correspondent le mieux :"; } return `${intro}\n\n${results.map(itemLine).join('\n')}`; } function shouldUseCatalogue(message) { const m = normalize(message); return /catalogue|json|film|films|serie|series|série|séries|manga|anime|acteur|actrice|casting|realisateur|realisatrice|réalisateur|réalisatrice|genre|duree|durée|moins de|sf|science fiction|comedie|comédie|humour|drame|dramatique|horreur|thriller|action|aventure|premium|enfant|famille|familial|kids|dessin anime|animation|surprise|hasard|quoi regarder|meilleur|mieux note|note|top|court|rapide|super ?heros|superhero|marvel|dc comics|batman|superman|spiderman|spider man|avengers|joker|venom|zombie|dinosaure|jurassic|espace|spatial|galaxie|robot|androide|vampire|pirate|guerre|espion|qui joue|qui a realise|qui réalise|combien dure/.test(m); } async function localBrain(rawMessage) { const message = normalize(rawMessage.trim()); if (!message) return 'Bloup ? Même moi j’ai besoin d’au moins une bulle d’information.'; if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(message)) { return 'Bloup ! Je suis réveillé. Enfin, autant qu’un poisson rouge peut l’être sans café.'; } if (/merci|thanks/.test(message)) { return 'Avec plaisir. Je retourne surveiller les bobines depuis mon bocal.'; } if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle/.test(message)) { return 'Je suis le Projectionniste de Planete Stream : petit poisson, cerveau local, zéro divination. Je lis le catalogue JSON et je réponds uniquement avec ce que je peux vérifier.'; } if (/aide|help|comment|que peux tu faire/.test(message)) { return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou une suggestion au hasard. Exemples : “un film de SF de moins de 2h”, “un film avec Sigourney Weaver”, “un film de Peter Jackson”, ou “qui a réalisé Titanic ?”.'; } if (shouldUseCatalogue(message)) { const catalogue = await loadCatalogue(); return buildCatalogueAnswer(rawMessage, catalogue); } // Dernière tentative prudente : si la phrase contient un titre, un acteur ou un réalisateur présent dans le JSON. try { const catalogue = await loadCatalogue(); const answer = buildCatalogueAnswer(rawMessage, catalogue); if (!answer.startsWith('Bloup... j’ai fouillé')) return answer; } catch (error) {} return 'Bloup... je sèche un peu. Essaie avec un titre, un acteur, un réalisateur, un genre ou une envie de film. Là, mon bocal manque d’indices.'; } async function askFish(message) { const clean = message.trim(); if (!clean) return; addMessage('user', clean); input.value = ''; if (brainStatus) brainStatus.textContent = 'Lecture du catalogue...'; setMode('thinking', { autoReturn: false }); window.setTimeout(async () => { try { const answer = await localBrain(clean); addMessage('bot', answer); if (brainStatus) brainStatus.textContent = catalogueCache ? `Catalogue actif · ${catalogueCache.length} titres` : 'Cerveau local actif'; setMode('talking', { duration: 3400 }); } catch (error) { console.error(error); addMessage('bot', 'Bloup... impossible de lire le catalogue pour le moment. Le poisson garde son calme, mais pas son honneur.'); if (brainStatus) brainStatus.textContent = 'Catalogue indisponible'; setMode('talking', { duration: 3400 }); } }, randomBetween(420, 850)); } widget.addEventListener('click', toggleChat); if (chatClose) chatClose.addEventListener('click', closeChat); form.addEventListener('submit', event => { event.preventDefault(); askFish(input.value); }); suggestions.forEach(button => { button.addEventListener('click', () => askFish(button.dataset.psFishSuggestion || '')); }); widget.addEventListener('mouseenter', () => { isHovering = true; widget.classList.add('is-awake'); }); widget.addEventListener('mouseleave', () => { isHovering = false; if (mode === 'idle' && !isChatOpen) { setTimeout(() => { if (!isHovering && !isChatOpen && mode === 'idle') widget.classList.remove('is-awake'); }, 700); } }); widget.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); widget.click(); } }); document.addEventListener('keydown', event => { if (event.key === 'Escape' && isChatOpen) closeChat(); }); function showIntroOnce() { let seen = false; try { seen = localStorage.getItem(STORAGE_KEY) === '1'; } catch (error) {} if (seen) return; setTimeout(() => { if (isChatOpen) return; widget.classList.add('is-intro', 'is-awake'); if (tooltip) { tooltip.innerHTML = '<strong>Bloup !</strong><span>Je suis le Projectionniste. Clique sur moi si tu cherches un film.</span>'; } setTimeout(() => { widget.classList.remove('is-intro'); if (!isHovering && !isChatOpen && mode === 'idle') widget.classList.remove('is-awake'); try { localStorage.setItem(STORAGE_KEY, '1'); } catch (error) {} }, 6200); }, 1700); } setMode('idle'); showIntroOnce(); })();
+(function () {
+  const widget = document.querySelector('#psFishWidget');
+  const tooltip = document.querySelector('#psFishTooltip');
+  const poses = Array.from(document.querySelectorAll('.ps-fish-pose'));
+  const chat = document.querySelector('#psFishChat');
+  const chatClose = document.querySelector('#psFishChatClose');
+  const form = document.querySelector('#psFishForm');
+  const input = document.querySelector('#psFishInput');
+  const messages = document.querySelector('#psFishMessages');
+  const brainStatus = document.querySelector('#psBrainStatus');
+  const suggestions = Array.from(document.querySelectorAll('[data-ps-fish-suggestion]'));
+
+  if (!widget || !chat || !form || !input || !messages) return;
+
+  const STORAGE_KEY = 'planeteStreamProjectionnisteIntroSeen';
+
+  let mode = 'idle';
+  let idleIndex = 0;
+  let idleLoop = null;
+  let microLifeLoop = null;
+  let autoReturnTimer = null;
+  let isHovering = false;
+  let isChatOpen = false;
+
+  let cataloguePromise = null;
+  let catalogueCache = null;
+  let recordsCache = null;
+
+  const states = {
+    idle: {
+      pose: null,
+      html: '<strong>Bloup !</strong><span>Clique si tu veux parler au Projectionniste.</span>'
+    },
+    thinking: {
+      pose: 'thinking',
+      html: '<strong>Bloup...</strong><span>Je vérifie dans le catalogue avant de parler.</span>'
+    },
+    talking: {
+      pose: 'talking',
+      html: '<strong>Verdict du bocal</strong><span>J’ai comparé avec les bobines disponibles.</span>'
+    },
+    happy: {
+      pose: 'talking',
+      html: '<strong>Bloup bloup !</strong><span>Le Projectionniste est réveillé.</span>'
+    }
+  };
+
+  const STOP_WORDS = new Set(
+    [
+      'je', 'tu', 'il', 'elle', 'on', 'nous', 'vous', 'ils', 'elles',
+      'un', 'une', 'des', 'de', 'du', 'd', 'le', 'la', 'les', 'l',
+      'au', 'aux', 'ce', 'cet', 'cette', 'ces', 'mon', 'ma', 'mes',
+      'ton', 'ta', 'tes', 'son', 'sa', 'ses',
+      'dans', 'avec', 'sans', 'pour', 'sur', 'sous', 'par', 'entre',
+      'qui', 'que', 'quoi', 'quel', 'quelle', 'quels', 'quelles',
+      'est', 'sont', 'suis', 'es', 'a', 'as', 'avez', 'ont', 'fait',
+      'veux', 'voudrais', 'cherche', 'recherche', 'propose', 'conseille',
+      'montre', 'donne', 'trouve', 'moi', 'peux', 'peut',
+      'film', 'films', 'serie', 'series', 'série', 'séries', 'manga',
+      'acteur', 'acteurs', 'actrice', 'actrices', 'casting', 'cast',
+      'realisateur', 'realisatrice', 'réalisateur', 'réalisatrice',
+      'realise', 'réalisé', 'realisee', 'réalisée', 'realises', 'réalisés',
+      'genre', 'genres', 'type', 'duree', 'durée', 'heure', 'heures',
+      'minute', 'minutes', 'min', 'moins', 'plus', 'trop', 'tres', 'très',
+      'meilleur', 'meilleure', 'top', 'note', 'noté', 'notée',
+      'catalogue', 'planete', 'stream', 'planetestream'
+    ].map(normalize)
+  );
+
+  const GENRE_ALIASES = [
+    ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi', 'futuriste', 'espace', 'spatial']],
+    ['horreur', ['horreur', 'horrifique', 'peur', 'gore', 'epouvante', 'épouvante']],
+    ['thriller', ['thriller', 'suspense']],
+    ['action', ['action', 'baston', 'combat']],
+    ['aventure', ['aventure']],
+    ['comédie', ['comedie', 'comédie', 'comique', 'humour', 'humoristique', 'drole', 'drôle', 'fun']],
+    ['drame', ['drame', 'dramatique', 'triste', 'emouvant', 'émouvant']],
+    ['crime', ['crime', 'criminel', 'policier', 'enquete', 'enquête']],
+    ['mystère', ['mystere', 'mystère']],
+    ['romance', ['romance', 'romantique', 'amour']],
+    ['fantastique', ['fantastique', 'fantasy', 'magique', 'magie']],
+    ['animation', ['animation', 'dessin anime', 'dessin animé', 'anime', 'animé']],
+    ['familial', ['famille', 'familial', 'enfant', 'kids']]
+  ];
+
+  const TOPIC_RULES = [
+    {
+      label: 'super-héros',
+      pattern: /super ?heros|super ?héros|superhero|marvel|dc comics|batman|superman|spider ?man|avengers|venom|joker|deadpool|x-?men/,
+      terms: [
+        'batman', 'superman', 'spider', 'spiderman', 'spider man',
+        'avengers', 'venom', 'joker', 'deadpool', 'x-men', 'x men',
+        'marvel', 'gotham', 'justice league', 'iron man', 'thor',
+        'captain america', 'hulk', 'black panther', 'doctor strange',
+        'gardiens de la galaxie', 'guardians of the galaxy'
+      ],
+      genres: ['action', 'aventure', 'fantastique', 'science-fiction', 'crime']
+    },
+    {
+      label: 'zombies',
+      pattern: /zombie|mort vivant|morts vivants|infecte|infectes|infecté|infectés/,
+      terms: ['zombie', 'mort vivant', 'infecte', 'infecté'],
+      genres: ['horreur', 'action', 'thriller']
+    },
+    {
+      label: 'dinosaures',
+      pattern: /dinosaure|dinosaures|jurassic/,
+      terms: ['jurassic', 'dinosaure', 'dinosaures'],
+      genres: ['aventure', 'science-fiction', 'action']
+    },
+    {
+      label: 'espace',
+      pattern: /espace|spatial|galaxie|vaisseau|planete|planète|extraterrestre|alien/,
+      terms: ['espace', 'galaxie', 'vaisseau', 'alien', 'extraterrestre', 'avatar', 'prometheus'],
+      genres: ['science-fiction', 'aventure']
+    },
+    {
+      label: 'robots',
+      pattern: /robot|robots|androide|androïde|intelligence artificielle|\bia\b/,
+      terms: ['robot', 'androide', 'androïde', 'intelligence artificielle'],
+      genres: ['science-fiction', 'action']
+    },
+    {
+      label: 'magie',
+      pattern: /magie|sorcier|sorciere|sorcière|magicien|magicienne/,
+      terms: ['magie', 'sorcier', 'sorciere', 'sorcière', 'fantastique'],
+      genres: ['fantastique', 'aventure']
+    },
+    {
+      label: 'vampires',
+      pattern: /vampire|vampires|dracula/,
+      terms: ['vampire', 'dracula'],
+      genres: ['horreur', 'fantastique']
+    },
+    {
+      label: 'pirates',
+      pattern: /pirate|pirates|corsaire|corsaires/,
+      terms: ['pirate', 'corsaire'],
+      genres: ['aventure', 'action']
+    },
+    {
+      label: 'guerre',
+      pattern: /guerre|militaire|soldat|soldats|armee|armée/,
+      terms: ['guerre', 'militaire', 'soldat', 'armée'],
+      genres: ['action', 'drame', 'thriller']
+    },
+    {
+      label: 'espionnage',
+      pattern: /espion|espionnage|agent secret|mission secrete|mission secrète/,
+      terms: ['espion', 'agent secret', 'mission'],
+      genres: ['action', 'thriller', 'aventure']
+    }
+  ];
+
+  function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function normalize(text) {
+    return String(text || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[’']/g, ' ')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function escapeHtml(text) {
+    return String(text)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function tokenize(text) {
+    return normalize(text)
+      .split(' ')
+      .filter(word => word.length > 1 && !STOP_WORDS.has(word));
+  }
+
+  function unique(values) {
+    return Array.from(new Set(values.filter(Boolean)));
+  }
+
+  function compactText(values) {
+    return values.filter(Boolean).join(' ');
+  }
+
+  function includesAllTokens(haystack, tokens) {
+    if (!tokens.length) return false;
+    const h = normalize(haystack);
+    return tokens.every(token => h.includes(normalize(token)));
+  }
+
+  function includesAnyToken(haystack, tokens) {
+    if (!tokens.length) return false;
+    const h = normalize(haystack);
+    return tokens.some(token => h.includes(normalize(token)));
+  }
+
+  function showPose(poseName) {
+    poses.forEach(img => {
+      img.classList.toggle('is-active', img.dataset.pose === poseName);
+    });
+  }
+
+  function clearLoops() {
+    clearInterval(idleLoop);
+    clearTimeout(microLifeLoop);
+    clearTimeout(autoReturnTimer);
+  }
+
+  function setMode(nextMode, options = {}) {
+    const state = states[nextMode] || states.idle;
+    mode = nextMode;
+
+    widget.classList.toggle('is-thinking', mode === 'thinking');
+    widget.classList.toggle('is-talking', mode === 'talking');
+    widget.classList.toggle('is-happy', mode === 'happy');
+    widget.classList.toggle('is-awake', mode !== 'idle' || isHovering || isChatOpen);
+
+    if (tooltip) tooltip.innerHTML = state.html;
+
+    clearLoops();
+
+    if (state.pose) showPose(state.pose);
+    else startIdleLoop();
+
+    if (mode !== 'idle' && options.autoReturn !== false) {
+      autoReturnTimer = setTimeout(() => setMode('idle'), options.duration || 3600);
+    }
+  }
+
+  function startIdleLoop() {
+    const idlePoses = ['idle-1', 'idle-2'];
+    showPose(idlePoses[idleIndex]);
+
+    idleLoop = setInterval(() => {
+      idleIndex = (idleIndex + 1) % idlePoses.length;
+      showPose(idlePoses[idleIndex]);
+    }, 5200);
+
+    scheduleMicroLife();
+  }
+
+  function scheduleMicroLife() {
+    microLifeLoop = setTimeout(() => {
+      if (mode !== 'idle') return;
+
+      if (Math.random() < 0.55) {
+        widget.classList.add('is-awake');
+
+        setTimeout(() => {
+          if (!isHovering && !isChatOpen && mode === 'idle') {
+            widget.classList.remove('is-awake');
+          }
+        }, 1500);
+      } else {
+        showPose('idle-2');
+
+        setTimeout(() => {
+          if (mode === 'idle') showPose('idle-1');
+        }, 1200);
+      }
+
+      scheduleMicroLife();
+    }, randomBetween(7000, 14500));
+  }
+
+  function openChat() {
+    isChatOpen = true;
+    chat.classList.add('is-open');
+    chat.setAttribute('aria-hidden', 'false');
+    widget.setAttribute('aria-expanded', 'true');
+    widget.classList.add('is-awake');
+    widget.classList.remove('is-intro');
+
+    try {
+      localStorage.setItem(STORAGE_KEY, '1');
+    } catch (error) {}
+
+    setMode('happy', { duration: 1600 });
+    setTimeout(() => input.focus(), 120);
+  }
+
+  function closeChat() {
+    isChatOpen = false;
+    chat.classList.remove('is-open');
+    chat.setAttribute('aria-hidden', 'true');
+    widget.setAttribute('aria-expanded', 'false');
+    setMode('idle');
+  }
+
+  function toggleChat() {
+    if (isChatOpen) closeChat();
+    else openChat();
+  }
+
+  function addMessage(author, text) {
+    const article = document.createElement('article');
+    article.className = `ps-fish-message ps-fish-message-${author}`;
+    article.innerHTML = `
+      <strong>${author === 'bot' ? '🐠 Projectionniste' : 'Toi'}</strong>
+      <p>${escapeHtml(text)}</p>
+    `;
+    messages.appendChild(article);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function getCatalogueUrl() {
+    return 'data/catalogue.json';
+  }
+
+  async function loadCatalogue() {
+    if (Array.isArray(catalogueCache)) return catalogueCache;
+
+    if (!cataloguePromise) {
+      cataloguePromise = fetch(getCatalogueUrl(), { cache: 'no-store' })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Catalogue introuvable (${response.status})`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          catalogueCache = Array.isArray(data) ? data : [];
+          recordsCache = null;
+          return catalogueCache;
+        });
+    }
+
+    return cataloguePromise;
+  }
+    function asArray(value) {
+    if (!value) return [];
+    return Array.isArray(value) ? value : [value];
+  }
+
+  function getName(value) {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    return value.name || value.title || value.original_name || '';
+  }
+
+  function getPersonNames(list) {
+    return asArray(list)
+      .map(getName)
+      .filter(Boolean);
+  }
+
+  function getDirectorNames(item) {
+    const names = [];
+
+    if (item.director) {
+      names.push(...getPersonNames(item.director));
+    }
+
+    if (item.directors) {
+      names.push(...getPersonNames(item.directors));
+    }
+
+    if (Array.isArray(item.crew)) {
+      item.crew.forEach(person => {
+        const job = normalize(`${person.job || ''} ${person.department || ''}`);
+        if (job.includes('director') || job.includes('realisation')) {
+          const name = getName(person);
+          if (name) names.push(name);
+        }
+      });
+    }
+
+    return unique(names);
+  }
+
+  function getCastNames(item) {
+    return unique([
+      ...getPersonNames(item.cast),
+      ...getPersonNames(item.actors),
+      ...getPersonNames(item.actor),
+      ...getPersonNames(item.acteurs),
+      ...getPersonNames(item.actrices)
+    ]);
+  }
+
+  function getGenres(item) {
+    return unique(asArray(item.genres || item.genre).map(getName));
+  }
+
+  function getRuntimeMinutes(item) {
+    const value = item.runtime || item.duration || item.duree || item.durée;
+
+    if (Number(value)) return Number(value);
+
+    if (typeof value === 'string') {
+      const hours = value.match(/(\d+)\s*h/);
+      const mins = value.match(/(\d+)\s*(min|mn|minutes?)/);
+      return (hours ? Number(hours[1]) * 60 : 0) + (mins ? Number(mins[1]) : 0);
+    }
+
+    return 0;
+  }
+
+  function getRating(item) {
+    const value =
+      item.rating ||
+      item.note ||
+      item.vote_average ||
+      item.tmdbRating ||
+      item.planeteRating ||
+      0;
+
+    return Number(value) || 0;
+  }
+
+  function formatRuntime(minutes) {
+    if (!minutes) return '';
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return h ? `${h}h${String(m).padStart(2, '0')}` : `${m} min`;
+  }
+
+  function mediaLabel(item) {
+    const value = normalize(
+      item.type ||
+      item.mediaType ||
+      item.media_type ||
+      item.category ||
+      item.categorie ||
+      ''
+    );
+
+    if (value.includes('serie') || value.includes('tv')) return 'Série';
+    if (value.includes('manga') || value.includes('anime')) return 'Manga';
+    return 'Film';
+  }
+
+  function createRecord(item, index) {
+    const title = item.title || item.name || item.originalTitle || item.original_title || 'Titre sans nom';
+    const originalTitle = item.originalTitle || item.original_title || '';
+    const directors = getDirectorNames(item);
+    const cast = getCastNames(item);
+    const genres = getGenres(item);
+    const runtime = getRuntimeMinutes(item);
+    const rating = getRating(item);
+    const type = mediaLabel(item);
+
+    const titleText = compactText([title, originalTitle]);
+    const directorText = directors.join(' ');
+    const castText = cast.join(' ');
+    const genreText = genres.join(' ');
+    const storyText = compactText([item.overview, item.description, item.synopsis, item.tagline]);
+
+    return {
+      item,
+      index,
+      title,
+      originalTitle,
+      directors,
+      cast,
+      genres,
+      runtime,
+      rating,
+      type,
+      premium: Boolean(item.premium || item.isPremium || item.featured),
+      titleNorm: normalize(titleText),
+      directorNorm: normalize(directorText),
+      castNorm: normalize(castText),
+      genreNorm: normalize(genreText),
+      storyNorm: normalize(storyText),
+      allNorm: normalize(compactText([titleText, directorText, castText, genreText, storyText, type]))
+    };
+  }
+
+  function getRecords(catalogue) {
+    if (recordsCache) return recordsCache;
+    recordsCache = catalogue.map(createRecord);
+    return recordsCache;
+  }
+
+  function itemLine(record, index) {
+    return `${index + 1}. ${record.title}`;
+  }
+
+  function personLine(name, index) {
+    return `${index + 1}. ${name}`;
+  }
+
+  function parseDurationLimit(message) {
+    const m = normalize(message);
+
+    const less = /(moins de|max(?:imum)?|pas plus de|sous|inferieur a|inférieur à)\s*(\d+)\s*(h|heure|heures|min|minute|minutes)?/.exec(m);
+    if (!less) return null;
+
+    const value = Number(less[2]);
+    const unit = less[3] || '';
+
+    return unit.includes('min') ? value : value * 60;
+  }
+
+  function detectRequestedType(message) {
+    const m = normalize(message);
+
+    if (/\bseries?\b/.test(m)) return 'Série';
+    if (/\bmangas?\b|\banimes?\b/.test(m)) return 'Manga';
+    if (/\bfilms?\b/.test(m)) return 'Film';
+
+    return null;
+  }
+
+  function detectGenres(message) {
+    const m = normalize(message);
+    const found = [];
+
+    GENRE_ALIASES.forEach(([genre, aliases]) => {
+      const hit = aliases.some(alias => m.includes(normalize(alias)));
+      if (hit) found.push(genre);
+    });
+
+    return unique(found);
+  }
+
+  function detectTopics(message) {
+    const m = normalize(message);
+    return TOPIC_RULES.filter(rule => rule.pattern.test(m));
+  }
+
+  function removeKnownQuestionWords(message) {
+    return tokenize(message)
+      .filter(word => !STOP_WORDS.has(word))
+      .join(' ');
+  }
+
+  function extractTitleQuestion(message) {
+    const m = normalize(message);
+
+    const patterns = [
+      /^(qui a realise|qui a realise le film|qui a realise la serie|realisateur de|realisatrice de|realise par qui|c est qui le realisateur de|c est qui la realisatrice de)\s+/,
+      /^(donne moi le realisateur de|dis moi le realisateur de|quel est le realisateur de|quelle est la realisatrice de)\s+/
+    ];
+
+    for (const pattern of patterns) {
+      const cleaned = m.replace(pattern, '').trim();
+      if (cleaned !== m && cleaned.length > 1) return cleaned;
+    }
+
+    return '';
+  }
+
+  function extractPersonRequest(message) {
+    const m = normalize(message);
+
+    const patterns = [
+      /\bavec\s+(.+)$/,
+      /\bfilms?\s+avec\s+(.+)$/,
+      /\bseries?\s+avec\s+(.+)$/,
+      /\bmangas?\s+avec\s+(.+)$/,
+      /\bde\s+(.+)$/,
+      /\bpar\s+(.+)$/,
+      /\brealise(?:s|es|e)?\s+par\s+(.+)$/,
+      /\brealisateur\s+(.+)$/,
+      /\brealisatrice\s+(.+)$/
+    ];
+
+    for (const pattern of patterns) {
+      const match = m.match(pattern);
+      if (match && match[1]) {
+        return match[1]
+          .replace(/\b(film|films|serie|series|manga|acteur|actrice|realisateur|realisatrice)\b/g, '')
+          .trim();
+      }
+    }
+
+    return '';
+  }
+
+  function isDirectorRequest(message) {
+    const m = normalize(message);
+
+    return (
+      /\brealisateur\b|\brealisatrice\b|\brealise par\b|\brealises par\b|\brealisee par\b/.test(m) ||
+      /^films?\s+de\s+/.test(m) ||
+      /^un\s+film\s+de\s+/.test(m) ||
+      /^une\s+serie\s+de\s+/.test(m) ||
+      /\bde\s+(christopher|james|peter|ridley|steven|quentin|david|denis|guillermo|george|martin|luc|tim|alfonso|michael|robert|francis|stanley|clint|sam|zack)\b/.test(m)
+    );
+  }
+
+  function isActorRequest(message) {
+    const m = normalize(message);
+
+    return (
+      /\bavec\b|\bacteur\b|\bactrice\b|\bcasting\b|\bjoue\b|\bjouent\b/.test(m)
+    );
+  }
+
+  function findBestTitleMatch(records, query) {
+    const q = normalize(query);
+    if (!q) return null;
+
+    const queryTokens = tokenize(q);
+    if (!queryTokens.length) return null;
+
+    const exact = records.find(record => record.titleNorm === q);
+    if (exact) return exact;
+
+    const included = records
+      .map(record => {
+        let score = 0;
+
+        if (record.titleNorm.includes(q)) score += 100;
+        if (q.includes(record.titleNorm) && record.titleNorm.length > 3) score += 80;
+
+        queryTokens.forEach(token => {
+          if (record.titleNorm.includes(token)) score += 18;
+        });
+
+        return { record, score };
+      })
+      .filter(entry => entry.score > 0)
+      .sort((a, b) =>
+        b.score - a.score ||
+        a.record.title.length - b.record.title.length
+      );
+
+    const best = included[0];
+    if (!best || best.score < Math.max(18, queryTokens.length * 14)) return null;
+
+    return best.record;
+  }
+
+  function findMatchingDirectors(records, query) {
+    const q = normalize(query);
+    const tokens = tokenize(q);
+
+    if (!tokens.length) return [];
+
+    const found = [];
+
+    records.forEach(record => {
+      record.directors.forEach(name => {
+        const n = normalize(name);
+        const hit =
+          n === q ||
+          n.includes(q) ||
+          tokens.every(token => n.includes(token));
+
+        if (hit) found.push(name);
+      });
+    });
+
+    return unique(found);
+  }
+
+  function findMatchingActors(records, query) {
+    const q = normalize(query);
+    const tokens = tokenize(q);
+
+    if (!tokens.length) return [];
+
+    const found = [];
+
+    records.forEach(record => {
+      record.cast.forEach(name => {
+        const n = normalize(name);
+        const hit =
+          n === q ||
+          n.includes(q) ||
+          tokens.every(token => n.includes(token));
+
+        if (hit) found.push(name);
+      });
+    });
+
+    return unique(found);
+  }
+
+  function answerDirectorOfTitle(rawMessage, records) {
+    const titleQuery = extractTitleQuestion(rawMessage) || removeKnownQuestionWords(rawMessage);
+    const record = findBestTitleMatch(records, titleQuery);
+
+    if (!record) {
+      return 'Bloup... je ne trouve pas ce titre dans le catalogue, donc je préfère ne pas inventer son réalisateur.';
+    }
+
+    if (!record.directors.length) {
+      return `Bloup... j’ai bien trouvé ${record.title}, mais le réalisateur n’est pas renseigné dans le JSON.`;
+    }
+
+    return `${record.title} a été réalisé par ${record.directors.join(', ')}.`;
+  }
+
+  function answerCastOfTitle(rawMessage, records) {
+    const titleQuery = normalize(rawMessage)
+      .replace(/casting de|acteurs de|actrices de|qui joue dans|avec qui dans/g, '')
+      .trim();
+
+    const record = findBestTitleMatch(records, titleQuery);
+
+    if (!record) {
+      return 'Bloup... je ne trouve pas ce titre dans le catalogue, donc je ne peux pas sortir le casting proprement.';
+    }
+
+    if (!record.cast.length) {
+      return `Bloup... j’ai trouvé ${record.title}, mais le casting n’est pas renseigné dans le JSON.`;
+    }
+
+    return `Dans ${record.title}, le catalogue indique notamment :\n\n${record.cast.slice(0, 8).map(personLine).join('\n')}`;
+  }
+
+  function buildIntent(rawMessage, records) {
+    const m = normalize(rawMessage);
+    const durationMax = parseDurationLimit(rawMessage);
+    const requestedType = detectRequestedType(rawMessage);
+    const wantedGenres = detectGenres(rawMessage);
+    const topics = detectTopics(rawMessage);
+    const wantsBest = /meilleur|meilleure|mieux note|bien note|top|note/.test(m);
+    const wantsRandom = /surprise|hasard|n importe|nimporte|je ne sais pas|quoi regarder/.test(m);
+    const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(m);
+    const wantsKids = /enfant|famille|familial|kids|dessin anime|dessin animé|animation/.test(m);
+    const wantsShort = /court|rapide|pas trop long/.test(m);
+
+    topics.forEach(topic => {
+      topic.genres.forEach(genre => {
+        if (!wantedGenres.includes(genre)) wantedGenres.push(genre);
+      });
+    });
+
+    const personQuery = extractPersonRequest(rawMessage);
+    const directorRequest = isDirectorRequest(rawMessage);
+    const actorRequest = isActorRequest(rawMessage);
+
+    const matchedDirectors = directorRequest ? findMatchingDirectors(records, personQuery || rawMessage) : [];
+    const matchedActors = actorRequest ? findMatchingActors(records, personQuery || rawMessage) : [];
+
+    const freeTerms = unique([
+      ...tokenize(rawMessage),
+      ...topics.flatMap(topic => topic.terms).map(normalize)
+    ]);
+
+    const hasStrongSignal =
+      Boolean(requestedType) ||
+      wantedGenres.length > 0 ||
+      topics.length > 0 ||
+      matchedDirectors.length > 0 ||
+      matchedActors.length > 0 ||
+      durationMax ||
+      wantsBest ||
+      wantsRandom ||
+      wantsPremium ||
+      wantsKids ||
+      wantsShort ||
+      freeTerms.length > 0;
+
+    return {
+      rawMessage,
+      m,
+      requestedType,
+      wantedGenres,
+      topics,
+      durationMax,
+      wantsBest,
+      wantsRandom,
+      wantsPremium,
+      wantsKids,
+      wantsShort,
+      directorRequest,
+      actorRequest,
+      matchedDirectors,
+      matchedActors,
+      freeTerms,
+      hasStrongSignal
+    };
+  }
+    function recordHasGenre(record, wantedGenre) {
+    const wanted = normalize(wantedGenre);
+    const aliasEntry = GENRE_ALIASES.find(([genre]) => normalize(genre) === wanted);
+    const variants = unique([
+      wantedGenre,
+      wanted,
+      ...(aliasEntry ? aliasEntry[1] : []),
+      wanted === 'familial' ? 'family' : '',
+      wanted === 'comedie' ? 'comedy' : '',
+      wanted === 'science fiction' ? 'science-fiction' : ''
+    ]).map(normalize);
+
+    return variants.some(variant => record.genreNorm.includes(variant));
+  }
+
+  function recordMatchesTopic(record, topic) {
+    const topicTerms = topic.terms.map(normalize);
+
+    return topicTerms.some(term =>
+      record.titleNorm.includes(term) ||
+      record.storyNorm.includes(term) ||
+      record.allNorm.includes(term)
+    );
+  }
+
+  function recordHasDirector(record, names) {
+    if (!names.length) return false;
+
+    return names.some(name => {
+      const n = normalize(name);
+      return record.directorNorm.includes(n);
+    });
+  }
+
+  function recordHasActor(record, names) {
+    if (!names.length) return false;
+
+    return names.some(name => {
+      const n = normalize(name);
+      return record.castNorm.includes(n);
+    });
+  }
+
+  function scoreRecord(record, intent) {
+    let score = 0;
+
+    if (intent.requestedType && record.type !== intent.requestedType) {
+      return -999;
+    }
+
+    if (intent.durationMax && record.runtime && record.runtime > intent.durationMax) {
+      return -999;
+    }
+
+    if (intent.wantsPremium && !record.premium) {
+      return -999;
+    }
+
+    if (intent.wantsKids) {
+      const isFamily =
+        recordHasGenre(record, 'familial') ||
+        recordHasGenre(record, 'animation') ||
+        record.genreNorm.includes('family') ||
+        record.genreNorm.includes('famille');
+
+      if (!isFamily) return -999;
+      score += 35;
+    }
+
+    if (intent.matchedDirectors.length) {
+      if (!recordHasDirector(record, intent.matchedDirectors)) return -999;
+      score += 90;
+    }
+
+    if (intent.matchedActors.length) {
+      if (!recordHasActor(record, intent.matchedActors)) return -999;
+      score += 80;
+    }
+
+    if (intent.topics.length) {
+      const topicHit = intent.topics.some(topic => recordMatchesTopic(record, topic));
+
+      if (!topicHit) return -999;
+
+      score += 55;
+    }
+
+    if (intent.wantedGenres.length) {
+      const genreHits = intent.wantedGenres.filter(genre => recordHasGenre(record, genre));
+
+      if (!genreHits.length) return -999;
+
+      score += genreHits.length * 30;
+    }
+
+    if (intent.wantsShort && record.runtime && record.runtime <= 110) {
+      score += 12;
+    }
+
+    if (intent.wantsBest) {
+      score += record.rating * 4;
+    }
+
+    if (record.premium) {
+      score += 1;
+    }
+
+    intent.freeTerms.forEach(term => {
+      const t = normalize(term);
+
+      if (!t || t.length < 2) return;
+
+      if (record.titleNorm.includes(t)) score += 24;
+      else if (record.directorNorm.includes(t)) score += intent.directorRequest ? 18 : 10;
+      else if (record.castNorm.includes(t)) score += intent.actorRequest ? 18 : 8;
+      else if (record.genreNorm.includes(t)) score += 8;
+      else if (record.storyNorm.includes(t)) score += 2;
+    });
+
+    return score;
+  }
+
+  function pickResults(records, intent) {
+    let candidates = records
+      .map(record => ({
+        record,
+        score: scoreRecord(record, intent)
+      }))
+      .filter(entry => entry.score >= 18);
+
+    if (intent.hasStrongSignal && !intent.wantsRandom) {
+      candidates = candidates.filter(entry => entry.score >= 25);
+    }
+
+    if (intent.wantsRandom && !candidates.length) {
+      candidates = records.map(record => ({
+        record,
+        score: Math.random() * 20 + record.rating
+      }));
+    }
+
+    if (intent.wantsBest) {
+      candidates.sort((a, b) =>
+        b.record.rating - a.record.rating ||
+        b.score - a.score ||
+        a.record.title.localeCompare(b.record.title, 'fr')
+      );
+    } else if (intent.wantsRandom) {
+      candidates.sort(() => Math.random() - 0.5);
+    } else {
+      candidates.sort((a, b) =>
+        b.score - a.score ||
+        a.record.title.localeCompare(b.record.title, 'fr')
+      );
+    }
+
+    return candidates.slice(0, 5).map(entry => entry.record);
+  }
+
+  function explainNoResult(intent) {
+    if (intent.directorRequest && intent.freeTerms.length && !intent.matchedDirectors.length && !intent.wantedGenres.length && !intent.topics.length) {
+      return 'Bloup... je n’ai trouvé aucun réalisateur correspondant dans le JSON. Je préfère garder mes bulles plutôt que d’inventer une filmographie.';
+    }
+
+    if (intent.actorRequest && intent.freeTerms.length && !intent.matchedActors.length) {
+      return 'Bloup... je n’ai trouvé aucun acteur ou actrice correspondant dans le JSON.';
+    }
+
+    if (intent.wantsKids) {
+      return 'Bloup... j’ai vérifié dans le catalogue et je ne trouve pas de vrai titre enfant/famille correspondant.';
+    }
+
+    if (intent.wantsPremium) {
+      return 'Bloup... je ne trouve pas de titre Premium correspondant à cette demande.';
+    }
+
+    if (intent.wantedGenres.length) {
+      return 'Bloup... j’ai vérifié les genres du catalogue, mais je ne trouve pas de correspondance assez fiable.';
+    }
+
+    return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, un réalisateur, une durée ou un titre plus précis.';
+  }
+
+  function buildCatalogueAnswer(rawMessage, catalogue) {
+    if (!catalogue.length) {
+      return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
+    }
+
+    const records = getRecords(catalogue);
+    const normalizedMessage = normalize(rawMessage);
+
+    if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(normalizedMessage)) {
+      return answerDirectorOfTitle(rawMessage, records);
+    }
+
+    if (/casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(normalizedMessage)) {
+      return answerCastOfTitle(rawMessage, records);
+    }
+
+    const intent = buildIntent(rawMessage, records);
+    const results = pickResults(records, intent);
+
+    if (!results.length) {
+      return explainNoResult(intent);
+    }
+
+    let intro = 'J’ai trouvé ça dans le catalogue Planete Stream :';
+
+    if (results.length === 1) {
+      intro = 'J’ai trouvé une excellente correspondance :';
+    } else if (intent.matchedDirectors.length) {
+      intro = `Voici ce que le catalogue indique pour ${intent.matchedDirectors.join(', ')} :`;
+    } else if (intent.matchedActors.length) {
+      intro = `Voici ce que le catalogue indique avec ${intent.matchedActors.join(', ')} :`;
+    } else if (intent.wantsBest) {
+      intro = 'Voici les titres les mieux placés dans le catalogue :';
+    } else if (intent.wantsRandom) {
+      intro = 'Le bocal a remué les bobines, voici une suggestion :';
+    } else if (results.length <= 5) {
+      intro = 'Voici les titres qui correspondent le mieux :';
+    }
+
+    return `${intro}\n\n${results.map(itemLine).join('\n')}`;
+  }
+
+  async function localBrain(rawMessage) {
+    const clean = rawMessage.trim();
+    const message = normalize(clean);
+
+    if (!message) {
+      return 'Bloup ? Même moi j’ai besoin d’au moins une bulle d’information.';
+    }
+
+    if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(message)) {
+      return 'Bloup ! Je suis réveillé. Enfin, autant qu’un poisson rouge peut l’être sans café.';
+    }
+
+    if (/merci|thanks/.test(message)) {
+      return 'Avec plaisir. Je retourne surveiller les bobines depuis mon bocal.';
+    }
+
+    if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle/.test(message)) {
+      return 'Je suis le Projectionniste de Planete Stream : petit poisson, cerveau JSON. Je vérifie le catalogue avant de répondre, donc je préfère dire “je ne sais pas” plutôt que d’inventer un film sorti d’une palourde.';
+    }
+
+    if (/aide|help|comment|que peux tu faire/.test(message)) {
+      return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou une suggestion au hasard. Exemple : “un film de SF de moins de 2h”, “un film avec Sigourney Weaver” ou “qui a réalisé Titanic ?”.';
+    }
+
+    try {
+      const catalogue = await loadCatalogue();
+      return buildCatalogueAnswer(clean, catalogue);
+    } catch (error) {
+      console.error(error);
+      return 'Bloup... impossible de lire le catalogue pour le moment. Le poisson garde son calme, mais pas son honneur.';
+    }
+  }
+
+  async function askFish(message) {
+    const clean = message.trim();
+
+    if (!clean) return;
+
+    addMessage('user', clean);
+    input.value = '';
+
+    if (brainStatus) {
+      brainStatus.textContent = 'Lecture du catalogue...';
+    }
+
+    setMode('thinking', { autoReturn: false });
+
+    window.setTimeout(async () => {
+      try {
+        const answer = await localBrain(clean);
+
+        addMessage('bot', answer);
+
+        if (brainStatus) {
+          brainStatus.textContent = catalogueCache
+            ? `Catalogue actif · ${catalogueCache.length} titres`
+            : 'Cerveau local actif';
+        }
+
+        setMode('talking', { duration: 3400 });
+      } catch (error) {
+        console.error(error);
+
+        addMessage('bot', 'Bloup... impossible de lire le catalogue pour le moment. Le poisson garde son calme, mais pas son honneur.');
+
+        if (brainStatus) {
+          brainStatus.textContent = 'Catalogue indisponible';
+        }
+
+        setMode('talking', { duration: 3400 });
+      }
+    }, randomBetween(420, 850));
+  }
+
+  widget.addEventListener('click', toggleChat);
+
+  if (chatClose) {
+    chatClose.addEventListener('click', closeChat);
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    askFish(input.value);
+  });
+
+  suggestions.forEach(button => {
+    button.addEventListener('click', () => {
+      askFish(button.dataset.psFishSuggestion || '');
+    });
+  });
+
+  widget.addEventListener('mouseenter', () => {
+    isHovering = true;
+    widget.classList.add('is-awake');
+  });
+
+  widget.addEventListener('mouseleave', () => {
+    isHovering = false;
+
+    if (mode === 'idle' && !isChatOpen) {
+      setTimeout(() => {
+        if (!isHovering && !isChatOpen && mode === 'idle') {
+          widget.classList.remove('is-awake');
+        }
+      }, 700);
+    }
+  });
+
+  widget.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      widget.click();
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && isChatOpen) {
+      closeChat();
+    }
+  });
+
+  function showIntroOnce() {
+    let seen = false;
+
+    try {
+      seen = localStorage.getItem(STORAGE_KEY) === '1';
+    } catch (error) {}
+
+    if (seen) return;
+
+    setTimeout(() => {
+      if (isChatOpen) return;
+
+      widget.classList.add('is-intro', 'is-awake');
+
+      if (tooltip) {
+        tooltip.innerHTML = '<strong>Bloup !</strong><span>Je suis le Projectionniste. Clique sur moi si tu cherches un film.</span>';
+      }
+
+      setTimeout(() => {
+        widget.classList.remove('is-intro');
+
+        if (!isHovering && !isChatOpen && mode === 'idle') {
+          widget.classList.remove('is-awake');
+        }
+
+        try {
+          localStorage.setItem(STORAGE_KEY, '1');
+        } catch (error) {}
+      }, 6200);
+    }, 1700);
+  }
+
+  setMode('idle');
+  showIntroOnce();
+})();
