@@ -384,6 +384,56 @@ function fishMovieLine(movie, index) {
   return `${index + 1}. ${fishMovieTitle(movie)}${fishMovieDetailsForDisplay(movie)}`;
 }
 
+function fishCommentForResults(results, context = {}) {
+  const list = Array.isArray(results) ? results.filter(Boolean) : [];
+
+  if (!list.length) {
+    return '';
+  }
+
+  const first = list[0];
+  const firstTitle = fishMovieTitle(first);
+  const firstRuntime = fishMovieRuntimeForDisplay(first);
+  const firstGenres = fishMovieGenresForDisplay(first).map(fishNormalize);
+  const message = fishNormalize(context.rawMessage || context.m || '');
+
+  const runtimeText = firstRuntime ? ` (${fishFormatDuration(firstRuntime)})` : '';
+
+  if (/premium|fauteuil rouge|selection premium/.test(message)) {
+    return '\n\nLa sélection Premium est filtrée proprement : ici, le poisson ne confond pas “Premium” avec “simplement mis en avant”. Il a rangé ses lunettes, mais pas trop loin.';
+  }
+
+  if (/plus long|le plus long|longue duree|longue durée/.test(message)) {
+    return `\n\nLe plus costaud du lot semble être ${firstTitle}${runtimeText}. Prévois le canapé réglementaire, et peut-être une boisson avec un permis de construire.`;
+  }
+
+  if (/plus court|court|rapide|pas trop long|moins de|moins d|sous|max|maximum/.test(message)) {
+    return `\n\nLe premier choix, ${firstTitle}${runtimeText}, colle bien à une envie de séance qui ne transforme pas la soirée en randonnée administrative.`;
+  }
+
+  if (firstGenres.includes('zombie') || /zombie|zombies|mort vivant|morts vivants/.test(message)) {
+    return `\n\nLe bocal valide : on est bien sur du mort-vivant, pas sur une simple résurrection de planning foireux.`;
+  }
+
+  if (firstGenres.includes('horreur') || firstGenres.includes('epouvante') || /horreur|epouvante|épouvante|peur/.test(message)) {
+    return `\n\nCôté ambiance, ça devrait grincer juste ce qu’il faut dans les couloirs du canapé.`;
+  }
+
+  if (firstGenres.includes('science fiction') || firstGenres.includes('science-fiction') || /\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
+    return `\n\nBon choix pour décoller sans quitter le canapé. Le carburant officiel reste le pop-corn.`;
+  }
+
+  if (firstGenres.includes('comedie') || firstGenres.includes('comédie') || /comedie|comédie|humour|drole|drôle/.test(message)) {
+    return `\n\nÇa sent la séance détente. Pas forcément un prix Nobel, mais parfois le cerveau demande juste une couverture et une bêtise bien cadrée.`;
+  }
+
+  if (list.length === 1) {
+    return '\n\nUn seul candidat ressort vraiment. Le poisson évite de gonfler la liste avec des titres au chausse-pied.';
+  }
+
+  return '\n\nLe premier titre est celui qui ressort le mieux pour ta demande. Le reste suit, comme une petite file d’attente de bobines bien élevées.';
+}
+
 function fishFormatTitleResults(results, intro) {
   const visibleResults = results.slice(0, 5);
   const remaining = results.length - visibleResults.length;
@@ -397,6 +447,8 @@ function fishFormatTitleResults(results, intro) {
   if (remaining > 0) {
     answer += `\n... et ${remaining} autre${remaining > 1 ? 's' : ''} titre${remaining > 1 ? 's' : ''}.`;
   }
+
+  answer += fishCommentForResults(visibleResults);
 
   return answer;
 }
@@ -1594,7 +1646,7 @@ function fishAnswerGenreRequest(message, catalogue) {
         return 'Bloup... je n’ai trouvé aucun film Premium dans le JSON. Et je ne compte pas les titres “à la une” comme Premium.';
       }
 
-      return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}`;
+      return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
     }
 
     // PRIORITÉ ABSOLUE : Zombies
@@ -1699,7 +1751,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       intro = 'Voici les titres qui correspondent le mieux :';
     }
 
-    return `${intro}\n\n${results.map(itemLine).join('\n')}`;
+    return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, intent)}`;
   }
 
   async function localBrain(rawMessage) {
