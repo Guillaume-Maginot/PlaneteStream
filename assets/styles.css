@@ -6500,6 +6500,23 @@ section{margin:24px 0 34px}
   line-height:1;
   color:#fff2bd;
 }
+
+.sagas-banner{
+    display:block;
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+    border-radius:22px;
+}
+
+.sagas-banner img{
+    display:block;
+    width:100%;
+    height:auto;
+    max-width:100%;
+    object-fit:contain;
+}
+
 .footer-sagas-card{
   width:min(520px,calc(100% - 32px));
   margin:26px auto 8px;
