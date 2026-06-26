@@ -153,7 +153,211 @@
     return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
-  function localBrain(rawMessage) {
+  let cataloguePromise = null;
+  let catalogueCache = null;
+
+  function getCatalogueUrl() {
+    const path = window.location.pathname || '';
+    const prefix = path.includes('/') && !path.endsWith('/') ? '' : '';
+    return `${prefix}data/catalogue.json`;
+  }
+
+  async function loadCatalogue() {
+    if (Array.isArray(catalogueCache)) return catalogueCache;
+    if (!cataloguePromise) {
+      cataloguePromise = fetch(getCatalogueUrl(), { cache: 'no-store' })
+        .then(response => {
+          if (!response.ok) throw new Error(`Catalogue introuvable (${response.status})`);
+          return response.json();
+        })
+        .then(data => {
+          catalogueCache = Array.isArray(data) ? data : [];
+          return catalogueCache;
+        });
+    }
+    return cataloguePromise;
+  }
+
+  function getPersonNames(list) {
+    if (!Array.isArray(list)) return [];
+    return list.map(person => typeof person === 'string' ? person : person?.name).filter(Boolean);
+  }
+
+  function getRuntimeMinutes(item) {
+    if (Number(item.runtime)) return Number(item.runtime);
+    if (typeof item.runtime === 'string') {
+      const hours = item.runtime.match(/(\d+)\s*h/);
+      const mins = item.runtime.match(/(\d+)\s*min/);
+      return (hours ? Number(hours[1]) * 60 : 0) + (mins ? Number(mins[1]) : 0);
+    }
+    return 0;
+  }
+
+  function formatRuntime(minutes) {
+    if (!minutes) return '';
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return h ? `${h}h${String(m).padStart(2, '0')}` : `${m} min`;
+  }
+
+  function mediaLabel(item) {
+    const value = normalize(item.type || item.mediaType || item.category || '');
+    if (value.includes('serie') || value.includes('tv')) return 'Série';
+    if (value.includes('manga') || value.includes('anime')) return 'Manga';
+    return 'Film';
+  }
+
+  function itemUrl(item) {
+    if (!item?.slug) return '';
+    const label = normalize(item.type || item.mediaType || item.category || '');
+    if (label.includes('serie') || label.includes('tv')) return `saga.html?slug=${encodeURIComponent(item.slug)}`;
+    return `detail.html?slug=${encodeURIComponent(item.slug)}`;
+  }
+
+  function itemLine(item, index) {
+    const bits = [];
+    const year = item.year || (item.releaseDate || '').slice(0, 4);
+    const runtime = formatRuntime(getRuntimeMinutes(item));
+    const rating = Number(item.rating || 0);
+    bits.push(mediaLabel(item));
+    if (year) bits.push(String(year));
+    if (runtime) bits.push(runtime);
+    if (rating) bits.push(`⭐ ${rating.toFixed(1).replace('.', ',')}/10`);
+    const genres = Array.isArray(item.genres) ? item.genres.slice(0, 2).join(', ') : '';
+    const link = itemUrl(item);
+    return `${index + 1}. ${item.title || item.originalTitle || 'Titre sans nom'} (${bits.join(' · ')})${genres ? ` — ${genres}` : ''}${link ? `\n   ${link}` : ''}`;
+  }
+
+  function parseDurationLimit(message) {
+    const less = /(moins de|max(?:imum)?|pas plus de|sous)\s*(\d+)\s*(h|heure|heures|min|minutes)?/i.exec(message);
+    if (!less) return null;
+    const value = Number(less[2]);
+    const unit = less[3] || '';
+    return /min/.test(unit) ? value : value * 60;
+  }
+
+  function detectIntent(message) {
+    const m = normalize(message);
+    const durationMax = parseDurationLimit(message);
+    const wantsBest = /meilleur|mieux note|bien note|note|top/.test(m);
+    const wantsRandom = /surprise|hasard|n importe|je ne sais pas|quoi regarder/.test(m);
+    const wantsPremium = /premium|fauteuil rouge|selection premium/.test(m);
+    const wantsKids = /enfant|famille|familial|kids|dessin anime|animation/.test(m);
+    const wantsShort = /court|rapide|pas trop long/.test(m);
+    const requestedType = /\bserie|series\b/.test(m) ? 'serie' : /manga|anime/.test(m) ? 'manga' : /\bfilm|films\b/.test(m) ? 'film' : null;
+
+    const genreMap = [
+      ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi']],
+      ['horreur', ['horreur', 'peur', 'gore', 'epouvante']],
+      ['thriller', ['thriller', 'suspense']],
+      ['action', ['action', 'baston']],
+      ['aventure', ['aventure']],
+      ['comédie', ['comedie', 'drôle', 'drole', 'humour', 'fun']],
+      ['drame', ['drame', 'triste']],
+      ['crime', ['crime', 'policier', 'enquete', 'enquête']],
+      ['mystère', ['mystere', 'mystère']],
+      ['romance', ['romance', 'amour']],
+      ['fantastique', ['fantastique', 'fantasy']],
+      ['animation', ['animation', 'dessin anime', 'enfant', 'famille', 'familial']]
+    ];
+    const wantedGenres = genreMap.filter(([, keys]) => keys.some(key => m.includes(key))).map(([genre]) => genre);
+
+    const stop = new Set('je tu il elle on nous vous ils elles un une des de du le la les l d dans avec sans pour sur sous par au aux ce cet cette ces qui que quoi quel quelle quels quelles est suis veux voudrais cherche recherche propose conseille montre moi as tu avez moins plus pas trop tres très film films serie series manga acteur actrice realisateur realisatrice genre duree heure heures min minutes'.split(' '));
+    const terms = m.split(/[^a-z0-9]+/).filter(word => word.length > 2 && !stop.has(word));
+
+    return { m, durationMax, wantsBest, wantsRandom, wantsPremium, wantsKids, wantsShort, requestedType, wantedGenres, terms };
+  }
+
+  function scoreItem(item, intent) {
+    let score = 0;
+    const title = normalize(`${item.title || ''} ${item.originalTitle || ''}`);
+    const genres = (item.genres || []).map(normalize);
+    const director = normalize(item.director || '');
+    const cast = normalize(getPersonNames(item.cast).join(' '));
+    const overview = normalize(`${item.overview || ''} ${item.tagline || ''}`);
+    const type = mediaLabel(item).toLowerCase();
+    const haystack = `${title} ${genres.join(' ')} ${director} ${cast} ${overview}`;
+    const runtime = getRuntimeMinutes(item);
+
+    if (intent.requestedType) {
+      if (type.toLowerCase().includes(intent.requestedType === 'serie' ? 'série' : intent.requestedType)) score += 12;
+      else return -999;
+    }
+
+    if (intent.durationMax && runtime && runtime > intent.durationMax) return -999;
+    if (intent.wantsShort && runtime && runtime <= 110) score += 5;
+    if (intent.wantsPremium) item.premium ? score += 14 : score -= 6;
+
+    if (intent.wantsKids) {
+      const familyHit = genres.some(g => ['animation', 'familial', 'famille', 'family'].some(key => g.includes(key)));
+      if (familyHit) score += 20;
+      else score -= 10;
+    }
+
+    for (const wanted of intent.wantedGenres) {
+      if (genres.some(g => g.includes(normalize(wanted)))) score += 14;
+      else score -= 2;
+    }
+
+    for (const term of intent.terms) {
+      if (title.includes(term)) score += 12;
+      else if (cast.includes(term)) score += 9;
+      else if (director.includes(term)) score += 8;
+      else if (genres.some(g => g.includes(term))) score += 7;
+      else if (overview.includes(term)) score += 2;
+      else if (haystack.includes(term)) score += 1;
+    }
+
+    if (intent.wantsBest) score += Number(item.rating || 0);
+    if (item.premium) score += .8;
+    return score;
+  }
+
+  function pickResults(catalogue, intent) {
+    let candidates = catalogue
+      .map(item => ({ item, score: scoreItem(item, intent) }))
+      .filter(entry => entry.score > 0);
+
+    if (intent.wantsRandom && !candidates.length) {
+      candidates = catalogue.map(item => ({ item, score: Math.random() * 10 + Number(item.rating || 0) }));
+    }
+
+    if (intent.wantsBest) {
+      candidates.sort((a, b) => Number(b.item.rating || 0) - Number(a.item.rating || 0) || b.score - a.score);
+    } else if (intent.wantsRandom) {
+      candidates.sort(() => Math.random() - .5);
+    } else {
+      candidates.sort((a, b) => b.score - a.score || String(a.item.title || '').localeCompare(String(b.item.title || ''), 'fr'));
+    }
+
+    return candidates.slice(0, 5).map(entry => entry.item);
+  }
+
+  function buildCatalogueAnswer(rawMessage, catalogue) {
+    const intent = detectIntent(rawMessage);
+    const results = pickResults(catalogue, intent);
+
+    if (!catalogue.length) {
+      return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
+    }
+
+    if (!results.length) {
+      if (intent.wantsKids) {
+        return 'Bloup... j’ai vérifié dans le catalogue et je ne trouve pas de vrai film enfant/famille correspondant. Je préfère être honnête plutôt que d’inventer un titre qui n’est pas sur Planete Stream.';
+      }
+      return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, une durée ou un titre plus précis.';
+    }
+
+    const intro = intent.wantsRandom
+      ? 'J’ai secoué le bocal et voilà ce qui remonte du catalogue :'
+      : intent.wantsBest
+        ? 'Voici les meilleures pistes que je trouve dans le catalogue :'
+        : 'J’ai trouvé ça dans le catalogue Planete Stream :';
+
+    return `${intro}\n\n${results.map(itemLine).join('\n\n')}`;
+  }
+
+  async function localBrain(rawMessage) {
     const message = normalize(rawMessage.trim());
 
     if (!message) return 'Bloup ? Même moi j’ai besoin d’au moins une bulle d’information.';
@@ -167,42 +371,49 @@
     }
 
     if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia/.test(message)) {
-      return 'Je suis le Projectionniste de Planete Stream : petit poisson, futur gros cerveau. Pour l’instant, je fonctionne en mode local, donc zéro facture et zéro hallucination aquatique.';
+      return 'Je suis le Projectionniste de Planete Stream : petit poisson, futur gros cerveau. Je lis maintenant le catalogue JSON, donc je propose uniquement des titres présents dans le site. Zéro hallucination aquatique.';
     }
 
     if (/aide|help|comment|que peux tu faire/.test(message)) {
-      return 'Je peux déjà répondre aux questions simples. Bientôt, je lirai le catalogue JSON pour te proposer uniquement des films vraiment présents sur Planete Stream.';
+      return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou même une suggestion au hasard. Exemple : “un film de SF de moins de 2h” ou “un film avec Tom Cruise”.';
     }
 
-    if (/enfant|famille|familial|kids|dessin anime/.test(message)) {
-      return 'Je ne suis pas encore branché au catalogue, donc je préfère ne pas inventer un film pour enfants sorti d’un coquillage. Dès que je serai nourri au JSON, je te dirai clairement ce qui existe... ou ce qui manque.';
+    if (/catalogue|json|film|films|serie|series|manga|acteur|actrice|realisateur|realisatrice|genre|duree|moins de|sf|science fiction|comedie|horreur|thriller|action|aventure|premium|enfant|famille|familial|kids|dessin anime|animation|surprise|hasard|quoi regarder|meilleur|mieux note|note|top|court|rapide/.test(message)) {
+      const catalogue = await loadCatalogue();
+      return buildCatalogueAnswer(rawMessage, catalogue);
     }
 
-    if (/catalogue|json|film|serie|manga|acteur|actrice|realisateur|genre|duree|moins de|sf|science fiction|comedie|horreur|thriller|action|aventure/.test(message)) {
-      return 'Bonne demande cinéma. Pour l’instant je suis en cerveau local : je comprends l’intention, mais je ne cherche pas encore dans le vrai catalogue. Prochaine étape : me nourrir au JSON, et là je ne proposerai que les titres présents sur Planete Stream.';
-    }
+    // Dernière tentative : si la phrase contient un titre, un acteur ou un nom propre présent dans le JSON.
+    try {
+      const catalogue = await loadCatalogue();
+      const answer = buildCatalogueAnswer(rawMessage, catalogue);
+      if (!answer.startsWith('Bloup... j’ai fouillé')) return answer;
+    } catch (error) {}
 
-    if (/surprise|je ne sais pas|n importe|hasard/.test(message)) {
-      return 'J’adorerais te sortir une recommandation du bocal, mais sans le JSON je reste sage. Un poisson honnête vaut mieux qu’un dauphin mythomane.';
-    }
-
-    return 'Bloup... je sèche un peu. Mon cerveau local sait discuter, mais il attend encore le catalogue JSON pour devenir vraiment utile.';
+    return 'Bloup... je sèche un peu. Essaie avec un titre, un acteur, un genre ou une envie de film. Là, mon bocal manque d’indices.';
   }
 
-  function askFish(message) {
+  async function askFish(message) {
     const clean = message.trim();
     if (!clean) return;
 
     addMessage('user', clean);
     input.value = '';
-    if (brainStatus) brainStatus.textContent = 'Recherche dans le bocal...';
+    if (brainStatus) brainStatus.textContent = 'Lecture du catalogue...';
     setMode('thinking', { autoReturn: false });
 
-    window.setTimeout(() => {
-      const answer = localBrain(clean);
-      addMessage('bot', answer);
-      if (brainStatus) brainStatus.textContent = 'Cerveau local actif';
-      setMode('talking', { duration: 3400 });
+    window.setTimeout(async () => {
+      try {
+        const answer = await localBrain(clean);
+        addMessage('bot', answer);
+        if (brainStatus) brainStatus.textContent = catalogueCache ? `Catalogue actif · ${catalogueCache.length} titres` : 'Cerveau local actif';
+        setMode('talking', { duration: 3400 });
+      } catch (error) {
+        console.error(error);
+        addMessage('bot', 'Bloup... impossible de lire le catalogue pour le moment. Le poisson garde son calme, mais pas son honneur.');
+        if (brainStatus) brainStatus.textContent = 'Catalogue indisponible';
+        setMode('talking', { duration: 3400 });
+      }
     }, randomBetween(420, 850));
   }
 
