@@ -876,6 +876,33 @@ function fishAnswerGenreRequest(message, catalogue) {
     }
   ];
 
+  const MOOD_RULES = [
+  {
+    label: 'intelligent',
+    pattern: /intelligent|profond|psychologique|cerebral|cérébral|reflechir|réfléchir|reflexion|réflexion/,
+    genres: ['drame', 'science-fiction', 'mystère', 'thriller'],
+    terms: ['psychologique', 'enquete', 'enquête', 'dystopie', 'temps', 'ia']
+  },
+  {
+    label: 'flippant',
+    pattern: /flippant|angoissant|angoisse|peur|terrifiant|glauque|cauchemar/,
+    genres: ['horreur', 'thriller'],
+    terms: ['zombie', 'vampire', 'monstre', 'fantome', 'fantôme', 'gore']
+  },
+  {
+    label: 'chill',
+    pattern: /chill|detente|détente|tranquille|leger|léger|pas prise de tete|pas prise de tête|marrant/,
+    genres: ['comédie', 'animation', 'familial', 'romance'],
+    maxRuntime: 115
+  },
+  {
+    label: 'spectaculaire',
+    pattern: /spectaculaire|impressionnant|epique|épique|grand spectacle|blockbuster|visuel/,
+    genres: ['action', 'aventure', 'science-fiction'],
+    terms: ['espace', 'guerre', 'vaisseau', 'monstre', 'catastrophe']
+  }
+];
+
   function randomBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -1738,6 +1765,15 @@ function fishAnswerGenreRequest(message, catalogue) {
     const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(m);
     const wantsKids = /enfant|famille|familial|kids|dessin anime|dessin animé|animation/.test(m);
     const wantsShort = /court|rapide|pas trop long/.test(m);
+    const matchedMoods = MOOD_RULES.filter(rule => rule.pattern.test(m));
+
+matchedMoods.forEach(mood => {
+  if (mood.genres) {
+    mood.genres.forEach(genre => {
+      if (!wantedGenres.includes(genre)) wantedGenres.push(genre);
+    });
+  }
+});
 
         topics.forEach(topic => {
       if (topic.strict) return;
@@ -1782,6 +1818,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       requestedType,
       wantedGenres,
       topics,
+      matchedMoods,
       durationMax,
       wantsBest,
       wantsRandom,
@@ -1900,7 +1937,34 @@ function fishAnswerGenreRequest(message, catalogue) {
 
       score += genreHits.length * 30;
     }
+if (intent.matchedMoods && intent.matchedMoods.length) {
+  let moodHit = false;
 
+  intent.matchedMoods.forEach(mood => {
+    if (mood.genres && mood.genres.some(genre => recordHasGenre(record, genre))) {
+      score += 35;
+      moodHit = true;
+    }
+
+    if (mood.terms) {
+      mood.terms.forEach(term => {
+        if (record.allNorm.includes(normalize(term))) {
+          score += 10;
+          moodHit = true;
+        }
+      });
+    }
+
+    if (mood.maxRuntime && record.runtime && record.runtime <= mood.maxRuntime) {
+      score += 8;
+      moodHit = true;
+    }
+  });
+
+  if (!moodHit) {
+    return -999;
+  }
+}
     if (intent.wantsShort && record.runtime && record.runtime <= 110) {
       score += 12;
     }
@@ -2104,6 +2168,8 @@ if (/\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
 
     if (results.length === 1) {
       intro = 'J’ai trouvé une excellente correspondance :';
+      } else if (intent.matchedMoods && intent.matchedMoods.length) {
+      intro = `Voici une sélection avec une ambiance ${intent.matchedMoods.map(mood => mood.label).join(', ')} :`;
     } else if (intent.matchedDirectors.length) {
       intro = `Voici ce que le catalogue indique pour ${intent.matchedDirectors.join(', ')} :`;
     } else if (intent.matchedActors.length) {
