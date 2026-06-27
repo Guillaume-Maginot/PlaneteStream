@@ -1524,6 +1524,25 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `Dans ${record.title}, le catalogue indique notamment :\n\n${record.cast.slice(0, 8).map(personLine).join('\n')}`;
   }
 
+function fishIsSimilarityRequest(message) {
+  const m = normalize(message);
+
+  return (
+    /\bcomme\b/.test(m) ||
+    /\bmeme genre que\b/.test(m) ||
+    /\bmeme style que\b/.test(m) ||
+    /\bdans le meme genre que\b/.test(m) ||
+    /\bdans le style de\b/.test(m) ||
+    /\bsimilaire a\b/.test(m) ||
+    /\bressemble a\b/.test(m) ||
+    /\bj ai aime\b/.test(m) ||
+    /\bj ai bien aime\b/.test(m) ||
+    /\bj ai adore\b/.test(m) ||
+    /\bj adore\b/.test(m) ||
+    /\bj aime\b/.test(m)
+  );
+}
+
    function fishCleanSimilarityTitleQuery(query) {
     return normalize(query)
       .replace(/\b(tu me proposes quoi|tu proposes quoi|quoi regarder ensuite|je regarde quoi ensuite|tu as quoi|qu est ce que tu proposes|que proposes tu)\b/g, ' ')
