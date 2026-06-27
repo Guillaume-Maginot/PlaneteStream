@@ -1522,21 +1522,53 @@ if (hasActorIntent && !actorQuery) {
 
     return unique(found);
   }
+function findTitleFamilyMatches(records, query) {
+  const q = normalize(query);
+  if (!q) return [];
 
-  function answerDirectorOfTitle(rawMessage, records) {
-    const titleQuery = extractTitleQuestion(rawMessage) || removeKnownQuestionWords(rawMessage);
-    const record = findBestTitleMatch(records, titleQuery);
+  return records.filter(record => {
+    return record.titleNorm.includes(q) && record.titleNorm !== q;
+  });
+}
+ function answerDirectorOfTitle(rawMessage, records) {
+  const titleQuery = extractTitleQuestion(rawMessage) || removeKnownQuestionWords(rawMessage);
+  const record = findBestTitleMatch(records, titleQuery);
 
-    if (!record) {
-      return 'Bloup... je ne trouve pas ce titre dans le catalogue, donc je préfère ne pas inventer son réalisateur.';
-    }
-
+  if (record && record.titleNorm === normalize(titleQuery)) {
     if (!record.directors.length) {
       return `Bloup... j’ai bien trouvé ${record.title}, mais le réalisateur n’est pas renseigné dans le JSON.`;
     }
 
     return `${record.title} a été réalisé par ${record.directors.join(', ')}.`;
   }
+
+  const familyMatches = findTitleFamilyMatches(records, titleQuery);
+
+  if (familyMatches.length > 1) {
+    const directors = unique(
+      familyMatches.flatMap(item => item.directors)
+    );
+
+    if (directors.length === 1) {
+      return `J’ai trouvé plusieurs titres correspondant à "${titleQuery}" dans le catalogue, et ils sont tous réalisés par ${directors[0]} :\n\n${familyMatches.slice(0, 8).map(itemLine).join('\n')}`;
+    }
+
+    return `J’ai trouvé plusieurs titres correspondant à "${titleQuery}" dans le catalogue, avec des réalisateurs différents. Peux-tu préciser lequel tu cherches ?\n\n${familyMatches.slice(0, 8).map(record => {
+      const director = record.directors.length ? record.directors.join(', ') : 'réalisateur non renseigné';
+      return `- ${record.title} — ${director}`;
+    }).join('\n')}`;
+  }
+
+  if (record) {
+    if (!record.directors.length) {
+      return `Bloup... j’ai bien trouvé ${record.title}, mais le réalisateur n’est pas renseigné dans le JSON.`;
+    }
+
+    return `${record.title} a été réalisé par ${record.directors.join(', ')}.`;
+  }
+
+  return 'Bloup... je ne trouve pas ce titre dans le catalogue, donc je préfère ne pas inventer son réalisateur.';
+}
 
   function answerCastOfTitle(rawMessage, records) {
     const titleQuery = normalize(rawMessage)
