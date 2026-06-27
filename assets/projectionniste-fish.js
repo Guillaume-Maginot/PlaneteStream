@@ -1990,31 +1990,6 @@ function fishAnswerMoodRequest(rawMessage, records) {
   return candidates.slice(0, 5).map(entry => entry.record);
 }
 
-    if (intent.wantsRandom && !candidates.length) {
-      candidates = records.map(record => ({
-        record,
-        score: Math.random() * 20 + record.rating
-      }));
-    }
-
-    if (intent.wantsBest) {
-      candidates.sort((a, b) =>
-        b.record.rating - a.record.rating ||
-        b.score - a.score ||
-        a.record.title.localeCompare(b.record.title, 'fr')
-      );
-    } else if (intent.wantsRandom) {
-      candidates.sort(() => Math.random() - 0.5);
-    } else {
-      candidates.sort((a, b) =>
-        b.score - a.score ||
-        a.record.title.localeCompare(b.record.title, 'fr')
-      );
-    }
-
-    return candidates.slice(0, 5).map(entry => entry.record);
-  }
-
   function explainNoResult(intent) {
     if (intent.directorRequest && intent.freeTerms.length && !intent.matchedDirectors.length && !intent.wantedGenres.length && !intent.topics.length) {
       return 'Bloup... je n’ai trouvé aucun réalisateur correspondant dans le JSON. Je préfère garder mes bulles plutôt que d’inventer une filmographie.';
