@@ -240,17 +240,6 @@ function fishMovieMatchesRequestedGenre(movie, genreKey) {
 
   const aliases = FISH_GENRE_SYNONYMS[genreKey] || [];
   const movieText = fishMovieTextForGenre(movie);
-  const normalizedText = fishNormalize(movieText);
-
-  if (genreKey === 'science_fiction') {
-    return (
-      normalizedText.includes('science fiction') ||
-      normalizedText.includes('science fiction aventure') ||
-      normalizedText.includes('sci fi') ||
-      normalizedText.includes('sf') ||
-      aliases.some(alias => fishHasPhrase(movieText, alias))
-    );
-  }
 
   return aliases.some(alias => fishHasPhrase(movieText, alias));
 }
@@ -698,36 +687,6 @@ function fishAnswerGenreRequest(message, catalogue) {
   const intro = durationFilter
     ? `Pour un film ${labelWithActor}${wantsPremium ? ' Premium' : ''} ${durationFilter.label}, j’ai trouvé :`
     : `Pour un film ${labelWithActor}${wantsPremium ? ' Premium' : ''}, j’ai trouvé :`;
-
-  return fishFormatTitleResults(results, intro);
-}
-
-  return true;
-});
-
-  if (!genreResults.length) {
-    return `Je ne trouve pas de film ${label} dans le catalogue. Je préfère ne pas inventer, mon bocal a encore deux ou trois principes.`;
-  }
-
-  const actorResults = actorQuery
-    ? genreResults.filter(movie => fishMovieMatchesActor(movie, actorQuery))
-    : genreResults;
-
-  if (actorQuery && !actorResults.length) {
-    return `J’ai trouvé des titres ${label}, mais aucun avec ${actorLabel} dans le casting du JSON. Le poisson a vérifié avant de blouper.`;
-  }
-
-  const results = durationFilter
-    ? actorResults.filter(movie => fishMovieMatchesDuration(movie, durationFilter))
-    : actorResults;
-
-  if (!results.length && durationFilter) {
-    return fishDurationFallbackAnswer(actorResults, labelWithActor, durationFilter);
-  }
-
-  const intro = durationFilter
-    ? `Pour un film ${labelWithActor} ${durationFilter.label}, j’ai trouvé :`
-    : `Pour un film ${labelWithActor}, j’ai trouvé :`;
 
   return fishFormatTitleResults(results, intro);
 }
