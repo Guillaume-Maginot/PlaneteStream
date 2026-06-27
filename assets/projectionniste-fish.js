@@ -398,6 +398,7 @@ function fishDetectActorFilter(message, catalogue) {
   }
 
   const movies = Array.isArray(catalogue) ? catalogue : [];
+  const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(fishNormalize(message));
 
   const actorNames = Array.from(
     new Set(
@@ -629,7 +630,17 @@ function fishAnswerGenreRequest(message, catalogue) {
   const label = FISH_GENRE_LABELS[genreKey] || genreKey;
   const labelWithActor = actorLabel ? `${label} avec ${actorLabel}` : label;
 
-  const genreResults = movies.filter(movie => fishMovieMatchesRequestedGenre(movie, genreKey));
+  const genreResults = movies.filter(movie => {
+  if (!fishMovieMatchesRequestedGenre(movie, genreKey)) {
+    return false;
+  }
+
+  if (wantsPremium) {
+    return movie.premium === true || String(movie.premium || '').toLowerCase() === 'true';
+  }
+
+  return true;
+});
 
   if (!genreResults.length) {
     return `Je ne trouve pas de film ${label} dans le catalogue. Je préfère ne pas inventer, mon bocal a encore deux ou trois principes.`;
