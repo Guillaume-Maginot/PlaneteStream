@@ -723,7 +723,9 @@ if (hasActorIntent && !actorQuery) {
     if (durationFilter && !fishRecordMatchesDurationFilter(record, durationFilter)) {
       return false;
     }
-
+    if (actorQuery && !fishMovieMatchesActor(record.item, actorQuery)) {
+    return false;
+    }
     return true;
   });
 
@@ -2238,9 +2240,7 @@ if (hasActorIntent && !actorQuery) {
 
       if (!isStrictPremium) return false;
     }
-    if (actorQuery && !fishMovieMatchesActor(record.item, actorQuery)) {
-  return false;
-}
+
     return true;
   });
 
