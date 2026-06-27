@@ -45,14 +45,20 @@ const FISH_GENRE_SYNONYMS = {
     'film de peur'
   ],
 
-  science_fiction: [
-    'science fiction',
-    'science-fiction',
-    'sci fi',
-    'sci-fi',
-    'sf',
-    'anticipation'
-  ],
+ science_fiction: [
+  'science fiction',
+  'science-fiction',
+  'sciencefiction',
+  'sci fi',
+  'sci-fi',
+  'sf',
+  's f',
+  'science fic',
+  'science ficton',
+  'science fiction adventure',
+  'sci fi fantasy',
+  'anticipation'
+],
 
   comedie: [
     'comedie',
@@ -234,6 +240,17 @@ function fishMovieMatchesRequestedGenre(movie, genreKey) {
 
   const aliases = FISH_GENRE_SYNONYMS[genreKey] || [];
   const movieText = fishMovieTextForGenre(movie);
+  const normalizedText = fishNormalize(movieText);
+
+  if (genreKey === 'science_fiction') {
+    return (
+      normalizedText.includes('science fiction') ||
+      normalizedText.includes('science fiction aventure') ||
+      normalizedText.includes('sci fi') ||
+      normalizedText.includes('sf') ||
+      aliases.some(alias => fishHasPhrase(movieText, alias))
+    );
+  }
 
   return aliases.some(alias => fishHasPhrase(movieText, alias));
 }
