@@ -671,6 +671,12 @@ function fishAnswerGenreRequest(message, catalogue) {
 if (hasActorIntent && !actorQuery) {
   return 'Bloup... je n’ai trouvé aucun acteur ou actrice correspondant dans le JSON. Je préfère ne pas remplacer la personne demandée par un film vaguement proche.';
 }
+  const hasActorIntent =
+  /\bavec\b|\bacteur\b|\bactrice\b|\bcasting\b|\bjoue\b|\bjouent\b/.test(fishNormalize(message));
+
+if (hasActorIntent && !actorQuery) {
+  return 'Bloup... je n’ai trouvé aucun acteur ou actrice correspondant dans le JSON. Je préfère ne pas remplacer la personne demandée par un film vaguement proche.';
+}
   const label = FISH_GENRE_LABELS[genreKey] || genreKey;
   const labelWithActor = actorLabel ? `${label} avec ${actorLabel}` : label;
 
@@ -2205,7 +2211,13 @@ if (intent.wantedGenres.length) {
     }
     // Sécurité stricte SF : on ne garde QUE les titres dont le champ genres contient Science-Fiction.
 if (/\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
-  const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(message);
+    const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(message);
+    const actorQuery = fishDetectActorFilter(rawMessage, catalogue);
+const hasActorIntent = /\bavec\b|\bacteur\b|\bactrice\b|\bcasting\b|\bjoue\b|\bjouent\b/.test(message);
+
+if (hasActorIntent && !actorQuery) {
+  return 'Bloup... je n’ai trouvé aucun acteur ou actrice correspondant dans le JSON.';
+}
 
   const results = records.filter(record => {
     const hasScienceFiction = record.genres.some(genre => {
@@ -2226,7 +2238,9 @@ if (/\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
 
       if (!isStrictPremium) return false;
     }
-
+    if (actorQuery && !fishMovieMatchesActor(record.item, actorQuery)) {
+  return false;
+}
     return true;
   });
 
