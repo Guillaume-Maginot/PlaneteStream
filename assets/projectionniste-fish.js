@@ -2007,6 +2007,7 @@ function fishIsSimilarityRequest(message) {
     return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
   }
 
+const message = normalize(rawMessage);
 const records = getRecords(catalogue);
 
 const similarAnswer = answerSimilarRequest(rawMessage, records);
