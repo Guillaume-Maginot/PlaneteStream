@@ -1966,6 +1966,11 @@ function fishAnswerGenreRequest(message, catalogue) {
       return answerCastOfTitle(rawMessage, records);
     }
 
+    const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
+  if (genreAnswer) {
+    return genreAnswer;
+  }
+
     // Moteur général pour tout le reste
     const intent = buildIntent(rawMessage, records);
     const results = pickResults(records, intent);
@@ -2019,10 +2024,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
     }
 
-const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
-  if (genreAnswer) {
-    return genreAnswer;
-  }
+
 
 
 
