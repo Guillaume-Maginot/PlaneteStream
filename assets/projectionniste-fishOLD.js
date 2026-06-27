@@ -599,7 +599,12 @@ function fishRandomIntro(intent, results) {
       "Ces titres correspondent plutôt bien à ta demande :",
       "Tiens, regarde ceux-là :",
       "Je pense que ceux-ci valent un coup d'œil :",
-      "Le catalogue est plutôt d'accord sur ceux-là :"
+      "Le catalogue est plutôt d'accord sur ceux-là :",
+      "Les bobines ont fini de tourner, voici le verdict :",
+      "Le projecteur a fait son choix :",
+      "Après vérification du catalogue, je te propose :",
+      "J'ai trouvé une sélection qui mérite une séance :",
+      "Ces films semblent les plus pertinents pour ta recherche :"
     ],
 
     actor: [
@@ -742,7 +747,14 @@ fishLastOffset = Math.min(5, results.length);
 }
 
 function fishAnswerGenreRequest(message, catalogue) {
-  const genreKey = fishDetectRequestedGenre(message);
+  
+  // Petit neurone : si l'utilisateur demande simplement un conseil,
+  // Bubulle invite à préciser le genre avant de répondre.
+  if (/\b(quel conseil|tu me conseilles quoi|que me conseilles tu|que me conseilles-tu|tu choisirais quoi|ton conseil)\b/i.test(message)) {
+    return `🐠 Avec plaisir !\n\nAvant de te conseiller un film, donne-moi juste un indice.\n\nTu cherches plutôt :\n• 🚀 Science-fiction\n• 💥 Action\n• 👻 Horreur\n• 😂 Comédie\n• 🎭 Drame\n\nRéponds simplement avec le genre qui t'inspire.`;
+  }
+
+const genreKey = fishDetectRequestedGenre(message);
 
   if (!genreKey) {
     return null;
