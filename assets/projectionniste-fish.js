@@ -927,6 +927,41 @@ if (hasActorIntent && !actorQuery) {
   }
 ];
 
+const SESSION_PROFILE_RULES = [
+  {
+    label: 'pour ce soir',
+    pattern: /ce soir|pour ce soir|quoi regarder|je regarde quoi|un film sympa|un bon film/,
+    genres: ['aventure', 'science-fiction', 'comedie'],
+    maxRuntime: 150,
+    preferRating: true
+  },
+  {
+    label: 'fatigué',
+    pattern: /fatigue|fatigué|creve|crevé|pas trop complique|pas trop compliqué|cerveau eteint|cerveau éteint/,
+    genres: ['comedie', 'animation', 'aventure'],
+    maxRuntime: 120,
+    preferLight: true
+  },
+  {
+    label: 'avec les enfants',
+    pattern: /avec les enfants|en famille|familial|pour enfant|pour les enfants|avec mon fils|avec ma fille|kids/,
+    genres: ['animation', 'familial', 'aventure'],
+    maxRuntime: 130
+  },
+  {
+    label: 'entre amis',
+    pattern: /entre amis|entre potes|avec des amis|avec les potes|soirée entre amis|soiree entre amis/,
+    genres: ['action', 'aventure', 'comedie', 'science-fiction'],
+    preferSpectacle: true
+  },
+  {
+    label: 'en amoureux',
+    pattern: /en amoureux|avec ma copine|avec mon copain|avec ma femme|avec mon mari|date night|romantique/,
+    genres: ['romance', 'comedie', 'drame'],
+    maxRuntime: 140
+  }
+];
+
   function randomBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -1822,6 +1857,15 @@ function findTitleFamilyMatches(records, query) {
     const wantsKids = /enfant|famille|familial|kids|dessin anime|dessin animé|animation/.test(m);
     const wantsShort = /court|rapide|pas trop long/.test(m);
     const matchedMoods = MOOD_RULES.filter(rule => rule.pattern.test(m));
+    const matchedSessionProfiles = SESSION_PROFILE_RULES.filter(rule => rule.pattern.test(m));
+
+matchedSessionProfiles.forEach(profile => {
+  if (profile.genres) {
+    profile.genres.forEach(genre => {
+      if (!wantedGenres.includes(genre)) wantedGenres.push(genre);
+    });
+  }
+});
 
 matchedMoods.forEach(mood => {
   if (mood.genres) {
@@ -1890,6 +1934,7 @@ const missingDirector = directorRequest && !matchedDirectors.length;
       wantedGenres,
       topics,
       matchedMoods,
+      matchedSessionProfiles,
       durationMax,
       wantsBest,
       wantsRandom,
@@ -1900,6 +1945,7 @@ const missingDirector = directorRequest && !matchedDirectors.length;
       actorQuery,
       directorRequest,
       actorRequest,
+      
       matchedDirectors,
       matchedActors,
       missingActor,
@@ -2016,6 +2062,41 @@ debugReasons.push("+80 Acteur");
 score += bonusGenre;
 debugReasons.push("+" + bonusGenre + " Genre");
     }
+    if (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length) {
+  let profileHit = false;
+
+  intent.matchedSessionProfiles.forEach(profile => {
+    if (profile.genres && profile.genres.some(genre => recordHasGenre(record, genre))) {
+      score += 30;
+      profileHit = true;
+    }
+
+    if (profile.maxRuntime && record.runtime && record.runtime <= profile.maxRuntime) {
+      score += 10;
+      profileHit = true;
+    }
+
+    if (profile.preferRating && record.rating) {
+      score += record.rating * 2;
+      profileHit = true;
+    }
+
+    if (profile.preferSpectacle) {
+      if (
+        recordHasGenre(record, 'action') ||
+        recordHasGenre(record, 'aventure') ||
+        recordHasGenre(record, 'science-fiction')
+      ) {
+        score += 12;
+        profileHit = true;
+      }
+    }
+  });
+
+  if (!profileHit) {
+    return -999;
+  }
+}
 if (intent.matchedMoods && intent.matchedMoods.length) {
   let moodHit = false;
 
@@ -2267,6 +2348,8 @@ if (hasActorIntent && !actorQuery) {
 
     if (results.length === 1) {
       intro = 'J’ai trouvé une excellente correspondance :';
+      } else if (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length) {
+      intro = `Pour une séance ${intent.matchedSessionProfiles.map(profile => profile.label).join(', ')}, je te propose :`;
       } else if (intent.matchedMoods && intent.matchedMoods.length) {
       intro = `Voici une sélection avec une ambiance ${intent.matchedMoods.map(mood => mood.label).join(', ')} :`;
     } else if (intent.matchedDirectors.length) {
@@ -2279,6 +2362,7 @@ if (hasActorIntent && !actorQuery) {
       intro = 'Le bocal a remué les bobines, voici une suggestion :';
     } else if (results.length <= 5) {
       intro = 'Voici les titres qui correspondent le mieux :';
+      
     }
 
     return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, intent)}`;
