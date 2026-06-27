@@ -616,6 +616,16 @@ function fishFormatTitleResults(results, intro) {
 }
 
 function fishAnswerGenreRequest(message, catalogue) {
+  const m = fishNormalize(message);
+
+  // Sécurité : si c'est une question sur un titre, le moteur genre ne doit jamais intercepter.
+  if (
+    /qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice|casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(m)
+  ) {
+    return null;
+  }
+
+  const genreKey = fishDetectRequestedGenre(message);
   const genreKey = fishDetectRequestedGenre(message);
 
   if (!genreKey) {
@@ -1946,6 +1956,16 @@ function fishAnswerGenreRequest(message, catalogue) {
     return similarAnswer;
   }
 
+    // Questions réalisateur d’un titre
+    if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
+      return answerDirectorOfTitle(rawMessage, records);
+    }
+
+    // Questions casting d’un titre
+    if (/casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(message)) {
+      return answerCastOfTitle(rawMessage, records);
+    }
+
      // PRIORITÉ ABSOLUE : Premium
     // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
     if (/premium|fauteuil rouge|selection premium/.test(message)) {
@@ -1977,15 +1997,7 @@ const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
     return genreAnswer;
   }
 
-    // Questions réalisateur d’un titre
-    if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
-      return answerDirectorOfTitle(rawMessage, records);
-    }
-
-    // Questions casting d’un titre
-    if (/casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(message)) {
-      return answerCastOfTitle(rawMessage, records);
-    }
+  
 
     // Moteur général pour tout le reste
     const intent = buildIntent(rawMessage, records);
