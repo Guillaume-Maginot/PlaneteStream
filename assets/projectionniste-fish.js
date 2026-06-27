@@ -1956,7 +1956,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return similarAnswer;
   }
 
-    // Questions réalisateur d’un titre
+      // Questions réalisateur d’un titre
     if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
       return answerDirectorOfTitle(rawMessage, records);
     }
@@ -1965,6 +1965,33 @@ function fishAnswerGenreRequest(message, catalogue) {
     if (/casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(message)) {
       return answerCastOfTitle(rawMessage, records);
     }
+
+    // Moteur général pour tout le reste
+    const intent = buildIntent(rawMessage, records);
+    const results = pickResults(records, intent);
+
+    if (!results.length) {
+      return explainNoResult(intent);
+    }
+
+    let intro = 'J’ai trouvé ça dans le catalogue Planete Stream :';
+
+    if (results.length === 1) {
+      intro = 'J’ai trouvé une excellente correspondance :';
+    } else if (intent.matchedDirectors.length) {
+      intro = `Voici ce que le catalogue indique pour ${intent.matchedDirectors.join(', ')} :`;
+    } else if (intent.matchedActors.length) {
+      intro = `Voici ce que le catalogue indique avec ${intent.matchedActors.join(', ')} :`;
+    } else if (intent.wantsBest) {
+      intro = 'Voici les titres les mieux placés dans le catalogue :';
+    } else if (intent.wantsRandom) {
+      intro = 'Le bocal a remué les bobines, voici une suggestion :';
+    } else if (results.length <= 5) {
+      intro = 'Voici les titres qui correspondent le mieux :';
+    }
+
+    return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, intent)}`;
+  }
 
      // PRIORITÉ ABSOLUE : Premium
     // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
@@ -1997,34 +2024,7 @@ const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
     return genreAnswer;
   }
 
-  
 
-    // Moteur général pour tout le reste
-    const intent = buildIntent(rawMessage, records);
-    const results = pickResults(records, intent);
-
-    if (!results.length) {
-      return explainNoResult(intent);
-    }
-
-    let intro = 'J’ai trouvé ça dans le catalogue Planete Stream :';
-
-    if (results.length === 1) {
-      intro = 'J’ai trouvé une excellente correspondance :';
-    } else if (intent.matchedDirectors.length) {
-      intro = `Voici ce que le catalogue indique pour ${intent.matchedDirectors.join(', ')} :`;
-    } else if (intent.matchedActors.length) {
-      intro = `Voici ce que le catalogue indique avec ${intent.matchedActors.join(', ')} :`;
-    } else if (intent.wantsBest) {
-      intro = 'Voici les titres les mieux placés dans le catalogue :';
-    } else if (intent.wantsRandom) {
-      intro = 'Le bocal a remué les bobines, voici une suggestion :';
-    } else if (results.length <= 5) {
-      intro = 'Voici les titres qui correspondent le mieux :';
-    }
-
-    return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, intent)}`;
-  }
 
   async function localBrain(rawMessage) {
     const clean = rawMessage.trim();
