@@ -2274,7 +2274,33 @@ if (intent.wantedGenres.length) {
     return similarAnswer;
   }
 
- 
+ // ======================================================
+// NOUVEAUTÉS (30 derniers ajouts du JSON)
+// ======================================================
+if (
+  /(quelles?\s+sont\s+les\s+nouveaut[eé]s|nouveaut[eé]s|derniers?\s+ajouts?|quoi\s+de\s+neuf|quoi\s+de\s+nouveau)/.test(message)
+) {
+
+  const NB_NOUVEAUTES = 30;
+  const NB_REPONSE = 10;
+
+  const derniers = catalogue
+    .slice(-NB_NOUVEAUTES)
+    .reverse()
+    .slice(0, NB_REPONSE);
+
+  if (!derniers.length) {
+    return "Bloup... je ne trouve aucune nouveauté dans le catalogue.";
+  }
+
+  let reponse = "🐠 Bloup ! Voici les derniers films ajoutés au catalogue :\n\n";
+
+  derniers.forEach((film, index) => {
+    reponse += `${index + 1}. ${film.title}\n`;
+  });
+
+  return reponse.trim();
+}
   
     // PRIORITÉ ABSOLUE : Premium
     // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
