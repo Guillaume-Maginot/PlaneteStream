@@ -1,4 +1,16 @@
 (function () {
+  // ======================================
+// MODE DEBUG BUBULLE
+// false = désactivé
+// true  = affiche le raisonnement dans la console
+// ======================================
+const FISH_DEBUG = false;
+
+function fishDebug(...args) {
+  if (FISH_DEBUG) {
+    console.log("[🐠 Bubulle]", ...args);
+  }
+}
   const widget = document.querySelector('#psFishWidget');
   const tooltip = document.querySelector('#psFishTooltip');
   const poses = Array.from(document.querySelectorAll('.ps-fish-pose'));
@@ -1811,6 +1823,20 @@ matchedMoods.forEach(mood => {
       wantsKids ||
       wantsShort ||
       freeTerms.length > 0;
+      fishDebug("Intent détecté", {
+  requestedType,
+  wantedGenres,
+  topics: topics.map(t => t.label),
+  matchedActors,
+  matchedDirectors,
+  wantsPremium,
+  wantsBest,
+  wantsRandom,
+  wantsKids,
+  wantsShort,
+  durationMax,
+  freeTerms
+});
 
     return {
       rawMessage,
@@ -1887,6 +1913,7 @@ matchedMoods.forEach(mood => {
 
   function scoreRecord(record, intent) {
     let score = 0;
+    const debugReasons = [];
 
     if (intent.requestedType && record.type !== intent.requestedType) {
       return -999;
@@ -1899,6 +1926,7 @@ matchedMoods.forEach(mood => {
         if (intent.wantsPremium) {
       if (!record.premium) return -999;
       score += 80;
+debugReasons.push("+80 Premium");
     }
 
     if (intent.wantsKids) {
@@ -1915,11 +1943,13 @@ matchedMoods.forEach(mood => {
     if (intent.matchedDirectors.length) {
       if (!recordHasDirector(record, intent.matchedDirectors)) return -999;
       score += 90;
+debugReasons.push("+90 Réalisateur");
     }
 
     if (intent.matchedActors.length) {
       if (!recordHasActor(record, intent.matchedActors)) return -999;
       score += 80;
+debugReasons.push("+80 Acteur");
     }
 
     if (intent.topics.length) {
@@ -1935,7 +1965,9 @@ matchedMoods.forEach(mood => {
 
       if (!genreHits.length) return -999;
 
-      score += genreHits.length * 30;
+      const bonusGenre = genreHits.length * 30;
+score += bonusGenre;
+debugReasons.push("+" + bonusGenre + " Genre");
     }
 if (intent.matchedMoods && intent.matchedMoods.length) {
   let moodHit = false;
@@ -1997,7 +2029,7 @@ if (intent.wantedGenres.length) {
       else if (record.genreNorm.includes(t)) score += 8;
       else if (record.storyNorm.includes(t)) score += 2;
     });
-
+    fishDebug(record.title, score, debugReasons.join(" | "));
     return score;
   }
 
