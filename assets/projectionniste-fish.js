@@ -748,6 +748,7 @@ if (hasActorIntent && !actorQuery) {
   let catalogueCache = null;
   let recordsCache = null;
   let fishLastSearchMessage = '';
+  let fishBaseSearchMessage = '';
 
   const states = {
     idle: {
@@ -2300,21 +2301,9 @@ function fishApplyConversationMemory(rawMessage) {
   }
 
   const m = normalize(rawMessage);
-  const last = normalize(fishLastSearchMessage);
 
-  // Si on ajoute un acteur, on repart de la dernière recherche SANS Premium.
-  // Exemple : "film de science-fiction" -> "et en Premium" -> "avec Sigourney Weaver"
-  // doit devenir "film de science-fiction avec Sigourney Weaver", pas "film de science-fiction Premium avec Sigourney Weaver".
-  if (/^avec\b/.test(m)) {
-    const cleanedLast = last
-      .replace(/\bpremium\b/g, ' ')
-      .replace(/\bfauteuil rouge\b/g, ' ')
-      .replace(/\bselection premium\b/g, ' ')
-      .replace(/\bsélection premium\b/g, ' ')
-      .trim()
-      .replace(/\s+/g, ' ');
-
-    return `${cleanedLast} ${rawMessage}`;
+  if (/^avec\b/.test(m) && fishBaseSearchMessage) {
+    return `${fishBaseSearchMessage} ${rawMessage}`;
   }
 
   return `${fishLastSearchMessage} ${rawMessage}`;
@@ -2355,6 +2344,12 @@ const contextualMessage = fishApplyConversationMemory(clean);
 const answer = buildCatalogueAnswer(contextualMessage, catalogue);
 
 if (fishShouldRememberMessage(contextualMessage)) {
+  const isFollowUp = fishIsFollowUpMessage(clean);
+
+  if (!isFollowUp) {
+    fishBaseSearchMessage = clean;
+  }
+
   fishLastSearchMessage = contextualMessage;
 }
 
