@@ -37,13 +37,21 @@ const FISH_GENRE_SYNONYMS = {
   ],
 
   horreur: [
-    'horreur',
-    'épouvante',
-    'epouvante',
-    'horror',
-    'film d horreur',
-    'film de peur'
-  ],
+  'horreur',
+  'épouvante',
+  'epouvante',
+  'horror',
+  'film d horreur',
+  'film de peur',
+  'peur',
+  'fait peur',
+  'faire peur',
+  'fais peur',
+  'flipper',
+  'angoisse',
+  'angoissant',
+  'effrayant'
+],
 
   science_fiction: [
     'science fiction',
