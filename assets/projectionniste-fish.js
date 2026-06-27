@@ -194,6 +194,26 @@ function fishToArray(value) {
 }
 
 function fishMovieTitle(movie) {
+  function fishDisplayTitle(movie) {
+
+  const title = fishMovieTitle(movie);
+
+  const aliases = {
+    "Alien, le huitième passager": "Alien 1",
+    "Aliens, le retour": "Alien 2",
+    "Alien³": "Alien 3",
+    "Alien : Résurrection": "Alien 4",
+
+    "Dune": "Dune 1",
+    "Dune : Deuxième partie": "Dune 2",
+
+    "Avatar": "Avatar 1",
+    "Avatar : La Voie de l'eau": "Avatar 2",
+    "Avatar : De feu et de cendres": "Avatar 3"
+  };
+
+  return aliases[title] || title;
+}
   return movie.title ||
     movie.titre ||
     movie.name ||
@@ -562,7 +582,64 @@ function fishMovieDetailsForDisplay(movie) {
 }
 
 function fishMovieLine(movie, index) {
-  return `${index + 1}. ${fishMovieTitle(movie)}${fishMovieDetailsForDisplay(movie)}`;
+ return `${index + 1}. ${fishDisplayTitle(movie)}${fishMovieDetailsForDisplay(movie)}`;
+}
+
+function fishRandomIntro(intent, results) {
+
+  const intros = {
+    default: [
+      "Voici les titres qui correspondent le mieux :",
+      "J'ai trouvé quelques films qui devraient te plaire :",
+      "Le catalogue me souffle ces titres :",
+      "Voilà ce qui ressort de ma recherche :",
+      "J'ai repéré ces films pour toi :",
+      "Le projecteur s'est arrêté sur ceux-ci :",
+      "Ces titres correspondent plutôt bien à ta demande :",
+      "Tiens, regarde ceux-là :",
+      "Je pense que ceux-ci valent un coup d'œil :",
+      "Le catalogue est plutôt d'accord sur ceux-là :"
+    ],
+
+    actor: [
+      "Voici ce que le catalogue indique :",
+      "J'ai retrouvé cet acteur dans ces films :",
+      "Son nom apparaît dans les titres suivants :",
+      "Je l'ai repéré au casting de :",
+      "Le catalogue l'a vu passer ici :",
+      "Voici les films où il apparaît :"
+    ],
+
+    director: [
+      "Voici les films réalisés par ce réalisateur :",
+      "J'ai retrouvé sa filmographie dans le catalogue :",
+      "Le catalogue indique ces réalisations :",
+      "Voici les titres associés à ce réalisateur :"
+    ],
+
+    premium: [
+      "Direction les fauteuils rouges :",
+      "Voici la sélection Premium :",
+      "Le coin Premium propose ceci :",
+      "Les fauteuils rouges sont prêts :"
+    ],
+
+    random: [
+      "Le bocal a remué les bobines, voici ma pioche :",
+      "Le hasard m'a soufflé ce titre :",
+      "Une bobine est remontée à la surface :",
+      "J'ai laissé le hasard choisir :"
+    ]
+  };
+
+  let list = intros.default;
+
+  if (intent?.actor) list = intros.actor;
+  else if (intent?.director) list = intros.director;
+  else if (intent?.premium) list = intros.premium;
+  else if (intent?.random) list = intros.random;
+
+  return list[Math.floor(Math.random() * list.length)];
 }
 
 function fishCommentForResults(results, context = {}) {
