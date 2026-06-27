@@ -2284,7 +2284,11 @@ if (/\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
       return 'Avec plaisir. Je retourne surveiller les bobines depuis mon bocal.';
     }
 
-    if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle/.test(message)) {
+    if (/comment tu t appelles|ton nom|tu t appelles|bubulle/.test(message)) {
+  return 'Je m’appelle Bubulle. Officiellement, je suis le Projectionniste de Planete Stream : petit poisson, grand catalogue.';
+}
+
+if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle/.test(message)) {
       return 'Je suis le Projectionniste de Planete Stream : petit poisson, cerveau JSON. Je vérifie le catalogue avant de répondre, donc je préfère dire “je ne sais pas” plutôt que d’inventer un film sorti d’une palourde.';
     }
 
