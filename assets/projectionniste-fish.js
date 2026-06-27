@@ -711,13 +711,14 @@ function fishAnswerGenreRequest(message, catalogue) {
       'genre', 'genres', 'type', 'duree', 'durée', 'heure', 'heures',
       'minute', 'minutes', 'min', 'moins', 'plus', 'trop', 'tres', 'très',
       'meilleur', 'meilleure', 'top', 'note', 'noté', 'notée',
-      'catalogue', 'planete', 'stream', 'planetestream'
+      'catalogue', 'planete', 'stream', 'planetestream','fait',
+       'fais', 'faire', 'voir', 'regarder', 'envie',
     ].map(normalize)
   );
 
   const GENRE_ALIASES = [
     ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi', 'futuriste', 'espace', 'spatial']],
-    ['horreur', ['horreur', 'horrifique', 'peur', 'gore', 'epouvante', 'épouvante']],
+    ['horreur', ['horreur', 'horrifique', 'peur', 'fait peur', 'faire peur', 'fais peur', 'flipper', 'angoisse', 'angoissant', 'gore', 'epouvante', 'épouvante']],
     ['thriller', ['thriller', 'suspense']],
     ['action', ['action', 'baston', 'combat']],
     ['aventure', ['aventure']],
