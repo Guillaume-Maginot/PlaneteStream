@@ -2026,8 +2026,6 @@ function fishAnswerGenreRequest(message, catalogue) {
 
 
 
-
-
   async function localBrain(rawMessage) {
     const clean = rawMessage.trim();
     const message = normalize(clean);
