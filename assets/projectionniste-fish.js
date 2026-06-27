@@ -826,7 +826,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       pattern: /espion|espionnage|agent secret|mission secrete|mission secrète/,
       terms: ['espion', 'agent secret', 'mission'],
       genres: ['action', 'thriller', 'aventure']
-    }
+    },
     {
   label: 'catastrophes',
   pattern: /catastrophe|catastrophes|tsunami|tremblement de terre|seisme|séisme|volcan|meteorite|météorite|fin du monde/,
