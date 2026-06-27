@@ -1740,9 +1740,6 @@ function fishIsSimilarityRequest(message) {
     return `${intro}\n\n${results.map(itemLine).join('\n')}${comment}`;
   }
 
-  return rules.find(rule => rule.pattern.test(m)) || null;
-}
-
   function buildIntent(rawMessage, records) {
     const m = normalize(rawMessage);
     const durationMax = parseDurationLimit(rawMessage);
