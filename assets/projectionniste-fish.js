@@ -616,17 +616,8 @@ function fishFormatTitleResults(results, intro) {
 }
 
 function fishAnswerGenreRequest(message, catalogue) {
-  const m = fishNormalize(message);
-
-  // Sécurité : si c'est une question sur un titre, le moteur genre ne doit jamais intercepter.
-  if (
-    /qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice|casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(m)
-  ) {
-    return null;
-  }
-
   const genreKey = fishDetectRequestedGenre(message);
- 
+
   if (!genreKey) {
     return null;
   }
@@ -1955,7 +1946,34 @@ function fishAnswerGenreRequest(message, catalogue) {
     return similarAnswer;
   }
 
-      // Questions réalisateur d’un titre
+ 
+  
+    // PRIORITÉ ABSOLUE : Premium
+    // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
+    if (/premium|fauteuil rouge|selection premium/.test(message)) {
+      const results = catalogue
+        .filter(item => {
+          if (item.premium === true) return true;
+
+          if (typeof item.premium === 'string') {
+            const value = normalize(item.premium);
+            return value === 'true' || value === 'oui' || value === 'yes';
+          }
+
+          return false;
+        })
+        .sort((a, b) =>
+          String(a.title || '').localeCompare(String(b.title || ''), 'fr')
+        )
+        .slice(0, 5);
+
+      if (!results.length) {
+        return 'Bloup... je n’ai trouvé aucun film Premium dans le JSON. Et je ne compte pas les titres “à la une” comme Premium.';
+      }
+
+      return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
+    }
+    // Questions réalisateur d’un titre
     if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
       return answerDirectorOfTitle(rawMessage, records);
     }
@@ -1965,7 +1983,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       return answerCastOfTitle(rawMessage, records);
     }
 
-    const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
+     const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
   if (genreAnswer) {
     return genreAnswer;
   }
@@ -1996,34 +2014,6 @@ function fishAnswerGenreRequest(message, catalogue) {
 
     return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, intent)}`;
   }
-
-     // PRIORITÉ ABSOLUE : Premium
-    // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
-    if (/premium|fauteuil rouge|selection premium/.test(message)) {
-      const results = catalogue
-        .filter(item => {
-          if (item.premium === true) return true;
-
-          if (typeof item.premium === 'string') {
-            const value = normalize(item.premium);
-            return value === 'true' || value === 'oui' || value === 'yes';
-          }
-
-          return false;
-        })
-        .sort((a, b) =>
-          String(a.title || '').localeCompare(String(b.title || ''), 'fr')
-        )
-        .slice(0, 5);
-
-      if (!results.length) {
-        return 'Bloup... je n’ai trouvé aucun film Premium dans le JSON. Et je ne compte pas les titres “à la une” comme Premium.';
-      }
-
-      return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
-    }
-
-
 
   async function localBrain(rawMessage) {
     const clean = rawMessage.trim();
