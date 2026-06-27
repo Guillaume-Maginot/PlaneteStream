@@ -1604,12 +1604,25 @@ const SESSION_PROFILE_RULES = [
       .map(record => {
         let score = 0;
 
-        if (record.titleNorm.includes(q)) score += 100;
-        if (q.includes(record.titleNorm) && record.titleNorm.length > 3) score += 80;
+// Titre exactement identique
+if (record.titleNorm === q) score += 1000;
 
-        queryTokens.forEach(token => {
-          if (record.titleNorm.includes(token)) score += 18;
-        });
+// Le titre commence par la requête
+if (record.titleNorm.startsWith(q + " ")) score += 400;
+
+// Le titre contient la requête
+if (record.titleNorm.includes(q)) score += 100;
+
+// La requête contient tout le titre
+if (q.includes(record.titleNorm) && record.titleNorm.length > 3) score += 80;
+
+// Bonus si le premier mot correspond
+const firstWord = record.titleNorm.split(" ")[0];
+if (firstWord === q) score += 250;
+
+queryTokens.forEach(token => {
+  if (record.titleNorm.includes(token)) score += 18;
+});
 
         return { record, score };
       })
