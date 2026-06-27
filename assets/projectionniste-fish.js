@@ -915,13 +915,13 @@ if (hasActorIntent && !actorQuery) {
   },
   {
     label: 'chill',
-    pattern: /chill|detente|détente|tranquille|leger|léger|pas prise de tete|pas prise de tête|marrant/,
+    pattern: /chill|facile|reposant|sans prise de tete|sans prise de tête|calme|detente|détente|tranquille|leger|léger|pas prise de tete|pas prise de tête|marrant/,
     genres: ['comédie', 'animation', 'familial', 'romance'],
     maxRuntime: 115
   },
   {
     label: 'spectaculaire',
-    pattern: /spectaculaire|impressionnant|epique|épique|grand spectacle|blockbuster|visuel/,
+    pattern: /spectaculaire|qui envoie du lourd|gros spectacle|plein les yeux|explosif|epoustouflant|époustouflant|impressionnant|epique|épique|grand spectacle|blockbuster|visuel/,
     genres: ['action', 'aventure', 'science-fiction'],
     terms: ['espace', 'guerre', 'vaisseau', 'monstre', 'catastrophe']
   }
@@ -930,14 +930,14 @@ if (hasActorIntent && !actorQuery) {
 const SESSION_PROFILE_RULES = [
   {
     label: 'pour ce soir',
-    pattern: /ce soir|pour ce soir|quoi regarder|je regarde quoi|un film sympa|un bon film/,
+    pattern: /ce soir|pour ce soir|quoi regarder|je regarde quoi|un film sympa|un bon film|ce soir je regarde quoi|un truc pour ce soir|quoi voir ce soir|un film a voir|un film à voir/,
     genres: ['aventure', 'science-fiction', 'comedie'],
     maxRuntime: 150,
     preferRating: true
   },
   {
     label: 'fatigué',
-    pattern: /fatigue|fatigué|creve|crevé|pas trop complique|pas trop compliqué|cerveau eteint|cerveau éteint/,
+    pattern: /fatigue|fatigué|creve|crevé|pas trop complique|pas envie de reflechir|pas envie de réfléchir|cerveau off|pas lourd|pas trop compliqué|cerveau eteint|cerveau éteint/,
     genres: ['comedie', 'animation', 'aventure'],
     maxRuntime: 120,
     preferLight: true
@@ -950,7 +950,7 @@ const SESSION_PROFILE_RULES = [
   },
   {
     label: 'entre amis',
-    pattern: /entre amis|entre potes|avec des amis|avec les potes|soirée entre amis|soiree entre amis/,
+    pattern: /entre amis|entre potes|avec des amis|avec les potes|soirée film|soiree film|a plusieurs|à plusieurs|film de groupe|soirée entre amis|soiree entre amis/,
     genres: ['action', 'aventure', 'comedie', 'science-fiction'],
     preferSpectacle: true
   },
