@@ -1975,28 +1975,6 @@ function fishAnswerMoodRequest(rawMessage, records) {
     );
   }
 
- if (!intent.wantsRandom && candidates.length) {
-  const bestScore = candidates[0].score;
-
-  const isPreciseRequest =
-    intent.matchedDirectors.length ||
-    intent.matchedActors.length ||
-    intent.topics.length ||
-    intent.durationMax ||
-    intent.wantsPremium ||
-    intent.wantedGenres.length >= 2;
-
-  if (isPreciseRequest && bestScore < 28) {
-    return [];
-  }
-
-  if (isPreciseRequest) {
-    candidates = candidates.filter(entry => {
-      return entry.score >= bestScore * 0.45;
-    });
-  }
-}
-
   return candidates.slice(0, 5).map(entry => entry.record);
 }
 
