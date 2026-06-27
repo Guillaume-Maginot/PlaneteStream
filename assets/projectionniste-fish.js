@@ -640,20 +640,66 @@ function fishAnswerGenreRequest(message, catalogue) {
     return null;
   }
 
-  const movies = Array.isArray(catalogue) ? catalogue : [];
+  const genreMap = {
+    science_fiction: 'science-fiction',
+    comedie: 'comédie',
+    zombie: 'zombie',
+    horreur: 'horreur',
+    drame: 'drame',
+    action: 'action',
+    aventure: 'aventure',
+    thriller: 'thriller',
+    fantastique: 'fantastique',
+    animation: 'animation',
+    romance: 'romance',
+    guerre: 'guerre',
+    crime: 'crime',
+    western: 'western',
+    documentaire: 'documentaire'
+  };
+
+  const records = getRecords(catalogue);
+  const wantedGenre = genreMap[genreKey] || genreKey;
   const durationFilter = fishDetectDurationFilter(message);
-  const actorQuery = fishDetectActorFilter(message, movies);
+  const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(fishNormalize(message));
+  const actorQuery = fishDetectActorFilter(message, catalogue);
   const actorLabel = actorQuery ? fishDisplayActorQuery(actorQuery) : '';
   const label = FISH_GENRE_LABELS[genreKey] || genreKey;
   const labelWithActor = actorLabel ? `${label} avec ${actorLabel}` : label;
 
-  const genreResults = movies.filter(movie => {
-  if (!fishMovieMatchesRequestedGenre(movie, genreKey)) {
-    return false;
+  const results = records.filter(record => {
+    if (genreKey === 'zombie') {
+      if (!recordMatchesTopic(record, TOPIC_RULES.find(topic => topic.label === 'zombies'))) {
+        return false;
+      }
+    } else if (!recordHasGenre(record, wantedGenre)) {
+      return false;
+    }
+
+    if (wantsPremium && !record.premium) {
+      return false;
+    }
+
+    if (actorQuery && !fishMovieMatchesActor(record.item, actorQuery)) {
+      return false;
+    }
+
+    if (durationFilter && !fishRecordMatchesDurationFilter(record, durationFilter)) {
+      return false;
+    }
+
+    return true;
+  });
+
+  if (!results.length) {
+    return `Je ne trouve pas de film ${labelWithActor}${wantsPremium ? ' Premium' : ''} dans le catalogue. Le poisson préfère ne pas inventer une sardine en smoking.`;
   }
 
-  if (wantsPremium) {
-  return isPremiumItemV2(movie);
+  const intro = durationFilter
+    ? `Pour un film ${labelWithActor}${wantsPremium ? ' Premium' : ''} ${durationFilter.label}, j’ai trouvé :`
+    : `Pour un film ${labelWithActor}${wantsPremium ? ' Premium' : ''}, j’ai trouvé :`;
+
+  return fishFormatTitleResults(results, intro);
 }
 
   return true;
