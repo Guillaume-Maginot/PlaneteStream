@@ -626,8 +626,7 @@ function fishAnswerGenreRequest(message, catalogue) {
   }
 
   const genreKey = fishDetectRequestedGenre(message);
-  const genreKey = fishDetectRequestedGenre(message);
-
+ 
   if (!genreKey) {
     return null;
   }
