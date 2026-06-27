@@ -827,6 +827,66 @@ function fishAnswerGenreRequest(message, catalogue) {
       terms: ['espion', 'agent secret', 'mission'],
       genres: ['action', 'thriller', 'aventure']
     }
+    {
+  label: 'catastrophes',
+  pattern: /catastrophe|catastrophes|tsunami|tremblement de terre|seisme|séisme|volcan|meteorite|météorite|fin du monde/,
+  terms: [
+    'catastrophe',
+    'tsunami',
+    'séisme',
+    'seisme',
+    'volcan',
+    'météorite',
+    'meteorite',
+    'fin du monde'
+  ],
+  genres: ['action', 'thriller']
+},
+{
+  label: 'prison',
+  pattern: /prison|evasion|évasion|detenu|détenu/,
+  terms: [
+    'prison',
+    'évasion',
+    'evasion',
+    'détenu',
+    'detenu'
+  ],
+  genres: ['crime', 'thriller']
+},
+{
+  label: 'survie',
+  pattern: /survie|survivre|survivant|survivants/,
+  terms: [
+    'survie',
+    'survivre',
+    'survivant',
+    'survivants'
+  ],
+  genres: ['aventure', 'thriller']
+},
+{
+  label: 'post-apocalyptique',
+  pattern: /post apocalyptique|post-apocalyptique|apocalypse|apocalyptique|fin du monde/,
+  terms: [
+    'post-apocalyptique',
+    'apocalypse',
+    'apocalyptique',
+    'fin du monde'
+  ],
+  genres: ['science-fiction', 'action']
+},
+{
+  label: 'voyage temporel',
+  pattern: /voyage dans le temps|voyage temporel|machine a voyager dans le temps|machine à voyager dans le temps|boucle temporelle/,
+  terms: [
+    'voyage temporel',
+    'voyage dans le temps',
+    'boucle temporelle',
+    'temps'
+  ],
+  genres: ['science-fiction']
+},
   ];
 
   function randomBetween(min, max) {
