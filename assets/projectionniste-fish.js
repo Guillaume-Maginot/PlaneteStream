@@ -194,17 +194,25 @@ function fishToArray(value) {
 }
 
 function fishMovieTitle(movie) {
-  function fishDisplayTitle(movie) {
+   return movie.title ||
+    movie.titre ||
+    movie.name ||
+    movie.originalTitle ||
+    movie.original_title ||
+    'Titre inconnu';
+}
+
+function fishDisplayTitle(movie) {
 
   const title = fishMovieTitle(movie);
 
   const aliases = {
-    "Alien, le huitième passager": "Alien 1",
-    "Aliens, le retour": "Alien 2",
+    "Alien, le huitième passager": "Alien 1 : Le huitième passager",
+    "Aliens, le retour": "Alien 2 : Le retour",
     "Alien³": "Alien 3",
-    "Alien : Résurrection": "Alien 4",
+    "Alien : Résurrection": "Alien 4 : Résurrection",
 
-    "Dune": "Dune 1",
+    "Dune: Première partie": "Dune 1",
     "Dune : Deuxième partie": "Dune 2",
 
     "Avatar": "Avatar 1",
@@ -213,13 +221,6 @@ function fishMovieTitle(movie) {
   };
 
   return aliases[title] || title;
-}
-  return movie.title ||
-    movie.titre ||
-    movie.name ||
-    movie.originalTitle ||
-    movie.original_title ||
-    'Titre inconnu';
 }
 
 function fishMovieTextForGenre(movie) {
