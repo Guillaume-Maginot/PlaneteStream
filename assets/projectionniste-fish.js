@@ -614,8 +614,37 @@ function fishCommentForResults(results, context = {}) {
 
   return '\n\nLe premier titre est celui qui ressort le mieux pour ta demande. Le reste suit, comme une petite file d’attente de bobines bien élevées.';
 }
+let fishLastResults = [];
+let fishLastOffset = 0;
+function fishContinueLastResults() {
+  if (!fishLastResults.length) {
+    return "Bloup... je n'ai aucune recherche en mémoire. Demande-moi d'abord un film.";
+  }
 
+  if (fishLastOffset >= fishLastResults.length) {
+    return "Bloup... le bocal est vide. Je t'ai déjà montré tous les films correspondant à cette recherche.";
+  }
+
+  const next = fishLastResults.slice(fishLastOffset, fishLastOffset + 5);
+
+  fishLastOffset += next.length;
+
+  let answer = "Voici la suite :\n\n";
+  answer += next.map((movie, index) =>
+    fishMovieLine(movie, fishLastOffset - next.length + index)
+  ).join("\n");
+
+  if (fishLastOffset < fishLastResults.length) {
+    answer += "\n\nTu peux simplement écrire « encore » pour continuer.";
+  } else {
+    answer += "\n\nBloup ! Cette fois, tu as vu toute la sélection.";
+  }
+
+  return answer;
+}
 function fishFormatTitleResults(results, intro) {
+  fishLastResults = [...results];
+fishLastOffset = Math.min(5, results.length);
   const visibleResults = results.slice(0, 5);
   const remaining = results.length - visibleResults.length;
 
@@ -753,7 +782,7 @@ if (hasActorIntent && !actorQuery) {
   let recordsCache = null;
   let fishLastSearchMessage = '';
   let fishBaseSearchMessage = '';
-
+  
   const states = {
     idle: {
       pose: null,
@@ -2411,6 +2440,9 @@ function fishApplyConversationMemory(rawMessage) {
   async function localBrain(rawMessage) {
     const clean = rawMessage.trim();
     const message = normalize(clean);
+    if (/^(encore|la suite|continue|autre|d'autres|encore !?)$/.test(message)) {
+    return fishContinueLastResults();
+    }
 
     if (!message) {
       return 'Bloup ? Même moi j’ai besoin d’au moins une bulle d’information.';
