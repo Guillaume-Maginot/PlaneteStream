@@ -1524,26 +1524,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `Dans ${record.title}, le catalogue indique notamment :\n\n${record.cast.slice(0, 8).map(personLine).join('\n')}`;
   }
 
-    function fishIsSimilarityRequest(message) {
-    const m = normalize(message);
-
-    return (
-      /\bcomme\b/.test(m) ||
-      /\bmeme genre que\b/.test(m) ||
-      /\bmeme style que\b/.test(m) ||
-      /\bdans le meme genre que\b/.test(m) ||
-      /\bdans le style de\b/.test(m) ||
-      /\bsimilaire a\b/.test(m) ||
-      /\bressemble a\b/.test(m) ||
-      /\bj ai aime\b/.test(m) ||
-      /\bj ai bien aime\b/.test(m) ||
-      /\bj ai adore\b/.test(m) ||
-      /\bj adore\b/.test(m) ||
-      /\bj aime\b/.test(m)
-    );
-  }
-
-  function fishCleanSimilarityTitleQuery(query) {
+   function fishCleanSimilarityTitleQuery(query) {
     return normalize(query)
       .replace(/\b(tu me proposes quoi|tu proposes quoi|quoi regarder ensuite|je regarde quoi ensuite|tu as quoi|qu est ce que tu proposes|que proposes tu)\b/g, ' ')
       .replace(/\b(dans le meme style|dans le meme genre|du meme genre|similaire|semblable|proche)\b/g, ' ')
@@ -1777,36 +1758,6 @@ function fishDetectMoodIntent(message) {
   ];
 
   return rules.find(rule => rule.pattern.test(m)) || null;
-}
-
-function fishAnswerMoodRequest(rawMessage, records) {
-  const mood = fishDetectMoodIntent(rawMessage);
-
-  if (!mood) return null;
-
-  const durationFilter = fishDetectDurationFilter(rawMessage);
-
-  let results = records.filter(record => {
-    const genreOk = mood.genres.some(genre => recordHasGenre(record, genre));
-    const durationOk = !durationFilter || fishRecordMatchesDurationFilter(record, durationFilter);
-
-    return genreOk && durationOk;
-  });
-
-  results = results
-    .sort((a, b) =>
-      b.rating - a.rating ||
-      a.title.localeCompare(b.title, 'fr')
-    )
-    .slice(0, 5);
-
-  if (!results.length) {
-    return 'Bloup... j’ai compris l’ambiance demandée, mais je ne trouve pas de titre assez fiable dans le catalogue. Le poisson refuse le conseil au doigt mouillé.';
-  }
-
-  const extra = durationFilter ? ` ${durationFilter.label}` : '';
-
-  return `${mood.intro}${extra}\n\n${results.map(itemLine).join('\n')}\n\nJ’ai traduit ta demande en intention de séance, puis j’ai filtré le catalogue par genres proches. Bubulle commence à comprendre les humains, ce qui est inquiétant mais pratique.`;
 }
 
   function buildIntent(rawMessage, records) {
