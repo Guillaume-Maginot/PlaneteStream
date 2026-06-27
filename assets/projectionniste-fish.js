@@ -1961,7 +1961,14 @@ function fishAnswerGenreRequest(message, catalogue) {
   
     // PRIORITÉ ABSOLUE : Premium
     // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
-    if (/premium|fauteuil rouge|selection premium/.test(message)) {
+    if (
+  /premium|fauteuil rouge|selection premium|sélection premium/.test(message) &&
+  !fishDetectRequestedGenre(rawMessage) &&
+  !detectGenres(rawMessage).length &&
+  !detectTopics(rawMessage).length &&
+  !isActorRequest(rawMessage) &&
+  !isDirectorRequest(rawMessage)
+) {
       const results = catalogue
         .filter(item => {
           if (item.premium === true) return true;
