@@ -2234,7 +2234,11 @@ if (hasActorIntent && !actorQuery) {
         String(rawPremium || '').toLowerCase() === 'oui' ||
         String(rawPremium || '').toLowerCase() === 'yes';
 
-      if (!isStrictPremium) return false;
+            if (!isStrictPremium) return false;
+    }
+
+    if (actorQuery && !fishMovieMatchesActor(record.item, actorQuery)) {
+      return false;
     }
 
     return true;
