@@ -2345,12 +2345,14 @@ const answer = buildCatalogueAnswer(contextualMessage, catalogue);
 
 if (fishShouldRememberMessage(contextualMessage)) {
   const isFollowUp = fishIsFollowUpMessage(clean);
+  const isPremiumFollowUp = /^(et\s+)?(en\s+)?premium\b/.test(normalize(clean));
 
   if (!isFollowUp) {
     fishBaseSearchMessage = clean;
+    fishLastSearchMessage = clean;
+  } else if (!isPremiumFollowUp) {
+    fishLastSearchMessage = contextualMessage;
   }
-
-  fishLastSearchMessage = contextualMessage;
 }
 
 return answer;
