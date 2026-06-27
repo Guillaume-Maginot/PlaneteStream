@@ -1942,16 +1942,53 @@ function fishAnswerMoodRequest(rawMessage, records) {
   }
 
   function pickResults(records, intent) {
-    let candidates = records
-      .map(record => ({
-        record,
-        score: scoreRecord(record, intent)
-      }))
-      .filter(entry => entry.score >= 18);
+  let candidates = records
+    .map(record => ({
+      record,
+      score: scoreRecord(record, intent)
+    }))
+    .filter(entry => entry.score >= 18);
 
-    if (intent.hasStrongSignal && !intent.wantsRandom) {
-      candidates = candidates.filter(entry => entry.score >= 25);
+  if (intent.hasStrongSignal && !intent.wantsRandom) {
+    candidates = candidates.filter(entry => entry.score >= 25);
+  }
+
+  if (intent.wantsRandom && !candidates.length) {
+    candidates = records.map(record => ({
+      record,
+      score: Math.random() * 20 + record.rating
+    }));
+  }
+
+  if (intent.wantsBest) {
+    candidates.sort((a, b) =>
+      b.record.rating - a.record.rating ||
+      b.score - a.score ||
+      a.record.title.localeCompare(b.record.title, 'fr')
+    );
+  } else if (intent.wantsRandom) {
+    candidates.sort(() => Math.random() - 0.5);
+  } else {
+    candidates.sort((a, b) =>
+      b.score - a.score ||
+      a.record.title.localeCompare(b.record.title, 'fr')
+    );
+  }
+
+  if (!intent.wantsRandom && candidates.length) {
+    const bestScore = candidates[0].score;
+
+    if (bestScore < 40) {
+      return [];
     }
+
+    candidates = candidates.filter(entry => {
+      return entry.score >= bestScore * 0.6;
+    });
+  }
+
+  return candidates.slice(0, 5).map(entry => entry.record);
+}
 
     if (intent.wantsRandom && !candidates.length) {
       candidates = records.map(record => ({
