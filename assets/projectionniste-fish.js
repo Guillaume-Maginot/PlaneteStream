@@ -2009,11 +2009,6 @@ function fishAnswerMoodRequest(rawMessage, records) {
 
 const records = getRecords(catalogue);
 
-const moodAnswer = fishAnswerMoodRequest(rawMessage, records);
-if (moodAnswer) {
-  return moodAnswer;
-}
-
 const similarAnswer = answerSimilarRequest(rawMessage, records);
 if (similarAnswer) {
   return similarAnswer;
