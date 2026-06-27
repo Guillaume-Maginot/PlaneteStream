@@ -1978,12 +1978,12 @@ function fishAnswerMoodRequest(rawMessage, records) {
   if (!intent.wantsRandom && candidates.length) {
     const bestScore = candidates[0].score;
 
-    if (bestScore < 40) {
+    if (bestScore < 28) {
       return [];
     }
 
     candidates = candidates.filter(entry => {
-      return entry.score >= bestScore * 0.6;
+      return entry.score >= bestScore * 0.45;
     });
   }
 
