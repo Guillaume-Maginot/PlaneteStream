@@ -636,7 +636,7 @@ function fishAnswerGenreRequest(message, catalogue) {
   }
 
   const actorResults = actorQuery
-    ? genreResults.filter(movie => movie.item ? fishMovieMatchesActor(movie.item, actorQuery) : fishMovieMatchesActor(movie, actorQuery))
+    ? genreResults.filter(movie => fishMovieMatchesActor(movie, actorQuery))
     : genreResults;
 
   if (actorQuery && !actorResults.length) {
@@ -688,7 +688,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       html: '<strong>Verdict du bocal</strong><span>J’ai comparé avec les bobines disponibles.</span>'
     },
     happy: {
-      pose: 'happy',
+      pose: 'talking',
       html: '<strong>Bloup bloup !</strong><span>Le Projectionniste est réveillé.</span>'
     }
   };
@@ -744,7 +744,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       ],
       genres: ['action', 'aventure', 'fantastique', 'science-fiction', 'crime']
     },
-    {
+         {
       label: 'zombies',
       strict: true,
       pattern: /zombie|zombies|mort vivant|morts vivants|infecte|infectes|infecté|infectés|malnazidos|resident evil|world war z|zombieland|walking dead/,
@@ -820,37 +820,6 @@ function fishAnswerGenreRequest(message, catalogue) {
     }
   ];
 
-  /* =========================================================
-     PATCH D'AMBIANCE : REQUÊTES FLOUES ET HUMEURS
-     ========================================================= */
-  const MOOD_RULES = [
-    {
-      label: 'intelligent',
-      pattern: /intelligent|intelligents|profond|psychologique|philosophique|cerebral|cérébral|subtil|refléchir|reflexion/,
-      genres: ['drame', 'science-fiction', 'mystère'],
-      minRating: 7.5,
-      bonusTerms: ['enquete', 'enquête', 'ia', 'intelligence artificielle', 'dystopie', 'psychologique']
-    },
-    {
-      label: 'flippant',
-      pattern: /flippant|flippante|angoisant|angoissant|peur|terrifiant|glauque|cauchemar/,
-      genres: ['horreur', 'thriller'],
-      bonusTerms: ['zombie', 'zombies', 'vampire', 'vampires', 'gore', 'esprit', 'fantome']
-    },
-    {
-      label: 'chill / détente',
-      pattern: /chill|detente|détente|pas prise de tete|pas prise de tête|leger|léger|reposer|tranquille|marrant/,
-      genres: ['comédie', 'animation', 'familial'],
-      maxRuntime: 105
-    },
-    {
-      label: 'spectaculaire',
-      pattern: /spectaculaire|impressionnant|epoustouflant|époustouflant|grand spectacle|blockbuster|visuel/,
-      genres: ['action', 'aventure', 'science-fiction'],
-      bonusTerms: ['marvel', 'dc comics', 'avengers', 'vaisseau', 'espace', 'guerre']
-    }
-  ];
-
   function randomBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -889,6 +858,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return values.filter(Boolean).join(' ');
   }
 
+  
   function showPose(poseName) {
     poses.forEach(img => {
       img.classList.toggle('is-active', img.dataset.pose === poseName);
@@ -1022,7 +992,7 @@ function fishAnswerGenreRequest(message, catalogue) {
 
     return cataloguePromise;
   }
-  function asArray(value) {
+    function asArray(value) {
     if (!value) return [];
     return Array.isArray(value) ? value : [value];
   }
@@ -1127,6 +1097,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return Number(value) || 0;
   }
 
+   
   function isPremiumItemV2(item) {
     if (!item) return false;
 
@@ -1238,7 +1209,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       runtime,
       rating,
       type,
-      premium: isPremiumItemV2(item),
+            premium: isPremiumItemV2(item),
       titleNorm: normalize(titleText),
       directorNorm: normalize(directorText),
       castNorm: normalize(castText),
@@ -1254,9 +1225,9 @@ function fishAnswerGenreRequest(message, catalogue) {
     return recordsCache;
   }
 
-  function itemLine(record, index) {
-    return fishMovieLine(record, index);
-  }
+ function itemLine(record, index) {
+  return fishMovieLine(record, index);
+}
 
   function personLine(name, index) {
     return `${index + 1}. ${name}`;
@@ -1484,7 +1455,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `Dans ${record.title}, le catalogue indique notamment :\n\n${record.cast.slice(0, 8).map(personLine).join('\n')}`;
   }
 
-  function fishIsSimilarityRequest(message) {
+    function fishIsSimilarityRequest(message) {
     const m = normalize(message);
 
     return (
@@ -1712,17 +1683,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     const wantsKids = /enfant|famille|familial|kids|dessin anime|dessin animé|animation/.test(m);
     const wantsShort = /court|rapide|pas trop long/.test(m);
 
-    // ANALYSE INTENTION FLOUE ET ASSIGNATION DES GENRES AUTOMATIQUES
-    const matchedMoods = MOOD_RULES.filter(rule => rule.pattern.test(m));
-    matchedMoods.forEach(mood => {
-      if (mood.genres) {
-        mood.genres.forEach(genre => {
-          if (!wantedGenres.includes(genre)) wantedGenres.push(genre);
-        });
-      }
-    });
-
-    topics.forEach(topic => {
+        topics.forEach(topic => {
       if (topic.strict) return;
 
       topic.genres.forEach(genre => {
@@ -1734,7 +1695,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     const directorRequest = isDirectorRequest(rawMessage);
     const actorRequest = isActorRequest(rawMessage);
 
-    const directorQuery = directorRequest ? (personQuery || '') : '';
+        const directorQuery = directorRequest ? (personQuery || '') : '';
     const actorQuery = actorRequest ? (personQuery || '') : '';
 
     const matchedDirectors = directorRequest ? findMatchingDirectors(records, directorQuery || rawMessage) : [];
@@ -1749,7 +1710,6 @@ function fishAnswerGenreRequest(message, catalogue) {
       Boolean(requestedType) ||
       wantedGenres.length > 0 ||
       topics.length > 0 ||
-      matchedMoods.length > 0 ||
       matchedDirectors.length > 0 ||
       matchedActors.length > 0 ||
       durationMax ||
@@ -1766,7 +1726,6 @@ function fishAnswerGenreRequest(message, catalogue) {
       requestedType,
       wantedGenres,
       topics,
-      matchedMoods, // Envoi des ambiances détectées vers le moteur de score
       durationMax,
       wantsBest,
       wantsRandom,
@@ -1783,8 +1742,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       hasStrongSignal
     };
   }
-  
-  function recordHasGenre(record, wantedGenre) {
+    function recordHasGenre(record, wantedGenre) {
     const wanted = normalize(wantedGenre);
     const aliasEntry = GENRE_ALIASES.find(([genre]) => normalize(genre) === wanted);
     const variants = unique([
@@ -1799,7 +1757,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     return variants.some(variant => record.genreNorm.includes(variant));
   }
 
-  function recordMatchesTopic(record, topic) {
+    function recordMatchesTopic(record, topic) {
     const topicTerms = topic.terms.map(normalize);
 
     if (topic.label === 'zombies') {
@@ -1845,7 +1803,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       return -999;
     }
 
-    if (intent.wantsPremium) {
+        if (intent.wantsPremium) {
       if (!record.premium) return -999;
       score += 80;
     }
@@ -1859,39 +1817,6 @@ function fishAnswerGenreRequest(message, catalogue) {
 
       if (!isFamily) return -999;
       score += 35;
-    }
-
-    // CALCUL DU SCORE LIE AUX AMBIANCES (REQUÊTES FLOUES)
-    if (intent.matchedMoods && intent.matchedMoods.length) {
-      let moodHit = false;
-
-      intent.matchedMoods.forEach(mood => {
-        // Filtrage strict basé sur la note critique ou la durée maximale associée à l'ambiance
-        if (mood.minRating && record.rating < mood.minRating) return;
-        if (mood.maxRuntime && record.runtime && record.runtime > mood.maxRuntime) return;
-
-        // Bonus si le genre correspond parfaitement à l'humeur
-        if (mood.genres) {
-          const hasGenre = mood.genres.some(genre => recordHasGenre(record, genre));
-          if (hasGenre) {
-            score += 40;
-            moodHit = true;
-          }
-        }
-
-        // Bonus pour la présence des mots-clés conceptuels
-        if (mood.bonusTerms) {
-          mood.bonusTerms.forEach(term => {
-            if (record.allNorm.includes(term)) {
-              score += 15;
-              moodHit = true;
-            }
-          });
-        }
-      });
-
-      // Si l'utilisateur demandait cette humeur mais que le film n'en coche aucune case, on l'écarte
-      if (!moodHit) return -999;
     }
 
     if (intent.matchedDirectors.length) {
@@ -2008,25 +1933,26 @@ function fishAnswerGenreRequest(message, catalogue) {
     return 'Bloup... j’ai fouillé le catalogue actuel et je ne trouve rien qui corresponde vraiment. Essaie avec un genre, un acteur, un réalisateur, une durée ou un titre plus précis.';
   }
  
-  function buildCatalogueAnswer(rawMessage, catalogue) {
-    if (!catalogue.length) {
-      return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
-    }
+     function buildCatalogueAnswer(rawMessage, catalogue) {
+  if (!catalogue.length) {
+    return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
+  }
 
     const message = normalize(rawMessage);
-    const records = getRecords(catalogue);
+  const records = getRecords(catalogue);
 
-    const similarAnswer = answerSimilarRequest(rawMessage, records);
-    if (similarAnswer) {
-      return similarAnswer;
-    }
+  const similarAnswer = answerSimilarRequest(rawMessage, records);
+  if (similarAnswer) {
+    return similarAnswer;
+  }
 
-    const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
-    if (genreAnswer) {
-      return genreAnswer;
-    }
+  const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
+  if (genreAnswer) {
+    return genreAnswer;
+  }
   
     // PRIORITÉ ABSOLUE : Premium
+    // On ne regarde QUE item.premium. Surtout pas featured, qui signifie seulement "à la une".
     if (/premium|fauteuil rouge|selection premium/.test(message)) {
       const results = catalogue
         .filter(item => {
@@ -2050,7 +1976,6 @@ function fishAnswerGenreRequest(message, catalogue) {
 
       return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
     }
-
     // Questions réalisateur d’un titre
     if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
       return answerDirectorOfTitle(rawMessage, records);
@@ -2061,7 +1986,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       return answerCastOfTitle(rawMessage, records);
     }
 
-    // Moteur général pour tout le reste (inclut maintenant les ambiances/requêtes floues)
+    // Moteur général pour tout le reste
     const intent = buildIntent(rawMessage, records);
     const results = pickResults(records, intent);
 
@@ -2073,8 +1998,6 @@ function fishAnswerGenreRequest(message, catalogue) {
 
     if (results.length === 1) {
       intro = 'J’ai trouvé une excellente correspondance :';
-    } else if (intent.matchedMoods && intent.matchedMoods.length) {
-      intro = `Voici une sélection de films correspondants à une ambiance "${intent.matchedMoods.map(mo => mo.label).join(', ')}" :`;
     } else if (intent.matchedDirectors.length) {
       intro = `Voici ce que le catalogue indique pour ${intent.matchedDirectors.join(', ')} :`;
     } else if (intent.matchedActors.length) {
@@ -2111,7 +2034,7 @@ function fishAnswerGenreRequest(message, catalogue) {
     }
 
     if (/aide|help|comment|que peux tu faire/.test(message)) {
-      return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou une suggestion au hasard. Exemple : “un film de SF de moins de 2h”, “un film intelligent” ou “qui a réalisé Titanic ?”.';
+      return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou une suggestion au hasard. Exemple : “un film de SF de moins de 2h”, “un film avec Sigourney Weaver” ou “qui a réalisé Titanic ?”.';
     }
 
     try {
@@ -2122,7 +2045,6 @@ function fishAnswerGenreRequest(message, catalogue) {
       return 'Bloup... impossible de lire le catalogue pour le moment. Le poisson garde son calme, mais pas son honneur.';
     }
   }
-
   async function askFish(message) {
     const clean = message.trim();
 
