@@ -1599,6 +1599,18 @@ const SESSION_PROFILE_RULES = [
 
     const exact = records.find(record => record.titleNorm === q);
     if (exact) return exact;
+    // Cas particulier : si la requête est un titre de saga ("alien", "dune", "avatar"...)
+// on privilégie le premier film qui commence par ce mot suivi d'un espace ou d'une virgule.
+const startsWith = records.find(record => {
+  return (
+    record.titleNorm.startsWith(q + " ") ||
+    record.titleNorm.startsWith(q + ",")
+  );
+});
+
+if (startsWith) {
+  return startsWith;
+}
 
     const included = records
       .map(record => {
