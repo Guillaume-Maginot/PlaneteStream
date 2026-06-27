@@ -661,9 +661,21 @@ function fishAnswerGenreRequest(message, catalogue) {
       if (!recordMatchesTopic(record, TOPIC_RULES.find(topic => topic.label === 'zombies'))) {
         return false;
       }
-    } else if (!recordHasGenre(record, wantedGenre)) {
-      return false;
+    } else {
+  const recordGenres = record.genres.map(genre => fishNormalize(genre));
+
+  const strictGenreMatch = recordGenres.some(genre => {
+    if (genreKey === 'science_fiction') {
+      return genre === 'science fiction' || genre === 'science fiction aventure';
     }
+
+    return genre === fishNormalize(wantedGenre);
+  });
+
+  if (!strictGenreMatch) {
+    return false;
+  }
+}
 
     if (wantsPremium) {
   const rawPremium = record.item && record.item.premium;
