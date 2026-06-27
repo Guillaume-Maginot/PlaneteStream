@@ -747,6 +747,7 @@ if (hasActorIntent && !actorQuery) {
   let cataloguePromise = null;
   let catalogueCache = null;
   let recordsCache = null;
+  let fishLastSearchMessage = '';
 
   const states = {
     idle: {
@@ -2267,6 +2268,40 @@ if (/\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
 
     return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, intent)}`;
   }
+function fishIsFollowUpMessage(rawMessage) {
+  const m = normalize(rawMessage);
+
+  return (
+    /^(et|puis|sinon|alors)\b/.test(m) ||
+    /^(en premium|premium|avec|sans|moins de|plus de|court|rapide|pas trop long|bien note|mieux note|meilleur)/.test(m)
+  );
+}
+
+function fishShouldRememberMessage(rawMessage) {
+  const m = normalize(rawMessage);
+
+  if (!m) return false;
+
+  if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(m)) return false;
+  if (/merci|thanks/.test(m)) return false;
+  if (/qui es tu|t es qui|tu es qui|comment tu t appelles|ton nom|tu t appelles|bubulle/.test(m)) return false;
+  if (/aide|help|comment|que peux tu faire/.test(m)) return false;
+
+  return true;
+}
+
+function fishApplyConversationMemory(rawMessage) {
+  if (!fishLastSearchMessage) {
+    return rawMessage;
+  }
+
+  if (!fishIsFollowUpMessage(rawMessage)) {
+    return rawMessage;
+  }
+
+  return `${fishLastSearchMessage} ${rawMessage}`;
+}
+
 
   async function localBrain(rawMessage) {
     const clean = rawMessage.trim();
@@ -2298,7 +2333,14 @@ if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artifi
 
     try {
       const catalogue = await loadCatalogue();
-      return buildCatalogueAnswer(clean, catalogue);
+const contextualMessage = fishApplyConversationMemory(clean);
+const answer = buildCatalogueAnswer(contextualMessage, catalogue);
+
+if (fishShouldRememberMessage(contextualMessage)) {
+  fishLastSearchMessage = contextualMessage;
+}
+
+return answer;
     } catch (error) {
       console.error(error);
       return 'Bloup... impossible de lire le catalogue pour le moment. Le poisson garde son calme, mais pas son honneur.';
