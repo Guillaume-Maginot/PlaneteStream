@@ -1671,6 +1671,75 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `${intro}\n\n${results.map(itemLine).join('\n')}${comment}`;
   }
 
+function fishDetectMoodIntent(message) {
+  const m = normalize(message);
+
+  const rules = [
+    {
+      mood: 'léger',
+      pattern: /detendre|détendre|cerveau off|sans reflechir|sans réfléchir|journee de merde|journée de merde|rire|marrer|fun|leger|léger/,
+      genres: ['comédie', 'animation', 'familial'],
+      intro: 'Pour une séance légère, Bubulle propose :'
+    },
+    {
+      mood: 'spectaculaire',
+      pattern: /plein les yeux|spectaculaire|epique|épique|qui bouge|action|explosif|grand spectacle/,
+      genres: ['action', 'aventure', 'science-fiction'],
+      intro: 'Pour en prendre plein les yeux, le bocal recommande :'
+    },
+    {
+      mood: 'frisson',
+      pattern: /peur|flipper|angoisse|angoissant|horreur|fais moi peur|fais-moi peur|sombre/,
+      genres: ['horreur', 'thriller'],
+      intro: 'Pour faire grincer le canapé, Bubulle a trouvé :'
+    },
+    {
+      mood: 'réflexion',
+      pattern: /reflechir|réfléchir|intelligent|complexe|cerveau|prise de tete|prise de tête|mindfuck|profond/,
+      genres: ['science-fiction', 'thriller', 'drame'],
+      intro: 'Pour nourrir les neurones sans les noyer, Bubulle propose :'
+    },
+    {
+      mood: 'soirée',
+      pattern: /ce soir|soirée|quoi regarder|je regarde quoi|propose moi quelque chose|surprends moi/,
+      genres: ['action', 'comédie', 'science-fiction', 'thriller'],
+      intro: 'Pour ce soir, Bubulle sortirait ces bobines du bocal :'
+    }
+  ];
+
+  return rules.find(rule => rule.pattern.test(m)) || null;
+}
+
+function fishAnswerMoodRequest(rawMessage, records) {
+  const mood = fishDetectMoodIntent(rawMessage);
+
+  if (!mood) return null;
+
+  const durationFilter = fishDetectDurationFilter(rawMessage);
+
+  let results = records.filter(record => {
+    const genreOk = mood.genres.some(genre => recordHasGenre(record, genre));
+    const durationOk = !durationFilter || fishRecordMatchesDurationFilter(record, durationFilter);
+
+    return genreOk && durationOk;
+  });
+
+  results = results
+    .sort((a, b) =>
+      b.rating - a.rating ||
+      a.title.localeCompare(b.title, 'fr')
+    )
+    .slice(0, 5);
+
+  if (!results.length) {
+    return 'Bloup... j’ai compris l’ambiance demandée, mais je ne trouve pas de titre assez fiable dans le catalogue. Le poisson refuse le conseil au doigt mouillé.';
+  }
+
+  const extra = durationFilter ? ` ${durationFilter.label}` : '';
+
+  return `${mood.intro}${extra}\n\n${results.map(itemLine).join('\n')}\n\nJ’ai traduit ta demande en intention de séance, puis j’ai filtré le catalogue par genres proches. Bubulle commence à comprendre les humains, ce qui est inquiétant mais pratique.`;
+}
+
   function buildIntent(rawMessage, records) {
     const m = normalize(rawMessage);
     const durationMax = parseDurationLimit(rawMessage);
@@ -1938,8 +2007,14 @@ function fishAnswerGenreRequest(message, catalogue) {
     return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
   }
 
-    const message = normalize(rawMessage);
   const records = getRecords(catalogue);
+
+const moodAnswer = fishAnswerMoodRequest(rawMessage, records);
+if (moodAnswer) {
+  return moodAnswer;
+}
+
+const similarAnswer = answerSimilarRequest(rawMessage, records);
 
   const similarAnswer = answerSimilarRequest(rawMessage, records);
   if (similarAnswer) {
