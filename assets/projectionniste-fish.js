@@ -1912,7 +1912,16 @@ function fishAnswerGenreRequest(message, catalogue) {
     if (record.premium) {
       score += 1;
     }
+if (intent.wantedGenres.length) {
+  const strictGenreOk = intent.wantedGenres.some(genre => {
+    const wanted = normalize(genre);
+    return record.genres.some(recordGenre => normalize(recordGenre) === wanted);
+  });
 
+  if (!strictGenreOk) {
+    return -999;
+  }
+}
     intent.freeTerms.forEach(term => {
       const t = normalize(term);
 
