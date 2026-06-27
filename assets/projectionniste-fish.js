@@ -2285,21 +2285,33 @@ if (
   const NB_REPONSE = 10;
 
   const derniers = catalogue
-    .slice(-NB_NOUVEAUTES)
-    .reverse()
-    .slice(0, NB_REPONSE);
+  .slice(-NB_NOUVEAUTES)
+  .reverse();
 
-  if (!derniers.length) {
-    return "Bloup... je ne trouve aucune nouveauté dans le catalogue.";
-  }
+if (!derniers.length) {
+  return "Bloup... je ne trouve aucune nouveauté dans le catalogue.";
+}
 
-  let reponse = "🐠 Bloup ! Voici les derniers films ajoutés au catalogue :\n\n";
+// Réutilise le système "Encore"
+fishLastResults = [...derniers];
+fishLastOffset = Math.min(5, derniers.length);
 
-  derniers.forEach((film, index) => {
-    reponse += `${index + 1}. ${film.title}\n`;
-  });
+const visibles = derniers.slice(0, 5);
 
-  return reponse.trim();
+let reponse = "🐠 Bloup ! Voici les derniers films ajoutés au catalogue :\n\n";
+
+reponse += visibles
+  .map((film, index) => `${index + 1}. ${film.title}`)
+  .join("\n");
+
+const restant = derniers.length - visibles.length;
+
+if (restant > 0) {
+  reponse += `\n\n... et ${restant} autre${restant > 1 ? "s" : ""} nouveauté${restant > 1 ? "s" : ""}.`;
+  reponse += "\nÉcris simplement « Encore » pour voir la suite.";
+}
+
+return reponse;
 }
   
     // PRIORITÉ ABSOLUE : Premium
