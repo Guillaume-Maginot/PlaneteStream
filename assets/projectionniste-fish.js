@@ -37,21 +37,13 @@ const FISH_GENRE_SYNONYMS = {
   ],
 
   horreur: [
-  'horreur',
-  'épouvante',
-  'epouvante',
-  'horror',
-  'film d horreur',
-  'film de peur',
-  'peur',
-  'fait peur',
-  'faire peur',
-  'fais peur',
-  'flipper',
-  'angoisse',
-  'angoissant',
-  'effrayant'
-],
+    'horreur',
+    'épouvante',
+    'epouvante',
+    'horror',
+    'film d horreur',
+    'film de peur'
+  ],
 
   science_fiction: [
     'science fiction',
@@ -719,14 +711,13 @@ function fishAnswerGenreRequest(message, catalogue) {
       'genre', 'genres', 'type', 'duree', 'durée', 'heure', 'heures',
       'minute', 'minutes', 'min', 'moins', 'plus', 'trop', 'tres', 'très',
       'meilleur', 'meilleure', 'top', 'note', 'noté', 'notée',
-      'catalogue', 'planete', 'stream', 'planetestream','fait',
-       'fais', 'faire', 'voir', 'regarder', 'envie',
+      'catalogue', 'planete', 'stream', 'planetestream'
     ].map(normalize)
   );
 
   const GENRE_ALIASES = [
     ['science-fiction', ['science fiction', 'sf', 'sci fi', 'sci-fi', 'futuriste', 'espace', 'spatial']],
-    ['horreur', ['horreur', 'horrifique', 'peur', 'fait peur', 'faire peur', 'fais peur', 'flipper', 'angoisse', 'angoissant', 'gore', 'epouvante', 'épouvante']],
+    ['horreur', ['horreur', 'horrifique', 'peur', 'gore', 'epouvante', 'épouvante']],
     ['thriller', ['thriller', 'suspense']],
     ['action', ['action', 'baston', 'combat']],
     ['aventure', ['aventure']],
@@ -826,67 +817,7 @@ function fishAnswerGenreRequest(message, catalogue) {
       pattern: /espion|espionnage|agent secret|mission secrete|mission secrète/,
       terms: ['espion', 'agent secret', 'mission'],
       genres: ['action', 'thriller', 'aventure']
-    },
-    {
-  label: 'catastrophes',
-  pattern: /catastrophe|catastrophes|tsunami|tremblement de terre|seisme|séisme|volcan|meteorite|météorite|fin du monde/,
-  terms: [
-    'catastrophe',
-    'tsunami',
-    'séisme',
-    'seisme',
-    'volcan',
-    'météorite',
-    'meteorite',
-    'fin du monde'
-  ],
-  genres: ['action', 'thriller']
-},
-{
-  label: 'prison',
-  pattern: /prison|evasion|évasion|detenu|détenu/,
-  terms: [
-    'prison',
-    'évasion',
-    'evasion',
-    'détenu',
-    'detenu'
-  ],
-  genres: ['crime', 'thriller']
-},
-{
-  label: 'survie',
-  pattern: /survie|survivre|survivant|survivants/,
-  terms: [
-    'survie',
-    'survivre',
-    'survivant',
-    'survivants'
-  ],
-  genres: ['aventure', 'thriller']
-},
-{
-  label: 'post-apocalyptique',
-  pattern: /post apocalyptique|post-apocalyptique|apocalypse|apocalyptique|fin du monde/,
-  terms: [
-    'post-apocalyptique',
-    'apocalypse',
-    'apocalyptique',
-    'fin du monde'
-  ],
-  genres: ['science-fiction', 'action']
-},
-{
-  label: 'voyage temporel',
-  pattern: /voyage dans le temps|voyage temporel|machine a voyager dans le temps|machine à voyager dans le temps|boucle temporelle/,
-  terms: [
-    'voyage temporel',
-    'voyage dans le temps',
-    'boucle temporelle',
-    'temps'
-  ],
-  genres: ['science-fiction']
-},
+    }
   ];
 
   function randomBetween(min, max) {
@@ -1524,26 +1455,26 @@ function fishAnswerGenreRequest(message, catalogue) {
     return `Dans ${record.title}, le catalogue indique notamment :\n\n${record.cast.slice(0, 8).map(personLine).join('\n')}`;
   }
 
-function fishIsSimilarityRequest(message) {
-  const m = normalize(message);
+    function fishIsSimilarityRequest(message) {
+    const m = normalize(message);
 
-  return (
-    /\bcomme\b/.test(m) ||
-    /\bmeme genre que\b/.test(m) ||
-    /\bmeme style que\b/.test(m) ||
-    /\bdans le meme genre que\b/.test(m) ||
-    /\bdans le style de\b/.test(m) ||
-    /\bsimilaire a\b/.test(m) ||
-    /\bressemble a\b/.test(m) ||
-    /\bj ai aime\b/.test(m) ||
-    /\bj ai bien aime\b/.test(m) ||
-    /\bj ai adore\b/.test(m) ||
-    /\bj adore\b/.test(m) ||
-    /\bj aime\b/.test(m)
-  );
-}
+    return (
+      /\bcomme\b/.test(m) ||
+      /\bmeme genre que\b/.test(m) ||
+      /\bmeme style que\b/.test(m) ||
+      /\bdans le meme genre que\b/.test(m) ||
+      /\bdans le style de\b/.test(m) ||
+      /\bsimilaire a\b/.test(m) ||
+      /\bressemble a\b/.test(m) ||
+      /\bj ai aime\b/.test(m) ||
+      /\bj ai bien aime\b/.test(m) ||
+      /\bj ai adore\b/.test(m) ||
+      /\bj adore\b/.test(m) ||
+      /\bj aime\b/.test(m)
+    );
+  }
 
-   function fishCleanSimilarityTitleQuery(query) {
+  function fishCleanSimilarityTitleQuery(query) {
     return normalize(query)
       .replace(/\b(tu me proposes quoi|tu proposes quoi|quoi regarder ensuite|je regarde quoi ensuite|tu as quoi|qu est ce que tu proposes|que proposes tu)\b/g, ' ')
       .replace(/\b(dans le meme style|dans le meme genre|du meme genre|similaire|semblable|proche)\b/g, ' ')
@@ -1942,41 +1873,41 @@ function fishIsSimilarityRequest(message) {
   }
 
   function pickResults(records, intent) {
-  let candidates = records
-    .map(record => ({
-      record,
-      score: scoreRecord(record, intent)
-    }))
-    .filter(entry => entry.score >= 18);
+    let candidates = records
+      .map(record => ({
+        record,
+        score: scoreRecord(record, intent)
+      }))
+      .filter(entry => entry.score >= 18);
 
-  if (intent.hasStrongSignal && !intent.wantsRandom) {
-    candidates = candidates.filter(entry => entry.score >= 25);
+    if (intent.hasStrongSignal && !intent.wantsRandom) {
+      candidates = candidates.filter(entry => entry.score >= 25);
+    }
+
+    if (intent.wantsRandom && !candidates.length) {
+      candidates = records.map(record => ({
+        record,
+        score: Math.random() * 20 + record.rating
+      }));
+    }
+
+    if (intent.wantsBest) {
+      candidates.sort((a, b) =>
+        b.record.rating - a.record.rating ||
+        b.score - a.score ||
+        a.record.title.localeCompare(b.record.title, 'fr')
+      );
+    } else if (intent.wantsRandom) {
+      candidates.sort(() => Math.random() - 0.5);
+    } else {
+      candidates.sort((a, b) =>
+        b.score - a.score ||
+        a.record.title.localeCompare(b.record.title, 'fr')
+      );
+    }
+
+    return candidates.slice(0, 5).map(entry => entry.record);
   }
-
-  if (intent.wantsRandom && !candidates.length) {
-    candidates = records.map(record => ({
-      record,
-      score: Math.random() * 20 + record.rating
-    }));
-  }
-
-  if (intent.wantsBest) {
-    candidates.sort((a, b) =>
-      b.record.rating - a.record.rating ||
-      b.score - a.score ||
-      a.record.title.localeCompare(b.record.title, 'fr')
-    );
-  } else if (intent.wantsRandom) {
-    candidates.sort(() => Math.random() - 0.5);
-  } else {
-    candidates.sort((a, b) =>
-      b.score - a.score ||
-      a.record.title.localeCompare(b.record.title, 'fr')
-    );
-  }
-
-  return candidates.slice(0, 5).map(entry => entry.record);
-}
 
   function explainNoResult(intent) {
     if (intent.directorRequest && intent.freeTerms.length && !intent.matchedDirectors.length && !intent.wantedGenres.length && !intent.topics.length) {
@@ -2007,13 +1938,13 @@ function fishIsSimilarityRequest(message) {
     return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
   }
 
-const message = normalize(rawMessage);
-const records = getRecords(catalogue);
+    const message = normalize(rawMessage);
+  const records = getRecords(catalogue);
 
-const similarAnswer = answerSimilarRequest(rawMessage, records);
-if (similarAnswer) {
-  return similarAnswer;
-}
+  const similarAnswer = answerSimilarRequest(rawMessage, records);
+  if (similarAnswer) {
+    return similarAnswer;
+  }
 
   const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
   if (genreAnswer) {
