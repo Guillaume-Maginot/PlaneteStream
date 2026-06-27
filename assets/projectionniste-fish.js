@@ -1804,7 +1804,8 @@ matchedMoods.forEach(mood => {
 
     const matchedDirectors = directorRequest ? findMatchingDirectors(records, directorQuery || rawMessage) : [];
     const matchedActors = actorRequest ? findMatchingActors(records, actorQuery || rawMessage) : [];
-
+    const missingActor = actorRequest && !matchedActors.length;
+const missingDirector = directorRequest && !matchedDirectors.length;
     const freeTerms = unique([
       ...tokenize(rawMessage),
       ...topics.flatMap(topic => topic.terms).map(normalize)
@@ -1857,6 +1858,8 @@ matchedMoods.forEach(mood => {
       actorRequest,
       matchedDirectors,
       matchedActors,
+      missingActor,
+      missingDirector,
       freeTerms,
       hasStrongSignal
     };
@@ -2034,6 +2037,9 @@ if (intent.wantedGenres.length) {
   }
 
   function pickResults(records, intent) {
+      if (intent.missingActor || intent.missingDirector) {
+    return [];
+  }
     let candidates = records
       .map(record => ({
         record,
@@ -2071,6 +2077,13 @@ if (intent.wantedGenres.length) {
   }
 
   function explainNoResult(intent) {
+        if (intent.missingActor) {
+      return 'Bloup... je n’ai trouvé aucun acteur ou actrice correspondant dans le JSON. Je préfère ne pas remplacer la personne demandée par un film vaguement proche.';
+    }
+
+    if (intent.missingDirector) {
+      return 'Bloup... je n’ai trouvé aucun réalisateur correspondant dans le JSON. Le poisson refuse la filmographie au doigt mouillé.';
+    }
     if (intent.directorRequest && intent.freeTerms.length && !intent.matchedDirectors.length && !intent.wantedGenres.length && !intent.topics.length) {
       return 'Bloup... je n’ai trouvé aucun réalisateur correspondant dans le JSON. Je préfère garder mes bulles plutôt que d’inventer une filmographie.';
     }
