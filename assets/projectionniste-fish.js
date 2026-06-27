@@ -665,9 +665,20 @@ function fishAnswerGenreRequest(message, catalogue) {
       return false;
     }
 
-    if (wantsPremium && !record.premium) {
-      return false;
-    }
+    if (wantsPremium) {
+  const rawPremium = record.item && record.item.premium;
+
+  const isStrictPremium =
+    rawPremium === true ||
+    rawPremium === 1 ||
+    String(rawPremium || '').toLowerCase() === 'true' ||
+    String(rawPremium || '').toLowerCase() === 'oui' ||
+    String(rawPremium || '').toLowerCase() === 'yes';
+
+  if (!isStrictPremium) {
+    return false;
+  }
+}
 
     if (actorQuery && !fishMovieMatchesActor(record.item, actorQuery)) {
       return false;
