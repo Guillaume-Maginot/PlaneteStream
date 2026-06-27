@@ -2007,7 +2007,7 @@ function fishAnswerMoodRequest(rawMessage, records) {
     return 'Bloup... je n’arrive pas à lire le catalogue pour le moment. Le bocal est branché, mais les bobines font grève.';
   }
 
-  const records = getRecords(catalogue);
+const records = getRecords(catalogue);
 
 const moodAnswer = fishAnswerMoodRequest(rawMessage, records);
 if (moodAnswer) {
@@ -2015,11 +2015,9 @@ if (moodAnswer) {
 }
 
 const similarAnswer = answerSimilarRequest(rawMessage, records);
-
-  const similarAnswer = answerSimilarRequest(rawMessage, records);
-  if (similarAnswer) {
-    return similarAnswer;
-  }
+if (similarAnswer) {
+  return similarAnswer;
+}
 
   const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
   if (genreAnswer) {
