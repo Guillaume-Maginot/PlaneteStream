@@ -1740,42 +1740,6 @@ function fishIsSimilarityRequest(message) {
     return `${intro}\n\n${results.map(itemLine).join('\n')}${comment}`;
   }
 
-function fishDetectMoodIntent(message) {
-  const m = normalize(message);
-
-  const rules = [
-    {
-      mood: 'léger',
-      pattern: /detendre|détendre|cerveau off|sans reflechir|sans réfléchir|journee de merde|journée de merde|rire|marrer|fun|leger|léger/,
-      genres: ['comédie', 'animation', 'familial'],
-      intro: 'Pour une séance légère, Bubulle propose :'
-    },
-    {
-      mood: 'spectaculaire',
-      pattern: /plein les yeux|spectaculaire|epique|épique|qui bouge|action|explosif|grand spectacle/,
-      genres: ['action', 'aventure', 'science-fiction'],
-      intro: 'Pour en prendre plein les yeux, le bocal recommande :'
-    },
-    {
-      mood: 'frisson',
-      pattern: /peur|flipper|angoisse|angoissant|horreur|fais moi peur|fais-moi peur|sombre/,
-      genres: ['horreur', 'thriller'],
-      intro: 'Pour faire grincer le canapé, Bubulle a trouvé :'
-    },
-    {
-      mood: 'réflexion',
-      pattern: /reflechir|réfléchir|intelligent|complexe|cerveau|prise de tete|prise de tête|mindfuck|profond/,
-      genres: ['science-fiction', 'thriller', 'drame'],
-      intro: 'Pour nourrir les neurones sans les noyer, Bubulle propose :'
-    },
-    {
-      mood: 'soirée',
-      pattern: /ce soir|soirée|quoi regarder|je regarde quoi|propose moi quelque chose|surprends moi/,
-      genres: ['action', 'comédie', 'science-fiction', 'thriller'],
-      intro: 'Pour ce soir, Bubulle sortirait ces bobines du bocal :'
-    }
-  ];
-
   return rules.find(rule => rule.pattern.test(m)) || null;
 }
 
