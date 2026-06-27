@@ -636,8 +636,8 @@ function fishAnswerGenreRequest(message, catalogue) {
   }
 
   if (wantsPremium) {
-    return movie.premium === true || String(movie.premium || '').toLowerCase() === 'true';
-  }
+  return isPremiumItemV2(movie);
+}
 
   return true;
 });
