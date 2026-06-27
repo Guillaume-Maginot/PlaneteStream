@@ -665,6 +665,12 @@ function fishAnswerGenreRequest(message, catalogue) {
   const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(fishNormalize(message));
   const actorQuery = fishDetectActorFilter(message, catalogue);
   const actorLabel = actorQuery ? fishDisplayActorQuery(actorQuery) : '';
+  const hasActorIntent =
+  /\bavec\b|\bacteur\b|\bactrice\b|\bcasting\b|\bjoue\b|\bjouent\b/.test(fishNormalize(message));
+
+if (hasActorIntent && !actorQuery) {
+  return 'Bloup... je n’ai trouvé aucun acteur ou actrice correspondant dans le JSON. Je préfère ne pas remplacer la personne demandée par un film vaguement proche.';
+}
   const label = FISH_GENRE_LABELS[genreKey] || genreKey;
   const labelWithActor = actorLabel ? `${label} avec ${actorLabel}` : label;
 
