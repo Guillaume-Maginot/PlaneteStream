@@ -2054,7 +2054,39 @@ if (intent.wantedGenres.length) {
     if (/casting de|acteurs de|actrices de|qui joue dans|avec qui dans/.test(message)) {
       return answerCastOfTitle(rawMessage, records);
     }
+    // Sécurité stricte SF : on ne garde QUE les titres dont le champ genres contient Science-Fiction.
+if (/\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
+  const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(message);
 
+  const results = records.filter(record => {
+    const hasScienceFiction = record.genres.some(genre => {
+      return normalize(genre) === 'science fiction';
+    });
+
+    if (!hasScienceFiction) return false;
+
+    if (wantsPremium) {
+      const rawPremium = record.item && record.item.premium;
+
+      const isStrictPremium =
+        rawPremium === true ||
+        rawPremium === 1 ||
+        String(rawPremium || '').toLowerCase() === 'true' ||
+        String(rawPremium || '').toLowerCase() === 'oui' ||
+        String(rawPremium || '').toLowerCase() === 'yes';
+
+      if (!isStrictPremium) return false;
+    }
+
+    return true;
+  });
+
+  if (!results.length) {
+    return `Je ne trouve pas de film de science-fiction${wantsPremium ? ' Premium' : ''} dans le catalogue.`;
+  }
+
+  return `Pour un film de science-fiction${wantsPremium ? ' Premium' : ''}, j’ai trouvé :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
+}
      const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
   if (genreAnswer) {
     return genreAnswer;
