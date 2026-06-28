@@ -2182,7 +2182,7 @@ function fishRecommendationReason(record, intent = {}) {
       (mood.genres || []).some(genre => recordHasGenre(record, genre)) ||
       (mood.terms || []).some(term => record.allNorm && record.allNorm.includes(normalize(term)))
     ) {
-      reasons.push(`son ambiance colle à “${mood.label}”`);
+      reasons.push(fishPickText([`son ambiance colle à “${mood.label}”`, `il reste dans la couleur “${mood.label}”`, `il suit bien l’envie “${mood.label}”`]));
     }
   }
 
@@ -2196,7 +2196,7 @@ function fishRecommendationReason(record, intent = {}) {
       profile.preferSpectacle ||
       profile.preferLight
     ) {
-      reasons.push(`il colle au profil de séance “${profile.label}”`);
+      reasons.push(fishPickText([`il colle au profil de séance “${profile.label}”`, `il respecte bien l’idée “${profile.label}”`, `il reste adapté à une séance “${profile.label}”`]));
     }
   }
 
@@ -2205,7 +2205,7 @@ function fishRecommendationReason(record, intent = {}) {
   }
 
   if (intent.wantsRandom) {
-    reasons.push('il sort d’une pioche contrôlée dans le catalogue');
+    reasons.push(fishPickText(['il sort d’une pioche contrôlée dans le catalogue', 'le hasard l’a remonté sans sortir du JSON', 'il fait partie des bobines piochées proprement']));
   }
 
   if (!reasons.length) {
@@ -2223,7 +2223,19 @@ function fishRecommendationReason(record, intent = {}) {
   return reasons.slice(0, 2).join(' ; ');
 }
 
+function fishShouldExplainRecommendation(intent = {}) {
+  return Boolean(
+    intent.wantsRandom ||
+    (intent.matchedMoods && intent.matchedMoods.length) ||
+    (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length)
+  );
+}
+
 function fishMovieLineWithReason(record, index, intent = {}) {
+  if (!fishShouldExplainRecommendation(intent)) {
+    return fishMovieLine(record, index);
+  }
+
   const reason = fishRecommendationReason(record, intent);
 
   if (!reason) {
