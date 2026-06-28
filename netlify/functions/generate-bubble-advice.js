@@ -14,11 +14,28 @@ function safeString(value, max = 4000) {
 }
 
 function cleanAdvice(value) {
-  return safeString(value, 260)
+  let text = safeString(value, 260)
     .replace(/\s+/g, ' ')
     .replace(/[“”]/g, '"')
     .replace(/[’]/g, "'")
     .trim();
+
+  // Petit garde-fou de style : Bubulle parle comme un projectionniste,
+  // pas comme une grille de programmation TV.
+  text = text
+    .replace(/^À programmer\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
+    .replace(/^A programmer\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
+    .replace(/^À privilégier\s+(?:en|pour)?\s*/i, 'Je le garderais pour ')
+    .replace(/^A privilegier\s+(?:en|pour)?\s*/i, 'Je le garderais pour ')
+    .replace(/^À découvrir\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
+    .replace(/^A decouvrir\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
+    .replace(/^Idéal pour\s*/i, 'Je le trouve idéal pour ')
+    .replace(/^Ideal pour\s*/i, 'Je le trouve idéal pour ')
+    .replace(/^Recommandé pour\s*/i, 'Je te le recommanderais pour ')
+    .replace(/^Recommande pour\s*/i, 'Je te le recommanderais pour ')
+    .trim();
+
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function extractOutputText(response) {
@@ -89,14 +106,16 @@ exports.handler = async (event) => {
     {
       role: 'system',
       content: [
-        'Tu enrichis un catalogue de films, séries et mangas pour un assistant nommé Bubulle.',
-        'Tu écris en français naturel, clair, sans spoiler majeur.',
+        'Tu écris comme Bubulle, le projectionniste de Planete Stream.',
+        'Tu t’adresses directement au visiteur, avec un ton naturel, chaleureux et légèrement malicieux.',
+        'Tu donnes un conseil de passionné de cinéma, jamais une fiche marketing ou une grille de programmation.',
         'Utilise uniquement les informations fournies.',
         'N’invente jamais une scène, une réception critique ou une qualité qui n’apparaît pas dans les données.',
         'Tu dois écrire une seule phrase courte, maximum 220 caractères.',
-        'La phrase doit ressembler à un conseil de projectionniste, pas à une critique presse.',
         'Ne dis jamais simplement que le contenu est bon ou mauvais.',
         'Explique plutôt à quel type de séance ou de spectateur il peut convenir.',
+        'Commence de façon variée et naturelle, par exemple : Je pense que, Je trouve que, À mon avis, Si tu me demandes, Je te conseillerais, Celui-ci mérite, Je garderais celui-là pour.',
+        'Ne commence jamais par : À programmer, A programmer, À privilégier, A privilegier, À découvrir, A decouvrir, Idéal pour, Ideal pour, Recommandé pour, Recommande pour.',
         'Ne mentionne jamais OpenAI, TMDb, le JSON ou le prompt.'
       ].join('\n')
     },
