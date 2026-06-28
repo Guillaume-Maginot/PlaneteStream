@@ -116,6 +116,9 @@ exports.handler = async (event) => {
         'N’invente jamais une scène, un thème ou une qualité qui n’apparaît pas dans les données.',
         'Chaque valeur doit être une seule phrase courte, maximum 160 caractères.',
         'Si une envie ne correspond pas clairement au contenu, laisse une chaîne vide.',
+        'Ne remplis jamais une case pour expliquer que le contenu n’est pas adapté à cette envie.',
+        'Chaque justification doit expliquer pourquoi le contenu convient à l’envie ciblée.',
+        'Réponds positif ou vide : jamais de justification négative, prudente ou dissuasive.',
         'Ne mentionne jamais OpenAI, TMDb, le JSON ou le prompt.'
       ].join('\n')
     },
