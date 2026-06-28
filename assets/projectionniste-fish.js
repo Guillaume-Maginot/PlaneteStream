@@ -1048,7 +1048,7 @@ function fishContinueLastResults() {
 
   return answer;
 }
-function fishFormatTitleResults(results, intro) {
+function fishFormatTitleResults(results, intro, context = {}) {
   fishLastResults = [...results];
 fishLastOffset = Math.min(5, results.length);
   const visibleResults = results.slice(0, 5);
@@ -1057,7 +1057,7 @@ fishLastOffset = Math.min(5, results.length);
   let answer = `${intro}\n`;
 
   answer += visibleResults
-    .map(fishMovieLine)
+    .map((movie, index) => fishMovieLineWithReason(movie, index, context))
     .join('\n');
 
   if (remaining > 0) {
@@ -1195,7 +1195,14 @@ if (hasActorIntent && !actorQuery) {
     ? `Pour ${mediaWord} ${labelWithActor}${wantsPremium ? ' Premium' : ''} ${durationFilter.label}, j’ai trouvé :`
     : `Pour ${mediaWord} ${labelWithActor}${wantsPremium ? ' Premium' : ''}, j’ai trouvé :`;
 
-  return fishFormatTitleResults(results, intro);
+  return fishFormatTitleResults(results, intro, {
+    rawMessage: message,
+    requestedType,
+    wantedGenres: [wantedGenre],
+    wantsPremium,
+    matchedActors: actorQuery ? [actorQuery] : [],
+    durationMax: durationFilter && durationFilter.max ? durationFilter.max : null
+  });
 }
 
   if (!widget || !chat || !form || !input || !messages) return;
@@ -2096,6 +2103,134 @@ const SESSION_PROFILE_RULES = [
 
  function itemLine(record, index) {
   return fishMovieLine(record, index);
+}
+
+function fishReasonLabel(value) {
+  const clean = String(value || '').trim();
+
+  if (!clean) return '';
+
+  const normalized = normalize(clean);
+
+  const labels = {
+    'comedie': 'comédie',
+    'science fiction': 'science-fiction',
+    'science-fiction': 'science-fiction',
+    'mystere': 'mystère'
+  };
+
+  return labels[normalized] || clean;
+}
+
+function fishRecommendationReason(record, intent = {}) {
+  const reasons = [];
+
+  if (!record) return '';
+
+  if (intent.requestedType && normalize(record.type) === normalize(intent.requestedType)) {
+    const media = normalize(intent.requestedType) === 'serie' ? 'série' :
+      normalize(intent.requestedType) === 'manga' ? 'manga' :
+      'film';
+
+    reasons.push(`c’est bien un ${media}`);
+  }
+
+  if (intent.wantsPremium && record.premium) {
+    reasons.push('il est marqué Premium dans le JSON');
+  }
+
+  if (intent.matchedActors && intent.matchedActors.length && recordHasActor(record, intent.matchedActors)) {
+    reasons.push(`on retrouve ${intent.matchedActors.join(', ')} au casting`);
+  }
+
+  if (intent.matchedDirectors && intent.matchedDirectors.length && recordHasDirector(record, intent.matchedDirectors)) {
+    reasons.push(`la réalisation correspond à ${intent.matchedDirectors.join(', ')}`);
+  }
+
+  if (intent.wantedGenres && intent.wantedGenres.length) {
+    const matchedGenres = intent.wantedGenres
+      .filter(genre => recordHasGenre(record, genre))
+      .map(fishReasonLabel)
+      .slice(0, 2);
+
+    if (matchedGenres.length) {
+      reasons.push(`il coche le genre ${matchedGenres.join(' / ')}`);
+    }
+  }
+
+  if (intent.topics && intent.topics.length) {
+    const matchedTopics = intent.topics
+      .filter(topic => recordMatchesTopic(record, topic))
+      .map(topic => topic.label)
+      .slice(0, 2);
+
+    if (matchedTopics.length) {
+      reasons.push(`le thème ${matchedTopics.join(' / ')} ressort du catalogue`);
+    }
+  }
+
+  if (intent.durationMax && record.runtime && record.runtime <= intent.durationMax) {
+    reasons.push(`sa durée reste dans la limite demandée (${fishFormatDuration(record.runtime)})`);
+  } else if (intent.wantsShort && record.runtime && record.runtime <= 110) {
+    reasons.push(`sa durée reste raisonnable (${fishFormatDuration(record.runtime)})`);
+  }
+
+  if (intent.matchedMoods && intent.matchedMoods.length) {
+    const mood = intent.matchedMoods[0];
+
+    if (
+      (mood.genres || []).some(genre => recordHasGenre(record, genre)) ||
+      (mood.terms || []).some(term => record.allNorm && record.allNorm.includes(normalize(term)))
+    ) {
+      reasons.push(`son ambiance colle à “${mood.label}”`);
+    }
+  }
+
+  if (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length) {
+    const profile = intent.matchedSessionProfiles[0];
+
+    if (
+      (profile.genres || []).some(genre => recordHasGenre(record, genre)) ||
+      (profile.maxRuntime && record.runtime && record.runtime <= profile.maxRuntime) ||
+      profile.preferRating ||
+      profile.preferSpectacle ||
+      profile.preferLight
+    ) {
+      reasons.push(`il colle au profil de séance “${profile.label}”`);
+    }
+  }
+
+  if (intent.wantsBest && record.rating) {
+    reasons.push(`sa note le fait remonter dans le tri`);
+  }
+
+  if (intent.wantsRandom) {
+    reasons.push('il sort d’une pioche contrôlée dans le catalogue');
+  }
+
+  if (!reasons.length) {
+    const genres = fishMovieGenresForDisplay(record).slice(0, 2);
+
+    if (genres.length) {
+      reasons.push(`ses genres (${genres.join(', ')}) correspondent au courant de la demande`);
+    }
+  }
+
+  if (!reasons.length) {
+    reasons.push('il ressort comme candidat solide dans le catalogue');
+  }
+
+  return reasons.slice(0, 2).join(' ; ');
+}
+
+function fishMovieLineWithReason(record, index, intent = {}) {
+  const reason = fishRecommendationReason(record, intent);
+
+  if (!reason) {
+    return fishMovieLine(record, index);
+  }
+
+  return `${fishMovieLine(record, index)}\n   ↳ Pourquoi : ${reason}.`;
 }
 
   function personLine(name, index) {
@@ -3242,7 +3377,7 @@ return reponse;
       ])}`;
     }
 
-    return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { ...intent, rawMessage })}`;
+    return `${intro}\n\n${results.map((record, index) => fishMovieLineWithReason(record, index, intent)).join('\n')}${fishCommentForResults(results, { ...intent, rawMessage })}`;
   }
 
 function fishIsPositiveFeedback(rawMessage) {
