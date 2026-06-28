@@ -4303,6 +4303,120 @@
     "homeFeatured": false
   },
   {
+    "title": "Star Wars : L'Ascension de Skywalker",
+    "slug": "star-wars-l-ascension-de-skywalker",
+    "originalTitle": "Star Wars: The Rise of Skywalker",
+    "year": "2019",
+    "releaseDate": "2019-12-18",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "J.J. Abrams",
+    "cast": [
+      {
+        "id": 4,
+        "name": "Carrie Fisher",
+        "character": "General Leia Organa",
+        "profile_path": "/of4yHmryKPy92eeskUQ7MRmjC3l.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/of4yHmryKPy92eeskUQ7MRmjC3l.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Mark Hamill",
+        "character": "Luke Skywalker",
+        "profile_path": "/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+      },
+      {
+        "id": 1315036,
+        "name": "Daisy Ridley",
+        "character": "Rey",
+        "profile_path": "/eM6NVIoRiwWkB9WiorbG2r1BQ8t.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eM6NVIoRiwWkB9WiorbG2r1BQ8t.jpg"
+      },
+      {
+        "id": 1023139,
+        "name": "Adam Driver",
+        "character": "Kylo Ren / Ben Solo",
+        "profile_path": "/b5w381C8Z33D1iF30KT4k8tJNsk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/b5w381C8Z33D1iF30KT4k8tJNsk.jpg"
+      },
+      {
+        "id": 236695,
+        "name": "John Boyega",
+        "character": "Finn",
+        "profile_path": "/3153CfpgZQXTzCY0i74WpJumMQe.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3153CfpgZQXTzCY0i74WpJumMQe.jpg"
+      },
+      {
+        "id": 25072,
+        "name": "Oscar Isaac",
+        "character": "Poe Dameron",
+        "profile_path": "/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Anthony Daniels",
+        "character": "C-3PO",
+        "profile_path": "/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg"
+      },
+      {
+        "id": 1537686,
+        "name": "Naomi Ackie",
+        "character": "Jannah",
+        "profile_path": "/dijwuTAEZUzQtoJfK49S4X80fQw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dijwuTAEZUzQtoJfK49S4X80fQw.jpg"
+      },
+      {
+        "id": 93210,
+        "name": "Domhnall Gleeson",
+        "character": "General Hux",
+        "profile_path": "/a63BgOBKzJ9XPaLFyu7u5Ge3REG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/a63BgOBKzJ9XPaLFyu7u5Ge3REG.jpg"
+      },
+      {
+        "id": 20766,
+        "name": "Richard E. Grant",
+        "character": "Allegiant General Pryde",
+        "profile_path": "/720dpCjuN5cEYFn43GwzZqXtpWv.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/720dpCjuN5cEYFn43GwzZqXtpWv.jpg"
+      }
+    ],
+    "runtime": 141,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 6.266,
+    "popularity": 11.4384,
+    "trailer": "deM41Gsvz7Q",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ppoznujgld13\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Toute saga a une fin.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd.",
+      "Bad Robot"
+    ],
+    "tmdbId": 181812,
+    "poster": "https://image.tmdb.org/t/p/w500/1pQc75SdFOKpo2AqoL58z5kF3YI.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/jOzrELAzFxtMx2I4uDGHOotdfsS.jpg",
+    "overview": "Environ un an après la mort de Luke Skywalker, la Résistance tente de survivre face au Premier Ordre, désormais mené par un nouveau Suprême Leader, Kylo Ren. Une rumeur agite cependant toute la galaxie : l'Empereur Palpatine serait de retour. Tandis que Rey s'entraîne sous la houlette de la générale Leia Organa, Kylo Ren cherche à défier Palpatine, qu'il considère comme une menace à son pouvoir.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "The Boys",
     "slug": "the-boys",
     "originalTitle": "The Boys",
@@ -6153,6 +6267,119 @@
     "homeFeatured": false
   },
   {
+    "title": "Star Wars : Les Derniers Jedi",
+    "slug": "star-wars-les-derniers-jedi",
+    "originalTitle": "Star Wars: The Last Jedi",
+    "year": "2017",
+    "releaseDate": "2017-12-13",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "Rian Johnson",
+    "cast": [
+      {
+        "id": 2,
+        "name": "Mark Hamill",
+        "character": "Luke Skywalker / Dobbu Scay (voice)",
+        "profile_path": "/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Carrie Fisher",
+        "character": "Leia Organa",
+        "profile_path": "/of4yHmryKPy92eeskUQ7MRmjC3l.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/of4yHmryKPy92eeskUQ7MRmjC3l.jpg"
+      },
+      {
+        "id": 1023139,
+        "name": "Adam Driver",
+        "character": "Kylo Ren",
+        "profile_path": "/b5w381C8Z33D1iF30KT4k8tJNsk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/b5w381C8Z33D1iF30KT4k8tJNsk.jpg"
+      },
+      {
+        "id": 1315036,
+        "name": "Daisy Ridley",
+        "character": "Rey",
+        "profile_path": "/eM6NVIoRiwWkB9WiorbG2r1BQ8t.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eM6NVIoRiwWkB9WiorbG2r1BQ8t.jpg"
+      },
+      {
+        "id": 236695,
+        "name": "John Boyega",
+        "character": "Finn",
+        "profile_path": "/3153CfpgZQXTzCY0i74WpJumMQe.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3153CfpgZQXTzCY0i74WpJumMQe.jpg"
+      },
+      {
+        "id": 25072,
+        "name": "Oscar Isaac",
+        "character": "Poe Dameron",
+        "profile_path": "/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg"
+      },
+      {
+        "id": 1333,
+        "name": "Andy Serkis",
+        "character": "Snoke",
+        "profile_path": "/eNGqhebQ4cDssjVeNFrKtUvweV5.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eNGqhebQ4cDssjVeNFrKtUvweV5.jpg"
+      },
+      {
+        "id": 1267329,
+        "name": "Lupita Nyong'o",
+        "character": "Maz Kanata",
+        "profile_path": "/mJMpsADPpt0bmXEzs3ywrUiCkpD.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mJMpsADPpt0bmXEzs3ywrUiCkpD.jpg"
+      },
+      {
+        "id": 93210,
+        "name": "Domhnall Gleeson",
+        "character": "General Hux",
+        "profile_path": "/a63BgOBKzJ9XPaLFyu7u5Ge3REG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/a63BgOBKzJ9XPaLFyu7u5Ge3REG.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Anthony Daniels",
+        "character": "C-3PO",
+        "profile_path": "/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg"
+      }
+    ],
+    "runtime": 152,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 6.75,
+    "popularity": 17.191,
+    "trailer": "wY708Ky2SG8",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/9iev8bgotz1s\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Laisser le passé mourir.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd."
+    ],
+    "tmdbId": 181808,
+    "poster": "https://image.tmdb.org/t/p/w500/pS80gMevVINVyrwEHrILOxqwdAY.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/bIUaCtWaRgd78SnoHJDI8TNf7Sd.jpg",
+    "overview": "Le Premier Ordre étend ses tentacules aux confins de l’univers, poussant la Résistance dans ses retranchements. Il est impossible de se sauver à la vitesse de la lumière avec cet ennemi continuellement aux trousses. Cela n’empêche pas Finn et ses camarades de tenter d’identifier une brèche chez leur adversaire. Pendant ce temps, Rey se trouve toujours sur la planète Ahch‐To pour convaincre Luke Skywalker de lui enseigner les rudiments de la Force.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "119 jours : Les survivants de l'océan",
     "slug": "119-jours-les-survivants-de-l-ocean",
     "originalTitle": "Abandoned",
@@ -6494,6 +6721,120 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false
+  },
+  {
+    "title": "Star Wars : Le Réveil de la Force",
+    "slug": "star-wars-le-reveil-de-la-force",
+    "originalTitle": "Star Wars: The Force Awakens",
+    "year": "2015",
+    "releaseDate": "2015-12-15",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "J.J. Abrams",
+    "cast": [
+      {
+        "id": 1315036,
+        "name": "Daisy Ridley",
+        "character": "Rey",
+        "profile_path": "/eM6NVIoRiwWkB9WiorbG2r1BQ8t.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eM6NVIoRiwWkB9WiorbG2r1BQ8t.jpg"
+      },
+      {
+        "id": 236695,
+        "name": "John Boyega",
+        "character": "Finn",
+        "profile_path": "/3153CfpgZQXTzCY0i74WpJumMQe.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3153CfpgZQXTzCY0i74WpJumMQe.jpg"
+      },
+      {
+        "id": 25072,
+        "name": "Oscar Isaac",
+        "character": "Poe Dameron",
+        "profile_path": "/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dW5U5yrIIPmMjRThR9KT2xH6nTz.jpg"
+      },
+      {
+        "id": 1023139,
+        "name": "Adam Driver",
+        "character": "Kylo Ren",
+        "profile_path": "/b5w381C8Z33D1iF30KT4k8tJNsk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/b5w381C8Z33D1iF30KT4k8tJNsk.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Carrie Fisher",
+        "character": "Princess Leia",
+        "profile_path": "/of4yHmryKPy92eeskUQ7MRmjC3l.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/of4yHmryKPy92eeskUQ7MRmjC3l.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Harrison Ford",
+        "character": "Han Solo",
+        "profile_path": "/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Mark Hamill",
+        "character": "Luke Skywalker",
+        "profile_path": "/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+      },
+      {
+        "id": 1267329,
+        "name": "Lupita Nyong'o",
+        "character": "Maz Kanata",
+        "profile_path": "/mJMpsADPpt0bmXEzs3ywrUiCkpD.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mJMpsADPpt0bmXEzs3ywrUiCkpD.jpg"
+      },
+      {
+        "id": 1333,
+        "name": "Andy Serkis",
+        "character": "Supreme Leader Snoke",
+        "profile_path": "/eNGqhebQ4cDssjVeNFrKtUvweV5.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eNGqhebQ4cDssjVeNFrKtUvweV5.jpg"
+      },
+      {
+        "id": 93210,
+        "name": "Domhnall Gleeson",
+        "character": "General Hux",
+        "profile_path": "/a63BgOBKzJ9XPaLFyu7u5Ge3REG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/a63BgOBKzJ9XPaLFyu7u5Ge3REG.jpg"
+      }
+    ],
+    "runtime": 135,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.248,
+    "popularity": 11.5705,
+    "trailer": "JuCwFJWJP0M",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/locwoo0m96et\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Chaque génération a son histoire.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd.",
+      "Bad Robot"
+    ],
+    "tmdbId": 140607,
+    "poster": "https://image.tmdb.org/t/p/w500/zKZ1iF1ABqL7a16u6Im8JTQKp7H.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/k6EOrckWFuz7I4z4wiRwz8zsj4H.jpg",
+    "overview": "Il y a bien longtemps, dans une galaxie lointaine… Luke Skywalker est porté disparu. Le pilote Poe est en mission secrète sur une planète pour le retrouver. Au moment où la diabolique armée \"Premier Ordre\" apparaît en détruisant tout sur son passage, il arrive à cacher la position géographique de l'ancien maître Jedi dans son droïde BB-8. Capturé par les larbins du machiavélique Kylo Ren, Poe est libéré par le soldat ennemi Finn qui est en pleine crise existentielle. Pendant ce temps, BB-8 est recueillie par Rey, une pilleuse d'épaves qui sera bientôt plongée dans une quête qui la dépasse.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
   },
   {
     "title": "The Revenant",
@@ -8443,6 +8784,119 @@
     "homeFeatured": false
   },
   {
+    "title": "Star Wars, épisode III - La Revanche des Sith",
+    "slug": "star-wars-episode-iii-la-revanche-des-sith",
+    "originalTitle": "Star Wars: Episode III - Revenge of the Sith",
+    "year": "2005",
+    "releaseDate": "2005-05-17",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "George Lucas",
+    "cast": [
+      {
+        "id": 17244,
+        "name": "Hayden Christensen",
+        "character": "Anakin Skywalker / Darth Vader",
+        "profile_path": "/lOcGI55CYlRjbH2jcdoLmN3KplD.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lOcGI55CYlRjbH2jcdoLmN3KplD.jpg"
+      },
+      {
+        "id": 3061,
+        "name": "Ewan McGregor",
+        "character": "Obi-Wan Kenobi",
+        "profile_path": "/tw6lVBh0DvAUkCd1jsU98yD1usk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tw6lVBh0DvAUkCd1jsU98yD1usk.jpg"
+      },
+      {
+        "id": 524,
+        "name": "Natalie Portman",
+        "character": "Padmé Amidala",
+        "profile_path": "/edPU5HxncLWa1YkgRPNkSd68ONG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/edPU5HxncLWa1YkgRPNkSd68ONG.jpg"
+      },
+      {
+        "id": 27762,
+        "name": "Ian McDiarmid",
+        "character": "Chancellor Palpatine / Darth Sidious",
+        "profile_path": "/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg"
+      },
+      {
+        "id": 2231,
+        "name": "Samuel L. Jackson",
+        "character": "Mace Windu",
+        "profile_path": "/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg"
+      },
+      {
+        "id": 33181,
+        "name": "Jimmy Smits",
+        "character": "Senator Bail Organa",
+        "profile_path": "/dD04JlfW5N8bVrx7Cawn4A6g1xp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dD04JlfW5N8bVrx7Cawn4A6g1xp.jpg"
+      },
+      {
+        "id": 7908,
+        "name": "Frank Oz",
+        "character": "Yoda (voice)",
+        "profile_path": "/NmtYrntP8gElfulb4KaEYjbOha.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/NmtYrntP8gElfulb4KaEYjbOha.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Anthony Daniels",
+        "character": "C-3PO",
+        "profile_path": "/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg"
+      },
+      {
+        "id": 113,
+        "name": "Christopher Lee",
+        "character": "Count Dooku",
+        "profile_path": "/dA26fBr3t7mKqjn3OYW6kbD1LXM.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dA26fBr3t7mKqjn3OYW6kbD1LXM.jpg"
+      },
+      {
+        "id": 15293,
+        "name": "Keisha Castle-Hughes",
+        "character": "Queen of Naboo",
+        "profile_path": "/9lBukGiFVV0pKNwndaNhRQVnNmt.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9lBukGiFVV0pKNwndaNhRQVnNmt.jpg"
+      }
+    ],
+    "runtime": 140,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.5,
+    "popularity": 10.383,
+    "trailer": "IRE3T_VTeLM",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/6106k0w63tej\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "La saga est complète.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd."
+    ],
+    "tmdbId": 1895,
+    "poster": "https://image.tmdb.org/t/p/w500/2RcBuU8cdxFxCJibbiYCGNLApfz.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/jniabJVBSW3EqLlyhjxWCZjVkiE.jpg",
+    "overview": "La Guerre des Clones fait rage. Une franche hostilité oppose désormais le Chancelier Palpatine au Conseil Jedi. Anakin Skywalker, jeune Chevalier Jedi pris entre deux feux, hésite sur la conduite à tenir. Séduit par la promesse d'un pouvoir sans précédent, tenté par le côté obscur de la Force, il prête allégeance au maléfique Darth Sidious et devient Dark Vador. Les Seigneurs Sith s'unissent alors pour préparer leur revanche, qui commence par l'extermination des Jedi. Seuls rescapés du massacre, Yoda et Obi-Wan se lancent à la poursuite des Sith. La traque se conclut par un spectaculaire combat au sabre entre Anakin et Obi-Wan, qui décidera du sort de la galaxie…",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "The Grudge",
     "slug": "the-grudge",
     "originalTitle": "The Grudge",
@@ -9237,6 +9691,119 @@
     "homeFeatured": false
   },
   {
+    "title": "Star Wars, épisode II - L'Attaque des clones",
+    "slug": "star-wars-episode-ii-l-attaque-des-clones",
+    "originalTitle": "Star Wars: Episode II - Attack of the Clones",
+    "year": "2002",
+    "releaseDate": "2002-05-15",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "George Lucas",
+    "cast": [
+      {
+        "id": 17244,
+        "name": "Hayden Christensen",
+        "character": "Anakin Skywalker",
+        "profile_path": "/lOcGI55CYlRjbH2jcdoLmN3KplD.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lOcGI55CYlRjbH2jcdoLmN3KplD.jpg"
+      },
+      {
+        "id": 3061,
+        "name": "Ewan McGregor",
+        "character": "Obi-Wan Kenobi",
+        "profile_path": "/tw6lVBh0DvAUkCd1jsU98yD1usk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tw6lVBh0DvAUkCd1jsU98yD1usk.jpg"
+      },
+      {
+        "id": 524,
+        "name": "Natalie Portman",
+        "character": "Padmé Amidala",
+        "profile_path": "/edPU5HxncLWa1YkgRPNkSd68ONG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/edPU5HxncLWa1YkgRPNkSd68ONG.jpg"
+      },
+      {
+        "id": 113,
+        "name": "Christopher Lee",
+        "character": "Count Dooku",
+        "profile_path": "/dA26fBr3t7mKqjn3OYW6kbD1LXM.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dA26fBr3t7mKqjn3OYW6kbD1LXM.jpg"
+      },
+      {
+        "id": 2231,
+        "name": "Samuel L. Jackson",
+        "character": "Mace Windu",
+        "profile_path": "/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg"
+      },
+      {
+        "id": 7908,
+        "name": "Frank Oz",
+        "character": "Yoda (voice)",
+        "profile_path": "/NmtYrntP8gElfulb4KaEYjbOha.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/NmtYrntP8gElfulb4KaEYjbOha.jpg"
+      },
+      {
+        "id": 27762,
+        "name": "Ian McDiarmid",
+        "character": "Chancellor Palpatine",
+        "profile_path": "/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg"
+      },
+      {
+        "id": 33190,
+        "name": "Pernilla August",
+        "character": "Shmi Skywalker",
+        "profile_path": "/zICu2ItUmKh0dUcWtee49KpNDMq.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zICu2ItUmKh0dUcWtee49KpNDMq.jpg"
+      },
+      {
+        "id": 7242,
+        "name": "Temuera Morrison",
+        "character": "Jango Fett / Clone Troopers",
+        "profile_path": "/AvtSC0f9QW7fMyFFNXEWDeQyfUk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/AvtSC0f9QW7fMyFFNXEWDeQyfUk.jpg"
+      },
+      {
+        "id": 33181,
+        "name": "Jimmy Smits",
+        "character": "Senator Bail Organa",
+        "profile_path": "/dD04JlfW5N8bVrx7Cawn4A6g1xp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dD04JlfW5N8bVrx7Cawn4A6g1xp.jpg"
+      }
+    ],
+    "runtime": 132,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 6.594,
+    "popularity": 9.0875,
+    "trailer": "x1ZeDI-SOPY",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/mpade67vn9vz\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "La saga continue.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd."
+    ],
+    "tmdbId": 1894,
+    "poster": "https://image.tmdb.org/t/p/w500/3nqpcTkODCBhuKuDQJ1dtRhgTqZ.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/abwxHfymXGAbbH3lo9PDEJEfvtW.jpg",
+    "overview": "Depuis le blocus de la planète Naboo par la Fédération du commerce, la République, gouvernée par le Chancelier Palpatine, connaît une véritable crise. Un groupe de dissidents, mené par le sombre Jedi comte Dooku, manifeste son mécontentement envers le fonctionnement du régime. Le Sénat et la population intergalactique se montrent pour leur part inquiets face à l'émergence d'une telle menace.Certains sénateurs demandent à ce que la République soit dotée d'une solide armée pour empêcher que la situation ne se détériore davantage. Parallèlement, Padmé Amidala, devenue sénatrice, est menacée par les séparatistes et échappe de justesse à un attentat. Le Padawan Anakin Skywalker est chargé de sa protection. Son maître, Obi-Wan Kenobi, part enquêter sur cette tentative de meurtre et découvre la constitution d'une mystérieuse armée de clones...",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "Harry Potter à l'école des sorciers",
     "slug": "harry-potter-a-l-ecole-des-sorciers",
     "originalTitle": "Harry Potter and the Philosopher's Stone",
@@ -9576,6 +10143,119 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false
+  },
+  {
+    "title": "Star Wars, épisode I - La Menace fantôme",
+    "slug": "star-wars-episode-i-la-menace-fantome",
+    "originalTitle": "Star Wars: Episode I - The Phantom Menace",
+    "year": "1999",
+    "releaseDate": "1999-05-19",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "George Lucas",
+    "cast": [
+      {
+        "id": 3896,
+        "name": "Liam Neeson",
+        "character": "Qui-Gon Jinn",
+        "profile_path": "/g0iIEyt9ILiKTG0g8K69US5VtLy.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/g0iIEyt9ILiKTG0g8K69US5VtLy.jpg"
+      },
+      {
+        "id": 3061,
+        "name": "Ewan McGregor",
+        "character": "Obi-Wan Kenobi",
+        "profile_path": "/tw6lVBh0DvAUkCd1jsU98yD1usk.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tw6lVBh0DvAUkCd1jsU98yD1usk.jpg"
+      },
+      {
+        "id": 524,
+        "name": "Natalie Portman",
+        "character": "Padmé Amidala",
+        "profile_path": "/edPU5HxncLWa1YkgRPNkSd68ONG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/edPU5HxncLWa1YkgRPNkSd68ONG.jpg"
+      },
+      {
+        "id": 33196,
+        "name": "Jake Lloyd",
+        "character": "Anakin Skywalker",
+        "profile_path": "/tp5PRiy8Ip8Vs70pUY1jeHbk2wH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tp5PRiy8Ip8Vs70pUY1jeHbk2wH.jpg"
+      },
+      {
+        "id": 27762,
+        "name": "Ian McDiarmid",
+        "character": "Senator Palpatine",
+        "profile_path": "/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg"
+      },
+      {
+        "id": 33190,
+        "name": "Pernilla August",
+        "character": "Shmi Skywalker",
+        "profile_path": "/zICu2ItUmKh0dUcWtee49KpNDMq.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zICu2ItUmKh0dUcWtee49KpNDMq.jpg"
+      },
+      {
+        "id": 31923,
+        "name": "Oliver Ford Davies",
+        "character": "Governor Sio Bibble",
+        "profile_path": "/hDdpoEWtNd0c46PcuORomdEI5j0.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hDdpoEWtNd0c46PcuORomdEI5j0.jpg"
+      },
+      {
+        "id": 31925,
+        "name": "Hugh Quarshie",
+        "character": "Captain Panaka",
+        "profile_path": "/buBmcE8F8BpbL7M8yyxST2exMRP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/buBmcE8F8BpbL7M8yyxST2exMRP.jpg"
+      },
+      {
+        "id": 33197,
+        "name": "Ahmed Best",
+        "character": "Jar Jar Binks",
+        "profile_path": "/aLWfIEy3wqZN5GdhHQss9KyqOXN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/aLWfIEy3wqZN5GdhHQss9KyqOXN.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Anthony Daniels",
+        "character": "C-3PO (voice)",
+        "profile_path": "/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg"
+      }
+    ],
+    "runtime": 133,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 6.578,
+    "popularity": 10.9758,
+    "trailer": "ACvjzXOj-Dc",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/vqutsp1sv35o\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Toute saga a un commencement.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd."
+    ],
+    "tmdbId": 1893,
+    "poster": "https://image.tmdb.org/t/p/w500/fpEC910v5DrMvZteRNlKzXeHiHY.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/3TeGmKJfkik1D1rIoqGb1aR4k9c.jpg",
+    "overview": "Il y a bien longtemps, dans une galaxie très lointaine... La République connaît de nombreux tourments : la corruption fait vaciller ses bases, le Sénat s'embourbe dans des discussions politiques sans fin et de nombreux pouvoirs dissidents commencent à émerger, annonçant la chute d'un système autrefois paisible. Puissante et intouchable, la Fédération du Commerce impose par la force la taxation des routes commerciales. Refusant de céder, la pacifique planète Naboo, dirigée par la jeune Reine Amidala, subit un blocus militaire de la Fédération. Dépêchés par le Sénat pour régler cette affaire, les chevaliers Jedi Qui-Gon Jinn et Obi-Wan Kenobi découvrent qu'une véritable offensive de la Fédération est imminente. Libérant la Reine et ses proches, ils quittent la planète mais doivent se poser sur Tatooine pour réparer leur vaisseau...",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
   },
   {
     "title": "Alien, la résurrection",
@@ -10583,6 +11263,119 @@
     }
   },
   {
+    "title": "Le Retour du Jedi",
+    "slug": "le-retour-du-jedi",
+    "originalTitle": "Return of the Jedi",
+    "year": "1983",
+    "releaseDate": "1983-05-25",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "Richard Marquand",
+    "cast": [
+      {
+        "id": 2,
+        "name": "Mark Hamill",
+        "character": "Luke Skywalker",
+        "profile_path": "/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Harrison Ford",
+        "character": "Han Solo",
+        "profile_path": "/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Carrie Fisher",
+        "character": "Princess Leia",
+        "profile_path": "/of4yHmryKPy92eeskUQ7MRmjC3l.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/of4yHmryKPy92eeskUQ7MRmjC3l.jpg"
+      },
+      {
+        "id": 3799,
+        "name": "Billy Dee Williams",
+        "character": "Lando Calrissian",
+        "profile_path": "/f4s4yhgtHPmvr9W2kS7CMTi036c.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/f4s4yhgtHPmvr9W2kS7CMTi036c.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Anthony Daniels",
+        "character": "C-3PO",
+        "profile_path": "/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg"
+      },
+      {
+        "id": 24343,
+        "name": "Peter Mayhew",
+        "character": "Chewbacca",
+        "profile_path": "/rKIBv08O63pyC6PixjyhrjNB8Uh.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/rKIBv08O63pyC6PixjyhrjNB8Uh.jpg"
+      },
+      {
+        "id": 28235,
+        "name": "Sebastian Shaw",
+        "character": "Anakin Skywalker",
+        "profile_path": "/ouOX4GU9xYtaKOLxJYhwVArexSY.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ouOX4GU9xYtaKOLxJYhwVArexSY.jpg"
+      },
+      {
+        "id": 27762,
+        "name": "Ian McDiarmid",
+        "character": "The Emperor",
+        "profile_path": "/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9OSZMsnwNtM8JrHrEdgQEwyTaPj.jpg"
+      },
+      {
+        "id": 7908,
+        "name": "Frank Oz",
+        "character": "Yoda (voice)",
+        "profile_path": "/NmtYrntP8gElfulb4KaEYjbOha.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/NmtYrntP8gElfulb4KaEYjbOha.jpg"
+      },
+      {
+        "id": 15152,
+        "name": "James Earl Jones",
+        "character": "Darth Vader (voice)",
+        "profile_path": "/sgc8yxYr8ecNn1TXjWXWx3wmUYA.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/sgc8yxYr8ecNn1TXjWXWx3wmUYA.jpg"
+      }
+    ],
+    "runtime": 133,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.908,
+    "popularity": 8.6607,
+    "trailer": "VUgIH6fyDvs",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/c1jl43igsclw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Retour dans une galaxie… loin, très loin.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd."
+    ],
+    "tmdbId": 1892,
+    "poster": "https://image.tmdb.org/t/p/w500/tEQlCGiiWvMvfD7Sz8d99Pouy39.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/ziECpBRIyclmBNaFSWlvCfsKbMD.jpg",
+    "overview": "L'Empire galactique est plus puissant que jamais : la construction de la nouvelle arme, l’Étoile de la Mort, menace l'univers tout entier... Arrêté après la trahison de Lando Calrissian, Han Solo est remis à l'ignoble contrebandier Jabba Le Hutt par le chasseur de primes Boba Fett. Après l'échec d'une première tentative d'évasion menée par la princesse Leia, également arrêtée par Jabba, Luke Skywalker et Lando parviennent à libérer leurs amis. Han, Leia, Chewbacca, C-3PO et Luke, devenu un Jedi, s'envolent dès lors pour une mission d'extrême importance sur la lune forestière d'Endor, afin de détruire le générateur du bouclier de l’Étoile de la Mort et permettre une attaque des pilotes de l'Alliance rebelle. Conscient d'être un danger pour ses compagnons, Luke préfère se rendre aux mains de Dark Vador, son père et ancien Jedi passé du côté obscur de la Force.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "Scarface",
     "slug": "scarface",
     "originalTitle": "Scarface",
@@ -10627,6 +11420,119 @@
     "overview": "En 1980, le gouvernement cubain expulse plusieurs centaines de prisonniers dangereux vers la Floride. Parmi eux, Tony Montana : ambitieux et sans scrupules, il élabore un plan pour prendre la place d'un caïd de la drogue.",
     "featured": false,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qa1hkdujdynu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+  },
+  {
+    "title": "L'Empire contre-attaque",
+    "slug": "l-empire-contre-attaque",
+    "originalTitle": "The Empire Strikes Back",
+    "year": "1980",
+    "releaseDate": "1980-05-20",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Science-Fiction"
+    ],
+    "director": "Irvin Kershner",
+    "cast": [
+      {
+        "id": 2,
+        "name": "Mark Hamill",
+        "character": "Luke Skywalker",
+        "profile_path": "/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zMQ93JTLW8KxusKhOlHFZhih3YQ.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Harrison Ford",
+        "character": "Han Solo",
+        "profile_path": "/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pjBMJVPpcZK23Vt1nzr1zEBTWrP.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Carrie Fisher",
+        "character": "Princess Leia",
+        "profile_path": "/of4yHmryKPy92eeskUQ7MRmjC3l.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/of4yHmryKPy92eeskUQ7MRmjC3l.jpg"
+      },
+      {
+        "id": 3799,
+        "name": "Billy Dee Williams",
+        "character": "Lando Calrissian",
+        "profile_path": "/f4s4yhgtHPmvr9W2kS7CMTi036c.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/f4s4yhgtHPmvr9W2kS7CMTi036c.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Anthony Daniels",
+        "character": "C-3PO",
+        "profile_path": "/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7kR4kwXtvXtvrsxWeX3QLX5NS5V.jpg"
+      },
+      {
+        "id": 24342,
+        "name": "David Prowse",
+        "character": "Darth Vader",
+        "profile_path": "/nPFKENjKHuklJ8i54mZroNAgKaI.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/nPFKENjKHuklJ8i54mZroNAgKaI.jpg"
+      },
+      {
+        "id": 24343,
+        "name": "Peter Mayhew",
+        "character": "Chewbacca",
+        "profile_path": "/rKIBv08O63pyC6PixjyhrjNB8Uh.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/rKIBv08O63pyC6PixjyhrjNB8Uh.jpg"
+      },
+      {
+        "id": 130,
+        "name": "Kenny Baker",
+        "character": "R2-D2",
+        "profile_path": "/kWwso57V7fr0jWnHfknlxxq7XXy.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/kWwso57V7fr0jWnHfknlxxq7XXy.jpg"
+      },
+      {
+        "id": 7908,
+        "name": "Frank Oz",
+        "character": "Yoda (Voice)",
+        "profile_path": "/NmtYrntP8gElfulb4KaEYjbOha.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/NmtYrntP8gElfulb4KaEYjbOha.jpg"
+      },
+      {
+        "id": 12248,
+        "name": "Alec Guinness",
+        "character": "Obi-Wan Kenobi",
+        "profile_path": "/q9QgiNDEO6lbi7uMAOw0OgWn8DG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q9QgiNDEO6lbi7uMAOw0OgWn8DG.jpg"
+      }
+    ],
+    "runtime": 124,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 8.4,
+    "popularity": 12.6502,
+    "trailer": "mdrcnZNXmTM",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3ziye51p8xap\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "La Guerre des Étoiles continue…",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Star Wars - Saga",
+    "studios": [
+      "Lucasfilm Ltd."
+    ],
+    "tmdbId": 1891,
+    "poster": "https://image.tmdb.org/t/p/w500/qDvctAykmNWAmi9G2GrVrwWx3pr.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/k9pshruhCpJAdH9RaGJO6jaWQ4X.jpg",
+    "overview": "Malgré la destruction de l’Étoile Noire, l'Empire maintient son emprise sur la galaxie, et poursuit sans relâche sa lutte contre l'Alliance rebelle. Basés sur la planète glacée de Hoth, les rebelles essuient un assaut des troupes impériales. Parvenus à s'échapper, la princesse Leia, Han Solo, Chewbacca et C-3P0 se dirigent vers Bespin, la cité des nuages gouvernée par Lando Calrissian, ancien compagnon de Han. Suivant les instructions d'Obi-Wan Kenobi, Luke Skywalker se rend quant à lui vers le système de Dagobah, planète marécageuse où il doit recevoir l'enseignement du dernier maître Jedi, Yoda. Apprenant l'arrestation de ses compagnons par les stormtroopers de Dark Vador après la trahison de Lando, Luke décide d'interrompre son entraînement pour porter secours à ses amis et affronter le sombre seigneur Sith...",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
   },
   {
     "title": "Alien, le huitième passager",
