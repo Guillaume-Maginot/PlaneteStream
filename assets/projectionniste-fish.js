@@ -816,7 +816,16 @@ function fishResolveDesirePhrase(rawMessage) {
 
   if (!desire) return '';
 
+  const desireHasFamilySafetyContext = /en famille|avec les enfants|avec mes enfants|enfants|familial|famille|kids|tout public|pas violent|sans violence|pas gore|sans gore/.test(desire);
+
   if (/\b(rire|rigoler|drole|drôle|humour|comedie|comédie|marrant|marrante|fun|sourire)\b/.test(desire)) {
+    // V76.5 : on ne doit pas perdre le contexte de séance.
+    // Avant, "un film drôle avec les enfants" devenait "un film drôle",
+    // puis le raccourci comédie répondait avant les garde-fous famille.
+    if (desireHasFamilySafetyContext) {
+      return `${mediaPrefix} ${desire}`;
+    }
+
     return `${mediaPrefix} drôle`;
   }
 
