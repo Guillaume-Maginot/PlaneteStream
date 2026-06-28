@@ -499,12 +499,14 @@ function fishDetectActorFilter(message, catalogue) {
   const m = fishNormalize(message);
 
   const hasActorIntent =
-    /\bavec\b/.test(m) ||
-    /\bacteur\b/.test(m) ||
-    /\bactrice\b/.test(m) ||
-    /\bcasting\b/.test(m) ||
-    /\bjoue\b/.test(m) ||
-    /\bjouent\b/.test(m);
+    !fishIsCompanionContext(message) && (
+      /\bavec\b/.test(m) ||
+      /\bacteur\b/.test(m) ||
+      /\bactrice\b/.test(m) ||
+      /\bcasting\b/.test(m) ||
+      /\bjoue\b/.test(m) ||
+      /\bjouent\b/.test(m)
+    );
 
   if (!hasActorIntent) {
     return '';
@@ -1048,6 +1050,7 @@ const genreKey = fishDetectRequestedGenre(message);
   const actorQuery = fishDetectActorFilter(message, catalogue);
   const actorLabel = actorQuery ? fishDisplayActorQuery(actorQuery) : '';
   const hasActorIntent =
+  !fishIsCompanionContext(message) &&
   /\bavec\b|\bacteur\b|\bactrice\b|\bcasting\b|\bjoue\b|\bjouent\b/.test(fishNormalize(message));
 
 if (hasActorIntent && !actorQuery) {
@@ -2109,6 +2112,30 @@ const SESSION_PROFILE_RULES = [
     return '';
   }
 
+
+function fishIsCompanionContext(message) {
+  const m = normalize(message);
+
+  return (
+    /\bavec\s+(mes\s+)?parents\b/.test(m) ||
+    /\bavec\s+(les\s+)?enfants\b/.test(m) ||
+    /\bavec\s+(mon\s+)?fils\b/.test(m) ||
+    /\bavec\s+(ma\s+)?fille\b/.test(m) ||
+    /\bavec\s+(ma\s+)?famille\b/.test(m) ||
+    /\ben\s+famille\b/.test(m) ||
+    /\bavec\s+(des\s+)?amis\b/.test(m) ||
+    /\bavec\s+(les\s+)?potes\b/.test(m) ||
+    /\bentre\s+amis\b/.test(m) ||
+    /\bentre\s+potes\b/.test(m) ||
+    /\bavec\s+ma\s+copine\b/.test(m) ||
+    /\bavec\s+mon\s+copain\b/.test(m) ||
+    /\bavec\s+ma\s+femme\b/.test(m) ||
+    /\bavec\s+mon\s+mari\b/.test(m) ||
+    /\bon\s+est\s+plusieurs\b/.test(m) ||
+    /\bon\s+est\s+(deux|trois|quatre|cinq|2|3|4|5)\b/.test(m)
+  );
+}
+
   function isDirectorRequest(message) {
     const m = normalize(message);
 
@@ -2127,6 +2154,10 @@ const SESSION_PROFILE_RULES = [
 
   function isActorRequest(message) {
     const m = normalize(message);
+
+    if (fishIsCompanionContext(message)) {
+      return false;
+    }
 
     return (
       /\bavec\b|\bacteur\b|\bactrice\b|\bcasting\b|\bjoue\b|\bjouent\b/.test(m)
