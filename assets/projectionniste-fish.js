@@ -746,19 +746,19 @@ function fishResolveOpenAdviceFollowUp(rawMessage) {
   }
 
   if (/^(rire|rigoler|drole|drôle|humour|comedie|comédie|marrant|fun|me faire rire)$/.test(m)) {
-    return 'un film drôle';
+    return `${mediaPrefix} drôle`;
   }
 
   if (/^(frissonner|frisson|frissons|peur|horreur|faire peur|me faire peur|sursauter|flipper)$/.test(m)) {
-    return 'un film qui fait peur';
+    return `${mediaPrefix} qui fait peur`;
   }
 
   if (/^(reflechir|réfléchir|reflexion|réflexion|intelligent|cerveau|prise de tete|prise de tête|scenario tordu|scénario tordu)$/.test(m)) {
-    return 'un film intelligent';
+    return `${mediaPrefix} intelligent`;
   }
 
   if (/^(leger|léger|chill|detente|détente|simple|tranquille|sans prise de tete|sans prise de tête|poser le cerveau)$/.test(m)) {
-    return 'un film léger sans prise de tête';
+    return `${mediaPrefix} léger sans prise de tête`;
   }
 
   if (/^(action|aventure|sf|science fiction|science-fiction|thriller|romance|drame|fantastique|animation)$/.test(m)) {
@@ -782,8 +782,20 @@ function fishResolveOpenAdviceFollowUp(rawMessage) {
   "je veux rire" n'est pas un genre brut, c'est une intention.
   On la convertit en demande que le moteur sait déjà traiter proprement.
 */
+
+function fishMediaPrefixFromMessage(rawMessage) {
+  const m = normalize(rawMessage);
+
+  if (/\b(series?|séries?)\b/.test(m)) return 'une série';
+  if (/\b(mangas?|animes?|animés?)\b/.test(m)) return 'un manga';
+  if (/\b(films?)\b/.test(m)) return 'un film';
+
+  return 'un film';
+}
+
 function fishResolveDesirePhrase(rawMessage) {
   const m = normalize(rawMessage);
+  const mediaPrefix = fishMediaPrefixFromMessage(rawMessage);
 
   if (!m) return '';
 
@@ -805,43 +817,43 @@ function fishResolveDesirePhrase(rawMessage) {
   if (!desire) return '';
 
   if (/\b(rire|rigoler|drole|drôle|humour|comedie|comédie|marrant|marrante|fun|sourire)\b/.test(desire)) {
-    return 'un film drôle';
+    return `${mediaPrefix} drôle`;
   }
 
   if (/\b(avoir peur|peur|frissonner|frissons|flipper|sursauter|horreur|angoisse|angoissant|cauchemar|terrifiant|glauque)\b/.test(desire)) {
-    return 'un film qui fait peur';
+    return `${mediaPrefix} qui fait peur`;
   }
 
   if (/\b(pleurer|emotion|émotion|emouvant|émouvant|touchant|triste|poignant|bouleversant)\b/.test(desire)) {
-    return 'un film émouvant';
+    return `${mediaPrefix} émouvant`;
   }
 
   if (/\b(reflechir|réfléchir|intelligent|cerebral|cérébral|cerveau|prise de tete|prise de tête|scenario tordu|scénario tordu|mindfuck|twist)\b/.test(desire)) {
-    return 'un film intelligent';
+    return `${mediaPrefix} intelligent`;
   }
 
   if (/\b(action|baston|combat|bagarre|adrenaline|adrénaline|explosion|explosions|course poursuite|poursuite|nerveux)\b/.test(desire)) {
-    return 'un film d’action';
+    return `${mediaPrefix} d’action`;
   }
 
   if (/\b(voyager|voyage|evasion|évasion|ailleurs|depaysement|dépaysement|aventure|grand spectacle|spectacle|epique|épique)\b/.test(desire)) {
-    return 'un film d’aventure pour voyager';
+    return `${mediaPrefix} d’aventure pour voyager`;
   }
 
   if (/\b(rever|rêver|fantastique|fantasy|magie|magique|sorcier|dragon|royaume)\b/.test(desire)) {
-    return 'un film fantastique';
+    return `${mediaPrefix} fantastique`;
   }
 
   if (/\b(sf|science fiction|science-fiction|sci fi|sci-fi|espace|spatial|vaisseau|alien|robot|ia|cyberpunk|futur)\b/.test(desire)) {
-    return 'un film de science-fiction';
+    return `${mediaPrefix} de science-fiction`;
   }
 
   if (/\b(chill|detente|détente|leger|léger|tranquille|simple|sans prise de tete|sans prise de tête|poser le cerveau|debrancher|débrancher)\b/.test(desire)) {
-    return 'un film léger sans prise de tête';
+    return `${mediaPrefix} léger sans prise de tête`;
   }
 
   if (/\b(amour|romance|romantique|couple|date night)\b/.test(desire)) {
-    return 'un film romantique';
+    return `${mediaPrefix} romantique`;
   }
 
   return '';
@@ -1014,6 +1026,16 @@ function fishCommentForResults(results, context = {}) {
       `Je mets ${firstTitle}${runtimeText} devant : durée raisonnable, bocal content, soirée encore vivante après le générique.`,
       `${firstTitle}${runtimeText} passe bien pour une séance calibrée. Le poisson a rangé le mètre ruban.`,
       `Côté durée, ${firstTitle}${runtimeText} a le bon format : assez pour s’installer, pas assez pour fusionner avec le plaid.`
+    ]);
+  }
+
+  if (firstGenres.includes('comedie') || firstGenres.includes('comédie') || /comedie|comédie|humour|drole|drôle|rire|rigoler|marrant|fun/.test(message)) {
+    return '\n\n' + fishPickText([
+      'Ça sent la séance détente. Pas forcément un prix Nobel, mais parfois le cerveau demande juste une couverture et une bêtise bien cadrée.',
+      'Le bocal classe ça dans la zone sourire potentiel. Pas une science exacte, mais le poisson y croit.',
+      'Bonne piste pour laisser le cerveau en chaussons.',
+      'On part sur une sélection qui devrait éviter les dissertations à 23h47.',
+      'Le poisson approuve : parfois le rire est plus utile qu’un tableau Excel.'
     ]);
   }
 
