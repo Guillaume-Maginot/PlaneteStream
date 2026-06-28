@@ -109,7 +109,13 @@
     "overview": "Dans Crime 101, les cambriolages méticuleux à LA le long de l'autoroute 101 d'un voleur de bijoux chevronné (Chris Hemsworth) déconcertent la police. Un flic solitaire (Mark Ruffalo) est à ses trousses. Lorsque leurs chemins croisent celui d'une courtière en assurance désabusée (Halle Berry), tous trois sont confrontés à des choix déterminants face aux millions de dollars en jeu.",
     "featured": true,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/v8htq91w63zc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
-    "premium": false
+    "premium": false,
+    "bubbleReasons": {
+      "frissonner": "Le braquage méticuleux et la traque policière installent une tension continue.",
+      "reflechir": "L'affrontement entre braqueur, policier et courtière crée des choix déterminants à suivre.",
+      "spectacle": "Les cambriolages à grande échelle sur l'autoroute 101 promettent une belle ampleur visuelle.",
+      "emotion": "Les trois personnages sont face à des choix déterminants sous forte pression."
+    }
   },
   {
     "title": "Greenland : Migration",
@@ -159,11 +165,14 @@
     "featured": true,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3m3gifu4om1n\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "bubbleReasons": {
-      "voyager": "Le périple à travers un monde dévasté donne une vraie sensation de déplacement et de survie en terrain inconnu.",
-      "frissonner": "La recherche d’un nouveau foyer après une catastrophe mondiale garde une pression constante sur la famille Garrity.",
-      "spectacle": "Le monde en ruines après l’impact d’une comète donne une toile de fond catastrophe très visuelle.",
-      "emotion": "La survie de la famille Garrity donne un enjeu humain au milieu du chaos."
-    }
+      "voyager": "Un périple à travers un monde dévasté vers un nouveau foyer offre un vrai dépaysement.",
+      "frissonner": "La survie dans un monde en ruines crée une tension continue et un climat de danger.",
+      "reflechir": "L'histoire interroge l'avenir de l'Humanité et le choix d'un nouveau foyer.",
+      "spectacle": "Le voyage post-comète promet un grand spectacle dans un monde dévasté.",
+      "emotion": "La famille Garrity lutte ensemble pour survivre, avec un fort enjeu humain."
+    },
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Kartavya : Le sens du devoir",
@@ -208,7 +217,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/mHm73HhpvGWfRkXNErcwc15Czrv.jpg",
     "overview": "Lorsque la vie de sa famille est menacée et que le danger se rapproche, un policier doit décider jusqu'où il est prêt à aller pour remplir son devoir.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/exs5ztjncixx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/exs5ztjncixx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "frissonner": "Le thriller installe une tension sombre autour d'un danger qui se rapproche.",
+      "reflechir": "Le policier est confronté à un dilemme sur la façon d'accomplir son devoir.",
+      "spectacle": "Le film promet de l'action et une montée de tension dans un cadre de crime.",
+      "emotion": "La menace qui pèse sur sa famille donne un enjeu humain fort à l'histoire."
+    }
   },
   {
     "title": "Le Réveil de la Momie",
@@ -255,7 +270,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/xugEpZk9YQ0DIz1aFvH5HGkqpZK.jpg",
     "overview": "Une jeune fille disparue dans le désert égyptien réapparaît mystérieusement huit ans plus tard. Mais les retrouvailles tournent vite au cauchemar. Alors que son comportement devient de plus en plus inquiétant, sa famille se lance dans une course contre la montre pour comprendre l’origine du mal. Ce qu’ils vont découvrir dépasse tout ce qu’ils imaginaient.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qfqgk21b50bn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qfqgk21b50bn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le désert égyptien et l'ambiance de mystère offrent un dépaysement vers un ailleurs fascinant.",
+      "frissonner": "Le retour inquiétant de la jeune fille et la course contre la montre installent une tension sombre.",
+      "reflechir": "L'origine du mal et le mystère autour de sa disparition donnent matière à enquête et à réflexion.",
+      "spectacle": "Le désert et le cauchemar qui s'emballe promettent une ampleur visuelle marquante.",
+      "emotion": "La famille confrontée à l'horreur et aux retrouvailles troublantes porte un fort enjeu humain."
+    }
   },
   {
     "title": "Michael",
@@ -370,9 +392,10 @@
     "premium": true,
     "homeFeatured": true,
     "bubbleReasons": {
-      "emotion": "Le portrait de Michael Jackson au-delà de la scène met l’accent sur une trajectoire humaine et artistique.",
-      "spectacle": "Les performances emblématiques et l’ambition créative promettent une séance portée par la musique et la scène.",
-      "reflechir": "Le film semble interroger ce qui se cache derrière la construction d’une icône mondiale."
+      "voyager": "Le film ouvre sur l'univers de Michael Jackson et ses performances emblématiques, pour une vraie sensation d'ailleurs et d'évasion.",
+      "reflechir": "Son portrait au-delà de la musique donne matière à penser sur l'ambition, l'héritage et la construction d'un artiste majeur.",
+      "spectacle": "Le film met en avant ses performances les plus emblématiques et une mise en scène centrée sur l'ampleur de sa carrière.",
+      "emotion": "Le récit suit la vie, la famille et l'héritage de Michael Jackson dans une trajectoire humaine et touchante."
     }
   },
   {
@@ -485,11 +508,13 @@
     "featured": true,
     "premium": true,
     "bubbleReasons": {
-      "voyager": "Le parcours de Paul avec Chani et les Fremen prolonge l’immersion dans un monde désertique chargé de rites et de conflits.",
-      "spectacle": "La vengeance, les Fremen et le destin de l’univers donnent une ampleur très forte à la séance.",
-      "reflechir": "Le choix entre l’amour et le destin de l’univers apporte une vraie tension morale au récit.",
-      "emotion": "Le dilemme de Paul entre Chani et un futur qu’il veut éviter donne une dimension plus personnelle à l’épopée."
-    }
+      "voyager": "Un grand voyage dans un univers de science-fiction, entre désert, ailleurs et destin.",
+      "frissonner": "La quête de vengeance et le terrible futur annoncé créent une tension forte.",
+      "reflechir": "Le film pose un dilemme entre amour, vengeance et destin, avec matière à penser.",
+      "spectacle": "L'aventure de science-fiction promet une grande ampleur et un spectacle visuel.",
+      "emotion": "Le parcours de Paul Atreides est lié à sa famille, à l'amour et à un choix déchirant."
+    },
+    "homeFeatured": false
   },
   {
     "title": "Gran Turismo",
@@ -536,7 +561,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/xFYpUmB01nswPgbzi8EOCT1ZYFu.jpg",
     "overview": "Gran Turismo est inspiré de l'incroyable histoire vécue d'une invraisemblable bande d'infortunés – un amateur de jeu vidéo de classe ouvrière, un ex-pilote d'autos de course paumé et un idéaliste de l'industrie du sport motorisé. Ensemble, ils risquent tout pour percer dans le sport le plus prestigieux au monde. Gran Turismo est une captivante histoire et un feu roulant d'action qui prouvent que tout est possible lorsqu'on conduit avec l'énergie du désespoir.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xn4c2g5qr5oh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xn4c2g5qr5oh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "L'univers du sport automobile offre une vraie sensation d'évasion et d'ailleurs.",
+      "frissonner": "La course et le risque créent une tension continue et des enjeux intenses.",
+      "reflechir": "L'histoire inspire sur le dépassement de soi et le pari de tout risquer pour réussir.",
+      "spectacle": "Le film promet un feu roulant d'action et de grandes scènes de course.",
+      "emotion": "Le parcours d'infortunés qui misent tout rend l'histoire humaine et touchante."
+    }
   },
   {
     "title": "Fire Island : La Grande Éruption",
@@ -581,7 +613,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/6WQZauSsXX7QFrNy0oKQnH6ZFAa.jpg",
     "overview": "Sur l'île d'Hawaï, un supervolcan entre soudainement en éruption. Toute la population est menacée par ce qui s'annonce comme le plus grand cataclysme volcanique de tous les temps. Une équipe d'experts en catastrophes naturelles est alors chargée de sauver ceux qui se trouvent sur le chemin du torrent de lave en fusion.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m15v449aj17c\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m15v449aj17c\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "L'action se déroule à Hawaï, sur une île au cœur d'un cataclysme volcanique.",
+      "frissonner": "L'éruption soudaine et la menace du torrent de lave créent une forte tension.",
+      "reflechir": "Le film met en avant une équipe d'experts face à une catastrophe naturelle à gérer.",
+      "spectacle": "Le supervolcan en éruption promet une action ample et des images de grand chaos.",
+      "emotion": "La population menacée donne un fort enjeu humain à la mission de sauvetage."
+    }
   },
   {
     "title": "Dune - Première partie",
@@ -693,11 +732,13 @@
     "featured": true,
     "premium": true,
     "bubbleReasons": {
-      "voyager": "Arrakis, planète dangereuse et précieuse, donne une forte sensation de dépaysement dès le cœur du récit.",
-      "spectacle": "La lutte autour de Dune et de sa ressource précieuse installe une aventure ample, politique et visuelle.",
-      "reflechir": "Le destin de Paul, la peur et les rapports de pouvoir donnent une matière plus cérébrale qu’une simple aventure spatiale.",
-      "emotion": "L’histoire de Paul est portée par sa famille, son peuple et un destin qui le dépasse."
-    }
+      "voyager": "Un voyage vers Dune offre un grand dépaysement dans un univers de science-fiction.",
+      "frissonner": "La planète est dangereuse et des forces maléfiques se disputent son contrôle.",
+      "reflechir": "Le film pose un dilemme de survie et de destin face à un monde qui dépasse Paul.",
+      "spectacle": "L'ampleur de l'univers et les enjeux sur Dune annoncent un grand spectacle visuel.",
+      "emotion": "Paul veut préserver l'avenir de sa famille et de son peuple, avec un destin qui le dépasse."
+    },
+    "homeFeatured": false
   },
   {
     "title": "Malnazidos",
@@ -747,11 +788,15 @@
     "featured": true,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/zyj152ahtjqz\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "bubbleReasons": {
-      "frissonner": "Les créatures mangeuses de chair créées par les nazis donnent une menace directe et très lisible.",
-      "rire": "Le mélange comédie, horreur et guerre crée une proposition plus décalée qu’un film de zombies totalement sérieux.",
-      "fatigue": "Son concept simple et sa durée raisonnable en font une séance facile à comprendre, même avec le cerveau en chaussons.",
-      "action": "L’alliance forcée face aux créatures donne un moteur d’action immédiat."
-    }
+      "voyager": "Le film plonge dans la guerre d'Espagne avec une ambiance d'ailleurs et des créatures surnaturelles.",
+      "frissonner": "L'affrontement avec des créatures mangeuses de chair apporte une tension horrifique.",
+      "rire": "La comédie mêlée à l'horreur donne un ton humoristique.",
+      "reflechir": "L'alliance forcée entre ennemis pose un dilemme intéressant en pleine guerre.",
+      "spectacle": "L'action de guerre et les créatures nazies promettent un grand spectacle.",
+      "emotion": "Des ennemis contraints de s'allier créent un enjeu humain et relationnel."
+    },
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Le Mans 66",
@@ -798,7 +843,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/2vq5GTJOahE03mNYZGxIynlHcWr.jpg",
     "overview": "Relate l’histoire vraie qui a conduit l’ingénieur automobile visionnaire américain Caroll Shelby à faire équipe avec le pilote de course britannique surdoué Ken Miles. Bravant l’ordre établi, défiant les lois de la physique et luttant contre leurs propres démons, les deux hommes n’avaient qu’un seul but : construire pour le compte de Ford Motor Company un bolide révolutionnaire capable de renverser la suprématie de l’écurie d’Enzo Ferrari sur le mythique circuit des 24 heures du Mans en 1966…",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/pjc2xj97b1cn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/pjc2xj97b1cn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le film fait voyager dans l'univers de la course automobile et du mythique circuit des 24 heures du Mans.",
+      "frissonner": "La rivalité et les enjeux de course créent une tension constante.",
+      "reflechir": "L'histoire vraie et le duel entre innovation et ordre établi donnent matière à penser.",
+      "spectacle": "Les courses et le défi technique offrent un grand spectacle plein d'ampleur.",
+      "emotion": "L'amitié et les démons intérieurs des deux hommes donnent une vraie dimension humaine."
+    }
   },
   {
     "title": "Gonjiam: Haunted Asylum",
@@ -844,11 +896,13 @@
     "featured": true,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1k2jx633koim\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "bubbleReasons": {
-      "frissonner": "L’urbex en direct dans un asile abandonné installe un terrain parfait pour une tension qui monte pièce après pièce.",
-      "fatigue": "Avec 1h35, c’est une option assez compacte si tu veux une séance d’horreur sans marathon.",
-      "spectacle": "Le dispositif de tournage en direct donne une tension immédiate et une immersion nerveuse.",
-      "reflechir": "Le film joue surtout sur l’immersion et la peur du lieu, pas sur une réflexion complexe."
-    }
+      "voyager": "Un huis clos dans un asile abandonné qui plonge dans un univers inquiétant et ailleurs.",
+      "frissonner": "L'asile abandonné et l'exploration en direct installent une tension et un mystère sombre.",
+      "reflechir": "Le concept d'urbex filmé en direct apporte une idée de mise en scène à explorer.",
+      "spectacle": "L'exploration en direct d'un grand lieu abandonné donne une ambiance immersive."
+    },
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Deepwater",
@@ -895,7 +949,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/fRT76SSQzAuZljogpsWyKphUxYX.jpg",
     "overview": "La plateforme Deepwater Horizon tourne non-stop pour tirer profit des 800 millions de litres de pétrole présents dans les profondeurs du golfe du Mexique. Mike Williams, électricien sur la plateforme et père de famille, connaît les risques de son métier mais fait confiance au professionnalisme de son patron Jimmy Harrell. En revanche, tous se méfient de la société locataire de la plateforme dirigée par Donald Vidrine, qui ne pense qu’à son bénéfice. Lorsque cette société décide contre l’avis des techniciens de la déplacer trop rapidement, il sont loin de se douter que les 5 millions de barils sous leurs pieds sont prêts à exploser...",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8mv3r7xwqbbk\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8mv3r7xwqbbk\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "La plateforme au large du golfe du Mexique offre un décor d'ailleurs et une vraie sensation d'évasion.",
+      "frissonner": "La tension monte autour d'un risque d'explosion et d'une situation qui tourne au drame.",
+      "reflechir": "Le film fait réfléchir aux risques du métier, aux choix techniques et aux intérêts qui s'opposent.",
+      "spectacle": "L'action autour de la plateforme et de l'explosion promet un grand spectacle intense.",
+      "emotion": "L'histoire suit un père de famille pris dans un drame humain au cœur de son travail."
+    }
   },
   {
     "title": "La Grande Muraille",
@@ -945,11 +1006,14 @@
     "featured": true,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8psrkqne65vx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "bubbleReasons": {
-      "voyager": "La Grande Muraille de Chine, ses geôles et son armée d’élite offrent un décor dépaysant dès le départ.",
-      "spectacle": "Les assauts de créatures monstrueuses contre une merveille colossale donnent une promesse de grand affrontement.",
-      "action": "La défense de la Muraille face aux créatures place l’action au centre de la séance.",
-      "fatigue": "Son format d’1h44 permet d’avoir de l’aventure et du spectacle sans partir sur une traversée interminable."
-    }
+      "voyager": "La Grande Muraille ouvre sur un ailleurs fantastique au cœur de la Chine et d'une immense merveille du monde.",
+      "frissonner": "Les attaques de créatures monstrueuses installent une tension sombre et constante.",
+      "reflechir": "Le film propose un dilemme entre courage, humanité et monstruosité, avec une vraie idée de frontière à tenir.",
+      "spectacle": "L'assaut de la Grande Muraille promet de grandes scènes d'action et une ampleur visuelle spectaculaire.",
+      "emotion": "William Garin trouve sa vocation dans un combat pour la survie de l'humanité, avec un parcours héroïque."
+    },
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Grave Encounters 2",
@@ -994,7 +1058,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/fNLVYtHuN3QsmG1B0F2xbFACwj7.jpg",
     "overview": "Étudiant en cinéma, Alex Wright convainc quelques amis de réaliser un documentaire sur Rencontres d'outre-tombe, un film relatant l'expérience menée par une équipe de télévision dans un hôpital psychiatrique hanté. Contactée par un inconnu qui lui donne une piste, l'équipe rencontre le producteur du film puis se rend dans le bâtiment abandonné. Les jeunes gens sont attaqués par un esprit et réalisent que l'hôpital est un endroit maléfique où ceux qui y pénètrent finissent par errer pour l'éternité. Le groupe tente désespérément de quitter les lieux...",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/g573r921lx7i\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/g573r921lx7i\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Un groupe s'aventure dans un hôpital psychiatrique hanté, pour un détour vers un lieu aussi étrange qu'inquiétant.",
+      "frissonner": "L'hôpital abandonné, l'esprit et la menace d'errance éternelle installent une tension sombre et des frissons.",
+      "reflechir": "Le film joue sur l'idée d'un documentaire sur une expérience surnaturelle et sur un lieu maudit à comprendre.",
+      "spectacle": "La progression dans un grand bâtiment abandonné et les attaques d'un esprit offrent une horreur à effet de mise en scène.",
+      "emotion": "Le groupe tente de s'en sortir ensemble, avec un vrai enjeu humain de survie et de solidarité."
+    }
   },
   {
     "title": "Grave Encounters",
@@ -1040,7 +1111,11 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/mZdvVaC59aYRKKcl96hiia2nQp2.jpg",
     "overview": "Lance Preston et son équipe sont à la tête de Rencontres d'outre-tombe, une émission de télé-réalité consacrée à la chasse aux fantômes. Ils s'apprêtent à tourner le nouvel épisode de l'émission dans l'hôpital psychiatrique de Collingwood, une vieille bâtisse abandonnée depuis longtemps. Le bâtiment alimente les rumeurs les plus folles et de nombreux témoins assurent qu'il est hanté. Persuadés qu'ils ont trouvé le lieu parfait, Preston et son équipe décident de s'y enfermer pour la nuit, sans se douter qu'une expérience terrifiante les y attend...",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/14cz4asajtih\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/14cz4asajtih\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "frissonner": "Une virée dans un hôpital psychiatrique hanté promet une ambiance de peur et de mystère sombre.",
+      "reflechir": "Le huis clos dans un lieu hanté apporte une idée de survie et de chasse aux fantômes à suivre."
+    }
   },
   {
     "title": "Gonger 2 - Le maudit",
@@ -1083,7 +1158,12 @@
     "backdrop": "images/backdrops/gonger-2-le-maudit.jpg",
     "overview": "Après les meurtres mystérieux de ses amis de toujours, commis par Eric le \"Gonger\", Philip quitte sa ville natale. Mais il ne parvient pas à oublier ce qui s'est passé. Son esprit en appelle à la vengeance. Bientôt, tout l'entourage de Philip disparait, ses proches décèdent tous d'accidents invraisemblables. Philip fait alors vœu de détruire Eric une bonne fois pour toutes...",
     "featured": true,
-    "videoEmbed": "gonger 2 le maudit\n<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/83jz6807plso\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "gonger 2 le maudit\n<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/83jz6807plso\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "frissonner": "Une ambiance de mystère sombre et de vengeance portée par des morts inquiétantes.",
+      "reflechir": "Le film repose sur une enquête macabre et le désir de comprendre ce qui frappe l'entourage de Philip.",
+      "emotion": "Le deuil des amis de Philip et sa quête de vengeance donnent un fort enjeu humain."
+    }
   },
   {
     "title": "Gonger : La malédiction",
@@ -1130,7 +1210,13 @@
     "backdrop": "images/backdrops/gonger-la-malediction.jpg",
     "overview": "Quinze ans après l'avoir quitté, Philipp retourne dans son village natal pour y régler une affaire d'héritage. Arrivé sur place, il retrouve ses anciens amis mais son séjour ranime aussi de très mauvais souvenirs, comme la mort de ses parents. Une mort qui, il va le découvrir progressivement, n'est pas aussi accidentelle que l'on avait voulu lui faire croire.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/aezinmwfmqfp\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/aezinmwfmqfp\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le retour dans le village natal crée une vraie sensation d'ailleurs et d'évasion.",
+      "frissonner": "Le mystère autour d'une mort dissimulée installe une tension sombre et inquiétante.",
+      "reflechir": "L'enquête sur l'héritage et les morts passées donne matière à penser et à démêler.",
+      "emotion": "Le retour au village réveille le deuil, les souvenirs familiaux et un passé douloureux."
+    }
   },
   {
     "title": "Gran Torino",
@@ -1178,10 +1264,12 @@
     "featured": true,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hvxqkt8glhjw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "bubbleReasons": {
-      "emotion": "Le portrait de Walt, isolé et enfermé dans ses rancœurs, ouvre la porte à une histoire humaine forte.",
-      "reflechir": "Le film s’appuie sur les préjugés, la solitude et la possibilité de changer, ce qui laisse de la matière après le générique.",
-      "fatigue": "Ce n’est pas le choix le plus léger, mais son récit humain reste clair et accessible."
-    }
+      "frissonner": "Un drame tendu où les préjugés et les tensions du quartier installent une atmosphère sombre.",
+      "reflechir": "Le film explore les préjugés, le repli sur soi et l'évolution d'un homme face aux autres.",
+      "emotion": "Un récit centré sur la solitude, le deuil et une trajectoire humaine qui peut toucher."
+    },
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Mortal Kombat II",
@@ -1229,7 +1317,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/laR2dpcNpbv83jdlRUNAYPPjH90.jpg",
     "overview": "Les champions en arts martiaux de l'Earthrealm, secondés par le héros de films d'action Johnny Cage, s'affrontent dans un tournoi ultime. Leur but: renverser Shao Kahn, un tyran qui menace l'existence même de leur monde. L'arrivée fracassante de Kitana, princesse d'Outworld aux loyautés troubles, vient brouiller davantage les lignes séparant ennemis et alliés. Tandis que de nouvelles alliances se forment, les combattants découvrent que les règles du tournoi ont changé. Entre affrontements spectaculaires et révélations mystiques, ils devront repousser leurs limites.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ygu23okuwd5w\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ygu23okuwd5w\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Un tournoi dans l'Earthrealm et l'Outworld offre un vrai dépaysement fantastique.",
+      "frissonner": "Les loyautés troubles et le tyran Shao Kahn installent une tension de combat et de mystère.",
+      "reflechir": "Le tournoi aux règles changées et les alliances mouvantes donnent matière à penser.",
+      "spectacle": "Les affrontements spectaculaires et les arts martiaux annoncent un grand spectacle d'action.",
+      "emotion": "Les alliances qui se forment et les loyautés troubles créent un enjeu relationnel fort."
+    }
   },
   {
     "title": "Pressure",
@@ -1276,7 +1371,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/apfyLCPVFttB8oXcsLJ7q0NSFLx.jpg",
     "overview": "Dans les 72 heures précédant le jour J, alors que le destin du monde libre est en jeu, le général Dwight D. Eisenhower et le capitaine James Stagg sont confrontés à un choix impossible : lancer la plus vaste et la plus périlleuse invasion maritime de l'histoire, ou risquer de perdre la guerre.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fj02a981qfzh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/fj02a981qfzh\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le film plonge dans un grand contexte historique et militaire, au cœur d'un événement décisif.",
+      "frissonner": "La tension monte autour d'un choix impossible et d'une invasion périlleuse.",
+      "reflechir": "Le dilemme stratégique pose une vraie matière à penser sur la guerre et la décision.",
+      "spectacle": "L'ampleur de la plus vaste invasion maritime annonce un grand spectacle historique.",
+      "emotion": "Le poids du choix et l'enjeu du monde libre donnent une forte intensité humaine."
+    }
   },
   {
     "title": "Projet Dernière Chance",
@@ -1325,11 +1427,14 @@
     "featured": false,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ot0x3va7r7mu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "bubbleReasons": {
-      "voyager": "Le réveil à bord d’un vaisseau à des années-lumière de la Terre donne une impression immédiate de vertige spatial.",
-      "reflechir": "La mission scientifique autour de l’extinction du Soleil repose sur une énigme à résoudre plutôt que sur l’action pure.",
-      "emotion": "L’amitié inattendue évoquée par le synopsis donne un contrepoint humain à la mission de survie.",
-      "spectacle": "L’enjeu de sauver toute vie sur Terre donne une ampleur très forte à cette aventure spatiale."
-    }
+      "voyager": "Un voyage spatial à des années-lumière de la Terre ouvre sur un grand ailleurs de science-fiction.",
+      "frissonner": "Le mystère autour d'une substance qui menace le Soleil installe une tension et une part d'énigme sombre.",
+      "reflechir": "L'intrigue repose sur une mission scientifique, des idées peu orthodoxes et une énigme à résoudre.",
+      "spectacle": "Le vaisseau spatial, l'espace lointain et l'enjeu de sauver la Terre promettent un grand spectacle.",
+      "emotion": "L'amitié inattendue au cœur de la mission apporte une trajectoire humaine touchante."
+    },
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "Super Mario Galaxy, le film",
@@ -1380,12 +1485,17 @@
     "featured": false,
     "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rvheyqz4yp8k\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "bubbleReasons": {
-      "voyager": "L’appel venu de l’autre bout de la galaxie envoie l’équipe vers des mondes nouveaux et très dépaysants.",
-      "rire": "Le royaume Champignon, Yoshi et mini-Bowser donnent une base légère et ludique pour une séance souriante.",
-      "fatigue": "Son ton familial, coloré et son format de 100 minutes en font une option facile à suivre quand le cerveau réclame un coussin.",
-      "famille": "L’univers Mario et l’aventure galactique restent adaptés à une séance familiale sans trop charger le bocal.",
-      "spectacle": "La promesse de nouveaux mondes et de personnages emblématiques donne une aventure vive et visuelle."
-    }
+      "voyager": "L'équipe part découvrir des mondes nouveaux et des personnages emblématiques à travers la galaxie.",
+      "frissonner": "Des menaces inattendues surgissent au fil de l'aventure dans l'espace.",
+      "rire": "La comédie et les tracas du royaume Champignon donnent un ton léger et amusant.",
+      "fatigue": "L'animation familiale et l'ambiance comique en font une séance facile et reposante.",
+      "reflechir": "L'histoire explore la réhabilitation de mini-Bowser et les choix de l'équipe face à l'appel venu d'ailleurs.",
+      "spectacle": "Le voyage galactique promet des mondes nouveaux et une grande aventure visuelle.",
+      "emotion": "L'amitié avec Yoshi et la préparation de l'anniversaire de Peach donnent un vrai cœur à l'histoire.",
+      "famille": "Le film est familial, en animation, avec une aventure accessible pour petits et grands."
+    },
+    "premium": false,
+    "homeFeatured": false
   },
   {
     "title": "The Punisher : One Last Kill",
@@ -1431,7 +1541,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/qO55CD8tgVL1T4WKn6zYFFiD6lL.jpg",
     "overview": "Alors que Frank Castle cherche un sens à sa vie au-delà de la vengeance, il replonge contre toute attente au cœur du combat.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2q4149be3mit\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2q4149be3mit\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "frissonner": "L'univers criminel et la tension du combat installent une ambiance sombre et nerveuse.",
+      "reflechir": "Le parcours de Frank Castle interroge le sens de sa vie au-delà de la vengeance.",
+      "spectacle": "L'action domine avec un héros replongé au cœur du combat.",
+      "emotion": "Le récit suit un homme en quête de sens, avec un enjeu personnel fort."
+    }
   },
   {
     "title": "War Machine",
@@ -1546,7 +1662,14 @@
     "overview": "Lors d'une dernière mission éprouvante pendant sa formation de Ranger, un ingénieur militaire doit mener son unité contre une gigantesque machine à tuer venue d'un autre monde.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un affrontement contre une machine venue d'un autre monde ouvre sur un univers de science-fiction dépaysant.",
+      "frissonner": "La mission éprouvante et la menace d'une gigantesque machine à tuer installent une tension forte.",
+      "reflechir": "Le parcours d'un ingénieur militaire face à une mission extrême apporte une idée de dépassement et de choix.",
+      "spectacle": "L'action d'un film de science-fiction avec une gigantesque machine promet un grand spectacle.",
+      "emotion": "La dernière mission éprouvante donne un enjeu humain fort au parcours du héros et de son unité."
+    }
   },
   {
     "title": "Avatar : De feu et de cendres",
@@ -1662,10 +1785,11 @@
     "premium": false,
     "homeFeatured": false,
     "bubbleReasons": {
-      "voyager": "La rencontre avec le Peuple des Cendres élargit encore Pandora et donne l’impression d’explorer une facette plus sombre du monde.",
-      "spectacle": "Le conflit qui s’intensifie sur Pandora promet une séance ample, visuelle et très dépaysante.",
-      "emotion": "Le deuil de Jake et Neytiri donne une couleur plus intime à cette nouvelle quête.",
-      "reflechir": "La nouvelle quête morale annoncée dans le synopsis donne matière à suivre autre chose qu’un simple affrontement."
+      "voyager": "L'univers de Pandora offre une grande évasion dans un monde de science-fiction et de fantastique.",
+      "frissonner": "Le conflit qui s'intensifie et la tribu des Cendres créent une tension sombre et redoutable.",
+      "reflechir": "La nouvelle quête morale invite à réfléchir à des choix et à des dilemmes.",
+      "spectacle": "L'aventure sur Pandora promet un grand spectacle de science-fiction et d'action.",
+      "emotion": "Le deuil de Neteyam et le chagrin de Jake et Neytiri donnent une forte dimension émotionnelle."
     }
   },
   {
@@ -1861,7 +1985,13 @@
     "overview": "Des événements étranges se déroulent dans la ville de Derry dans les années 1960 liés à Pennywise le clown, un personnage mystérieux qui hante Derry.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'intrigue plonge dans le Derry des années 1960 et ouvre sur un univers mystérieux à explorer.",
+      "frissonner": "Des événements étranges et la présence de Pennywise installent une tension sombre et mystérieuse.",
+      "reflechir": "Le mystère autour des événements de Derry invite à s'interroger et à mener l'enquête.",
+      "emotion": "La série suit plusieurs personnages liés à Derry, avec des enjeux humains au cœur du récit."
+    }
   },
   {
     "title": "Frankenstein",
@@ -1975,7 +2105,14 @@
     "overview": "Fin du XVIIIe siècle. Victor Frankenstein, scientifique visionnaire et ambitieux, se consacre corps et âme à un projet dément : recréer la vie à partir de restes humains, et ainsi remporter sa conquête obsédée de la mort. Financé par un mécène aux obscures motivations, Victor finit par donner vie à sa créature. Mais, au lieu de l’aimer comme un fils, il la rejette et l’enferme. Rejetée et meurtrie, celle-ci finit par se retourner contre lui.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un voyage dans un univers gothique du XVIIIe siècle, entre science et fantastique.",
+      "frissonner": "L'histoire de la création et du rejet installe une tension sombre et inquiétante.",
+      "reflechir": "Le film interroge l'ambition, la vie recréée et les limites de l'obsession scientifique.",
+      "spectacle": "L'univers fantastique de Guillermo del Toro promet une mise en scène ample et visuelle.",
+      "emotion": "Le rejet de la créature et le lien brisé entre créateur et création portent une forte charge humaine."
+    }
   },
   {
     "title": "Marche ou crève",
@@ -2023,7 +2160,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/2dlt9I2ga6hweywz9zsFUz1PVii.jpg",
     "overview": "Dans une Amérique totalitaire instaurée après une longue guerre fratricide, 50 jeunes hommes participent à une marche d'endurance de plus de 500 kilomètres, filmée et diffusée en direct. Les marcheurs ont l'obligation de conserver un rythme constant, avec interdiction formelle de s'arrêter. Après trois avertissements consécutifs, les contrevenants sont froidement abattus. Un seul en sortira vivant, avec une somme faramineuse et un prix de son choix. Habité par un motif secret, le jeune Raymond Garraty tente sa chance, nouant sur la route un fort lien d'amitié avec l'Afro-Américain Peter McVries.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/6ld0bx9cmrmg\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/6ld0bx9cmrmg\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Un univers de science-fiction totalitaire crée un ailleurs marquant.",
+      "frissonner": "La marche sous haute tension et la menace constante installent une peur continue.",
+      "reflechir": "Le concept de survie filmée et le motif secret ouvrent une vraie matière à penser.",
+      "spectacle": "L'épreuve de plus de 500 kilomètres et le direct donnent une forte ampleur visuelle.",
+      "emotion": "L'amitié qui naît sur la route apporte un enjeu humain touchant."
+    }
   },
   {
     "title": "Nuremberg",
@@ -2137,7 +2281,13 @@
     "overview": "Washington, 1945. Hitler s'est suicidé, l'Allemagne a capitulé et les Alliés détiennent 22 officiers nazis, dont Hermann Göring, plus haut gradé du Troisième Reich. Contrairement à ses collègues, qui préconisent leur exécution, Robert H. Jackson, juge à la Cour suprême des États-Unis, obtient que ceux-ci soient traduits devant une cour internationale. Un an avant l'ouverture du procès à Nuremberg, Jackson confie à un psychiatre de l'armée américaine, Douglas Kelley, le mandat d'évaluer les accusés. Secondé par son traducteur, Kelley se met à la tâche, en privilégiant le cas du Reichsmarschall Göring, un pervers narcissique, qui s'engage avec lui dans un jeu du chat et de la souris.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le film plonge dans l'Allemagne de 1945 et les coulisses du procès de Nuremberg.",
+      "frissonner": "Le face-à-face avec Göring installe une tension psychologique sombre et soutenue.",
+      "reflechir": "Le procès international et le dilemme de justice offrent une forte matière à penser.",
+      "emotion": "Le duel entre Kelley et Göring met en jeu des trajectoires humaines intenses."
+    }
   },
   {
     "title": "Thandel",
@@ -2183,7 +2333,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/8mCApaSTpIj3y1LnHpBqzdy9rEW.jpg",
     "overview": "Raju, un pêcheur indien, est arrêté après avoir dérivé par mégarde dans des eaux étrangères, et entreprend un retour périlleux vers sa bien-aimée Sathya.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0a0rt6uyl7e8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0a0rt6uyl7e8\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le voyage périlleux en eaux étrangères apporte un vrai dépaysement.",
+      "frissonner": "Le mélange de thriller et le retour périlleux installent une tension palpable.",
+      "reflechir": "Le destin de Raju soulève un dilemme humain autour de l'exil et du retour.",
+      "spectacle": "L'action et l'ampleur du périple promettent un vrai film de spectacle.",
+      "emotion": "L'histoire de Raju et Sathya met en avant une relation forte et touchante."
+    }
   },
   {
     "title": "The Gorge",
@@ -2297,7 +2454,14 @@
     "overview": "Deux agents hautement entraînés se rapprochent malgré la distance lorsqu'ils sont envoyés garder deux côtés opposés d'une mystérieuse gorge. Quand un mal surgit des profondeurs, ils doivent faire équipe pour survivre à ce qui est tapi sous la surface.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un mystère de science-fiction dans une gorge lointaine, pour s'évader dans un univers à part.",
+      "frissonner": "La tension monte face à une menace cachée dans les profondeurs et à un mal qui surgit.",
+      "reflechir": "Le film mêle science-fiction et mystère, avec une situation qui pousse à s'interroger sur ce qui se cache sous la surface.",
+      "spectacle": "Deux agents entraînés doivent survivre dans une gorge mystérieuse, avec une montée d'action et de grand danger.",
+      "emotion": "La relation qui naît entre les deux agents donne un enjeu humain au cœur du danger."
+    }
   },
   {
     "title": "The Shadow's Edge",
@@ -2413,7 +2577,13 @@
     "overview": "Un mafieux et ses 7 fils adoptifs manipulent et ridiculisent la police en piratant le système de surveillance de la ville, dans le but de récupérer une fortune en crypto-monnaie. La police doit faire appel à un ancien expert qui va s'associer avec une policière à laquelle il est lié par un secret qu'elle ignore. Une partie d'échec commence, où les cerveaux et la loyauté seront mis à l'épreuve.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "frissonner": "Un jeu de piste tendu entre mafia, surveillance et secret, avec une atmosphère sombre.",
+      "reflechir": "Une partie d'échecs policière qui met les cerveaux, la loyauté et le secret à l'épreuve.",
+      "spectacle": "Un thriller d'action avec piratage, police et affrontement à grande échelle.",
+      "emotion": "Le lien secret entre deux policiers donne un enjeu humain au cœur de l'enquête."
+    }
   },
   {
     "title": "Alien : Romulus",
@@ -2529,14 +2699,11 @@
     "premium": false,
     "homeFeatured": false,
     "bubbleReasons": {
-      "voyager": "Voyager par Spoofle",
-      "frissonner": "Frissonner par spoofle",
-      "rire": "Rire par spoofle",
-      "fatigue": "Fatigue par spoofle",
-      "reflechir": "Réfléchir par spoofle",
-      "spectacle": "Spectacle par spoofle",
-      "emotion": "Émotion par spoofle",
-      "famille": "Famille par spoofle"
+      "voyager": "Un voyage spatial vers Yvaga et une station abandonnée offrent une vraie évasion ailleurs.",
+      "frissonner": "L'exploration de la station réveille une forme de vie terrifiante et une forte tension.",
+      "reflechir": "L'objectif de rejoindre une autre planète crée un choix qui fait réfléchir sur leur avenir.",
+      "spectacle": "Le cadre spatial et la station abandonnée promettent une ambiance de science-fiction ample.",
+      "emotion": "Le groupe de jeunes colons porte un enjeu humain autour de leur espoir d'une vie meilleure."
     }
   },
   {
@@ -2652,7 +2819,14 @@
     "overview": "John Wick affronte ses adversaires les plus redoutables dans ce quatrième volet de la série.  De New York à Osaka, en passant par Paris et Berlin, John Wick mène un combat contre la Grande Table, la terrible organisation criminelle qui a mis sa tête à prix, en affrontant ses tueurs les plus dangereux...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "De New York à Osaka, puis Paris et Berlin, le film offre un vrai dépaysement.",
+      "frissonner": "L'affrontement avec des tueurs dangereux et la Grande Table installe une forte tension.",
+      "reflechir": "La traque de la Grande Table et le combat de John Wick donnent matière à penser.",
+      "spectacle": "L'action à grande échelle et les affrontements dans plusieurs villes promettent un grand spectacle.",
+      "emotion": "Le parcours de John Wick face à des adversaires redoutables porte un enjeu humain fort."
+    }
   },
   {
     "title": "The Creator",
@@ -2767,7 +2941,14 @@
     "overview": "Alors qu'une future guerre entre la race humaine et l'intelligence artificielle fait rage, l'ancien agent des forces spéciales Joshua est recruté pour traquer et tuer le Créateur, l'insaisissable architecte de l'IA avancée.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un univers de science-fiction qui emmène ailleurs dans une guerre entre humains et IA.",
+      "frissonner": "La traque d'un créateur insaisissable et la guerre en cours installent une tension sombre.",
+      "reflechir": "Le film pose un concept d'intelligence artificielle et un dilemme autour de cette guerre.",
+      "spectacle": "L'action et la guerre entre humains et IA promettent un grand spectacle de science-fiction.",
+      "emotion": "Le parcours de Joshua dans cette guerre donne un enjeu humain fort."
+    }
   },
   {
     "title": "Avatar : La Voie de l'eau",
@@ -2883,10 +3064,11 @@
     "premium": false,
     "homeFeatured": false,
     "bubbleReasons": {
-      "voyager": "Le déplacement vers un autre peuple de Pandora donne une vraie impression de découverte et de changement d’horizon.",
-      "spectacle": "Pandora, la nature et les grands espaces aquatiques en font une séance pensée pour l’immersion visuelle.",
-      "emotion": "La menace qui pèse sur la famille de Jake et Neytiri donne un enjeu plus intime à l’aventure.",
-      "famille": "Le récit place la famille au centre de l’histoire, même si la durée demande un canapé bien préparé."
+      "voyager": "Pandora et ses récifs offrent un grand dépaysement dans un univers de science-fiction.",
+      "frissonner": "Le retour d'une organisation dangereuse installe une tension continue sur Pandora.",
+      "reflechir": "Le film fait confronter la famille à un nouveau clan et à des mœurs différentes.",
+      "spectacle": "L'action et les grands paysages de Pandora promettent un très grand spectacle.",
+      "emotion": "Jake et Neytiri devenus parents affrontent un danger qui menace leur vie de famille."
     }
   },
   {
@@ -3103,7 +3285,13 @@
     "overview": "Lorsque Kelvin se réveille, il est dans un endroit inconnu, sans aucun souvenir de sa vie précédente. Il s'avère qu'il s'est réincarné dans un autre monde, mais ses souvenirs ont été échangés contre de puissantes compétences. Devenu invocateur, il part en voyage avec la déesse qui l'a amené dans le nouveau monde, devenue aussi sa toute première \"adepte\"...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un isekai qui entraîne Kelvin dans un autre monde et un voyage hors du quotidien.",
+      "reflechir": "Le troc entre souvenirs et compétences pose une idée intrigante sur l'identité.",
+      "spectacle": "L'univers fantastique et le rôle d'invocateur promettent de l'action et de l'ampleur.",
+      "emotion": "Le lien entre Kelvin et la déesse devenue sa première adepte apporte une relation marquante."
+    }
   },
   {
     "title": "Money Heist: Korea",
@@ -3335,7 +3523,14 @@
     "overview": "Des braqueurs investissent l'hôtel des monnaies d'une Corée unifiée et prennent des otages. La police doit les arrêter, ainsi que le mystérieux cerveau qui les dirige.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'action se déroule dans une Corée unifiée, avec un braquage au cœur d'un lieu symbolique.",
+      "frissonner": "Le braquage, les otages et le cerveau mystérieux installent une forte tension.",
+      "reflechir": "Le face-à-face entre la police et le groupe nourrit l'enquête et le suspense.",
+      "spectacle": "Le braquage et l'action promettent une série tendue et spectaculaire.",
+      "emotion": "Les otages et les enjeux humains du braquage donnent du poids à l'histoire."
+    }
   },
   {
     "title": "Chernobyl : Under Fire",
@@ -3450,7 +3645,14 @@
     "overview": "26 avril 1986, la catastrophe nucléaire à Tchernobyl est en cours. Bientôt les nappes phréatiques risquent d'être contaminées sans l'intervention de l'homme. Les scientifiques et les représentants du Kremlin appellent au courage et à la loyauté patriotique de trois hommes. Les volontaires doivent plonger dans des eaux contaminées du sous-sol du réacteur n°4 qui vient d'exploser afin de vider le réservoir. Ces trois hommes sont communément appelés l’escouade-suicide.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le film plonge dans la catastrophe de Tchernobyl et transporte dans un contexte historique marquant.",
+      "frissonner": "La mission dans des eaux contaminées et l'urgence nucléaire créent une forte tension.",
+      "reflechir": "Il met en jeu un dilemme humain face au courage, à la loyauté et au sacrifice.",
+      "spectacle": "L'explosion du réacteur et la mission sous haute pression promettent une action intense.",
+      "emotion": "Le récit repose sur le courage de volontaires confrontés à un sacrifice extrême."
+    }
   },
   {
     "title": "Matrix Resurrections",
@@ -3564,7 +3766,14 @@
     "overview": "Dix-huit ans après les événements de Matrix Revolutions, Thomas A. Anderson (alias Neo) ne se souvient plus de rien et mène une vie d'apparence normale à San Francisco. Il se rend régulièrement chez un psychiatre à qui il raconte ses rêves étranges et qui lui prescrit des pilules bleues. Après la réapparition de visages familiers et en quête de réponses, Neo repart à la recherche du lapin blanc. Il rencontre un certain Morpheus, qui lui offre le choix entre rester dans la Matrice et prendre son envol.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "La Matrice offre un univers de science-fiction à explorer, entre réalité simulée et ailleurs fascinant.",
+      "frissonner": "Le retour de visages familiers et la quête de réponses installent une tension et un mystère sombre.",
+      "reflechir": "Le film joue sur le choix entre rester dans la Matrice et prendre son envol, avec une forte idée de dilemme.",
+      "spectacle": "L'action de science-fiction promet un grand spectacle visuel et des scènes d'aventure amples.",
+      "emotion": "Le retour de Neo et Trinity donne un enjeu humain et relationnel fort à l'histoire."
+    }
   },
   {
     "title": "Chernobyl",
@@ -3731,7 +3940,12 @@
     "overview": "L'histoire vraie de la pire catastrophe causée par l'homme et de ceux qui ont sacrifié leur vie pour sauver l'Europe du drame.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "frissonner": "La série plonge dans une catastrophe historique tendue et dramatique.",
+      "reflechir": "Le récit vrai invite à réfléchir aux causes et aux conséquences d'un drame humain.",
+      "emotion": "Le sacrifice de personnages face au drame donne une forte dimension humaine."
+    }
   },
   {
     "title": "John Wick : Parabellum",
@@ -3845,7 +4059,14 @@
     "overview": "John Wick a transgressé une règle fondamentale : il a tué à l’intérieur même de l’Hôtel Continental. \"Excommunié\", tous les services liés au Continental lui sont fermés et sa tête mise à prix. John se retrouve sans soutien, traqué par tous les plus dangereux tueurs du monde.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'univers criminel international et les lieux liés au Continental donnent un vrai dépaysement.",
+      "frissonner": "La traque par les tueurs les plus dangereux crée une tension continue.",
+      "reflechir": "L'excommunication de John pose une règle et un dilemme au cœur du récit.",
+      "spectacle": "L'action et la chasse à l'homme promettent un grand spectacle visuel.",
+      "emotion": "Le parcours de John en solo face à tout le monde donne un enjeu humain fort."
+    }
   },
   {
     "title": "La Guerre des mondes",
@@ -4193,7 +4414,14 @@
     "overview": "Des astronomes détectent une transmission émanant d’une autre galaxie et qui serait la preuve d’une vie extraterrestre intelligente. Quelques jours plus tard, l’humanité est détruite dans sa quasi-totalité. La série suit les destins d’une poignée de survivants confrontés à la perte de leurs proches et de tous leurs repères, à un exode soudain, violent. Ils vont chercher à comprendre les raisons et mystères de cette invasion.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Une plongée dans une invasion venue d'ailleurs et un univers de science-fiction.",
+      "frissonner": "La série installe une tension sombre autour d'une invasion extraterrestre et d'un grand mystère.",
+      "reflechir": "L'intrigue interroge les causes et les mystères de l'invasion, avec une vraie matière à penser.",
+      "spectacle": "L'invasion et l'exode des survivants promettent une ampleur dramatique et des moments spectaculaires.",
+      "emotion": "Elle suit des survivants confrontés à la perte de leurs proches et de tous leurs repères."
+    }
   },
   {
     "title": "La Guerre des mondes",
@@ -4300,7 +4528,14 @@
     "overview": "Dans l'Angleterre des années 1900, un couple ne cesse de défier les conventions sociales, jusqu'au jour où une invasion extraterrestre les oblige à se battre pour leur vie.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'Angleterre des années 1900 et l'invasion extraterrestre offrent un vrai dépaysement.",
+      "frissonner": "L'invasion extraterrestre installe une tension et une menace constantes.",
+      "reflechir": "Le couple défie les conventions sociales, avec un contexte qui fait réfléchir.",
+      "spectacle": "L'affrontement avec une invasion extraterrestre promet une ampleur visuelle forte.",
+      "emotion": "Le couple se bat pour sa vie, avec un enjeu humain et relationnel marqué."
+    }
   },
   {
     "title": "Star Wars : L'Ascension de Skywalker",
@@ -4414,7 +4649,13 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "La galaxie Star Wars offre un grand univers d'aventure et d'ailleurs à parcourir.",
+      "frissonner": "Le retour de Palpatine et la lutte contre le Premier Ordre installent une forte tension.",
+      "reflechir": "Le conflit autour du pouvoir de Kylo Ren et du retour de Palpatine donne matière à penser.",
+      "spectacle": "Les genres action et science-fiction promettent une aventure ample et spectaculaire.",
+      "emotion": "Le deuil de Luke et les liens autour de Leia et Rey donnent un vrai enjeu humain."
+    }
   },
   {
     "title": "The Boys",
@@ -4863,7 +5104,14 @@
     "poster": "https://image.tmdb.org/t/p/w500/4Tw8TB9ikrcgzJgR0LOvgfnXD74.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/n6vVs6z8obNbExdD3QHTr4Utu1Z.jpg",
     "overview": "Lorsque les super-héros abusent de leurs super-pouvoirs au lieu de les utiliser pour faire le bien, les Boys se lancent dans une quête héroïque pour révéler la vérité sur Les Sept et Vought, le conglomérat qui couvre leurs sales secrets.",
-    "featured": false
+    "featured": false,
+    "bubbleReasons": {
+      "voyager": "Un univers de super-héros sombre et décalé offre une vraie échappée ailleurs.",
+      "frissonner": "Les abus de pouvoir et les secrets cachés créent une tension constante et sombre.",
+      "reflechir": "La série questionne le pouvoir, la vérité et les dérives des super-héros.",
+      "spectacle": "L'action et les super-pouvoirs promettent un grand spectacle.",
+      "emotion": "La quête des Boys donne un enjeu humain autour de la vérité et de la justice."
+    }
   },
   {
     "title": "The Grudge",
@@ -4977,7 +5225,12 @@
     "overview": "Une enquêtrice remonte la piste d'une affaire macabre jusqu'à une maison maudite, théâtre d'une histoire épouvantable et lieu empreint d'un sentiment de rage intense.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "frissonner": "Une enquête macabre mène à une maison maudite, idéale pour un frisson de mystère sombre.",
+      "reflechir": "L'enquêtrice remonte une affaire macabre, avec une piste à démêler et une maison maudite à explorer.",
+      "emotion": "L'histoire s'ancre dans une enquête marquée par une maison maudite et une forte charge tragique."
+    }
   },
   {
     "title": "Moi, quand je me réincarne en Slime",
@@ -5990,7 +6243,16 @@
     "overview": "Satoru, employé de bureau lambda, se fait assassiner par un criminel en pleine rue. Son histoire aurait dû s'arrêter là, mais il se retrouve soudain réincarné dans un autre monde sous la forme d'un Slime, le monstre le plus faible du bestiaire fantastique. Le voilà équipé de deux compétences uniques : « Prédateur », lui permettant de récupérer les aptitudes de ses adversaires, et « Grand Sage », grâce à laquelle il acquiert une compréhension aiguë de son environnement. Mais même muni de ces armes, ses chances de survie semblent cependant limitées...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un isekai qui transporte dans un autre monde fantastique.",
+      "frissonner": "La réincarnation et la survie dans un monde hostile créent de la tension.",
+      "rire": "La comédie apporte un ton léger et des situations amusantes.",
+      "fatigue": "L'univers animé et la comédie en font une séance facile à suivre.",
+      "reflechir": "L'idée d'un héros en Slime avec des compétences uniques apporte un concept original.",
+      "spectacle": "L'action et l'aventure promettent des affrontements et un univers ample.",
+      "emotion": "Le parcours de Satoru dans un autre monde donne une trajectoire personnelle marquante."
+    }
   },
   {
     "title": "Titan",
@@ -6037,7 +6299,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/tNkpV19YzF5jmZVG7hmKKk0Xb9H.jpg",
     "overview": "Dans un monde où toutes les ressources sont épuisées, l’avenir de l’humanité réside dans une planète lointaine. Pour l’atteindre, quelques soldats sont notre seul espoir. Mais pour réussir il faudra choisir : évoluer ou mourir..",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3plcm81wfb12\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3plcm81wfb12\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Un futur de science-fiction vers une planète lointaine ouvre une vraie sensation d'ailleurs.",
+      "frissonner": "Le mélange science-fiction et thriller installe une tension autour d'un choix vital.",
+      "reflechir": "Le dilemme évoluer ou mourir donne une vraie matière à penser sur l'avenir de l'humanité.",
+      "spectacle": "L'histoire promet une aventure de science-fiction à grande échelle avec des soldats et un monde en crise.",
+      "emotion": "L'enjeu pour l'avenir de l'humanité apporte une dimension humaine et touchante."
+    }
   },
   {
     "title": "Alien : Covenant",
@@ -6150,7 +6419,14 @@
     "overview": "Les membres d’équipage du vaisseau Covenant, à destination d’une planète située au fin fond de notre galaxie, découvrent ce qu’ils pensent être un paradis encore intouché. Il s’agit en fait d’un monde sombre et dangereux, cachant une menace terrible. Ils vont tout tenter pour s’échapper.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un voyage spatial vers une planète lointaine ouvre sur un univers d'ailleurs.",
+      "frissonner": "L'histoire installe un monde sombre et dangereux avec une menace terrible.",
+      "reflechir": "Le film joue sur la découverte d'un paradis trompeur et d'une menace cachée.",
+      "spectacle": "Le huis clos spatial et la fuite donnent une tension de grand film de science-fiction.",
+      "emotion": "L'équipage doit tout tenter pour s'échapper, avec un fort enjeu humain."
+    }
   },
   {
     "title": "John Wick : Chapitre 2",
@@ -6264,7 +6540,14 @@
     "overview": "John Wick est forcé de sortir de sa retraite volontaire par un de ses ex-associés qui cherche à prendre le contrôle d’une mystérieuse confrérie de tueurs internationaux. Parce qu’il est lié à cet homme par un serment, John se rend à Rome, où il va devoir affronter certains des tueurs les plus dangereux du monde.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'action entraîne John Wick à Rome et dans une confrérie de tueurs internationaux.",
+      "frissonner": "Le thriller installe une tension constante face à des tueurs parmi les plus dangereux du monde.",
+      "reflechir": "Le serment et les liens entre anciens associés donnent une intrigue de loyauté et de choix.",
+      "spectacle": "L'action promet un grand spectacle avec des affrontements intenses et des tueurs redoutables.",
+      "emotion": "Le film repose sur un serment et sur le lien qui force John à reprendre la route."
+    }
   },
   {
     "title": "Star Wars : Les Derniers Jedi",
@@ -6377,7 +6660,13 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "L'histoire entraîne la Résistance à travers l'univers de Star Wars, entre vaisseaux, planètes et Force.",
+      "frissonner": "La Résistance est traquée par le Premier Ordre, ce qui installe une tension constante.",
+      "reflechir": "Rey cherche à convaincre Luke de lui enseigner la Force, avec un vrai enjeu de transmission.",
+      "spectacle": "Le film promet de grandes batailles spatiales et de l'action à l'échelle de la galaxie.",
+      "emotion": "Les liens entre Rey, Luke, Leia et la Résistance donnent un fort enjeu humain et affectif."
+    }
   },
   {
     "title": "119 jours : Les survivants de l'océan",
@@ -6489,7 +6778,14 @@
     "overview": "Tiré d'une histoire vraie, le film se base sur le livre \"The Spirit of Rose Noëlle\" écrit par l'un des survivants : John Glennie, propriétaire et capitaine du trimaran Rose Noëlle. En 1989, son voilier appareille de Picton en Nouvelle-Zélande à destination des Tonga avec 4 hommes à bord. Au cours d'une tempête, le voilier est retourné par une terrible vague et l'équipage se retrouve confiné dans une étroite cabine, seul espace n'étant pas innondé. Il s'ensuit alors, 119 jours de lutte et d'angoisse pour survivre au beau milieu de l'océan Pacifique.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le film embarque pour un long périple en mer au cœur du Pacifique.",
+      "frissonner": "La tempête et la lutte pour survivre installent une tension continue.",
+      "reflechir": "Une histoire vraie de survie pose un vrai défi humain et moral.",
+      "spectacle": "La traversée et la tempête offrent un cadre d'aventure ample en mer.",
+      "emotion": "Le récit suit des survivants confrontés à l'angoisse et à l'endurance."
+    }
   },
   {
     "title": "Underworld : Blood Wars",
@@ -6605,7 +6901,14 @@
     "overview": "Selene ne repoussera pas seulement les attaques des deux clans (Lycan et Vampire), qui après s'être livrés une guerre de longue date, s'allient contre elle. Elle va tout mettre en œuvre pour mettre un terme définitif à cette guerre éternelle, quitte à commettre le sacrifice ultime.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Plonge dans un univers fantastique entre vampires et lycans, dans une guerre surnaturelle.",
+      "frissonner": "L'affrontement entre clans et l'ambiance d'horreur installent une tension sombre et continue.",
+      "reflechir": "La guerre éternelle et le sacrifice final donnent matière à penser sur les choix et leurs conséquences.",
+      "spectacle": "L'action, le fantastique et les affrontements de clans promettent un film spectaculaire.",
+      "emotion": "Selene se bat jusqu'au sacrifice ultime pour mettre fin à une guerre qui la dépasse."
+    }
   },
   {
     "title": "San Andreas",
@@ -6720,7 +7023,13 @@
     "overview": "Lorsque la tristement célèbre Faille de San Andreas finit par s'ouvrir, et par provoquer un séisme de magnitude 9 en Californie, un pilote d'hélicoptère de secours en montagne et la femme dont il s'est séparé quittent Los Angeles pour San Francisco dans l'espoir de sauver leur fille unique. Alors qu'ils s'engagent dans ce dangereux périple vers le nord de l'État, pensant que le pire est bientôt derrière eux, ils ne tardent pas à comprendre que la réalité est bien plus effroyable encore…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le périple de Los Angeles à San Francisco offre une vraie sensation de voyage à travers la Californie.",
+      "frissonner": "Le séisme et la course contre la catastrophe installent une tension constante.",
+      "spectacle": "Le film mise sur l'ampleur du séisme et une action spectaculaire.",
+      "emotion": "La quête pour sauver leur fille donne un fort enjeu familial et touchant."
+    }
   },
   {
     "title": "Star Wars : Le Réveil de la Force",
@@ -6834,7 +7143,13 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "Un voyage dans une galaxie lointaine avec une quête à travers un univers de science-fiction.",
+      "frissonner": "La menace du Premier Ordre et de Kylo Ren installe une tension sombre et continue.",
+      "reflechir": "La quête de Rey et la crise de Finn apportent des dilemmes et des trajectoires à suivre.",
+      "spectacle": "L'action et la destruction par le Premier Ordre promettent un grand spectacle de science-fiction.",
+      "emotion": "La disparition de Luke et la quête de Rey donnent un enjeu humain et une trajectoire touchante."
+    }
   },
   {
     "title": "The Revenant",
@@ -6949,7 +7264,14 @@
     "overview": "Dans une Amérique profondément sauvage, le trappeur Hugh Glass est sévèrement blessé et laissé pour mort par un traître de son équipe, John Fitzgerald. Avec sa seule volonté pour unique arme, Glass doit affronter un environnement hostile, un hiver brutal et des tribus guerrières, dans une inexorable lutte pour sa survie, portée par un intense désir de vengeance.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'Amérique sauvage et l'hiver brutal offrent un dépaysement fort.",
+      "frissonner": "La survie face à un environnement hostile et à des tribus guerrières crée une tension continue.",
+      "reflechir": "La lutte pour survivre et la vengeance donnent matière à penser.",
+      "spectacle": "L'ampleur des paysages sauvages et l'épreuve physique promettent un grand spectacle.",
+      "emotion": "Le parcours de Hugh Glass, porté par la survie et la vengeance, est intense et humain."
+    }
   },
   {
     "title": "John Wick",
@@ -7063,7 +7385,14 @@
     "overview": "Depuis la mort de sa femme bien‐aimée, John Wick passe ses journées à retaper sa Ford Mustang de 1969, avec pour seule compagnie sa chienne Daisy. Il mène une vie sans histoire, jusqu’à ce qu’un malfrat sadique nommé Iosef Tarasof remarque sa voiture. John refuse de la lui vendre. Iosef n’acceptant pas qu’on lui résiste, s’introduit chez John avec deux complices pour voler la Mustang, et tuer sauvagement Daisy… John remonte la piste de Iosef jusqu’à New York. Un ancien contact, Aurelio, lui apprend que le malfrat est le fils unique d’un grand patron de la pègre, Viggo Tarasof. La rumeur se répand rapidement dans le milieu : le légendaire tueur cherche Iosef. Viggo met à prix la tête de John : quiconque l’abattra touchera une énorme récompense. John a désormais tous les assassins de New York aux trousses.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'action à New York et dans le milieu criminel donne une vraie immersion dans un autre univers.",
+      "frissonner": "La traque par des assassins et la vengeance créent une forte tension.",
+      "reflechir": "L'histoire interroge la vengeance, le deuil et l'escalade d'une guerre entre gangs.",
+      "spectacle": "Les affrontements et la chasse à l'homme promettent une action nerveuse et spectaculaire.",
+      "emotion": "Le deuil de sa femme et son attachement à Daisy donnent un vrai enjeu humain."
+    }
   },
   {
     "title": "Chroniques de Tchernobyl",
@@ -7175,7 +7504,14 @@
     "overview": "Six jeunes vacanciers en quête de sensations fortes engagent un guide pour une « expérience extrême ». Ignorant les mises en garde, l’homme les conduit dans la ville de Pripyat, toute proche de Tchernobyl. Vingt-cinq ans plus tôt, lorsque le réacteur a explosé, la ville avait été désertée dans l’urgence. Après une brève exploration, le petit groupe se retrouve piégé dans la ville fantôme. Et ils ne sont pas seuls…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Une plongée dans Pripyat, une ville fantôme au décor d'ailleurs.",
+      "frissonner": "Le film mise sur la tension et l'horreur d'un groupe piégé dans un lieu isolé.",
+      "reflechir": "L'intrigue autour de Tchernobyl et de la ville abandonnée donne matière à penser.",
+      "spectacle": "L'exploration d'une ville fantôme et la fuite du groupe promettent une belle intensité visuelle.",
+      "emotion": "Le film suit des vacanciers pris au piège, avec un fort enjeu humain."
+    }
   },
   {
     "title": "Prometheus",
@@ -7290,7 +7626,14 @@
     "overview": "Lorsque Elisabeth Shaw découvre un mystérieux lien entre plusieurs artefacts au cours de ses recherches, elle est persuadée qu'il s'agit d'un indice remettant en cause l'origine de l'humanité sur Terre. Une équipe de scientifiques supervisée par Meredith Vickers et l'androïde David se lance alors dans un voyage spatial fascinant aux confins de l'univers, vers un monde inconnu. Là-bas, un affrontement terrifiant qui décidera de l'avenir de l'humanité les attend…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un voyage spatial fascinant vers un monde inconnu ouvre sur un ailleurs dépaysant.",
+      "frissonner": "Le mystère des artefacts et l'affrontement terrifiant installent une tension sombre.",
+      "reflechir": "L'enquête sur l'origine de l'humanité donne une vraie matière à penser.",
+      "spectacle": "Le voyage aux confins de l'univers promet une ampleur visuelle de science-fiction.",
+      "emotion": "Le destin de l'humanité donne un enjeu humain fort à l'aventure."
+    }
   },
   {
     "title": "Twilight, chapitre 5 : Révélation, 2ème partie",
@@ -7404,7 +7747,15 @@
     "overview": "Après la naissance de sa fille Renésmée, Bella s’adapte peu à peu à sa nouvelle vie de vampire avec le soutien d’Edward. Se sentant menacés par cette naissance d’un nouveau genre, les Volturi déclarent la guerre à la famille Cullen. Pour préparer leur défense, les Cullen vont parcourir le monde pour rassembler les familles de vampires alliées et tenter de repousser les Volturi lors d’un ultime affrontement.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'univers de vampires et le voyage des Cullen offrent une vraie évasion ailleurs.",
+      "frissonner": "La menace des Volturi et l'ultime affrontement installent une forte tension.",
+      "reflechir": "Le film met en jeu un dilemme autour de la défense de la famille face à une guerre annoncée.",
+      "spectacle": "Le rassemblement des alliés et l'affrontement final promettent un grand spectacle.",
+      "emotion": "Bella, Edward et leur famille affrontent une épreuve qui renforce l'enjeu affectif.",
+      "famille": "La famille Cullen et la protection de Renésmée en font un récit familial."
+    }
   },
   {
     "title": "Underworld : Nouvelle ère",
@@ -7519,7 +7870,14 @@
     "overview": "Depuis des siècles, Lycans et vampires se livrent une bataille sans merci. Mais les deux races sont à l’aube d’une ère nouvelle car les humains, qui ont récemment découvert leur existence, décident de cesser leurs conflits internes pour s’engager ensemble dans la lutte contre ce qu’ils considèrent comme des fléaux. Selene s’attire la convoitise de l’armée et des scientifiques. Une traque incessante commence alors contre la plus redoutable des vampires.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Plonge dans un univers fantastique où vampires et Lycans s'affrontent depuis des siècles.",
+      "frissonner": "La traque de Selene et la guerre contre vampires et Lycans installent une tension sombre.",
+      "reflechir": "Le film oppose humains, vampires et Lycans autour d'une nouvelle alliance et d'un basculement de conflit.",
+      "spectacle": "Le mélange d'action et de fantastique promet des affrontements à grande échelle.",
+      "emotion": "Selene est pourchassée et convoitée, ce qui donne un enjeu personnel à l'histoire."
+    }
   },
   {
     "title": "Harry Potter et les Reliques de la Mort - 2ème partie",
@@ -7632,7 +7990,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "L'univers des sorciers offre une vraie évasion vers ailleurs.",
+      "frissonner": "La guerre contre Voldemort installe une tension sombre et continue.",
+      "reflechir": "Le combat entre le bien et le mal apporte une matière à penser.",
+      "spectacle": "Le film annonce une ultime épreuve de force et une grande ampleur d'action.",
+      "emotion": "Les enjeux pour les personnages rendent cette conclusion très intense.",
+      "famille": "L'univers de sorciers et l'aventure en font un choix familial."
+    }
   },
   {
     "title": "Twilight, chapitre 4 : Révélation, 1ère partie",
@@ -7747,7 +8112,14 @@
     "overview": "Bella et Edward Cullen sont unis par les liens du mariage et partent en lune de miel sur l’île d’Esmée. Le mariage consommé, Bella découvre qu’elle est enceinte. Décidée à rester humaine jusqu’à l’accouchement, la vie de Bella est mise en péril par son bébé, mi-humain mi-vampire. De retour à Forks, le couple doit faire face à cette grossesse hors norme et à l’hostilité qu’elle suscite : les Quilleutes sont sur le pied de guerre, prêts à affronter les Cullen et à tuer ce qu’ils considèrent comme une aberration. Alors que la trêve entre les vampires et les loups est menacée, Edward et Bella sont de nouveau confrontés à un choix…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'intrigue emmène Bella et Edward en lune de miel sur une île, avec un univers fantastique de vampires et de loups-garous.",
+      "frissonner": "La grossesse hors norme et la trêve menacée créent une tension sombre autour d'un affrontement possible.",
+      "reflechir": "Le récit pose un choix difficile entre rester humaine et affronter les conséquences de cette grossesse.",
+      "spectacle": "Le duel entre vampires et loups-garous et l'univers fantastique donnent une vraie ampleur visuelle.",
+      "emotion": "Le film repose sur le couple Bella-Edward, leur relation et une situation familiale chargée d'enjeux."
+    }
   },
   {
     "title": "127 Heures",
@@ -7862,7 +8234,14 @@
     "overview": "Le 26 avril 2003, Aron Ralston, jeune homme de vingt‐sept ans, se met en route pour une randonnée dans les gorges de l’Utah. Il est seul et n’a prévenu personne de son excursion. Alpiniste expérimenté, il collectionne les plus beaux sommets de la région. Pourtant, au fin fond d’un canyon reculé, l’impensable survient: Au‐dessus de lui un rocher se détache et emprisonne son bras dans le mur de rocaille. Le voilà pris au piège, menacé de déshydratation et d’hypothermie, en proie à des hallucinations… Il parle à son ex petite amie, sa famille, et se demande si les deux filles qu’il a rencontrées dans le canyon juste avant son accident seront les dernières. Cinq jours plus tard, comprenant que les secours n’arriveront pas, il va devoir prendre la plus grave décision de son existence…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Une randonnée en canyon dans l'Utah offre un vrai dépaysement et une immersion en pleine nature.",
+      "frissonner": "Le huis clos au fond du canyon crée une tension continue, entre piège, déshydratation et hallucinations.",
+      "reflechir": "Le film met en scène un dilemme vital et une décision extrême qui fait réfléchir.",
+      "spectacle": "Les paysages du canyon et l'aventure en pleine nature donnent une belle ampleur visuelle.",
+      "emotion": "La survie d'Aron et ses échanges avec ses proches donnent une trajectoire humaine touchante."
+    }
   },
   {
     "title": "Harry Potter et les Reliques de la Mort - 1ère partie",
@@ -7975,7 +8354,13 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "Un voyage dans le monde des sorciers, entre Poudlard, la fuite et une quête à travers un univers fantastique.",
+      "frissonner": "La domination de Voldemort, les dangers constants et la traque installent une tension sombre et menaçante.",
+      "reflechir": "La quête des Horcruxes et les secrets révélés donnent matière à penser sur le sacrifice et le pouvoir.",
+      "spectacle": "L'aventure fantastique et les périls à grande échelle offrent un grand souffle visuel et épique.",
+      "emotion": "L'amitié de Harry, Ron et Hermione est mise à rude épreuve par les sacrifices et les liens fragiles."
+    }
   },
   {
     "title": "Twilight, chapitre 3 : Hésitation",
@@ -8091,7 +8476,14 @@
     "overview": "Des morts suspectes dans les environs de Seattle laissent présager une nouvelle menace pour Bella. Victoria cherche toujours à assouvir sa vengeance contre elle et rassemble une armée. Malgré leur haine ancestrale, les Cullen et les Quileutes vont devoir faire une trêve et s'associer pour avoir une chance de la sauver. Mais Bella est obligée de choisir entre son amour pour Edward et son amitié pour Jacob tout en sachant que sa décision risque de relancer la guerre entre les deux clans. Alors que l'armée de Victoria approche, Bella est confrontée à la plus importante décision de sa vie.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'univers fantastique et les clans rivaux offrent une vraie évasion ailleurs.",
+      "frissonner": "La menace de Victoria, les morts suspectes et la guerre annoncée créent une tension sombre.",
+      "reflechir": "Le choix de Bella entre Edward et Jacob pose un dilemme central qui fait réfléchir.",
+      "spectacle": "L'affrontement entre clans et l'armée qui approche promet un grand spectacle.",
+      "emotion": "Bella doit choisir entre amour et amitié, avec un enjeu humain très fort."
+    }
   },
   {
     "title": "Avatar",
@@ -8206,7 +8598,14 @@
     "overview": "Un marine paraplégique, envoyé sur la lune Pandora pour une mission unique, est tiraillé entre suivre ses ordres et protéger le monde qu'il considère dorénavant comme le sien.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Pandora offre un univers de science-fiction dépaysant qui invite à l'évasion.",
+      "frissonner": "La mission et l'affrontement créent une tension continue.",
+      "reflechir": "Le héros est tiraillé entre ses ordres et la protection de Pandora, ce qui nourrit un vrai dilemme.",
+      "spectacle": "L'action et la science-fiction en font un grand film de spectacle.",
+      "emotion": "Le parcours du héros et son attachement à Pandora donnent un enjeu humain fort."
+    }
   },
   {
     "title": "Harry Potter et le Prince de sang-mêlé",
@@ -8319,7 +8718,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "L'univers de Poudlard et du monde des sorciers offre une belle évasion fantastique.",
+      "frissonner": "Le danger rôde à Poudlard et l'ombre de Voldemort apporte une tension continue.",
+      "reflechir": "L'histoire tourne autour d'un secret crucial et d'une enquête pour trouver le talon d'Achille de Voldemort.",
+      "spectacle": "Le film mêle aventure et fantastique dans un grand affrontement au cœur du monde des sorciers.",
+      "emotion": "La relation entre Harry et Dumbledore donne une trajectoire humaine forte autour de la bataille finale.",
+      "famille": "Le décor de Poudlard et l'aventure fantastique en font une séance possible pour la famille."
+    }
   },
   {
     "title": "The Grudge 3",
@@ -8432,7 +8838,14 @@
     "overview": "Une jeune femme japonaise détient le secret qui pourrait mettre fin à la malédiction des Saeki. Elle voyage jusqu'à Chicago où elle rencontre dans un immeuble une famille qui se bat pour survivre aux fantômes. Ensemble, ils vont affronter le fantôme de Kayako afin de sauver leurs âmes de leur tragique destin devenu imminent.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le voyage jusqu'à Chicago ouvre sur un ailleurs urbain et une ambiance de malédiction japonaise.",
+      "frissonner": "L'intrigue repose sur une malédiction, des fantômes et une tension de survie.",
+      "reflechir": "Le secret pour briser la malédiction apporte une idée centrale et un vrai enjeu à suivre.",
+      "spectacle": "L'affrontement avec le fantôme de Kayako promet une tension visuelle et des moments intenses.",
+      "emotion": "Une famille se bat pour survivre ensemble, avec un destin tragique à sauver."
+    }
   },
   {
     "title": "Twilight, chapitre 2 : Tentation",
@@ -8548,7 +8961,14 @@
     "overview": "« Tu ne me reverras plus. Je ne reviendrai pas. Poursuis ta vie, ce sera comme si je n'avais jamais existé. » Abandonnée par Edward, celui qu'elle aime passionnément, Bella ne s'en relève pas. Comment oublier son amour pour un vampire et revenir à une vie normale ? Pour combler son vide affectif, Bella court après le danger et prends des risques de plus en plus inconsidérés. Edward n'étant plus là pour la protéger, c'est Jacob, l'ami discret et indéfectible qui va la défendre et veiller sur elle. Mais peu à peu elle réalise l'ambigüité des sentiments qu'ils éprouvent l'un envers l'autre...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'histoire plonge dans un univers fantastique avec vampires et aventure.",
+      "frissonner": "Le vide laissé par Edward et le danger qui entoure Bella installent une tension sombre.",
+      "reflechir": "Le film explore l'ambiguïté des sentiments entre Bella, Edward et Jacob.",
+      "spectacle": "L'aventure et le fantastique promettent un grand décor de cinéma.",
+      "emotion": "L'abandon, l'amour passionnel et la relation triangulaire donnent une forte charge émotionnelle."
+    }
   },
   {
     "title": "Underworld 3 : Le Soulèvement des lycans",
@@ -8663,7 +9083,14 @@
     "overview": "Au Moyen-Âge, l'équilibre règne entre les vampires dirigés d'une main de fer par Victor et leurs serviteurs les lycans. Mais lorsque la fille de Victor s'éprend de Lucian, un lycan, c'est le début d'une longue guerre sanglante qui continuera jusqu'à aujourd'hui.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le récit plonge dans un Moyen-Âge fantastique peuplé de vampires et de lycans.",
+      "frissonner": "La guerre sanglante et l'ambiance de thriller installent une tension sombre.",
+      "reflechir": "Le film met en jeu l'équilibre entre clans et le dilemme d'un amour interdit.",
+      "spectacle": "L'action fantastique et la guerre entre vampires et lycans promettent un grand spectacle.",
+      "emotion": "L'amour entre la fille de Victor et Lucian nourrit un enjeu humain fort."
+    }
   },
   {
     "title": "Twilight, chapitre 1 : Fascination",
@@ -8778,7 +9205,14 @@
     "overview": "Isabella Swan, 17 ans, déménage à Forks, petite ville pluvieuse dans l'État de Washington, pour vivre avec son père. Elle s'attend à ce que sa nouvelle vie soit aussi ennuyeuse que la ville elle-même. Or, au lycée, elle est terriblement intriguée par le comportement d'une étrange fratrie, deux filles et trois garçons. Bella tombe follement amoureuse de l'un d'eux, Edward Cullen. Une relation sensuelle et dangereuse commence alors entre les deux jeunes gens : lorsque Isabella comprend que Edward est un vampire, il est déjà trop tard.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'histoire plonge dans la petite ville pluvieuse de Forks et un univers fantastique de vampires.",
+      "frissonner": "La relation est dangereuse et le mystère autour d'Edward crée une tension sombre.",
+      "reflechir": "Le film explore le dilemme d'une romance impossible et la découverte d'un vampire.",
+      "spectacle": "Le fantastique donne une ampleur visuelle à cette histoire de vampires et de lycée.",
+      "emotion": "La romance entre Bella et Edward porte l'enjeu humain central du film."
+    }
   },
   {
     "title": "D-War : La Guerre des Dragons",
@@ -8894,7 +9328,14 @@
     "overview": "Selon une légende coréenne, de terribles et mystérieuses créatures dévasteront un jour la Terre. Un journaliste est chargé d'enquêter jusqu'au jour où un mystérieux serpent géant fait son apparition avec la volonté de détruire Los Angeles…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un voyage dans une légende coréenne et un univers fantastique hors du quotidien.",
+      "frissonner": "La créature mystérieuse, la menace et le ton thriller créent une tension sombre.",
+      "reflechir": "L'enquête du journaliste et le mystère autour de la légende donnent matière à penser.",
+      "spectacle": "L'arrivée d'un serpent géant et la destruction de Los Angeles annoncent un grand spectacle.",
+      "emotion": "Le récit suit un journaliste pris dans une menace qui engage aussi un enjeu humain."
+    }
   },
   {
     "title": "Harry Potter et l'Ordre du Phénix",
@@ -9007,7 +9448,13 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "L'univers de Poudlard offre une vraie évasion dans un monde de magie et d'aventure.",
+      "frissonner": "Le retour de Voldemort et les nouvelles menaces à Poudlard installent une tension sombre.",
+      "reflechir": "Le film parle de mensonges, de pouvoir et de vérité à défendre, avec un vrai dilemme à suivre.",
+      "spectacle": "L'aventure à Poudlard promet des affrontements magiques et un grand souffle de fantasy.",
+      "emotion": "Harry doit affronter le déni, la menace et la solitude au sein de son monde."
+    }
   },
   {
     "title": "The Grudge 2",
@@ -9120,7 +9567,14 @@
     "overview": "Aubrey apprend que sa soeur Karen est hospitalisée au Japon. Peu de temps après son arrivée à Tokyo, Aubrey est avertie que sa soeur est devenue l'esclave de quelque chose d'invisible et de dangereux.De son côté, Allison étudie dans une école internationale de Tokyo. Décidée à se faire bien voir des élèves les plus populaires de l'établissement, elle est prête à tout, y compris se rendre dans une mystérieuse maison incendiée, lieu de plusieurs meurtres inexpliqués et d'étranges disparitions...Jake, un garçon introverti, n'est pas heureux que son père veuf refasse sa vie avec Trish. Le fossé se creuse entre lui et les siens, mais aussi avec tous ses voisins qui semblent avoir des comportements de plus en plus étranges...Ces trois jeunes gens ne le savent pas encore, mais ils ont rendez-vous avec une terrifiante malédiction que plus rien ne retient enfermée...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'intrigue mène à Tokyo et plonge dans une ambiance d'ailleurs marquée par une mystérieuse maison incendiée.",
+      "frissonner": "La malédiction, l'invisible et les disparitions installent une peur continue et une tension sombre.",
+      "reflechir": "L'histoire mêle une enquête autour de meurtres inexpliqués, de disparitions et d'étranges comportements.",
+      "spectacle": "Le film multiplie les lieux et les situations à Tokyo pour un thriller d'horreur à forte tension visuelle.",
+      "emotion": "Le récit touche à la famille, à la sœur hospitalisée et aux liens qui se tendent entre proches."
+    }
   },
   {
     "title": "Underworld 2 : Évolution",
@@ -9233,7 +9687,14 @@
     "overview": "La lutte millénaire que se livrent vampires et lycans est sur le point de connaître un tournant décisif… Pour avoir découvert le secret du massacre de sa famille, Selene, la redoutable guerrière vampire, est plus que jamais seule et menacée. Ses véritables ennemis ne sont pas forcément ceux qu'elle croyait. Michael, devenu le premier hybride à la fois vampire et lycan, aimerait se joindre à elle, mais il est incapable de contrôler la part lycan qui fait rage en lui. Pour chacun d'eux, il est temps de percer le mystère de leurs origines et de la guerre, mais dans cette quête de vérité, ils devront affronter les plus puissants des adversaires, les plus proches aussi... Plus que jamais, au plus profond des ténèbres, loin du regard des hommes, se joue le sort du monde...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un univers fantastique de vampires et de lycans entraîne dans un monde à part, loin du regard des hommes.",
+      "frissonner": "La guerre secrète, la menace et les adversaires cachés installent une tension sombre et un vrai mystère.",
+      "reflechir": "L'intrigue explore les origines des personnages et le secret derrière la guerre, avec de vrais enjeux de vérité.",
+      "spectacle": "L'action oppose vampires et lycans dans un affrontement ambitieux et spectaculaire.",
+      "emotion": "Le secret du massacre familial et la solitude de Selene donnent une forte charge humaine."
+    }
   },
   {
     "title": "Harry Potter et la Coupe de feu",
@@ -9347,7 +9808,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "L'univers de Poudlard et la magie offrent une vraie parenthèse d'ailleurs.",
+      "frissonner": "Le tournoi, le scandale et l'affrontement final installent une tension sombre.",
+      "reflechir": "Le choix de la Coupe de feu et les accusations de tricherie donnent matière à penser.",
+      "spectacle": "Le Tournoi des trois sorciers promet de grandes épreuves et de l'action.",
+      "emotion": "Harry est mis à mal et doit affronter de lourds enjeux personnels.",
+      "famille": "L'univers de Harry Potter reste une aventure connue pour une séance en famille."
+    }
   },
   {
     "title": "Star Wars, épisode III - La Revanche des Sith",
@@ -9460,7 +9928,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "Un grand voyage dans la galaxie Star Wars, avec une aventure de science-fiction dans un univers lointain.",
+      "frissonner": "La montée du côté obscur et la traque des Sith installent une forte tension.",
+      "reflechir": "Le dilemme d'Anakin face au pouvoir et au côté obscur donne matière à penser.",
+      "spectacle": "Des combats au sabre et une guerre galactique offrent un grand spectacle d'action.",
+      "emotion": "Le destin d'Anakin, d'Obi-Wan et de Padmé porte de forts enjeux humains.",
+      "famille": "Une aventure de science-fiction emblématique à partager en famille."
+    }
   },
   {
     "title": "Harry Potter et le Prisonnier d'Azkaban",
@@ -9575,7 +10050,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "L'univers de Poudlard ouvre une belle échappée fantastique vers ailleurs.",
+      "frissonner": "L'évasion d'un criminel et la menace sur Harry installent une tension sombre.",
+      "reflechir": "Le mystère autour de Sirius Black et de la trahison pousse à se poser des questions.",
+      "spectacle": "L'aventure à Poudlard promet un grand spectacle fantastique et visuel.",
+      "emotion": "Le lien avec les parents de Harry et son histoire personnelle donnent un vrai enjeu humain.",
+      "famille": "L'univers de Harry Potter en fait une séance appréciable pour toute la famille."
+    }
   },
   {
     "title": "The Grudge",
@@ -9687,7 +10169,13 @@
     "overview": "Dans ce qui paraît être une paisible maison de Tokyo se cache l'un des fléaux les plus épouvantables qui soient. Quiconque franchit le seuil de la demeure est aussitôt frappé par une malédiction qui ne tardera pas à le tuer dans un sentiment d'indicible rage.Alors que le nombre de victimes augmente, une jeune Américaine, Karen, se trouve brutalement confrontée à l'horreur de cette réalité. Pour elle, il n'est désormais plus temps d'ignorer ou de fuir, il faut comprendre pour avoir une chance de survivre...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Une maison de Tokyo et une ambiance japonaise installent un dépaysement immédiat.",
+      "frissonner": "La malédiction, l'horreur et le mystère créent une tension sombre et inquiétante.",
+      "reflechir": "Le récit pousse à comprendre la malédiction pour espérer survivre, avec une vraie dimension d'enquête.",
+      "emotion": "Karen est confrontée à l'horreur et lutte pour survivre, ce qui donne un fort enjeu humain."
+    }
   },
   {
     "title": "Le Seigneur des anneaux : Le Retour du roi",
@@ -9801,7 +10289,15 @@
     "overview": "La bataille pour la Terre du Milieu a commencé. Frodon et Sam, guidés par Gollum, poursuivent leur mission à travers les terres du Mordor pour détruire l'Anneau Unique. Tandis que le pouvoir de Sauron grandit, Aragorn, l'héritier du trône du Gondor, rassemble l'armée des Hommes contre les forces du Mal, afin de laisser une chance au porteur de l'Anneau d'accomplir sa quête…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un grand voyage en Terre du Milieu, entre le Mordor, le Gondor et un univers fantastique.",
+      "frissonner": "La quête avance sous la menace de Sauron et des forces du Mal, avec une tension constante.",
+      "reflechir": "La lutte entre le bien et le mal et le choix du destin donnent matière à penser.",
+      "spectacle": "La bataille pour la Terre du Milieu promet une grande ampleur d'action et de scènes épiques.",
+      "emotion": "La mission de Frodon et Sam et le combat d'Aragorn donnent un fort enjeu humain.",
+      "famille": "Une grande aventure fantastique connue pour pouvoir se partager en famille."
+    }
   },
   {
     "title": "Matrix Reloaded",
@@ -9916,7 +10412,14 @@
     "overview": "Neo apprend à mieux contrôler ses dons naturels, alors même que Sion s'apprête à tomber sous l'assaut de l'Armée des Machines. D'ici quelques heures, 250 000 Sentinelles programmées pour anéantir notre espèce envahiront la dernière enclave humaine de la Terre. Mais Morpheus galvanise les citoyens de Sion en leur rappelant la Parole de l'Oracle : il est encore temps pour l’Élu d'arrêter la guerre contre les Machines. Tous les espoirs se reportent dès lors sur Neo. Au long de sa périlleuse plongée au sein de la Matrice et de sa propre destinée, ce dernier sera confronté à une résistance croissante, une vérité encore plus aveuglante, un choix encore plus douloureux que tout ce qu'il avait jamais imaginé.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Plonge dans l'univers de la Matrice et une plongée dans un ailleurs de science-fiction.",
+      "frissonner": "La résistance croissante, la guerre contre les Machines et la tension donnent une atmosphère sombre.",
+      "reflechir": "Le film met Neo face à un choix douloureux et à une vérité qui invite à réfléchir.",
+      "spectacle": "L'action, l'assaut des Machines et l'ampleur de la lutte promettent un grand spectacle.",
+      "emotion": "Neo porte tout l'espoir de Sion, avec un parcours de destinée et de choix très humain."
+    }
   },
   {
     "title": "Matrix Revolutions",
@@ -10031,7 +10534,14 @@
     "overview": "La longue quête de liberté des rebelles culmine en une bataille finale explosive. Tandis que l'armée des Machines sème la désolation sur Sion, ses citoyens organisent une défense acharnée. Mais pourront-ils retenir les nuées implacables des Sentinelles en attendant que Neo s'approprie l'ensemble de ses pouvoirs et mette fin à la guerre ? L'agent Smith est quant à lui parvenu à prendre possession de l'esprit de Bane, l'un des membres de l'équipage de l'aéroglisseur. De plus en plus puissant, il est désormais incontrôlable et n'obéit plus aux Machines : il menace de détruire leur empire ainsi que le monde réel et la Matrice…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "La Matrice offre un univers de science-fiction immersif et un ailleurs total.",
+      "frissonner": "La menace des Machines et d'Agent Smith installe une tension sombre et continue.",
+      "reflechir": "Le film explore le libre arbitre, le pouvoir et la fin d'une guerre entre humains et Machines.",
+      "spectacle": "La bataille finale et l'action explosive promettent un grand spectacle visuel.",
+      "emotion": "La défense de Sion et la quête de liberté portent un fort enjeu humain et collectif."
+    }
   },
   {
     "title": "Radio",
@@ -10142,7 +10652,12 @@
     "overview": "En 1964, dans une petite ville de la Caroline du Sud, Harold Jones, un entraîneur de football blanc, se lie d'amitié avec Radio, un handicapé mental noir ne sachant ni lire ni écrire. Ce dernier, victime des nombreuses railleries de ses camarades, ne tarde pas à rejoindre les rangs des Hanna Yellow Jackets, l'équipe de football locale. Il deviendra par la suite l'assistant du coach. La profonde amitié qui unit les deux hommes bouleversera la vie de la petite communauté.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "reflechir": "Une amitié forte et une communauté bouleversée donnent matière à penser sur l'acceptation et le regard des autres.",
+      "emotion": "La relation entre Harold et Radio porte un récit humain touchant et profondément émouvant.",
+      "famille": "L'histoire d'amitié et de communauté peut se partager en séance familiale."
+    }
   },
   {
     "title": "Underworld",
@@ -10255,7 +10770,14 @@
     "overview": "Depuis des centaines d'années, à l'insu des humains, se déroule un combat sans merci entre deux races immortelles : vampires contre lycans, un peuple sauvage proche des loups-garous de nos légendes… Selene , une intrépide vampire, mène cette lutte millénaire sans aucune pitié pour ses ennemis. Mais lorsque Michael Corvin, un humain, se retrouve par hasard au cœur de cette guerre des clans, les règles changent. Selene entre passion et fidélité, va devoir choisir son camp.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un univers fantastique de vampires et de lycans plonge dans un ailleurs sombre et immersif.",
+      "frissonner": "La guerre secrète entre immortels installe une tension permanente et un climat sombre.",
+      "reflechir": "Le choix de Selene entre passion et fidélité donne un vrai dilemme à suivre.",
+      "spectacle": "L'affrontement entre vampires et lycans promet de l'action et un grand spectacle.",
+      "emotion": "Le conflit de Selene avec ses sentiments et sa loyauté donne un enjeu humain fort."
+    }
   },
   {
     "title": "Harry Potter et la Chambre des secrets",
@@ -10370,7 +10892,15 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "L'école des sorciers et son univers fantastique offrent une vraie évasion.",
+      "frissonner": "Le mystère de la Chambre des secrets installe tension et atmosphère sombre.",
+      "rire": "Le professeur Lockhart apporte une touche de comédie et de fanfaronnade.",
+      "reflechir": "L'enquête pour élucider le mystère donne matière à penser.",
+      "spectacle": "L'aventure magique promet des pièges, de l'action et un grand univers visuel.",
+      "emotion": "L'amitié de Harry, Ron et Hermione porte un enjeu humain chaleureux.",
+      "famille": "L'aventure magique avec ses amis en fait une séance adaptée à la famille."
+    }
   },
   {
     "title": "Le Seigneur des anneaux : Les Deux Tours",
@@ -10484,7 +11014,14 @@
     "overview": "La Communauté est dissoute, mais la quête pour détruire l'Anneau Unique se poursuit. Accompagné par son fidèle Sam et guidé par l'étrange Gollum, Frodon cherche un moyen d'entrer en Mordor. Alors que l'armée de Saroumane se met en marche, les autres compagnons de la Communauté se préparent à la bataille. La Guerre de l'Anneau a commencé !",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un grand voyage en Terre du Milieu, entre Mordor, quête et univers fantastique.",
+      "frissonner": "La montée de la guerre et la marche de l'armée de Saroumane installent une forte tension.",
+      "reflechir": "La quête de l'Anneau et le choix des héros donnent matière à penser.",
+      "spectacle": "Batailles, armées en marche et aventure fantastique offrent un grand spectacle.",
+      "emotion": "La séparation de la Communauté et l'entraide de Frodon et Sam créent un fort enjeu humain."
+    }
   },
   {
     "title": "Star Wars, épisode II - L'Attaque des clones",
@@ -10597,7 +11134,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "Un voyage dans une galaxie lointaine, au cœur d'un univers de science-fiction.",
+      "frissonner": "Une crise galactique, des menaces séparatistes et une enquête autour d'une armée de clones.",
+      "reflechir": "L'enquête d'Obi-Wan et les tensions politiques donnent matière à réfléchir.",
+      "spectacle": "Aventure, action et science-fiction pour un grand spectacle galactique.",
+      "emotion": "La protection de Padmé et le lien entre Anakin et Obi-Wan portent l'enjeu humain.",
+      "famille": "Une grande aventure de science-fiction qui peut se partager en famille."
+    }
   },
   {
     "title": "Harry Potter à l'école des sorciers",
@@ -10710,7 +11254,16 @@
     "overview": "Orphelin, le jeune Harry Potter peut enfin quitter ses tyranniques oncle et tante Dursley lorsqu'un curieux messager lui révèle qu'il est un sorcier. À 11 ans, Harry va enfin pouvoir intégrer la légendaire école de sorcellerie de Poudlard, y trouver une famille digne de ce nom et des amis, développer ses dons, et préparer son glorieux avenir.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'univers de Poudlard offre une vraie évasion vers un monde de sorcellerie et d'aventure.",
+      "frissonner": "Le mystère autour de l'école de sorcellerie et des secrets du monde magique apporte une légère tension.",
+      "fatigue": "L'ambiance d'aventure fantastique et de découverte en fait une séance plutôt facile et familiale.",
+      "reflechir": "Le parcours d'Harry invite à penser à l'identité, à l'amitié et à la place qu'on se construit.",
+      "spectacle": "Le film déploie un grand univers fantastique avec de l'aventure et des scènes visuelles marquantes.",
+      "emotion": "Harry cherche une famille et des amis, ce qui donne une trajectoire humaine touchante.",
+      "famille": "L'aventure magique de Poudlard convient bien à une séance familiale avec des enfants."
+    }
   },
   {
     "title": "Le Seigneur des anneaux : La Communauté de l'anneau",
@@ -10824,7 +11377,15 @@
     "overview": "Le jeune hobbit Frodon Sacquet hérite d'un anneau. Il s'agit de l'Anneau Unique, instrument de pouvoir absolu qui permettrait à Sauron, de régner sur la Terre du Milieu et de réduire en esclavage ses peuples… À moins que Frodon et ses fidèles compagnons ne parviennent à emporter l'Anneau jusqu'en Mordor, lieu où il a été forgé, et à le détruire pour toujours…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un grand voyage en Terre du Milieu, au cœur d'un univers fantastique riche et dépaysant.",
+      "frissonner": "L'Anneau Unique apporte une tension sombre et un enjeu de menace constante.",
+      "reflechir": "Le pouvoir de l'Anneau pose un vrai dilemme autour du courage et de la corruption.",
+      "spectacle": "Une aventure ample, avec action et décors grandioses de fantasy.",
+      "emotion": "Le parcours de Frodon et de ses compagnons donne un fort enjeu humain et d'amitié.",
+      "famille": "Une grande aventure fantastique qui peut se partager en séance familiale."
+    }
   },
   {
     "title": "Matrix",
@@ -10938,7 +11499,14 @@
     "overview": "Programmeur anonyme dans un service administratif le jour, Thomas Anderson devient Neo la nuit venue. Sous ce pseudonyme, il est l'un des pirates les plus recherchés du cyber‐espace. À cheval entre deux mondes, Neo est assailli par d'étranges songes et des messages cryptés provenant d'un certain Morpheus. Celui‐ci l'exhorte à aller au‐delà des apparences et à trouver la réponse à la question qui hante constamment ses pensées : qu'est‐ce que la Matrice ? Nul ne le sait, et aucun homme n'est encore parvenu à en percer les défenses. Mais Morpheus est persuadé que Neo est l'Élu, le libérateur mythique de l'humanité annoncé selon la prophétie. Ensemble, ils se lancent dans une lutte sans retour contre la Matrice et ses terribles agents…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un plongeon dans la Matrice offre un univers de science-fiction à explorer.",
+      "frissonner": "Les messages cryptés et la lutte contre des agents créent une tension sombre.",
+      "reflechir": "Le film pose la question de la Matrice et du choix de l'Élu, avec une vraie matière à penser.",
+      "spectacle": "L'action et le combat contre la Matrice annoncent un grand spectacle visuel.",
+      "emotion": "Neo suit une trajectoire de libération et d'accomplissement qui porte l'histoire."
+    }
   },
   {
     "title": "Star Wars, épisode I - La Menace fantôme",
@@ -11051,7 +11619,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "Un grand voyage dans une galaxie lointaine, avec des planètes et un univers très dépaysant.",
+      "frissonner": "L'intrigue politique et l'offensive imminente créent une tension continue et un vrai mystère.",
+      "reflechir": "La corruption, le Sénat bloqué et les tensions de pouvoir donnent matière à penser.",
+      "spectacle": "L'aventure interplanétaire et les affrontements Jedi promettent un grand spectacle.",
+      "emotion": "L'histoire suit des personnages liés par leur mission et la protection de Naboo.",
+      "famille": "L'univers d'aventure et de héros emblématiques en fait une séance accessible en famille."
+    }
   },
   {
     "title": "Alien, la résurrection",
@@ -11164,7 +11739,14 @@
     "overview": "Deux cents ans après le suicide de l’officier Ellen Ripley, une équipe de généticiens clone la jeune femme afin de récupérer l’alien vivant en elle, qui n’est autre qu’une reine. À leur grande surprise, le clone de Ripley a hérité de certaines caractéristiques génétiques de l’alien et ce dernier possède en partie la mémoire de Ripley. Afin d’étudier cette fascinante espèce et de lui permettre de se reproduire, les scientifiques font appel à des pirates de l’espace qui leur fournissent des « cobayes humains » pour héberger les embryons d’alien. Les généticiens arriveront‐ils à apprivoiser ces « bébés » ?",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un univers de science-fiction dans l'espace, avec des pirates et des généticiens.",
+      "frissonner": "L'horreur et la tension autour d'une reine alien et de cobayes humains créent un climat sombre.",
+      "reflechir": "Le film pose un dilemme scientifique sur le clonage, la reproduction et l'étude d'une espèce fascinante.",
+      "spectacle": "Science-fiction et action se mêlent pour un grand spectacle spatial.",
+      "emotion": "Le clone de Ripley porte une mémoire liée à son passé, ce qui donne un enjeu humain fort."
+    }
   },
   {
     "title": "Titanic",
@@ -11210,7 +11792,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/xnHVX37XZEp33hhCbYlQFq7ux1J.jpg",
     "overview": "Southampton, 10 avril 1912. Le paquebot le plus grand et le plus moderne du monde, réputé pour son insubmersibilité, le « Titanic », appareille pour son premier voyage. Quatre jours plus tard, il heurte un iceberg. À son bord, un artiste pauvre et une grande bourgeoise tombent amoureux.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/j19ax9tdulwn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/j19ax9tdulwn\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le paquebot et le voyage inaugural offrent une vraie évasion vers un autre temps.",
+      "frissonner": "Le naufrage crée une forte tension et un climat dramatique.",
+      "reflechir": "L'histoire fait penser à l'amour, aux choix et aux écarts de classe.",
+      "spectacle": "Le Titanic et son naufrage promettent une ampleur visuelle impressionnante.",
+      "emotion": "La romance sur fond de drame donne une trajectoire très touchante."
+    }
   },
   {
     "title": "Mission : Impossible",
@@ -11323,7 +11912,14 @@
     "overview": "Ethan Hunt, un agent secret de haut niveau, est accusé de la mort de son équipe d'espionnage. Alors qu'il fuit les criminels du gouvernement, qu'il s'introduit dans la chambre forte la plus impénétrable de la CIA et qu'il se cramponne au toit d'un train à grande vitesse, Hunt se retrouve dans une course effrénée pour devancer ceux qui le poursuivent… et se rapprocher petit à petit d'une vérité bouleversante.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Une mission d'espionnage qui emmène dans des lieux variés et une course à travers le monde.",
+      "frissonner": "La fuite, les poursuites et le mystère autour de la trahison créent une tension constante.",
+      "reflechir": "L'intrigue repose sur une accusation, une enquête et la recherche d'une vérité cachée.",
+      "spectacle": "Les scènes d'action, l'infiltration de la CIA et le train à grande vitesse promettent un grand spectacle.",
+      "emotion": "Ethan Hunt est seul face à l'accusation et avance dans une quête personnelle forte."
+    }
   },
   {
     "title": "Jurassic Park",
@@ -11435,7 +12031,14 @@
     "overview": "Généticien de génie, le professeur John Hammond a recréé de nombreuses espèces de dinosaures à partir d'une goutte de sang prélevée sur un moustique fossilisé. Démiurge naïf et généreux, dépassé par ses propres ambitions, il projette d’ouvrir un gigantesque et terrifiant parc d'attractions. Mais la pureté de son rêve se heurte à la cupidité des hommes et, plus grave, à la violence latente, indomptable de la Nature.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un parc de dinosaures recrée un ailleurs spectaculaire, entre aventure et science-fiction.",
+      "frissonner": "Le parc est présenté comme terrifiant, avec une violence latente et une tension constante.",
+      "reflechir": "Le film interroge la cupidité humaine face aux ambitions d'un créateur dépassé.",
+      "spectacle": "Les dinosaures et le gigantesque parc promettent un grand spectacle d'aventure.",
+      "emotion": "Le rêve généreux d'Hammond se heurte aux autres et à la force de la nature."
+    }
   },
   {
     "title": "Alien³",
@@ -11548,7 +12151,14 @@
     "overview": "Après s’être échappée avec Newt et Hicks de la planète alien, Ripley s’écrase sur Fiorina 161, une planète prison qui héberge un pénitencier. Malheureusement Newt et Hicks ne survivent pas au crash, au contraire d’un visiteur indésirable. La prison ne tolérant aucune arme, et l’aide étant lointaine, les prisonniers doivent survivre avec ce qu’ils ont sur place.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Une planète prison et un cadre de science-fiction offrent un vrai dépaysement.",
+      "frissonner": "L'ambiance horrifique et la survie face à un danger indésirable créent une tension sombre.",
+      "reflechir": "Le huis clos en prison et la survie sans armes apportent une situation à penser.",
+      "spectacle": "Le film mêle science-fiction et action dans un cadre de grande ampleur.",
+      "emotion": "Le crash, les pertes et la survie de Ripley donnent un fort enjeu humain."
+    }
   },
   {
     "title": "Le Parrain, 3e partie",
@@ -11661,7 +12271,14 @@
     "overview": "Atteignant la soixantaine, Michael Corleone désire à la fois renouer avec les siens et se réhabiliter aux yeux de la société, surtout de l'Église. Il arrivera presque à ses fins, mais sa vie passée et ses anciens ennemis le rattraperont plus vite. Michael Corleone est fatigué. Il veut prendre ses distances avec les activités mafieuses de sa famille. Il veut convertir ces activités en affaires légales. Kay, son ex-femme, lui fait même accepter que leur fils devienne un chanteur d'opéra et ne reprenne pas les activités familiales. Pendant ce temps, la fille de Michael, Mary, et son neveu, le fils de Sonny, Vincent, nouent une idylle qui n'est pas la bienvenue dans la famille. Il décide d'aider le Vatican à renflouer ses caisses et reçoit en échange le contrôle d'une entreprise immobilière leur appartenant. Attisant la jalousie de ses pairs, Michael échappe de justesse à un attentat commis par l'un d'eux. Vincent se propose alors pour reprendre les affaires de la famille en main.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Plonge dans l'univers de la mafia italienne et des affaires du Vatican.",
+      "frissonner": "La tension monte avec les rivalités, l'attentat et les anciens ennemis de Michael.",
+      "reflechir": "Le film interroge la rédemption, la légalité et le poids des choix passés.",
+      "spectacle": "La lutte de pouvoir et l'attentat donnent une vraie ampleur de grand film.",
+      "emotion": "Michael veut renouer avec les siens, tandis que les liens familiaux restent au cœur du récit."
+    }
   },
   {
     "title": "Batman",
@@ -11775,7 +12392,14 @@
     "overview": "Violence et corruption règnent dans la ville de Gotham City. La mafia dirige la ville à sa manière, au nez et à la barbe des autorités, complètement dépassées par les événements. Depuis quelques semaines cependant, un mystérieux justicier, drapé dans un costume de chauve-souris, terrorise les malfaiteurs et sème l'inquiétude dans les rangs de la mafia. Une jeune journaliste, Vicki Vale, mène l'enquête. C'est ainsi qu'elle fait la connaissance d'un séduisant mais excentrique milliardaire, Bruce Wayne. Celui-ci n'est autre que Batman, qui l'a déjà sauvée. Elle rencontre également un odieux truand, Jack Napier, bras droit du parrain Carl Grissom…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Gotham City offre un univers sombre et stylisé qui dépayse.",
+      "frissonner": "La ville gangrenée et le mystérieux justicier créent une tension sombre.",
+      "reflechir": "L'enquête de Vicki Vale donne une dimension de mystère à suivre.",
+      "spectacle": "Le film promet un grand spectacle d'action et une ambiance visuelle marquante.",
+      "emotion": "La rencontre entre Vicki Vale et Bruce Wayne apporte un enjeu humain."
+    }
   },
   {
     "title": "Akira",
@@ -11890,7 +12514,14 @@
     "overview": "Tetsuo, un adolescent ayant vécu une enfance difficile, est la victime d'expériences visant à développer les capacités psychiques qui dorment en chacun de nous. Ainsi doté d'une puissance que lui-même ne peut imaginer, Tetsuo décide de partir en guerre contre le monde qui l'a opprimé. Dès lors, il se retrouve au cœur d'une légende populaire qui annonce le retour prochain d'Akira, un enfant aux pouvoirs extraordinaires censé délivrer Tokyo du chaos ...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un univers de science-fiction intense qui emmène loin, entre pouvoirs psychiques et Tokyo en chaos.",
+      "frissonner": "L'ambiance de chaos et de pouvoir incontrôlé installe une tension sombre et un vrai mystère.",
+      "reflechir": "L'histoire interroge le pouvoir, l'oppression et le destin à travers une idée de légende populaire.",
+      "spectacle": "Les expériences, les pouvoirs psychiques et la guerre contre le monde promettent une grande ampleur visuelle.",
+      "emotion": "Le parcours de Tetsuo, marqué par une enfance difficile, donne un enjeu humain fort."
+    }
   },
   {
     "title": "Dirty Dancing",
@@ -11936,7 +12567,15 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/6iDQCBUSZKzY8Rnu8ECwl2gXcfG.jpg",
     "overview": "En 1963. Bébé – de son vrai prénom Frédérique – fille d’une riche famille, passe ses vacances avec ses parents et sa sœur à la pension de la famille Kellerman dans l’État de l’Oregon. Elle va être confrontée à un monde qui lui est complètement étranger, celui de la danse, et vivre une histoire d’amour avec Johnny, l’un des professeurs de danse de l’établissement, issu d’un milieu social très différent. Film à petit budget d’Émile Ardolino, il deviendra l’un des plus grand succès des années 80.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/s0f3sqs0c6a9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/s0f3sqs0c6a9\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le film emmène dans une pension de vacances en 1963, avec un dépaysement social et musical.",
+      "fatigue": "L'ambiance musicale et romantique en fait une séance douce et facile à regarder.",
+      "reflechir": "Le film met face à un monde social très différent et à des choix de cœur et de milieu.",
+      "spectacle": "La danse et le succès populaire du film donnent une belle dimension de spectacle.",
+      "emotion": "L'histoire d'amour et la confrontation à un autre milieu créent un vrai enjeu humain.",
+      "famille": "L'univers de vacances et de danse en fait un film accessible pour une séance en famille."
+    }
   },
   {
     "title": "Aliens, le retour",
@@ -12052,10 +12691,11 @@
     "premium": false,
     "homeFeatured": false,
     "bubbleReasons": {
-      "voyager": "Le retour sur LV-426 prolonge l’exploration spatiale avec une colonie coupée du reste du monde.",
-      "frissonner": "La présence des xénomorphes et la mission militaire créent une tension plus nerveuse que contemplative.",
-      "spectacle": "Son mélange d’action, de science-fiction et de survie en fait une séance dense et très énergique.",
-      "action": "La mission militaire et l’affrontement avec les xénomorphes donnent un rythme plus frontal et musclé."
+      "voyager": "L'action se déroule dans l'espace et sur la planète LV-426, pour un vrai dépaysement.",
+      "frissonner": "La traque des xénomorphes installe une forte tension et un climat sombre.",
+      "reflechir": "Le film interroge la parole de Ripley face au doute des militaires et à la mission de sauvetage.",
+      "spectacle": "L'affrontement avec les marines et la Bête promet une action ample et spectaculaire.",
+      "emotion": "Ripley protège des colons et accompagne une mission de sauvetage, avec un enjeu humain fort."
     }
   },
   {
@@ -12169,7 +12809,14 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "Un grand voyage dans une galaxie lointaine, avec des mondes et une mission sur Endor.",
+      "frissonner": "La menace de l'Étoile de la Mort et l'affrontement avec Dark Vador créent une forte tension.",
+      "reflechir": "Le conflit avec Dark Vador et le choix de Luke donnent une vraie matière à penser.",
+      "spectacle": "Aventure, action et science-fiction pour une mission d'envergure à l'échelle de la galaxie.",
+      "emotion": "Le lien entre Luke et Dark Vador donne un enjeu familial fort et touchant.",
+      "famille": "Une grande aventure de science-fiction accessible pour une séance familiale."
+    }
   },
   {
     "title": "Scarface",
@@ -12215,7 +12862,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/1qM2BYNE11Viby8ImC9LC00DgDr.jpg",
     "overview": "En 1980, le gouvernement cubain expulse plusieurs centaines de prisonniers dangereux vers la Floride. Parmi eux, Tony Montana : ambitieux et sans scrupules, il élabore un plan pour prendre la place d'un caïd de la drogue.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qa1hkdujdynu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/qa1hkdujdynu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "frissonner": "Un polar sombre sur la montée d'un ambitieux dans le monde de la drogue.",
+      "reflechir": "Une trajectoire de pouvoir et d'ascension qui fait réfléchir aux choix et à leurs conséquences.",
+      "spectacle": "Un film d'action ample, porté par une ambition de grand spectacle.",
+      "emotion": "Le parcours de Tony Montana met en jeu une trajectoire humaine forte."
+    }
   },
   {
     "title": "L'Empire contre-attaque",
@@ -12328,7 +12981,13 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {}
+    "bubbleReasons": {
+      "voyager": "Un grand voyage à travers la galaxie, de Hoth à Dagobah, pour une vraie sensation d'ailleurs.",
+      "frissonner": "La traque de l'Empire et la menace de Dark Vador maintiennent une forte tension.",
+      "reflechir": "Le film pose un dilemme entre poursuivre l'entraînement ou secourir ses amis.",
+      "spectacle": "Aventure spatiale, combats et poursuites offrent un grand spectacle de science-fiction.",
+      "emotion": "L'amitié et le lien entre les héros portent un enjeu humain fort au cœur de l'histoire."
+    }
   },
   {
     "title": "Alien, le huitième passager",
@@ -12436,10 +13095,11 @@
     "premium": false,
     "homeFeatured": false,
     "bubbleReasons": {
-      "voyager": "Le message venu d’une planète inexplorée et le voyage du Nostromo installent une vraie sensation d’éloignement total.",
-      "frissonner": "Le réveil de l’équipage, le signal mystérieux et la menace inconnue construisent une tension froide et progressive.",
-      "reflechir": "Le film joue sur la survie, l’inconnu et la vulnérabilité humaine face à une menace que personne ne comprend vraiment.",
-      "spectacle": "Son décor spatial et son ambiance de vaisseau isolé donnent une séance très immersive sans avoir besoin d’en faire trop."
+      "voyager": "Le film embarque vers une planète inconnue et un vaisseau extraterrestre.",
+      "frissonner": "L'enquête dans l'espace installe un mystère sombre et une forte tension.",
+      "reflechir": "Le scénario repose sur un message étrange et une découverte qui intrigue.",
+      "spectacle": "Le huis clos spatial et le vaisseau alien offrent un cadre visuel marquant.",
+      "emotion": "L'équipage fait face ensemble à une situation extrême, avec un fort enjeu humain."
     }
   },
   {
@@ -12552,7 +13212,15 @@
     "overview": "Il y a bien longtemps, dans une galaxie très lointaine... La guerre civile fait rage entre l'Empire galactique et l'Alliance rebelle. Capturée par les troupes de choc de l'Empereur menées par le sombre et impitoyable Dark Vador, la princesse Leia Organa dissimule les plans de l’Étoile Noire, une station spatiale invulnérable, à son droïde R2-D2 avec pour mission de les remettre au Jedi Obi-Wan Kenobi. Accompagné de son fidèle compagnon, le droïde de protocole C-3PO, R2-D2 s'échoue sur la planète Tatooine et termine sa quête chez le jeune Luke Skywalker. Rêvant de devenir pilote mais confiné aux travaux de la ferme, ce dernier se lance à la recherche de ce mystérieux Obi-Wan Kenobi, devenu ermite au cœur des montagnes désertiques de Tatooine...",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Un grand voyage dans une galaxie lointaine avec des mondes et vaisseaux emblématiques.",
+      "frissonner": "La lutte contre l'Empire et la présence de Dark Vador installent une tension continue.",
+      "reflechir": "L'histoire oppose l'Empire et l'Alliance rebelle autour d'un héritage et d'une mission à transmettre.",
+      "spectacle": "Aventure, action et science-fiction offrent un grand spectacle spatial très ample.",
+      "emotion": "Luke quitte sa vie ordinaire pour une quête qui le relie à Obi-Wan et à une mission importante.",
+      "famille": "Une aventure de science-fiction célèbre qui se partage facilement en séance familiale."
+    }
   },
   {
     "title": "Le Parrain, 2e partie",
@@ -12665,7 +13333,14 @@
     "overview": "Depuis la mort de Don Vito Corleone, son fils Michael règne sur la famille. Amené à négocier avec la mafia juive, il perd alors le soutien d'un de ses lieutenants, Frankie Pentageli. Échappant de justesse à un attentat, Michael tente de retrouver le coupable, soupçonnant Hyman Roth, le chef de la mafia juive. Vito Corleone, immigrant italien, arrive à New York au début du siècle ; très vite, il devient un des caïds du quartier, utilisant la violence comme moyen de régler toutes les affaires. Seul au départ, il bâtit peu à peu un véritable empire, origine de la fortune de la famille des Corleone.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "L'Italie et New York offrent un voyage dans un autre temps et un autre univers.",
+      "frissonner": "La tension monte autour des négociations, de l'attentat et de la mafia.",
+      "reflechir": "L'intrigue mêle pouvoir, trahison et enquête autour du coupable.",
+      "spectacle": "Le récit déploie l'ascension d'un empire criminel avec des enjeux d'ampleur.",
+      "emotion": "La saga familiale suit Michael, Vito et leurs liens sous le poids du pouvoir."
+    }
   },
   {
     "title": "Le Parrain",
@@ -12778,6 +13453,13 @@
     "overview": "La Seconde Guerre mondiale vient de s'achever. À New York, le « parrain » Don Corleone, l'un des chefs respectés de la mafia, se sent vieillir. Il refuse de s'adapter à son temps et de se lancer, comme ses pairs, dans le trafic de drogue. Une frilosité qui entrave la bonne marche des affaires des autres « familles » et qui lui vaut d'être la cible d'un attentat. Don Corleone survit à ses blessures, mais reste très diminué. Mike, son plus jeune fils, qui jusque-là se tenait à l'écart des affaires de son père, devient le plus dévoué de ses héritiers. Plus efficace que ses frères, Sonny et Fredo, il venge son père et organise l'élimination de ses adversaires…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Plonge dans l'univers de la mafia à New York, avec une immersion forte dans un autre monde.",
+      "frissonner": "Les rivalités entre familles et la cible d'un attentat installent une tension sombre.",
+      "reflechir": "Le film pose un dilemme de succession et de loyauté au cœur des affaires familiales.",
+      "spectacle": "L'ampleur des règlements de comptes et des affrontements donne un vrai souffle de grand film.",
+      "emotion": "L'histoire suit une famille soudée et ses héritiers dans une trajectoire marquante."
+    }
   }
 ]

@@ -738,7 +738,15 @@
       "spectacle": "L'ampleur de l'univers et les enjeux sur Dune annoncent un grand spectacle visuel.",
       "emotion": "Paul veut préserver l'avenir de sa famille et de son peuple, avec un destin qui le dépasse."
     },
-    "homeFeatured": false
+    "homeFeatured": false,
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance de science-fiction qui prend son temps, avec de l'aventure et un héros qui doit affronter une planète franchement pas commode.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve"
+      }
+    }
   },
   {
     "title": "Malnazidos",
