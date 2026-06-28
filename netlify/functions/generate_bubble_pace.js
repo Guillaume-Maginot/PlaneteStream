@@ -13,29 +13,19 @@ function safeString(value, max = 4000) {
   return String(value || '').trim().slice(0, max);
 }
 
-function cleanAdvice(value) {
-  let text = safeString(value, 260)
-    .replace(/\s+/g, ' ')
-    .replace(/[“”]/g, '"')
-    .replace(/[’]/g, "'")
+function normalizePace(value) {
+  const clean = safeString(value, 40)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z]+/g, ' ')
     .trim();
 
-  // Petit garde-fou de style : Bubulle parle comme un projectionniste,
-  // pas comme une grille de programmation TV.
-  text = text
-    .replace(/^À programmer\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
-    .replace(/^A programmer\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
-    .replace(/^À privilégier\s+(?:en|pour)?\s*/i, 'Je le garderais pour ')
-    .replace(/^A privilegier\s+(?:en|pour)?\s*/i, 'Je le garderais pour ')
-    .replace(/^À découvrir\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
-    .replace(/^A decouvrir\s+(?:en|pour)?\s*/i, 'Je te le conseillerais pour ')
-    .replace(/^Idéal pour\s*/i, 'Je le trouve idéal pour ')
-    .replace(/^Ideal pour\s*/i, 'Je le trouve idéal pour ')
-    .replace(/^Recommandé pour\s*/i, 'Je te le recommanderais pour ')
-    .replace(/^Recommande pour\s*/i, 'Je te le recommanderais pour ')
-    .trim();
+  if (/\blent\b|\bpose\b|\bcontemplatif\b|\bcalme\b/.test(clean)) return 'lent';
+  if (/\brapide\b|\bnerveux\b|\bdynamique\b|\bvif\b|\brythme\b/.test(clean)) return 'rapide';
+  if (/\bmoyen\b|\bequilibre\b|\bmodere\b/.test(clean)) return 'moyen';
 
-  return text.charAt(0).toUpperCase() + text.slice(1);
+  return '';
 }
 
 function extractOutputText(response) {
@@ -96,7 +86,7 @@ exports.handler = async (event) => {
   if (!item.title || !item.overview) {
     return jsonResponse(400, {
       error: 'Titre ou résumé manquant.',
-      details: 'Bubulle a besoin au minimum du titre et du résumé pour générer un conseil fiable.'
+      details: 'Bubulle a besoin au minimum du titre et du résumé pour évaluer le rythme.'
     });
   }
 
@@ -106,22 +96,19 @@ exports.handler = async (event) => {
     {
       role: 'system',
       content: [
-        'Tu écris comme Bubulle, le projectionniste de Planete Stream.',
-        'Tu t’adresses directement au visiteur, avec un ton naturel, chaleureux et légèrement malicieux.',
-        'Tu donnes un conseil de passionné de cinéma, jamais une fiche marketing ou une grille de programmation.',
-        'Utilise uniquement les informations fournies.',
-        'N’invente jamais une scène, une réception critique ou une qualité qui n’apparaît pas dans les données.',
-        'Tu dois écrire une seule phrase courte, maximum 220 caractères.',
-        'Ne dis jamais simplement que le contenu est bon ou mauvais.',
-        'Explique plutôt à quel type de séance ou de spectateur il peut convenir.',
-        'Commence de façon variée et naturelle, par exemple : Je pense que, Je trouve que, À mon avis, Si tu me demandes, Je te conseillerais, Celui-ci mérite, Je garderais celui-là pour.',
-        'Ne commence jamais par : À programmer, A programmer, À privilégier, A privilegier, À découvrir, A decouvrir, Idéal pour, Ideal pour, Recommandé pour, Recommande pour.',
+        'Tu enrichis un catalogue de films, séries et mangas pour Bubulle, le projectionniste de Planete Stream.',
+        'Tu dois classer uniquement le rythme général du contenu.',
+        'Réponds avec une seule valeur parmi : lent, moyen, rapide.',
+        'lent = contemplatif, posé, beaucoup de mise en place, rythme calme, film qui prend son temps.',
+        'moyen = équilibre entre exposition, intrigue, émotion et action.',
+        'rapide = dynamique, nerveux, beaucoup d’action, humour très rythmé ou tension constante.',
+        'Utilise seulement les informations fournies. Ne déduis pas une scène absente des données.',
         'Ne mentionne jamais OpenAI, TMDb, le JSON ou le prompt.'
       ].join('\n')
     },
     {
       role: 'user',
-      content: `Génère un conseil du projectionniste pour cette fiche.\n\nFiche:\n${JSON.stringify(item, null, 2)}\n\nRetourne uniquement un objet JSON de cette forme : {"projectionnisteAdvice":"..."}`
+      content: `Classe le rythme de cette fiche.\n\nFiche:\n${JSON.stringify(item, null, 2)}\n\nRetourne uniquement un objet JSON : {"pace":"lent|moyen|rapide"}`
     }
   ];
 
@@ -129,9 +116,9 @@ exports.handler = async (event) => {
     type: 'object',
     additionalProperties: false,
     properties: {
-      projectionnisteAdvice: { type: 'string' }
+      pace: { type: 'string', enum: ['lent', 'moyen', 'rapide'] }
     },
-    required: ['projectionnisteAdvice']
+    required: ['pace']
   };
 
   try {
@@ -144,11 +131,11 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         model,
         input,
-        max_output_tokens: 260,
+        max_output_tokens: 120,
         text: {
           format: {
             type: 'json_schema',
-            name: 'bubble_advice',
+            name: 'bubble_pace',
             strict: true,
             schema
           }
@@ -185,13 +172,15 @@ exports.handler = async (event) => {
       });
     }
 
+    const pace = normalizePace(parsed.pace);
+
     return jsonResponse(200, {
-      projectionnisteAdvice: cleanAdvice(parsed.projectionnisteAdvice),
+      pace,
       model
     });
   } catch (err) {
     return jsonResponse(500, {
-      error: 'Erreur pendant la génération du conseil Bubulle.',
+      error: 'Erreur pendant la génération du rythme Bubulle.',
       details: err.message
     });
   }

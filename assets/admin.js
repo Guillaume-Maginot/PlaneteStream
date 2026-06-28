@@ -30,6 +30,7 @@ const showMissingEmbedsBtn = document.querySelector('#showMissingEmbedsBtn');
 const showMissingBubbleBtn = document.querySelector('#showMissingBubbleBtn');
 const generateBubbleReasonsBtn = document.querySelector('#generateBubbleReasonsBtn');
 const generateBubbleAdviceBtn = document.querySelector('#generateBubbleAdviceBtn');
+const generateBubblePaceBtn = document.querySelector('#generateBubblePaceBtn');
 const generateAllBubbleReasonsBtn = document.querySelector('#generateAllBubbleReasonsBtn');
 const stopBubbleBatchBtn = document.querySelector('#stopBubbleBatchBtn');
 const catalogueEmbedStatus = document.querySelector('#catalogueEmbedStatus');
@@ -67,7 +68,8 @@ const editFields = {
   reasonSpectacle: document.querySelector('#editReasonSpectacle'),
   reasonEmotion: document.querySelector('#editReasonEmotion'),
   reasonFamille: document.querySelector('#editReasonFamille'),
-  projectionnisteAdvice: document.querySelector('#editProjectionnisteAdvice')
+  projectionnisteAdvice: document.querySelector('#editProjectionnisteAdvice'),
+  bubblePace: document.querySelector('#editBubblePace')
 };
 
 if (document.body?.classList.contains('admin-locked')) {
@@ -136,6 +138,7 @@ async function init() {
   });
   generateBubbleReasonsBtn?.addEventListener('click', generateBubbleReasonsForCurrentEntry);
   generateBubbleAdviceBtn?.addEventListener('click', generateBubbleAdviceForCurrentEntry);
+  generateBubblePaceBtn?.addEventListener('click', generateBubblePaceForCurrentEntry);
   generateAllBubbleReasonsBtn?.addEventListener('click', generateMissingBubbleReasonsBatch);
   stopBubbleBatchBtn?.addEventListener('click', () => {
     bubbleBatchShouldStop = true;
@@ -587,6 +590,90 @@ async function requestBubbleAdvice(payload) {
   return String(data.projectionnisteAdvice || data.advice || '').trim();
 }
 
+
+function getBubulleData(entry = {}) {
+  const source = entry && typeof entry.bubulle === 'object' && !Array.isArray(entry.bubulle)
+    ? entry.bubulle
+    : {};
+
+  return source;
+}
+
+function getBubulleProfile(entry = {}) {
+  const bubulle = getBubulleData(entry);
+  return bubulle.profile && typeof bubulle.profile === 'object' && !Array.isArray(bubulle.profile)
+    ? bubulle.profile
+    : {};
+}
+
+async function requestBubblePace(payload) {
+  const res = await fetch('/.netlify/functions/generate-bubble-pace', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(data.error || data.details || 'Réponse OpenAI invalide');
+  }
+
+  return String(data.pace || data.bubblePace || '').trim();
+}
+
+async function generateBubblePaceForCurrentEntry() {
+  if (editingIndex < 0 || !draft[editingIndex]) {
+    showMessage('Ouvre une fiche avant de demander le rythme Bubulle.');
+    return;
+  }
+
+  const payload = getCurrentEditorBubblePayload();
+
+  if (!payload.title || !payload.overview) {
+    showMessage('Il faut au moins un titre et un résumé pour générer le rythme.');
+    return;
+  }
+
+  const existingPace = editFields.bubblePace?.value.trim() || '';
+
+  if (existingPace) {
+    const replace = confirm('Cette fiche contient déjà un rythme Bubulle. Tu veux le remplacer par une génération OpenAI ?');
+    if (!replace) return;
+  }
+
+  const originalLabel = generateBubblePaceBtn?.textContent || '✨ Générer le rythme';
+
+  try {
+    if (generateBubblePaceBtn) {
+      generateBubblePaceBtn.disabled = true;
+      generateBubblePaceBtn.textContent = '🐠 Rythme...';
+    }
+
+    showMessage(`Bubulle évalue le rythme de “${payload.title}”…`);
+
+    const pace = await requestBubblePace(payload);
+
+    if (editFields.bubblePace) {
+      editFields.bubblePace.value = pace;
+    }
+
+    showMessage(
+      pace
+        ? `Rythme généré : ${pace}. Relis, ajuste si besoin, puis clique sur Enregistrer.`
+        : 'OpenAI n’a pas retourné de rythme exploitable. Le champ reste vide.'
+    );
+  } catch (err) {
+    console.error(err);
+    showMessage(`Génération du rythme impossible : ${err.message}`);
+  } finally {
+    if (generateBubblePaceBtn) {
+      generateBubblePaceBtn.disabled = false;
+      generateBubblePaceBtn.textContent = originalLabel;
+    }
+  }
+}
+
 async function generateBubbleAdviceForCurrentEntry() {
   if (editingIndex < 0 || !draft[editingIndex]) {
     showMessage('Ouvre une fiche avant de demander le conseil du projectionniste.');
@@ -671,6 +758,10 @@ function setBubbleBatchUi(isRunning, label = '') {
 
   if (generateBubbleAdviceBtn) {
     generateBubbleAdviceBtn.disabled = isRunning;
+  }
+
+  if (generateBubblePaceBtn) {
+    generateBubblePaceBtn.disabled = isRunning;
   }
 }
 
@@ -983,6 +1074,7 @@ function openEditor(index) {
   editFields.overview.value = entry.overview || '';
   fillBubbleReasonFields(entry);
   if (editFields.projectionnisteAdvice) editFields.projectionnisteAdvice.value = entry.projectionnisteAdvice || '';
+  if (editFields.bubblePace) editFields.bubblePace.value = getBubulleProfile(entry).pace || '';
 
   renderSeriesEpisodeEditor(entry);
 
@@ -1026,7 +1118,14 @@ function saveEditedItem() {
     episodes: isSeries ? countEpisodes(updatedSeasonsData) : Number(current.episodes || 0),
     overview: editFields.overview.value.trim(),
     bubbleReasons,
-    projectionnisteAdvice: editFields.projectionnisteAdvice?.value.trim() || ''
+    projectionnisteAdvice: editFields.projectionnisteAdvice?.value.trim() || '',
+    bubulle: {
+      ...getBubulleData(current),
+      profile: {
+        ...getBubulleProfile(current),
+        pace: editFields.bubblePace?.value.trim() || ''
+      }
+    }
   };
 
   sortDraft();
