@@ -1612,7 +1612,7 @@ const SESSION_PROFILE_RULES = [
   },
   {
     label: 'emotion',
-    pattern: /envie d emotion|emouvant|touchant|je veux pleurer|faire pleurer|belle histoire|histoire touchante|histoire humaine|triste|poignant|romantique triste|film sensible|coeur serre/,
+    pattern: /envie d emotion|emouvant|touchant|je veux pleurer|faire pleurer|belle histoire|histoire touchante|histoire humaine|humain|humaine|triste|poignant|romantique triste|film sensible|coeur serre/,
     genres: ['drame', 'romance'],
     maxRuntime: 150,
     preferRating: true
@@ -1958,7 +1958,7 @@ const SESSION_PROFILE_RULES = [
         maxRuntime: 150,
         preferRating: true,
         patterns: [
-          /pleurer|larme|larmes|emouvant|emotion|touchant|triste|poignant|bouleversant|belle histoire|histoire humaine|coeur serre/,
+          /pleurer|larme|larmes|emouvant|emotion|touchant|triste|poignant|bouleversant|belle histoire|histoire humaine|humain|humaine|coeur serre/,
           /romance|amour|couple|sensible/
         ]
       },
@@ -2458,13 +2458,20 @@ const SESSION_PROFILE_RULES = [
   function fishRecordHasFamilyRedFlag(record) {
     if (!record) return false;
 
+    const genreText = ` ${record.genreNorm || ''} `;
+    const allText = ` ${record.allNorm || ''} `;
+
+    const hardGenreSignal = /\b(horreur|horror|epouvante|guerre|war|thriller|crime|polar)\b/.test(genreText);
+    const hardStorySignal = /\b(zombie|zombies|mort vivant|morts vivants|mangeur de chair|mangeurs de chair|mangeuse de chair|mangeuses de chair|nazi|nazis|gore|sanglant|sanglante)\b/.test(allText);
+
     return (
+      hardGenreSignal ||
+      hardStorySignal ||
       recordHasGenre(record, 'horreur') ||
       recordHasGenre(record, 'guerre') ||
       recordHasGenre(record, 'thriller') ||
       recordHasGenre(record, 'crime') ||
-      recordHasGenre(record, 'zombie') ||
-      /zombie|zombies|mort vivant|morts vivants|mangeur de chair|mangeurs de chair|nazi|nazis/.test(record.allNorm || '')
+      recordHasGenre(record, 'zombie')
     );
   }
 
@@ -2491,7 +2498,7 @@ const SESSION_PROFILE_RULES = [
       /pas violent|pas de violence|sans violence|pas gore|sans gore|soft|calme|tranquille/.test(m);
 
     const wantsLight =
-      /sans prise de tete|pas prise de tete|prise de tete|debrancher|deconnecter|poser le cerveau|cerveau off|simple|facile|leger|chill|fatigue/.test(m);
+      /sans prise de tete|pas prise de tete|pas trop complique|pas trop compliquee|prise de tete|debrancher|deconnecter|poser le cerveau|cerveau off|simple|facile|leger|chill|fatigue/.test(m);
 
     const wantsFunny =
       /rire|rigoler|drole|marrant|humour|comedie|fun|bonne humeur|fais moi rire/.test(m);
@@ -2500,7 +2507,7 @@ const SESSION_PROFILE_RULES = [
       /spectacle|plein les yeux|claque|epique|blockbuster|explosif|action|ca bouge|baston|grand spectacle/.test(m);
 
     const wantsEmotion =
-      /pleurer|larme|larmes|emouvant|emotion|touchant|triste|poignant|bouleversant|belle histoire|histoire humaine/.test(m);
+      /pleurer|larme|larmes|emouvant|emotion|touchant|triste|poignant|bouleversant|belle histoire|histoire humaine|humain|humaine/.test(m);
 
     const wantsBrain =
       /reflechir|intelligent|complexe|tordu|mindfuck|twist|psychologique|concept|enquete|mystere|scenario/.test(m);
@@ -2536,7 +2543,7 @@ const SESSION_PROFILE_RULES = [
     }
 
     if (wantsLight) {
-      if (profile.complexity === 'eleve') add(-120, 'Complexité élevée');
+      if (profile.complexity === 'eleve') add(-190, 'Complexité élevée');
       if (profile.complexity === 'faible') add(60, 'Complexité faible');
       if (profile.complexity === 'moyen') add(20, 'Complexité moyenne');
       if (profile.humour === 'eleve') add(20, 'Humour élevé');
@@ -3804,6 +3811,26 @@ debugReasons.push("+80 Premium");
       debugReasons.push(...bubulleProfileScore.reasons);
     }
 
+    const rawIntentMessageForProfile = normalize(intent.rawMessage || '');
+    const asksFamilyLike = intent.wantsKids || /en famille|avec les enfants|enfants|familial|famille|kids|tout public/.test(rawIntentMessageForProfile);
+    const asksLightLike = /sans prise de tete|pas prise de tete|pas trop complique|pas trop compliquee|debrancher|deconnecter|poser le cerveau|simple|facile|leger|chill/.test(rawIntentMessageForProfile);
+    const asksEmotionLike = /belle histoire|histoire humaine|humain|humaine|touchant|emouvant|emotion|pleurer|poignant/.test(rawIntentMessageForProfile);
+
+    if (asksFamilyLike && fishRecordHasFamilyRedFlag(record) && !(record.bubulleProfile && record.bubulleProfile.family === true)) {
+      debugReasons.push('-999 Garde-fou famille');
+      return -999;
+    }
+
+    if (asksLightLike && fishRecordHasFamilyRedFlag(record) && !(record.bubulleProfile && record.bubulleProfile.humour === 'eleve')) {
+      score -= 45;
+      debugReasons.push('-45 Trop rude pour séance simple');
+    }
+
+    if (asksEmotionLike && fishRecordHasFamilyRedFlag(record) && !(record.bubulleProfile && record.bubulleProfile.emotion === 'eleve')) {
+      score -= 55;
+      debugReasons.push('-55 Trop rude pour belle histoire');
+    }
+
     if (intent.matchedDirectors.length) {
       if (!recordHasDirector(record, intent.matchedDirectors)) return -999;
       score += 90;
@@ -4438,7 +4465,7 @@ function fishApplyConversationMemory(rawMessage) {
   return 'Je m’appelle Bubulle. Officiellement, je suis le Projectionniste de Planete Stream : petit poisson, grand catalogue.';
 }
 
-if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle/.test(message)) {
+if (/\b(qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle)\b/.test(message)) {
       return fishPickText([
         'Je suis le Projectionniste de Planete Stream : petit poisson, cerveau JSON. Je vérifie le catalogue avant de répondre, donc je préfère dire “je ne sais pas” plutôt que d’inventer un film sorti d’une palourde.',
         'Je suis Bubulle, le projectionniste local : je fouille le catalogue, je trie les bobines et je refuse les réponses au pif.',
