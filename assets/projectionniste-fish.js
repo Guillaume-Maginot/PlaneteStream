@@ -1099,6 +1099,21 @@ function fishCommentForResults(results, context = {}) {
   ]);
 }
 
+const FISH_MAX_SELECTION_RESULTS = 15;
+const FISH_PAGE_SIZE = 5;
+
+function fishLimitSelectionResults(results) {
+  return (Array.isArray(results) ? results.filter(Boolean) : []).slice(0, FISH_MAX_SELECTION_RESULTS);
+}
+
+function fishIsContinueRequest(rawMessage) {
+  const m = fishNormalize(rawMessage);
+
+  if (!m) return false;
+
+  return /^(encore|encore un peu|suite|la suite|continue|continuer|continue la liste|montre la suite|montre moi la suite|d autres|autres|autre choix|plus de choix|les suivants|suivants)$/.test(m);
+}
+
 let fishLastResults = [];
 let fishLastOffset = 0;
 function fishContinueLastResults() {
@@ -1107,31 +1122,36 @@ function fishContinueLastResults() {
   }
 
   if (fishLastOffset >= fishLastResults.length) {
-    return "Bloup... le bocal est vide. Je t'ai déjà montré tous les films correspondant à cette recherche.";
+    return "Bloup... j'ai vidé cette sélection. Si tu veux, change un critère et je relance le projecteur.";
   }
 
-  const next = fishLastResults.slice(fishLastOffset, fishLastOffset + 5);
+  const next = fishLastResults.slice(fishLastOffset, fishLastOffset + FISH_PAGE_SIZE);
+  const startIndex = fishLastOffset;
 
   fishLastOffset += next.length;
 
-  let answer = "Voici la suite :\n\n";
+  let answer = fishLastOffset < fishLastResults.length
+    ? "Voici les suivants :\n\n"
+    : "Il me reste seulement ça dans cette sélection :\n\n";
+
   answer += next.map((movie, index) =>
-    fishMovieLine(movie, fishLastOffset - next.length + index)
+    fishMovieLine(movie, startIndex + index)
   ).join("\n");
 
   if (fishLastOffset < fishLastResults.length) {
-    answer += "\n\nTu peux simplement écrire « encore » pour continuer.";
+    answer += "\n\nTu peux écrire « encore » ou « suite » pour continuer.";
   } else {
-    answer += "\n\nBloup ! Cette fois, tu as vu toute la sélection.";
+    answer += "\n\nBloup ! Cette fois, tu as vu toute la sélection vraiment pertinente. Le vidéoclub peut fermer sans drame administratif.";
   }
 
   return answer;
 }
 function fishFormatTitleResults(results, intro, context = {}) {
-  fishLastResults = [...results];
-fishLastOffset = Math.min(5, results.length);
-  const visibleResults = results.slice(0, 5);
-  const remaining = results.length - visibleResults.length;
+  const selectedResults = fishLimitSelectionResults(results);
+  fishLastResults = [...selectedResults];
+  fishLastOffset = Math.min(FISH_PAGE_SIZE, selectedResults.length);
+  const visibleResults = selectedResults.slice(0, FISH_PAGE_SIZE);
+  const remaining = selectedResults.length - visibleResults.length;
 
   let answer = `${intro}\n`;
 
@@ -1140,10 +1160,11 @@ fishLastOffset = Math.min(5, results.length);
     .join('\n');
 
   if (remaining > 0) {
-    answer += `\n... et ${remaining} autre${remaining > 1 ? 's' : ''} titre${remaining > 1 ? 's' : ''}.`;
+    answer += `\n... et ${remaining} autre${remaining > 1 ? 's' : ''} titre${remaining > 1 ? 's' : ''} vraiment pertinent${remaining > 1 ? 's' : ''}.`;
+    answer += `\nSélection limitée à ${selectedResults.length} titres pour éviter le syndrome vidéoclub qui ferme.`;
   }
 
-  answer += fishCommentForResults(visibleResults);
+  answer += fishCommentForResults(visibleResults, context);
 
   return answer;
 }
@@ -3762,7 +3783,7 @@ if (intent.wantedGenres.length) {
       );
     }
 
-    return candidates.slice(0, 5).map(entry => entry.record);
+    return candidates.slice(0, FISH_MAX_SELECTION_RESULTS).map(entry => entry.record);
   }
 
   function explainNoResult(intent) {
@@ -3823,8 +3844,7 @@ if (
   /(quelles?\s+sont\s+les\s+nouveaut[eé]s|nouveaut[eé]s|derniers?\s+ajouts?|quoi\s+de\s+neuf|quoi\s+de\s+nouveau)/.test(message)
 ) {
 
-  const NB_NOUVEAUTES = 30;
-  const NB_REPONSE = 10;
+  const NB_NOUVEAUTES = FISH_MAX_SELECTION_RESULTS;
 
   const derniers = catalogue
   .slice(-NB_NOUVEAUTES)
@@ -3835,10 +3855,10 @@ if (!derniers.length) {
 }
 
 // Réutilise le système "Encore"
-fishLastResults = [...derniers];
-fishLastOffset = Math.min(5, derniers.length);
+fishLastResults = fishLimitSelectionResults(derniers);
+fishLastOffset = Math.min(FISH_PAGE_SIZE, fishLastResults.length);
 
-const visibles = derniers.slice(0, 5);
+const visibles = fishLastResults.slice(0, FISH_PAGE_SIZE);
 
 let reponse = fishPickText([
   "🐠 Bloup ! Les dernières bobines arrivées dans le bocal :\n\n",
@@ -3851,11 +3871,11 @@ reponse += visibles
   .map((film, index) => `${index + 1}. ${film.title}`)
   .join("\n");
 
-const restant = derniers.length - visibles.length;
+const restant = fishLastResults.length - visibles.length;
 
 if (restant > 0) {
   reponse += `\n\n... et ${restant} autre${restant > 1 ? "s" : ""} nouveauté${restant > 1 ? "s" : ""}.`;
-  reponse += "\nÉcris simplement « Encore » pour voir la suite.";
+  reponse += "\nÉcris simplement « encore » ou « suite » pour voir la suite.";
 }
 
 return reponse;
@@ -4089,8 +4109,8 @@ function fishApplyConversationMemory(rawMessage) {
       }
     }
 
-    if (/^(encore|la suite|continue|autre|d'autres|encore !?)$/.test(message)) {
-    return fishContinueLastResults();
+    if (fishIsContinueRequest(clean)) {
+      return fishContinueLastResults();
     }
 
     if (!message) {
