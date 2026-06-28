@@ -1223,6 +1223,15 @@ const genreKey = fishDetectRequestedGenre(message);
     return null;
   }
 
+  // V76.4 : garde-fou directement dans le raccourci genre.
+  // Même si le routeur oublie de contourner ce bloc, une demande
+  // "drôle + enfants/famille" ne doit pas ressortir une comédie horrifique.
+  const hasFamilySafetyContext = /en famille|avec les enfants|avec mes enfants|enfants|familial|famille|kids|tout public|pas violent|sans violence|pas gore|sans gore/.test(fishNormalize(message));
+
+  if (hasFamilySafetyContext && ['comedie', 'horreur', 'thriller', 'crime', 'guerre', 'zombie'].includes(genreKey)) {
+    return null;
+  }
+
   const genreMap = {
     science_fiction: 'science-fiction',
     comedie: 'comédie',
