@@ -793,6 +793,7 @@ const genreKey = fishDetectRequestedGenre(message);
   };
 
   const records = getRecords(catalogue);
+  const requestedType = detectRequestedType(message);
   const wantedGenre = genreMap[genreKey] || genreKey;
   const durationFilter = fishDetectDurationFilter(message);
   const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(fishNormalize(message));
@@ -829,6 +830,10 @@ if (hasActorIntent && !actorQuery) {
     return false;
   }
 }
+
+    if (requestedType && record.type !== requestedType) {
+      return false;
+    }
 
     if (wantsPremium) {
   const rawPremium = record.item && record.item.premium;

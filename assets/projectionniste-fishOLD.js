@@ -748,11 +748,25 @@ fishLastOffset = Math.min(5, results.length);
 
 function fishAnswerGenreRequest(message, catalogue) {
   
-  // Petit neurone : si l'utilisateur demande simplement un conseil,
-  // Bubulle invite à préciser le genre avant de répondre.
+
+  // Petit neurone : conseil multi-support (film / série / manga)
   if (/\b(quel conseil|tu me conseilles quoi|que me conseilles tu|que me conseilles-tu|tu choisirais quoi|ton conseil)\b/i.test(message)) {
-    return `🐠 Avec plaisir !\n\nAvant de te conseiller un film, donne-moi juste un indice.\n\nTu cherches plutôt :\n• 🚀 Science-fiction\n• 💥 Action\n• 👻 Horreur\n• 😂 Comédie\n• 🎭 Drame\n\nRéponds simplement avec le genre qui t'inspire.`;
+    return `🐠 Avec plaisir !
+
+Avant de te conseiller quelque chose, donne-moi deux indices.
+
+Tu cherches plutôt :
+• 🎬 Un film
+• 📺 Une série
+• 📚 Un manga
+
+Puis indique simplement un genre.
+Exemples :
+• Série de science-fiction
+• Manga d'action
+• Film d'horreur`;
   }
+
 
 const genreKey = fishDetectRequestedGenre(message);
 
