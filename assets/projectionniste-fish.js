@@ -2235,10 +2235,71 @@ function fishBubbleReasonKeysFromIntent(intent = {}) {
 }
 
 function fishStoredBubbleReason(record, intent = {}) {
-  const reasons = (record && record.item && record.item.bubbleReasons) || record.bubbleReasons || {};
+  const source = record && record.item ? record.item : record;
+  const reasons = source && source.bubbleReasons && typeof source.bubbleReasons === 'object'
+    ? source.bubbleReasons
+    : {};
   const keys = fishBubbleReasonKeysFromIntent(intent);
 
   for (const key of keys) {
+    const value = reasons[key];
+
+    if (value && String(value).trim()) {
+      return String(value).trim();
+    }
+  }
+
+  /*
+    Si la demande est une ambiance large du type "pour ce soir",
+    elle ne correspond pas toujours à une clé unique.
+    Dans ce cas, on préfère une vraie bubbleReason du JSON
+    plutôt qu'un vieux fallback générique "il coche le genre".
+  */
+  const hasAmbianceIntent = Boolean(
+    intent.wantsRandom ||
+    (intent.matchedMoods && intent.matchedMoods.length) ||
+    (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length)
+  );
+
+  if (!hasAmbianceIntent) {
+    return '';
+  }
+
+  const genres = (record.genres || [])
+    .map(genre => normalize(genre))
+    .join(' ');
+
+  const genrePriority = [];
+
+  if (/horreur|thriller|mystere|mystère/.test(genres)) {
+    genrePriority.push('frissonner', 'reflechir', 'spectacle', 'emotion');
+  }
+
+  if (/comedie|comédie|familial|family|animation/.test(genres)) {
+    genrePriority.push('rire', 'fatigue', 'famille', 'voyager', 'spectacle');
+  }
+
+  if (/aventure|science fiction|science-fiction|fantastique|fantasy|action/.test(genres)) {
+    genrePriority.push('spectacle', 'voyager', 'action', 'reflechir', 'emotion');
+  }
+
+  if (/drame|romance/.test(genres)) {
+    genrePriority.push('emotion', 'reflechir', 'fatigue');
+  }
+
+  const fallbackPriority = [
+    ...genrePriority,
+    'voyager',
+    'spectacle',
+    'frissonner',
+    'reflechir',
+    'rire',
+    'fatigue',
+    'emotion',
+    'famille'
+  ];
+
+  for (const key of fallbackPriority) {
     const value = reasons[key];
 
     if (value && String(value).trim()) {
