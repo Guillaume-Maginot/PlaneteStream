@@ -1720,6 +1720,62 @@ const SESSION_PROFILE_RULES = [
       .replaceAll("'", '&#039;');
   }
 
+  function fishFormatChatMessage(text) {
+    const lines = String(text || '').split('\n');
+    const html = [];
+    let openCard = false;
+
+    function closeCard() {
+      if (openCard) {
+        html.push('</div>');
+        openCard = false;
+      }
+    }
+
+    lines.forEach(line => {
+      const raw = String(line || '');
+      const trimmed = raw.trim();
+
+      if (!trimmed) {
+        closeCard();
+        html.push('<div class="ps-fish-text-line is-empty"></div>');
+        return;
+      }
+
+      const resultMatch = trimmed.match(/^(\d+)\.\s*(.+)$/);
+      const reasonMatch = trimmed.match(/^↳\s*Pourquoi\s*:\s*(.+)$/);
+
+      if (resultMatch) {
+        closeCard();
+        html.push('<div class="ps-fish-result-card">');
+        html.push(
+          `<div class="ps-fish-result-title"><span class="ps-fish-result-number">${escapeHtml(resultMatch[1])}.</span><span class="ps-fish-result-name">${escapeHtml(resultMatch[2])}</span></div>`
+        );
+        openCard = true;
+        return;
+      }
+
+      if (reasonMatch && openCard) {
+        html.push(
+          `<div class="ps-fish-result-reason"><strong>↳ Pourquoi :</strong> ${escapeHtml(reasonMatch[1])}</div>`
+        );
+        return;
+      }
+
+      closeCard();
+
+      if (/^\.{3}\s*et\s+/i.test(trimmed)) {
+        html.push(`<div class="ps-fish-muted-line">${escapeHtml(trimmed)}</div>`);
+        return;
+      }
+
+      html.push(`<div class="ps-fish-text-line">${escapeHtml(raw)}</div>`);
+    });
+
+    closeCard();
+    return html.join('');
+  }
+
   function tokenize(text) {
     return normalize(text)
       .split(' ')
@@ -1836,9 +1892,14 @@ const SESSION_PROFILE_RULES = [
   function addMessage(author, text) {
     const article = document.createElement('article');
     article.className = `ps-fish-message ps-fish-message-${author}`;
+
+    const body = author === 'bot'
+      ? fishFormatChatMessage(text)
+      : `<div class="ps-fish-text-line">${escapeHtml(text)}</div>`;
+
     article.innerHTML = `
       <strong>${author === 'bot' ? '🐠 Projectionniste' : 'Toi'}</strong>
-      <p>${escapeHtml(text)}</p>
+      <div class="ps-fish-message-body">${body}</div>
     `;
     messages.appendChild(article);
     messages.scrollTop = messages.scrollHeight;
