@@ -742,10 +742,11 @@
     "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance de science-fiction qui prend son temps, avec de l'aventure et un héros qui doit affronter une planète franchement pas commode.",
     "bubulle": {
       "profile": {
-        "pace": "lent",
+        "pace": "moyen",
         "complexity": "eleve",
         "spectacle": "eleve",
-        "violence": "moyen"
+        "violence": "moyen",
+        "humour": "faible"
       }
     }
   },
@@ -1508,10 +1509,11 @@
     "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance en famille, avec Mario et sa bande qui embarquent dans une aventure galactique pleine de fantaisie et de personnages connus.",
     "bubulle": {
       "profile": {
-        "pace": "rapide",
+        "pace": "moyen",
         "complexity": "faible",
         "spectacle": "eleve",
-        "violence": "faible"
+        "violence": "faible",
+        "humour": "eleve"
       }
     }
   },

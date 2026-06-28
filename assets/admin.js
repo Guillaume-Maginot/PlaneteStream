@@ -657,12 +657,20 @@ async function generateBubblePaceForCurrentEntry() {
   const existingViolence = editFields.bubbleViolence?.value.trim() || '';
   const existingHumour = editFields.bubbleHumour?.value.trim() || '';
 
-  if (existingPace || existingComplexity || existingSpectacle || existingViolence || existingHumour) {
-    const replace = confirm('Cette fiche contient déjà un profil Bubulle. Tu veux le remplacer par une génération OpenAI ?');
-    if (!replace) return;
+  const visibleProfileFields = [
+    existingPace,
+    existingComplexity,
+    existingSpectacle,
+    existingViolence,
+    existingHumour
+  ];
+
+  if (visibleProfileFields.every(Boolean)) {
+    showMessage('Le profil visible est déjà rempli. Modifie un champ à la main si tu veux l’ajuster.');
+    return;
   }
 
-  const originalLabel = generateBubblePaceBtn?.textContent || '✨ Générer le rythme';
+  const originalLabel = generateBubblePaceBtn?.textContent || '✨ Générer le profil';
 
   try {
     if (generateBubblePaceBtn) {
@@ -674,31 +682,60 @@ async function generateBubblePaceForCurrentEntry() {
 
     const profile = await requestBubbleProfile(payload);
 
+    const filledFields = [];
+    const keptFields = [];
+
     if (editFields.bubblePace) {
-      editFields.bubblePace.value = profile.pace || '';
+      if (!existingPace && profile.pace) {
+        editFields.bubblePace.value = profile.pace;
+        filledFields.push('rythme');
+      } else if (existingPace) {
+        keptFields.push('rythme');
+      }
     }
 
     if (editFields.bubbleComplexity) {
-      editFields.bubbleComplexity.value = profile.complexity || '';
+      if (!existingComplexity && profile.complexity) {
+        editFields.bubbleComplexity.value = profile.complexity;
+        filledFields.push('complexité');
+      } else if (existingComplexity) {
+        keptFields.push('complexité');
+      }
     }
 
     if (editFields.bubbleSpectacle) {
-      editFields.bubbleSpectacle.value = profile.spectacle || '';
+      if (!existingSpectacle && profile.spectacle) {
+        editFields.bubbleSpectacle.value = profile.spectacle;
+        filledFields.push('spectacle');
+      } else if (existingSpectacle) {
+        keptFields.push('spectacle');
+      }
     }
 
     if (editFields.bubbleViolence) {
-      editFields.bubbleViolence.value = profile.violence || '';
+      if (!existingViolence && profile.violence) {
+        editFields.bubbleViolence.value = profile.violence;
+        filledFields.push('violence');
+      } else if (existingViolence) {
+        keptFields.push('violence');
+      }
     }
 
     if (editFields.bubbleHumour) {
-      editFields.bubbleHumour.value = profile.humour || '';
+      if (!existingHumour && profile.humour) {
+        editFields.bubbleHumour.value = profile.humour;
+        filledFields.push('humour');
+      } else if (existingHumour) {
+        keptFields.push('humour');
+      }
     }
 
-    showMessage(
-      profile.pace || profile.complexity || profile.spectacle || profile.violence || profile.humour
-        ? `Profil généré : rythme ${profile.pace || '—'}, complexité ${profile.complexity || '—'}, spectacle ${profile.spectacle || '—'}, violence ${profile.violence || '—'}, humour ${profile.humour || '—'}. Relis, ajuste si besoin, puis clique sur Enregistrer.`
-        : 'OpenAI n’a pas retourné de profil exploitable. Les champs restent vides.'
-    );
+    if (filledFields.length) {
+      const keptText = keptFields.length ? ` Champs déjà validés conservés : ${keptFields.join(', ')}.` : '';
+      showMessage(`Profil complété : ${filledFields.join(', ')}.${keptText} Relis, ajuste si besoin, puis clique sur Enregistrer.`);
+    } else {
+      showMessage('OpenAI a répondu, mais aucun champ vide visible n’a pu être complété. Les valeurs existantes n’ont pas été écrasées.');
+    }
   } catch (err) {
     console.error(err);
     showMessage(`Génération du profil impossible : ${err.message}`);
