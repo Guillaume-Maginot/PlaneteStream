@@ -719,6 +719,55 @@ function fishOpenAdviceAnswer() {
   ]);
 }
 
+
+function fishResolveOpenAdviceFollowUp(rawMessage) {
+  const m = normalize(rawMessage);
+
+  if (!m) return '';
+
+  if (/^(film|films|un film|balance un film|une bobine)$/.test(m)) {
+    return 'un film au hasard';
+  }
+
+  if (/^(serie|series|série|séries|une serie|une série|balance une serie|balance une série)$/.test(m)) {
+    return 'une série au hasard';
+  }
+
+  if (/^(manga|mangas|anime|animé|un manga|un anime|un animé|balance un manga)$/.test(m)) {
+    return 'un manga au hasard';
+  }
+
+  if (/^(rire|rigoler|drole|drôle|humour|comedie|comédie|marrant|fun|me faire rire)$/.test(m)) {
+    return 'un film drôle';
+  }
+
+  if (/^(frissonner|frisson|frissons|peur|horreur|faire peur|me faire peur|sursauter|flipper)$/.test(m)) {
+    return 'un film qui fait peur';
+  }
+
+  if (/^(reflechir|réfléchir|reflexion|réflexion|intelligent|cerveau|prise de tete|prise de tête|scenario tordu|scénario tordu)$/.test(m)) {
+    return 'un film intelligent';
+  }
+
+  if (/^(leger|léger|chill|detente|détente|simple|tranquille|sans prise de tete|sans prise de tête|poser le cerveau)$/.test(m)) {
+    return 'un film léger sans prise de tête';
+  }
+
+  if (/^(action|aventure|sf|science fiction|science-fiction|thriller|romance|drame|fantastique|animation)$/.test(m)) {
+    return `un film ${rawMessage}`;
+  }
+
+  if (/^(surprise|au hasard|hasard|surprends moi|surprend moi|choisis|comme tu veux|peu importe)$/.test(m)) {
+    return 'surprends moi';
+  }
+
+  if (/^(voyager|voyage|evasion|évasion|ailleurs|grand spectacle|spectacle|du lourd|epique|épique)$/.test(m)) {
+    return 'un film grand spectacle pour voyager';
+  }
+
+  return '';
+}
+
 function fishRandomIntro(intent, results) {
   const count = Array.isArray(results) ? results.length : 0;
   const media = fishDescribeMediaFromIntent(intent);
@@ -1166,6 +1215,7 @@ if (hasActorIntent && !actorQuery) {
   let recordsCache = null;
   let fishLastSearchMessage = '';
   let fishBaseSearchMessage = '';
+  let fishOpenAdvicePending = false;
   
   const states = {
     idle: {
@@ -2747,6 +2797,11 @@ const missingDirector = directorRequest && !matchedDirectors.length;
       return -999;
     }
 
+    if (intent.requestedType && record.type === intent.requestedType) {
+      score += 25;
+      debugReasons.push('+25 Type');
+    }
+
     if (intent.durationMax && record.runtime && record.runtime > intent.durationMax) {
       return -999;
     }
@@ -2907,6 +2962,15 @@ if (intent.matchedMoods && intent.matchedMoods.length) {
     return -999;
   }
 }
+    const wantsBrainyMood =
+      (intent.matchedMoods || []).some(mood => normalize(mood.label || '').includes('intelligent')) ||
+      (intent.matchedSessionProfiles || []).some(profile => normalize(profile.label || '').includes('reflechir'));
+
+    if (wantsBrainyMood && recordHasGenre(record, 'horreur')) {
+      score -= 45;
+      debugReasons.push('-45 Horreur hors réflexion');
+    }
+
     if (intent.wantsShort && record.runtime && record.runtime <= 110) {
       score += 12;
     }
@@ -3239,8 +3303,8 @@ function fishApplyConversationMemory(rawMessage) {
 
 
   async function localBrain(rawMessage) {
-    const clean = rawMessage.trim();
-    const message = normalize(clean);
+    let clean = rawMessage.trim();
+    let message = normalize(clean);
     if (/^(encore|la suite|continue|autre|d'autres|encore !?)$/.test(message)) {
     return fishContinueLastResults();
     }
@@ -3250,7 +3314,20 @@ function fishApplyConversationMemory(rawMessage) {
     }
 
     if (fishIsOpenAdvicePrompt(clean)) {
+      fishOpenAdvicePending = true;
       return fishOpenAdviceAnswer();
+    }
+
+    if (fishOpenAdvicePending) {
+      const resolvedOpenAdvice = fishResolveOpenAdviceFollowUp(clean);
+
+      if (resolvedOpenAdvice) {
+        clean = resolvedOpenAdvice;
+        message = normalize(clean);
+        fishOpenAdvicePending = false;
+      } else if (!fishIsOpenAdvicePrompt(clean)) {
+        fishOpenAdvicePending = false;
+      }
     }
 
     if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(message)) {
