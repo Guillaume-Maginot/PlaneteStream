@@ -506,7 +506,8 @@ function fishDetectActorFilter(message, catalogue) {
   const m = fishNormalize(message);
 
   const hasActorIntent =
-    !fishIsCompanionContext(message) && (
+    !fishIsCompanionContext(message) &&
+    !fishIsNonActorAvecContext(message) && (
       /\bavec\b/.test(m) ||
       /\bacteur\b/.test(m) ||
       /\bactrice\b/.test(m) ||
@@ -1206,6 +1207,7 @@ const genreKey = fishDetectRequestedGenre(message);
   const actorLabel = actorQuery ? fishDisplayActorQuery(actorQuery) : '';
   const hasActorIntent =
   !fishIsCompanionContext(message) &&
+  !fishIsNonActorAvecContext(message) &&
   /\bavec\b|\bacteur\b|\bactrice\b|\bcasting\b|\bjoue\b|\bjouent\b/.test(fishNormalize(message));
 
 if (hasActorIntent && !actorQuery) {
@@ -1607,7 +1609,7 @@ const SESSION_PROFILE_RULES = [
     label: 'il est tard',
     pattern: /il est tard|tard|trop tard|pas trop long|petit film|film court|une heure devant moi|1h devant moi|pas le temps|vite fait|avant de dormir|avant dodo|je dors bientot/,
     genres: ['comedie', 'animation', 'thriller', 'aventure'],
-    maxRuntime: 105,
+    maxRuntime: 95,
     preferLight: true
   },
   {
@@ -1932,7 +1934,7 @@ const SESSION_PROFILE_RULES = [
         label: 'seance courte',
         threshold: 1,
         genres: ['comedie', 'animation', 'thriller', 'action'],
-        maxRuntime: 110,
+        maxRuntime: 95,
         preferRating: true,
         patterns: [
           /pas longtemps|pas beaucoup de temps|vite fait|petite heure|court|rapide|avant de dormir|tard|dodo|format court/,
@@ -2866,6 +2868,32 @@ function fishIsCompanionContext(message) {
   );
 }
 
+function fishIsNonActorAvecContext(message) {
+  const m = normalize(message);
+  const match = m.match(/\bavec\s+(.+)$/);
+
+  if (!match || !match[1]) {
+    return false;
+  }
+
+  const tail = match[1].trim();
+
+  /*
+    "avec" ne veut pas toujours dire "avec un acteur".
+    Exemples :
+    - avec un bon scénario
+    - avec de l'action
+    - avec une ambiance sombre
+    - avec beaucoup d'humour
+    Ici, on laisse Bubulle comprendre l'ambiance au lieu de chercher
+    un comédien nommé "Bon Scénario", ce qui serait certes audacieux.
+  */
+  return (
+    /^(un|une|des|du|de|de la|de l|d|le|la|les|beaucoup|plein|pas mal|bon|bonne|belle|gros|grand|grande|petit|petite|vrai|vraie|quelque chose)\b/.test(tail) ||
+    /\b(scenario|scénario|histoire|intrigue|ambiance|atmosphere|atmosphère|humour|rire|action|baston|combat|suspense|tension|rythme|twist|emotion|émotion|frissons|peur|gore|violence|effets|visuel|image|images|musique|fin|happy end|bon rythme|bonne histoire)\b/.test(tail)
+  );
+}
+
   function isDirectorRequest(message) {
     const m = normalize(message);
 
@@ -2885,7 +2913,7 @@ function fishIsCompanionContext(message) {
   function isActorRequest(message) {
     const m = normalize(message);
 
-    if (fishIsCompanionContext(message)) {
+    if (fishIsCompanionContext(message) || fishIsNonActorAvecContext(message)) {
       return false;
     }
 
@@ -3535,6 +3563,27 @@ debugReasons.push("+80 Acteur");
 score += bonusGenre;
 debugReasons.push("+" + bonusGenre + " Genre");
     }
+
+    const strictRuntimeCaps = (intent.matchedSessionProfiles || [])
+      .filter(profile => {
+        const label = normalize(profile.label || '');
+        return profile.maxRuntime && (
+          label.includes('il est tard') ||
+          label.includes('seance courte') ||
+          label.includes('pause courte')
+        );
+      })
+      .map(profile => profile.maxRuntime);
+
+    if (strictRuntimeCaps.length && record.runtime) {
+      const strictMaxRuntime = Math.min(...strictRuntimeCaps);
+
+      if (record.runtime > strictMaxRuntime) {
+        debugReasons.push('-999 Trop long pour séance courte/tardive');
+        return -999;
+      }
+    }
+
     if (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length) {
   let profileHit = false;
 
