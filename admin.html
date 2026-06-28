@@ -1552,7 +1552,11 @@
           <div class="admin-empty" id="bubulleAdminPanel" style="margin:0 0 18px;border-color:rgba(195,77,255,.42);background:linear-gradient(135deg,rgba(139,44,255,.14),rgba(255,255,255,.035));">
             <strong>🐠 Moulinette Bubulle active</strong><br>
             <span id="catalogueBubbleStatus">Scan des justifications Bubulle…</span>
-            <br><small>Utilise le filtre “Sans Bubulle”, puis ouvre une fiche avec “Modifier” pour remplir les justifications.</small>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+              <button class="primary" type="button" id="generateAllBubbleReasonsBtn">✨ Mouliner les fiches sans Bubulle</button>
+              <button class="ghost" type="button" id="stopBubbleBatchBtn" disabled>Stopper la moulinette</button>
+            </div>
+            <br><small>Le mode lot enrichit uniquement les fiches sans Bubulle et ne remplace pas les justifications existantes.</small>
           </div>
     <div class="admin-layout">
       <section class="admin-box">
@@ -1922,7 +1926,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.4.5-bubulle-openai"></script>
+  <script src="assets/admin.js?v=3.4.6-bubulle-batch"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>

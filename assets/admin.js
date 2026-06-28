@@ -3,6 +3,8 @@ let selectedItem = null;
 let editingIndex = -1;
 let catalogueMissingMode = false;
 let catalogueBubbleMissingMode = false;
+let bubbleBatchShouldStop = false;
+let bubbleBatchRunning = false;
 
 const output = document.querySelector('#jsonOutput');
 const results = document.querySelector('#results');
@@ -27,6 +29,8 @@ const showAllEmbedsBtn = document.querySelector('#showAllEmbedsBtn');
 const showMissingEmbedsBtn = document.querySelector('#showMissingEmbedsBtn');
 const showMissingBubbleBtn = document.querySelector('#showMissingBubbleBtn');
 const generateBubbleReasonsBtn = document.querySelector('#generateBubbleReasonsBtn');
+const generateAllBubbleReasonsBtn = document.querySelector('#generateAllBubbleReasonsBtn');
+const stopBubbleBatchBtn = document.querySelector('#stopBubbleBatchBtn');
 const catalogueEmbedStatus = document.querySelector('#catalogueEmbedStatus');
 const catalogueBubbleStatus = document.querySelector('#catalogueBubbleStatus');
 const catalogueList = document.querySelector('#catalogueList');
@@ -129,6 +133,11 @@ async function init() {
     renderCatalogueList();
   });
   generateBubbleReasonsBtn?.addEventListener('click', generateBubbleReasonsForCurrentEntry);
+  generateAllBubbleReasonsBtn?.addEventListener('click', generateMissingBubbleReasonsBatch);
+  stopBubbleBatchBtn?.addEventListener('click', () => {
+    bubbleBatchShouldStop = true;
+    showMessage('Arrêt demandé. Bubulle termine la fiche en cours puis range les bobines.');
+  });
   saveEditBtn?.addEventListener('click', saveEditedItem);
   cancelEditBtn?.addEventListener('click', closeEditor);
   topCancelEditBtn?.addEventListener('click', closeEditor);
@@ -496,19 +505,7 @@ async function generateBubbleReasonsForCurrentEntry() {
 
     showMessage(`Bubulle interroge OpenAI pour “${payload.title}”…`);
 
-    const res = await fetch('/.netlify/functions/generate-bubble-reasons', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      throw new Error(data.error || data.details || 'Réponse OpenAI invalide');
-    }
-
-    const reasons = data.bubbleReasons || data.reasons || {};
+    const reasons = await requestBubbleReasons(payload);
 
     applyBubbleReasonsToEditor(reasons);
 
@@ -526,6 +523,172 @@ async function generateBubbleReasonsForCurrentEntry() {
       generateBubbleReasonsBtn.disabled = false;
       generateBubbleReasonsBtn.textContent = originalLabel;
     }
+  }
+}
+
+
+
+function waitBubbleBatch(ms = 900) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getBubblePayloadFromEntry(entry = {}) {
+  return {
+    title: String(entry.title || '').trim(),
+    originalTitle: entry.originalTitle || '',
+    year: entry.year || '',
+    type: getMediaLabel(entry),
+    mediaType: getCatalogueMediaType(entry),
+    category: entry.category || '',
+    genres: Array.isArray(entry.genres) ? entry.genres.filter(Boolean) : [],
+    runtime: Number(entry.runtime || 0),
+    seasons: Number(entry.seasons || 0),
+    episodes: Number(entry.episodes || 0),
+    director: entry.director || '',
+    cast: getCastSearchTerms(entry.cast || []).slice(0, 10),
+    overview: String(entry.overview || '').trim(),
+    isSeries: isSeriesEntry(entry)
+  };
+}
+
+async function requestBubbleReasons(payload) {
+  const res = await fetch('/.netlify/functions/generate-bubble-reasons', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(data.error || data.details || 'Réponse OpenAI invalide');
+  }
+
+  return data.bubbleReasons || data.reasons || {};
+}
+
+function cleanGeneratedBubbleReasons(reasons = {}) {
+  const cleaned = {};
+
+  BUBBLE_REASON_KEYS.forEach(key => {
+    const value = String(reasons[key] || '').trim();
+
+    if (value) {
+      cleaned[key] = value;
+    }
+  });
+
+  return cleaned;
+}
+
+function setBubbleBatchUi(isRunning, label = '') {
+  bubbleBatchRunning = isRunning;
+
+  if (generateAllBubbleReasonsBtn) {
+    generateAllBubbleReasonsBtn.disabled = isRunning;
+    generateAllBubbleReasonsBtn.textContent = isRunning ? (label || '🐠 Moulinette en cours...') : '✨ Mouliner les fiches sans Bubulle';
+  }
+
+  if (stopBubbleBatchBtn) {
+    stopBubbleBatchBtn.disabled = !isRunning;
+  }
+
+  if (generateBubbleReasonsBtn) {
+    generateBubbleReasonsBtn.disabled = isRunning;
+  }
+}
+
+function updateBubbleBatchStatus(text) {
+  if (catalogueBubbleStatus && text) {
+    catalogueBubbleStatus.textContent = text;
+  }
+
+  if (text) {
+    showMessage(text);
+  }
+}
+
+async function generateMissingBubbleReasonsBatch() {
+  if (bubbleBatchRunning) return;
+
+  const targets = draft
+    .map((entry, index) => ({ entry, index }))
+    .filter(({ entry }) => needsBubbleReasons(entry))
+    .filter(({ entry }) => {
+      const payload = getBubblePayloadFromEntry(entry);
+      return payload.title && payload.overview;
+    });
+
+  if (!targets.length) {
+    showMessage('Aucune fiche sans Bubulle exploitable. Le bocal est déjà propre ou il manque des résumés.');
+    return;
+  }
+
+  const confirmRun = confirm(
+    `Bubulle va enrichir ${targets.length} fiche${targets.length > 1 ? 's' : ''} sans justification.\n\n` +
+    'Il ne remplacera pas les fiches déjà enrichies.\n' +
+    'Tu pourras stopper après la fiche en cours.\n\n' +
+    'On lance la moulinette ?'
+  );
+
+  if (!confirmRun) return;
+
+  bubbleBatchShouldStop = false;
+  setBubbleBatchUi(true);
+
+  let done = 0;
+  let filled = 0;
+  let skipped = 0;
+  let failed = 0;
+
+  try {
+    for (const target of targets) {
+      if (bubbleBatchShouldStop) break;
+
+      const { entry, index } = target;
+      const title = entry.title || `fiche ${index + 1}`;
+      const progress = `${done + 1}/${targets.length}`;
+
+      setBubbleBatchUi(true, `🐠 ${progress} · ${title}`.slice(0, 46));
+      updateBubbleBatchStatus(`Moulinette Bubulle : ${progress} · ${title}`);
+
+      try {
+        const payload = getBubblePayloadFromEntry(entry);
+        const reasons = cleanGeneratedBubbleReasons(await requestBubbleReasons(payload));
+
+        if (Object.keys(reasons).length) {
+          draft[index] = {
+            ...draft[index],
+            bubbleReasons: reasons
+          };
+          filled += 1;
+          syncOutput();
+          localStorage.setItem('catalogueDraft', JSON.stringify(draft));
+        } else {
+          skipped += 1;
+        }
+      } catch (err) {
+        failed += 1;
+        console.error(`Erreur génération Bubulle pour ${title}`, err);
+      }
+
+      done += 1;
+      renderCatalogueList();
+
+      if (!bubbleBatchShouldStop) {
+        await waitBubbleBatch(900);
+      }
+    }
+  } finally {
+    setBubbleBatchUi(false);
+    renderCatalogueList();
+
+    const stopped = bubbleBatchShouldStop ? ' Moulinette stoppée à la demande.' : '';
+    updateBubbleBatchStatus(
+      `Bubulle a terminé : ${filled} enrichie${filled > 1 ? 's' : ''}, ${skipped} vide${skipped > 1 ? 's' : ''}, ${failed} erreur${failed > 1 ? 's' : ''}.${stopped}`
+    );
+
+    bubbleBatchShouldStop = false;
   }
 }
 
