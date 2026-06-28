@@ -4226,10 +4226,19 @@ return reponse;
       return answerCastOfTitle(rawMessage, records);
     }
     
-     const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
-  if (genreAnswer) {
-    return genreAnswer;
-  }
+     // V76.3 : certaines demandes mélangent un genre simple avec un contexte de séance.
+    // Exemple : "un film drôle avec les enfants".
+    // Si on laisse le raccourci genre répondre trop tôt, il voit surtout "comédie"
+    // et Malnazidos peut revenir faire coucou à la garderie.
+    // Dans ces cas, on passe par le moteur général, qui applique les garde-fous famille/profil.
+    const shouldBypassDirectGenreAnswer = /en famille|avec les enfants|avec mes enfants|enfants|familial|famille|kids|tout public|pas violent|sans violence|pas gore|sans gore|pas prise de tete|pas trop complique|debrancher|cerveau off/.test(message);
+
+    if (!shouldBypassDirectGenreAnswer) {
+      const genreAnswer = fishAnswerGenreRequest(rawMessage, catalogue);
+      if (genreAnswer) {
+        return genreAnswer;
+      }
+    }
 
     // Moteur général pour tout le reste
     const intent = buildIntent(rawMessage, records);
