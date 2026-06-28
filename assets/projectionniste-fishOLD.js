@@ -831,7 +831,7 @@ if (hasActorIntent && !actorQuery) {
   }
 }
 
-    if (requestedType && record.type !== requestedType) {
+    if (requestedType && normalize(record.type) !== normalize(requestedType)) {
       return false;
     }
 
@@ -867,9 +867,15 @@ if (hasActorIntent && !actorQuery) {
     return `Je ne trouve pas de film ${labelWithActor}${wantsPremium ? ' Premium' : ''} dans le catalogue. Le poisson préfère ne pas inventer une sardine en smoking.`;
   }
 
+  const mediaWord = requestedType
+    ? (requestedType === 'Série' ? 'une série' :
+       requestedType === 'Manga' ? 'un manga' :
+       'un film')
+    : 'un film';
+
   const intro = durationFilter
-    ? `Pour un film ${labelWithActor}${wantsPremium ? ' Premium' : ''} ${durationFilter.label}, j’ai trouvé :`
-    : `Pour un film ${labelWithActor}${wantsPremium ? ' Premium' : ''}, j’ai trouvé :`;
+    ? `Pour ${mediaWord} ${labelWithActor}${wantsPremium ? ' Premium' : ''} ${durationFilter.label}, j’ai trouvé :`
+    : `Pour ${mediaWord} ${labelWithActor}${wantsPremium ? ' Premium' : ''}, j’ai trouvé :`;
 
   return fishFormatTitleResults(results, intro);
 }

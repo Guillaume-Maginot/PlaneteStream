@@ -118,6 +118,80 @@ const FISH_GENRE_LABELS = {
   documentaire: 'documentaire'
 };
 
+
+/*
+  Traducteur de genres TMDb.
+  Les films, séries et mangas n'utilisent pas toujours les mêmes libellés.
+  Exemple : "Action" côté films, "Action & Adventure" côté séries/mangas.
+*/
+const FISH_GENRE_TMDB_EQUIVALENTS = {
+  zombie: ['zombie', 'zombies'],
+  horreur: ['horreur', 'epouvante', 'épouvante', 'horror'],
+  science_fiction: [
+    'science fiction',
+    'science-fiction',
+    'science fiction fantastique',
+    'science-fiction fantastique',
+    'science fiction and fantasy',
+    'sci fi fantasy',
+    'sci-fi fantasy'
+  ],
+  comedie: ['comedie', 'comédie', 'comedy'],
+  drame: ['drame', 'drama'],
+  action: ['action', 'action adventure', 'action & adventure'],
+  aventure: ['aventure', 'adventure', 'action adventure', 'action & adventure'],
+  thriller: ['thriller', 'suspense'],
+  fantastique: [
+    'fantastique',
+    'fantasy',
+    'science fiction fantastique',
+    'science-fiction fantastique',
+    'science fiction and fantasy',
+    'sci fi fantasy',
+    'sci-fi fantasy'
+  ],
+  animation: ['animation', 'anime', 'animé'],
+  romance: ['romance', 'romantique'],
+  guerre: ['guerre', 'war'],
+  crime: ['crime', 'policier', 'polar'],
+  western: ['western'],
+  documentaire: ['documentaire', 'documentary', 'docu'],
+  familial: ['familial', 'famille', 'family', 'kids']
+};
+
+function fishCanonicalGenreKey(value) {
+  const wanted = fishNormalize(value);
+
+  if (!wanted) return '';
+
+  for (const [genreKey, variants] of Object.entries(FISH_GENRE_TMDB_EQUIVALENTS)) {
+    const normalizedVariants = [genreKey, ...variants].map(fishNormalize);
+
+    if (normalizedVariants.includes(wanted)) {
+      return genreKey;
+    }
+  }
+
+  return wanted.replace(/-/g, '_');
+}
+
+function fishGenreMatchesKey(recordGenre, genreKey) {
+  const current = fishNormalize(recordGenre);
+  const canonicalKey = fishCanonicalGenreKey(genreKey);
+  const variants = FISH_GENRE_TMDB_EQUIVALENTS[canonicalKey] || [genreKey, canonicalKey];
+
+  return variants.map(fishNormalize).some(variant => {
+    if (!variant) return false;
+    return current === variant;
+  });
+}
+
+function fishRecordHasGenreKey(record, genreKey) {
+  if (!record || !genreKey) return false;
+
+  return (record.genres || []).some(genre => fishGenreMatchesKey(genre, genreKey));
+}
+
 /*
   Corrections connues sans toucher au JSON.
   Utile pour les sous-genres que TMDb ne range pas toujours proprement,
@@ -816,17 +890,7 @@ if (hasActorIntent && !actorQuery) {
         return false;
       }
     } else {
-  const recordGenres = record.genres.map(genre => fishNormalize(genre));
-
-  const strictGenreMatch = recordGenres.some(genre => {
-    if (genreKey === 'science_fiction') {
-      return genre === 'science fiction' || genre === 'science fiction aventure';
-    }
-
-    return genre === fishNormalize(wantedGenre);
-  });
-
-  if (!strictGenreMatch) {
+  if (!fishRecordHasGenreKey(record, genreKey)) {
     return false;
   }
 }
@@ -863,15 +927,15 @@ if (hasActorIntent && !actorQuery) {
     return true;
   });
 
-  if (!results.length) {
-    return `Je ne trouve pas de film ${labelWithActor}${wantsPremium ? ' Premium' : ''} dans le catalogue. Le poisson préfère ne pas inventer une sardine en smoking.`;
-  }
-
   const mediaWord = requestedType
-    ? (requestedType === 'Série' ? 'une série' :
-       requestedType === 'Manga' ? 'un manga' :
+    ? (normalize(requestedType) === 'serie' ? 'une série' :
+       normalize(requestedType) === 'manga' ? 'un manga' :
        'un film')
-    : 'un film';
+    : 'un titre';
+
+  if (!results.length) {
+    return `Je ne trouve pas ${mediaWord} ${labelWithActor}${wantsPremium ? ' Premium' : ''} dans le catalogue. Le poisson préfère ne pas inventer une sardine en smoking.`;
+  }
 
   const intro = durationFilter
     ? `Pour ${mediaWord} ${labelWithActor}${wantsPremium ? ' Premium' : ''} ${durationFilter.label}, j’ai trouvé :`
@@ -1610,6 +1674,10 @@ const SESSION_PROFILE_RULES = [
   function isDirectorRequest(message) {
     const m = normalize(message);
 
+    if (/^(un\s+|une\s+)?(film|films|serie|series|série|séries)\s+de\s+(moins|plus|maximum|max|minimum|min|sous|pas plus|au moins|inferieur|inférieur)\b/.test(m)) {
+      return false;
+    }
+
     return (
       /\brealisateur\b|\brealisatrice\b|\brealise par\b|\brealises par\b|\brealisee par\b/.test(m) ||
       /^films?\s+de\s+/.test(m) ||
@@ -2129,16 +2197,14 @@ const missingDirector = directorRequest && !matchedDirectors.length;
     function recordHasGenre(record, wantedGenre) {
     const wanted = normalize(wantedGenre);
     const aliasEntry = GENRE_ALIASES.find(([genre]) => normalize(genre) === wanted);
-    const variants = unique([
+    const candidates = unique([
       wantedGenre,
       wanted,
-      ...(aliasEntry ? aliasEntry[1] : []),
-      wanted === 'familial' ? 'family' : '',
-      wanted === 'comedie' ? 'comedy' : '',
-      wanted === 'science fiction' ? 'science-fiction' : ''
-    ]).map(normalize);
+      fishCanonicalGenreKey(wantedGenre),
+      ...(aliasEntry ? aliasEntry[1] : [])
+    ]);
 
-    return variants.some(variant => record.genreNorm.includes(variant));
+    return candidates.some(candidate => fishRecordHasGenreKey(record, candidate));
   }
 
     function recordMatchesTopic(record, topic) {
@@ -2186,6 +2252,11 @@ const missingDirector = directorRequest && !matchedDirectors.length;
 
     if (intent.durationMax && record.runtime && record.runtime > intent.durationMax) {
       return -999;
+    }
+
+    if (intent.durationMax && record.runtime && record.runtime <= intent.durationMax) {
+      score += 30;
+      debugReasons.push('+30 Durée');
     }
 
         if (intent.wantsPremium) {
@@ -2309,10 +2380,7 @@ if (intent.matchedMoods && intent.matchedMoods.length) {
       score += 1;
     }
 if (intent.wantedGenres.length) {
-  const strictGenreOk = intent.wantedGenres.some(genre => {
-    const wanted = normalize(genre);
-    return record.genres.some(recordGenre => normalize(recordGenre) === wanted);
-  });
+  const strictGenreOk = intent.wantedGenres.some(genre => recordHasGenre(record, genre));
 
   if (!strictGenreOk) {
     return -999;
@@ -2398,6 +2466,13 @@ if (intent.wantedGenres.length) {
     }
 
     if (intent.wantedGenres.length) {
+      if (intent.requestedType) {
+        const mediaWord = normalize(intent.requestedType) === 'serie' ? 'série' :
+          normalize(intent.requestedType) === 'manga' ? 'manga' :
+          'film';
+        return `Bloup... j’ai vérifié les genres du catalogue, mais je ne trouve pas de ${mediaWord} correspondant assez fiable.`;
+      }
+
       return 'Bloup... j’ai vérifié les genres du catalogue, mais je ne trouve pas de correspondance assez fiable.';
     }
 
