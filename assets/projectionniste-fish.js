@@ -671,6 +671,18 @@ function fishPickText(list) {
   return values[Math.floor(Math.random() * values.length)];
 }
 
+
+function fishShuffle(list) {
+  const copy = Array.isArray(list) ? [...list] : [];
+
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+
+  return copy;
+}
+
 function fishDescribeMediaFromIntent(intent) {
   const type = intent && intent.requestedType ? normalize(intent.requestedType) : '';
 
@@ -2254,7 +2266,7 @@ function findTitleFamilyMatches(records, query) {
     const wantedGenres = detectGenres(rawMessage);
     const topics = detectTopics(rawMessage);
     const wantsBest = /meilleur|meilleure|mieux note|bien note|top|note/.test(m);
-    const wantsRandom = /surprise|hasard|n importe|nimporte|je ne sais pas|quoi regarder/.test(m);
+    const wantsRandom = /surprise|surprend|surprends|surprends moi|surprend moi|hasard|n importe|nimporte|je ne sais pas|quoi regarder/.test(m);
     const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(m);
     const wantsKids = /enfant|famille|familial|kids|dessin anime|dessin animé|animation/.test(m);
     const wantsShort = /court|rapide|pas trop long/.test(m);
@@ -2585,14 +2597,25 @@ if (intent.wantedGenres.length) {
       }));
     }
 
+    const isPlainDurationRequest =
+      Boolean(intent.durationMax || intent.wantsShort) &&
+      !intent.wantedGenres.length &&
+      !intent.topics.length &&
+      !intent.matchedActors.length &&
+      !intent.matchedDirectors.length &&
+      !intent.wantsPremium &&
+      !intent.wantsBest &&
+      !intent.matchedMoods.length &&
+      !intent.matchedSessionProfiles.length;
+
     if (intent.wantsBest) {
       candidates.sort((a, b) =>
         b.record.rating - a.record.rating ||
         b.score - a.score ||
         a.record.title.localeCompare(b.record.title, 'fr')
       );
-    } else if (intent.wantsRandom) {
-      candidates.sort(() => Math.random() - 0.5);
+    } else if (intent.wantsRandom || isPlainDurationRequest) {
+      candidates = fishShuffle(candidates);
     } else {
       candidates.sort((a, b) =>
         b.score - a.score ||
