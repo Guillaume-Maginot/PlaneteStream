@@ -695,6 +695,30 @@ function fishDescribeMediaFromIntent(intent) {
   return 'titre';
 }
 
+
+function fishIsOpenAdvicePrompt(rawMessage) {
+  const m = normalize(rawMessage);
+
+  return (
+    /^(qu est ce qu on regarde|qu est ce qu on regarde ici|on regarde quoi|on se met quoi|on lance quoi|on regarde quoi ce soir|on se fait quoi|tu proposes quoi|tu me proposes quoi|tu conseilles quoi|tu me conseilles quoi|que me conseilles tu|que me conseilles tu ce soir|t as quoi|t as quoi en stock|tu as quoi en stock|qu est ce que t as|qu est ce que tu as|il y a quoi de bien|y a quoi de bien|il y a quoi a voir|y a quoi a voir|une idee|donne moi une idee|trouve moi quelque chose|sors moi un truc|sors une bobine|fais moi une proposition|balance un film|balance une serie|balance un manga|balance quelque chose|envoie quelque chose|vas y choisis|choisis pour moi|comme tu veux|debrouille toi|je sais pas|je ne sais pas|j en sais rien|aucune idee|aucune idee en tete|peu importe|surprends moi|surprend moi|impressionne moi|etonne moi|fais moi rever|fais chauffer le projecteur)\??$/.test(m)
+  );
+}
+
+function fishOpenAdviceAnswer() {
+  return fishPickText([
+    "🐠 D’accord, on ouvre le bocal. Tu veux plutôt un film, une série ou un manga ?",
+    "Je peux choisir, mais donne-moi juste une petite nageoire de contexte : film, série ou manga ?",
+    "Le projecteur est prêt. Tu préfères que je parte sur un film, une série, un manga... ou je te surprends vraiment ?",
+    "Je peux te proposer quelque chose. Donne-moi juste le rayon : film, série ou manga.",
+    "Très bien, je prends la barre du canapé. Tu veux une bobine courte, un truc drôle, de l’action, ou je pioche au hasard ?",
+    "Je peux faire simple : film, série ou manga ? Ensuite je fouille le JSON sans faire tomber les bobines.",
+    "Si tu veux, je peux choisir totalement au hasard. Sinon, donne-moi juste une humeur : rire, frissonner, réfléchir, voyager.",
+    "Le bocal demande une micro-consigne : film, série, manga, ou mode surprise ?",
+    "Je peux m’en charger. Tu veux une valeur sûre, un truc léger, ou une vraie surprise sortie du fond du bocal ?",
+    "On peut partir au feeling. Dis-moi juste : ce soir tu veux te détendre, te faire peur, rire, ou voir du grand spectacle ?"
+  ]);
+}
+
 function fishRandomIntro(intent, results) {
   const count = Array.isArray(results) ? results.length : 0;
   const media = fishDescribeMediaFromIntent(intent);
@@ -1000,6 +1024,10 @@ function fishAnswerGenreRequest(message, catalogue) {
   
 
   // Petit neurone : conseil multi-support (film / série / manga)
+  if (fishIsOpenAdvicePrompt(message)) {
+    return fishOpenAdviceAnswer();
+  }
+
   if (/\b(quel conseil|tu me conseilles quoi|que me conseilles tu|que me conseilles-tu|tu choisirais quoi|ton conseil)\b/i.test(message)) {
     return `🐠 Avec plaisir !
 
@@ -3170,6 +3198,7 @@ function fishShouldRememberMessage(rawMessage) {
   if (/merci|thanks/.test(m)) return false;
   if (/qui es tu|t es qui|tu es qui|comment tu t appelles|ton nom|tu t appelles|bubulle/.test(m)) return false;
   if (/aide|help|comment|que peux tu faire/.test(m)) return false;
+  if (fishIsOpenAdvicePrompt(rawMessage)) return false;
 
   return true;
 }
@@ -3218,6 +3247,10 @@ function fishApplyConversationMemory(rawMessage) {
 
     if (!message) {
       return 'Bloup ? Même moi j’ai besoin d’au moins une bulle d’information.';
+    }
+
+    if (fishIsOpenAdvicePrompt(clean)) {
+      return fishOpenAdviceAnswer();
     }
 
     if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(message)) {
