@@ -2455,6 +2455,19 @@ const SESSION_PROFILE_RULES = [
     );
   }
 
+  function fishRecordHasFamilyRedFlag(record) {
+    if (!record) return false;
+
+    return (
+      recordHasGenre(record, 'horreur') ||
+      recordHasGenre(record, 'guerre') ||
+      recordHasGenre(record, 'thriller') ||
+      recordHasGenre(record, 'crime') ||
+      recordHasGenre(record, 'zombie') ||
+      /zombie|zombies|mort vivant|morts vivants|mangeur de chair|mangeurs de chair|nazi|nazis/.test(record.allNorm || '')
+    );
+  }
+
   function fishScoreBubulleProfile(record, intent = {}) {
     if (!fishHasBubulleProfile(record)) {
       return { score: 0, reject: false, reasons: [] };
@@ -2503,9 +2516,14 @@ const SESSION_PROFILE_RULES = [
         return { score, reject: true, reasons: ['Profil non familial'] };
       }
 
-      if (profile.family === true) add(70, 'Profil familial');
-      if (profile.violence === 'faible') add(20, 'Violence faible');
-      if (profile.complexity === 'faible') add(8, 'Simple en famille');
+      if (profile.family !== true && fishRecordHasFamilyRedFlag(record)) {
+        return { score, reject: true, reasons: ['Genre trop dur pour famille'] };
+      }
+
+      if (profile.family === true) add(90, 'Profil familial');
+      if (profile.violence === 'faible') add(35, 'Violence faible');
+      if (profile.complexity === 'faible') add(15, 'Simple en famille');
+      if (profile.humour === 'eleve' || profile.humour === 'moyen') add(10, 'Humour compatible famille');
     }
 
     if (wantsSoft) {
@@ -2518,11 +2536,12 @@ const SESSION_PROFILE_RULES = [
     }
 
     if (wantsLight) {
-      if (profile.complexity === 'eleve') add(-70, 'Complexité élevée');
-      if (profile.complexity === 'faible') add(45, 'Complexité faible');
-      if (profile.complexity === 'moyen') add(15, 'Complexité moyenne');
-      if (profile.humour === 'eleve') add(15, 'Humour élevé');
-      if (profile.family === true) add(8, 'Profil doux');
+      if (profile.complexity === 'eleve') add(-120, 'Complexité élevée');
+      if (profile.complexity === 'faible') add(60, 'Complexité faible');
+      if (profile.complexity === 'moyen') add(20, 'Complexité moyenne');
+      if (profile.humour === 'eleve') add(20, 'Humour élevé');
+      if (profile.family === true) add(15, 'Profil doux');
+      if (profile.violence === 'eleve') add(-35, 'Trop dur pour cerveau off');
     }
 
     if (wantsFunny) {
@@ -2532,15 +2551,19 @@ const SESSION_PROFILE_RULES = [
     }
 
     if (wantsSpectacle) {
-      if (profile.spectacle === 'eleve') add(55, 'Spectacle élevé');
-      else if (profile.spectacle === 'moyen') add(20, 'Spectacle moyen');
-      else if (profile.spectacle === 'faible') add(-20, 'Spectacle faible');
+      if (profile.spectacle === 'eleve') add(75, 'Spectacle élevé');
+      else if (profile.spectacle === 'moyen') add(25, 'Spectacle moyen');
+      else if (profile.spectacle === 'faible') add(-25, 'Spectacle faible');
     }
 
     if (wantsEmotion) {
-      if (profile.emotion === 'eleve') add(45, 'Émotion élevée');
-      else if (profile.emotion === 'moyen') add(15, 'Émotion moyenne');
-      else if (profile.emotion === 'faible') add(-10, 'Émotion faible');
+      if (profile.emotion === 'eleve') add(60, 'Émotion élevée');
+      else if (profile.emotion === 'moyen') add(30, 'Émotion moyenne');
+      else if (profile.emotion === 'faible') add(-15, 'Émotion faible');
+
+      if (profile.violence === 'eleve' && profile.emotion !== 'eleve') {
+        add(-25, 'Trop rude pour belle histoire');
+      }
     }
 
     if (wantsBrain) {
@@ -3554,6 +3577,15 @@ function findTitleFamilyMatches(records, query) {
     ]);
 
 matchedSessionProfiles.forEach(profile => {
+  const profileLabel = normalize(profile.label || '');
+  const useProfileAsScoringOnly =
+    profileLabel.includes('famille') ||
+    profileLabel.includes('emotion') ||
+    profileLabel.includes('grand spectacle') ||
+    profileLabel.includes('envie de reflechir');
+
+  if (useProfileAsScoringOnly) return;
+
   if (profile.genres) {
     profile.genres.forEach(genre => {
       if (!wantedGenres.includes(genre)) wantedGenres.push(genre);
@@ -3727,32 +3759,37 @@ debugReasons.push("+80 Premium");
     }
 
     if (intent.wantsKids) {
+      if (record.bubulleProfile && record.bubulleProfile.family === false) {
+        debugReasons.push('-999 Profil non familial');
+        return -999;
+      }
+
+      if (fishRecordHasFamilyRedFlag(record) && !(record.bubulleProfile && record.bubulleProfile.family === true)) {
+        debugReasons.push('-999 Genre trop dur pour famille');
+        return -999;
+      }
+
       const hasFamilySignal =
         record.bubulleProfile && record.bubulleProfile.family === true ||
         recordHasGenre(record, 'familial') ||
-        recordHasGenre(record, 'comedie') ||
         record.genreNorm.includes('family') ||
         record.genreNorm.includes('famille');
 
       const hasSoftAnimation =
         recordHasGenre(record, 'animation') &&
-        (!record.runtime || record.runtime <= 115) &&
-        !recordHasGenre(record, 'thriller') &&
-        !recordHasGenre(record, 'horreur') &&
-        !recordHasGenre(record, 'crime') &&
-        !recordHasGenre(record, 'guerre');
+        (!record.runtime || record.runtime <= 120);
 
       const hasSoftAdventure =
         recordHasGenre(record, 'aventure') &&
         !recordHasGenre(record, 'thriller') &&
-        !recordHasGenre(record, 'horreur') &&
-        !recordHasGenre(record, 'crime') &&
-        !recordHasGenre(record, 'guerre');
+        !recordHasGenre(record, 'crime');
 
       const isFamily = hasFamilySignal || hasSoftAnimation || hasSoftAdventure;
 
       if (!isFamily) return -999;
-      score += 35;
+
+      score += hasFamilySignal ? 70 : 35;
+      debugReasons.push(hasFamilySignal ? '+70 Famille fiable' : '+35 Famille probable');
     }
 
     const bubulleProfileScore = fishScoreBubulleProfile(record, intent);
@@ -3828,21 +3865,44 @@ debugReasons.push("+" + bonusGenre + " Genre");
       profileLabel.includes('parents');
 
     if (isFamilyLikeProfile) {
-      const hasHardGenre =
-        recordHasGenre(record, 'horreur') ||
-        recordHasGenre(record, 'thriller') ||
-        recordHasGenre(record, 'crime') ||
-        recordHasGenre(record, 'guerre');
-
       const isLongAnimationOnly =
         recordHasGenre(record, 'animation') &&
         !recordHasGenre(record, 'familial') &&
         !recordHasGenre(record, 'comedie') &&
         record.runtime &&
-        record.runtime > 115;
+        record.runtime > 120;
 
-      if (hasHardGenre || isLongAnimationOnly) {
+      if (
+        record.bubulleProfile && record.bubulleProfile.family === false ||
+        (fishRecordHasFamilyRedFlag(record) && !(record.bubulleProfile && record.bubulleProfile.family === true)) ||
+        isLongAnimationOnly
+      ) {
         return;
+      }
+    }
+
+    if (profileLabel.includes('famille') && record.bubulleProfile && record.bubulleProfile.family === true) {
+      score += 80;
+      profileHit = true;
+    }
+
+    if (profileLabel.includes('emotion') && record.bubulleProfile) {
+      if (record.bubulleProfile.emotion === 'eleve') {
+        score += 70;
+        profileHit = true;
+      } else if (record.bubulleProfile.emotion === 'moyen') {
+        score += 35;
+        profileHit = true;
+      }
+    }
+
+    if (profileLabel.includes('grand spectacle') && record.bubulleProfile) {
+      if (record.bubulleProfile.spectacle === 'eleve') {
+        score += 80;
+        profileHit = true;
+      } else if (record.bubulleProfile.spectacle === 'moyen') {
+        score += 30;
+        profileHit = true;
       }
     }
 
