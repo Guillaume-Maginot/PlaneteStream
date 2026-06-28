@@ -29,6 +29,7 @@ const showAllEmbedsBtn = document.querySelector('#showAllEmbedsBtn');
 const showMissingEmbedsBtn = document.querySelector('#showMissingEmbedsBtn');
 const showMissingBubbleBtn = document.querySelector('#showMissingBubbleBtn');
 const generateBubbleReasonsBtn = document.querySelector('#generateBubbleReasonsBtn');
+const generateBubbleAdviceBtn = document.querySelector('#generateBubbleAdviceBtn');
 const generateAllBubbleReasonsBtn = document.querySelector('#generateAllBubbleReasonsBtn');
 const stopBubbleBatchBtn = document.querySelector('#stopBubbleBatchBtn');
 const catalogueEmbedStatus = document.querySelector('#catalogueEmbedStatus');
@@ -65,7 +66,8 @@ const editFields = {
   reasonReflechir: document.querySelector('#editReasonReflechir'),
   reasonSpectacle: document.querySelector('#editReasonSpectacle'),
   reasonEmotion: document.querySelector('#editReasonEmotion'),
-  reasonFamille: document.querySelector('#editReasonFamille')
+  reasonFamille: document.querySelector('#editReasonFamille'),
+  projectionnisteAdvice: document.querySelector('#editProjectionnisteAdvice')
 };
 
 if (document.body?.classList.contains('admin-locked')) {
@@ -133,6 +135,7 @@ async function init() {
     renderCatalogueList();
   });
   generateBubbleReasonsBtn?.addEventListener('click', generateBubbleReasonsForCurrentEntry);
+  generateBubbleAdviceBtn?.addEventListener('click', generateBubbleAdviceForCurrentEntry);
   generateAllBubbleReasonsBtn?.addEventListener('click', generateMissingBubbleReasonsBatch);
   stopBubbleBatchBtn?.addEventListener('click', () => {
     bubbleBatchShouldStop = true;
@@ -567,6 +570,75 @@ async function requestBubbleReasons(payload) {
   return data.bubbleReasons || data.reasons || {};
 }
 
+
+async function requestBubbleAdvice(payload) {
+  const res = await fetch('/.netlify/functions/generate-bubble-advice', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(data.error || data.details || 'Réponse OpenAI invalide');
+  }
+
+  return String(data.projectionnisteAdvice || data.advice || '').trim();
+}
+
+async function generateBubbleAdviceForCurrentEntry() {
+  if (editingIndex < 0 || !draft[editingIndex]) {
+    showMessage('Ouvre une fiche avant de demander le conseil du projectionniste.');
+    return;
+  }
+
+  const payload = getCurrentEditorBubblePayload();
+
+  if (!payload.title || !payload.overview) {
+    showMessage('Il faut au moins un titre et un résumé pour générer un conseil propre.');
+    return;
+  }
+
+  const existingAdvice = editFields.projectionnisteAdvice?.value.trim() || '';
+
+  if (existingAdvice) {
+    const replace = confirm('Cette fiche contient déjà un conseil du projectionniste. Tu veux le remplacer par une génération OpenAI ?');
+    if (!replace) return;
+  }
+
+  const originalLabel = generateBubbleAdviceBtn?.textContent || '✨ Générer le conseil';
+
+  try {
+    if (generateBubbleAdviceBtn) {
+      generateBubbleAdviceBtn.disabled = true;
+      generateBubbleAdviceBtn.textContent = '🐠 Conseil...';
+    }
+
+    showMessage(`Bubulle demande un avis de projectionniste pour “${payload.title}”…`);
+
+    const advice = await requestBubbleAdvice(payload);
+
+    if (editFields.projectionnisteAdvice) {
+      editFields.projectionnisteAdvice.value = advice;
+    }
+
+    showMessage(
+      advice
+        ? 'Conseil généré. Relis, ajuste si besoin, puis clique sur Enregistrer.'
+        : 'OpenAI n’a pas retourné de conseil exploitable. Le champ reste vide.'
+    );
+  } catch (err) {
+    console.error(err);
+    showMessage(`Génération du conseil impossible : ${err.message}`);
+  } finally {
+    if (generateBubbleAdviceBtn) {
+      generateBubbleAdviceBtn.disabled = false;
+      generateBubbleAdviceBtn.textContent = originalLabel;
+    }
+  }
+}
+
 function cleanGeneratedBubbleReasons(reasons = {}) {
   const cleaned = {};
 
@@ -595,6 +667,10 @@ function setBubbleBatchUi(isRunning, label = '') {
 
   if (generateBubbleReasonsBtn) {
     generateBubbleReasonsBtn.disabled = isRunning;
+  }
+
+  if (generateBubbleAdviceBtn) {
+    generateBubbleAdviceBtn.disabled = isRunning;
   }
 }
 
@@ -906,6 +982,7 @@ function openEditor(index) {
   editFields.slug.value = entry.slug || slugify(entry.title || 'contenu');
   editFields.overview.value = entry.overview || '';
   fillBubbleReasonFields(entry);
+  if (editFields.projectionnisteAdvice) editFields.projectionnisteAdvice.value = entry.projectionnisteAdvice || '';
 
   renderSeriesEpisodeEditor(entry);
 
@@ -948,7 +1025,8 @@ function saveEditedItem() {
     seasons: isSeries ? updatedSeasonsData.length : Number(current.seasons || 0),
     episodes: isSeries ? countEpisodes(updatedSeasonsData) : Number(current.episodes || 0),
     overview: editFields.overview.value.trim(),
-    bubbleReasons
+    bubbleReasons,
+    projectionnisteAdvice: editFields.projectionnisteAdvice?.value.trim() || ''
   };
 
   sortDraft();
@@ -1089,6 +1167,7 @@ function mergeTmdbRefresh(current, tmdbItem) {
     premium: Boolean(current.premium),
     homeFeatured: Boolean(current.homeFeatured),
     bubbleReasons: current.bubbleReasons || {},
+    projectionnisteAdvice: current.projectionnisteAdvice || '',
     videoEmbed: currentVideo
   };
 
