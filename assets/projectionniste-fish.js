@@ -2735,11 +2735,28 @@ debugReasons.push("+80 Premium");
     }
 
     if (intent.wantsKids) {
-      const isFamily =
+      const hasFamilySignal =
         recordHasGenre(record, 'familial') ||
-        recordHasGenre(record, 'animation') ||
+        recordHasGenre(record, 'comedie') ||
         record.genreNorm.includes('family') ||
         record.genreNorm.includes('famille');
+
+      const hasSoftAnimation =
+        recordHasGenre(record, 'animation') &&
+        (!record.runtime || record.runtime <= 115) &&
+        !recordHasGenre(record, 'thriller') &&
+        !recordHasGenre(record, 'horreur') &&
+        !recordHasGenre(record, 'crime') &&
+        !recordHasGenre(record, 'guerre');
+
+      const hasSoftAdventure =
+        recordHasGenre(record, 'aventure') &&
+        !recordHasGenre(record, 'thriller') &&
+        !recordHasGenre(record, 'horreur') &&
+        !recordHasGenre(record, 'crime') &&
+        !recordHasGenre(record, 'guerre');
+
+      const isFamily = hasFamilySignal || hasSoftAnimation || hasSoftAdventure;
 
       if (!isFamily) return -999;
       score += 35;
@@ -2778,6 +2795,31 @@ debugReasons.push("+" + bonusGenre + " Genre");
   let profileHit = false;
 
   intent.matchedSessionProfiles.forEach(profile => {
+    const profileLabel = normalize(profile.label || '');
+    const isFamilyLikeProfile =
+      profileLabel.includes('famille') ||
+      profileLabel.includes('enfant') ||
+      profileLabel.includes('parents');
+
+    if (isFamilyLikeProfile) {
+      const hasHardGenre =
+        recordHasGenre(record, 'horreur') ||
+        recordHasGenre(record, 'thriller') ||
+        recordHasGenre(record, 'crime') ||
+        recordHasGenre(record, 'guerre');
+
+      const isLongAnimationOnly =
+        recordHasGenre(record, 'animation') &&
+        !recordHasGenre(record, 'familial') &&
+        !recordHasGenre(record, 'comedie') &&
+        record.runtime &&
+        record.runtime > 115;
+
+      if (hasHardGenre || isLongAnimationOnly) {
+        return;
+      }
+    }
+
     if (profile.genres && profile.genres.some(genre => recordHasGenre(record, genre))) {
       score += 30;
       profileHit = true;
@@ -3143,8 +3185,24 @@ function fishApplyConversationMemory(rawMessage) {
 
   const m = normalize(rawMessage);
 
-  if (/^avec\b/.test(m) && fishBaseSearchMessage) {
-    return `${fishBaseSearchMessage} ${rawMessage}`;
+  /*
+    "avec Sigourney Weaver" peut être un complément d'une recherche précédente.
+    Mais "avec mes parents", "avec les enfants", etc. sont des contextes de séance,
+    pas des castings. Et après un contexte de séance, "avec Keanu Reeves" doit repartir
+    comme une vraie recherche acteur, pas hériter du canapé précédent.
+  */
+  if (/^avec\b/.test(m)) {
+    if (fishIsCompanionContext(rawMessage)) {
+      return rawMessage;
+    }
+
+    if (fishBaseSearchMessage && fishIsCompanionContext(fishBaseSearchMessage)) {
+      return rawMessage;
+    }
+
+    if (fishBaseSearchMessage) {
+      return `${fishBaseSearchMessage} ${rawMessage}`;
+    }
   }
 
   return `${fishLastSearchMessage} ${rawMessage}`;
