@@ -7522,6 +7522,119 @@
     "homeFeatured": false
   },
   {
+    "title": "Harry Potter et les Reliques de la Mort - 2ème partie",
+    "slug": "harry-potter-et-les-reliques-de-la-mort-2eme-partie",
+    "originalTitle": "Harry Potter and the Deathly Hallows: Part 2",
+    "year": "2011",
+    "releaseDate": "2011-07-12",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "David Yates",
+    "cast": [
+      {
+        "id": 10980,
+        "name": "Daniel Radcliffe",
+        "character": "Harry Potter",
+        "profile_path": "/uUFfo8RANo7tuckB6AZAnESne55.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uUFfo8RANo7tuckB6AZAnESne55.jpg"
+      },
+      {
+        "id": 10990,
+        "name": "Emma Watson",
+        "character": "Hermione Granger",
+        "profile_path": "/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+      },
+      {
+        "id": 10989,
+        "name": "Rupert Grint",
+        "character": "Ron Weasley",
+        "profile_path": "/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+      },
+      {
+        "id": 5469,
+        "name": "Ralph Fiennes",
+        "character": "Lord Voldemort",
+        "profile_path": "/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg"
+      },
+      {
+        "id": 4566,
+        "name": "Alan Rickman",
+        "character": "Severus Snape",
+        "profile_path": "/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+      },
+      {
+        "id": 5658,
+        "name": "Michael Gambon",
+        "character": "Albus Dumbledore",
+        "profile_path": "/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg"
+      },
+      {
+        "id": 11184,
+        "name": "Warwick Davis",
+        "character": "Griphook / Filius Flitwick",
+        "profile_path": "/vUwjgAYcBEcCv0OVAN00qUUXX3V.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/vUwjgAYcBEcCv0OVAN00qUUXX3V.jpg"
+      },
+      {
+        "id": 1283,
+        "name": "Helena Bonham Carter",
+        "character": "Bellatrix Lestrange",
+        "profile_path": "/hJMbNSPJ2PCahsP3rNEU39C8GWU.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hJMbNSPJ2PCahsP3rNEU39C8GWU.jpg"
+      },
+      {
+        "id": 8785,
+        "name": "Ciarán Hinds",
+        "character": "Aberforth Dumbledore",
+        "profile_path": "/d8wLIX9VYgwXRGSp1gmUdUxmApv.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/d8wLIX9VYgwXRGSp1gmUdUxmApv.jpg"
+      },
+      {
+        "id": 96841,
+        "name": "Matthew Lewis",
+        "character": "Neville Longbottom",
+        "profile_path": "/aPQCLK2gxWOallsFoEwjb1p9lWE.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/aPQCLK2gxWOallsFoEwjb1p9lWE.jpg"
+      }
+    ],
+    "runtime": 130,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America",
+    "language": "en",
+    "rating": 8.08,
+    "popularity": 22.809,
+    "trailer": "uAEZG9YToEs",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ptzekj3d5tpp\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "L’affrontement final.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Harry Potter - Saga",
+    "studios": [
+      "Warner Bros. Pictures",
+      "Heyday Films"
+    ],
+    "tmdbId": 12445,
+    "poster": "https://image.tmdb.org/t/p/w500/alQOPmKEPHkH4BLMEla1vTNYrUr.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/cbcpDn6XJaIGoOil1bKuskU8ds4.jpg",
+    "overview": "Le combat entre les puissances du bien et du mal de l’univers des sorciers se transforme en guerre sans merci. L’école Poudlard est désormais sous la coupe du professeur Rogue et des force des ténèbres. Les enjeux sont devenus considérables et personne n’est plus en sécurité alors que se rapproche l’ultime épreuve de force avec Voldemort…",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "Twilight, chapitre 4 : Révélation, 1ère partie",
     "slug": "twilight-chapitre-4-revelation-1ere-partie",
     "originalTitle": "The Twilight Saga: Breaking Dawn - Part 1",
@@ -7750,6 +7863,119 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false
+  },
+  {
+    "title": "Harry Potter et les Reliques de la Mort - 1ère partie",
+    "slug": "harry-potter-et-les-reliques-de-la-mort-1ere-partie",
+    "originalTitle": "Harry Potter and the Deathly Hallows: Part 1",
+    "year": "2010",
+    "releaseDate": "2010-11-17",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "David Yates",
+    "cast": [
+      {
+        "id": 10980,
+        "name": "Daniel Radcliffe",
+        "character": "Harry Potter",
+        "profile_path": "/uUFfo8RANo7tuckB6AZAnESne55.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uUFfo8RANo7tuckB6AZAnESne55.jpg"
+      },
+      {
+        "id": 10990,
+        "name": "Emma Watson",
+        "character": "Hermione Granger",
+        "profile_path": "/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+      },
+      {
+        "id": 10989,
+        "name": "Rupert Grint",
+        "character": "Ron Weasley",
+        "profile_path": "/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+      },
+      {
+        "id": 13014,
+        "name": "Toby Jones",
+        "character": "Dobby (voice)",
+        "profile_path": "/y6kLmjLgZ1sceaE4Zi1fwF0YsvZ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/y6kLmjLgZ1sceaE4Zi1fwF0YsvZ.jpg"
+      },
+      {
+        "id": 1283,
+        "name": "Helena Bonham Carter",
+        "character": "Bellatrix Lestrange",
+        "profile_path": "/hJMbNSPJ2PCahsP3rNEU39C8GWU.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hJMbNSPJ2PCahsP3rNEU39C8GWU.jpg"
+      },
+      {
+        "id": 4566,
+        "name": "Alan Rickman",
+        "character": "Severus Snape",
+        "profile_path": "/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+      },
+      {
+        "id": 5469,
+        "name": "Ralph Fiennes",
+        "character": "Lord Voldemort",
+        "profile_path": "/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg"
+      },
+      {
+        "id": 2440,
+        "name": "Bill Nighy",
+        "character": "Rufus Scrimgeour",
+        "profile_path": "/ixFI2YCGNGJfwlpI8iyhvVZRg8C.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ixFI2YCGNGJfwlpI8iyhvVZRg8C.jpg"
+      },
+      {
+        "id": 16358,
+        "name": "Simon McBurney",
+        "character": "Kreacher (voice)",
+        "profile_path": "/h0J9UH1g1C0c8T8x1mjvfUv5X5f.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/h0J9UH1g1C0c8T8x1mjvfUv5X5f.jpg"
+      },
+      {
+        "id": 7026,
+        "name": "Rhys Ifans",
+        "character": "Xenophilius Lovegood",
+        "profile_path": "/5X8XcIqCDxsQYyHdx7mBwPVkSTs.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5X8XcIqCDxsQYyHdx7mBwPVkSTs.jpg"
+      }
+    ],
+    "runtime": 146,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America",
+    "language": "en",
+    "rating": 7.734,
+    "popularity": 22.3593,
+    "trailer": "HgZZsnleZJQ",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/43hva7m6i7nm\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "La menace est partout",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Harry Potter - Saga",
+    "studios": [
+      "Warner Bros. Pictures",
+      "Heyday Films"
+    ],
+    "tmdbId": 12444,
+    "poster": "https://image.tmdb.org/t/p/w500/yJm61MmTMjOmNXxPxdoaIkdqnOm.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/vcrgU0KaNj5mKUCIQSUdiQwTE9y.jpg",
+    "overview": "Le pouvoir de Voldemort s'étend dangereusement. Le Seigneur des Ténèbres contrôle désormais le Ministère de la Magie et impose sa domination sur Poudlard, semant la peur et la terreur dans le monde des sorciers. Harry, Ron et Hermione, devenus des fugitifs traqués, s'engagent dans une quête périlleuse pour achever l'œuvre de Dumbledore : retrouver et détruire les Horcruxes, ces fragments d'âme qui rendent Voldemort immortel. Mais isolés, sans protection et confrontés à des dangers constants, les trois amis voient leurs liens mis à rude épreuve. Entre secrets révélés, trahisons et sacrifices, leur mission semble presque impossible, alors que l'ombre du mal menace de tout engloutir. Pourtant, ils savent que leur combat est la seule lueur d'espoir face à l'obscurité croissante.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
   },
   {
     "title": "Twilight, chapitre 3 : Hésitation",
@@ -7981,6 +8207,119 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false
+  },
+  {
+    "title": "Harry Potter et le Prince de sang-mêlé",
+    "slug": "harry-potter-et-le-prince-de-sang-mele",
+    "originalTitle": "Harry Potter and the Half-Blood Prince",
+    "year": "2009",
+    "releaseDate": "2009-07-15",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "David Yates",
+    "cast": [
+      {
+        "id": 10980,
+        "name": "Daniel Radcliffe",
+        "character": "Harry Potter",
+        "profile_path": "/uUFfo8RANo7tuckB6AZAnESne55.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uUFfo8RANo7tuckB6AZAnESne55.jpg"
+      },
+      {
+        "id": 10989,
+        "name": "Rupert Grint",
+        "character": "Ron Weasley",
+        "profile_path": "/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+      },
+      {
+        "id": 10990,
+        "name": "Emma Watson",
+        "character": "Hermione Granger",
+        "profile_path": "/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+      },
+      {
+        "id": 388,
+        "name": "Jim Broadbent",
+        "character": "Horace Slughorn",
+        "profile_path": "/s7lXYfrsJoGA4vKmyv61SPgABmR.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/s7lXYfrsJoGA4vKmyv61SPgABmR.jpg"
+      },
+      {
+        "id": 5658,
+        "name": "Michael Gambon",
+        "character": "Albus Dumbledore",
+        "profile_path": "/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg"
+      },
+      {
+        "id": 10993,
+        "name": "Tom Felton",
+        "character": "Draco Malfoy",
+        "profile_path": "/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg"
+      },
+      {
+        "id": 4566,
+        "name": "Alan Rickman",
+        "character": "Severus Snape",
+        "profile_path": "/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+      },
+      {
+        "id": 10991,
+        "name": "Bonnie Wright",
+        "character": "Ginny Weasley",
+        "profile_path": "/1O3bVJp2geFCqlDkOCJuTeSuqx.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/1O3bVJp2geFCqlDkOCJuTeSuqx.jpg"
+      },
+      {
+        "id": 234924,
+        "name": "Jessie Cave",
+        "character": "Lavender Brown",
+        "profile_path": "/bo1zUtdS878MzOVrPV6hnIN90CT.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/bo1zUtdS878MzOVrPV6hnIN90CT.jpg"
+      },
+      {
+        "id": 140367,
+        "name": "Evanna Lynch",
+        "character": "Luna Lovegood",
+        "profile_path": "/mebDQC5FnPVYYRxqmhCVVdl8fVM.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mebDQC5FnPVYYRxqmhCVVdl8fVM.jpg"
+      }
+    ],
+    "runtime": 153,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America",
+    "language": "en",
+    "rating": 7.68,
+    "popularity": 20.4322,
+    "trailer": "7GIoHjLOZyA",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rzykebmmhg53\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "De sombres secrets dévoilés",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Harry Potter - Saga",
+    "studios": [
+      "Warner Bros. Pictures",
+      "Heyday Films"
+    ],
+    "tmdbId": 767,
+    "poster": "https://image.tmdb.org/t/p/w500/A4WWOzWUASfUeESXxduQxVmoD7t.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/urDWNffjwmNi5IQaezw9GwqkUXa.jpg",
+    "overview": "Voldemort a renforcé son emprise sur le monde des sorciers aussi bien que sur celui des Moldus, et Poudlard n’est plus un endroit sûr. Harry est d’ailleurs persuadé que le danger rôde à l’intérieur même de l’école mais Dumbledore est plus soucieux de le préparer pour la bataille finale qu’il sent approcher à grands pas. Ensemble, ils tentent de trouver le talon d’Achille de Voldemort et, à cette fin, Dumbledore fait appel au Professeur Horace Slughorn, qui détient des informations cruciales.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
   },
   {
     "title": "The Grudge 3",
@@ -8558,6 +8897,119 @@
     "homeFeatured": false
   },
   {
+    "title": "Harry Potter et l'Ordre du Phénix",
+    "slug": "harry-potter-et-l-ordre-du-phenix",
+    "originalTitle": "Harry Potter and the Order of the Phoenix",
+    "year": "2007",
+    "releaseDate": "2007-07-08",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "David Yates",
+    "cast": [
+      {
+        "id": 10980,
+        "name": "Daniel Radcliffe",
+        "character": "Harry Potter",
+        "profile_path": "/uUFfo8RANo7tuckB6AZAnESne55.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uUFfo8RANo7tuckB6AZAnESne55.jpg"
+      },
+      {
+        "id": 10989,
+        "name": "Rupert Grint",
+        "character": "Ron Weasley",
+        "profile_path": "/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+      },
+      {
+        "id": 10990,
+        "name": "Emma Watson",
+        "character": "Hermione Granger",
+        "profile_path": "/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+      },
+      {
+        "id": 11356,
+        "name": "Imelda Staunton",
+        "character": "Dolores Umbridge",
+        "profile_path": "/96LYLMnUOWZ4DFXEeQPItNsxzEP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/96LYLMnUOWZ4DFXEeQPItNsxzEP.jpg"
+      },
+      {
+        "id": 1283,
+        "name": "Helena Bonham Carter",
+        "character": "Bellatrix Lestrange",
+        "profile_path": "/hJMbNSPJ2PCahsP3rNEU39C8GWU.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hJMbNSPJ2PCahsP3rNEU39C8GWU.jpg"
+      },
+      {
+        "id": 1923,
+        "name": "Robbie Coltrane",
+        "character": "Rubeus Hagrid",
+        "profile_path": "/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg"
+      },
+      {
+        "id": 64,
+        "name": "Gary Oldman",
+        "character": "Sirius Black",
+        "profile_path": "/yhaSM5habNNI1Tf4ALRwRk3VvSZ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yhaSM5habNNI1Tf4ALRwRk3VvSZ.jpg"
+      },
+      {
+        "id": 5469,
+        "name": "Ralph Fiennes",
+        "character": "Lord Voldemort",
+        "profile_path": "/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg"
+      },
+      {
+        "id": 5658,
+        "name": "Michael Gambon",
+        "character": "Albus Dumbledore",
+        "profile_path": "/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg"
+      },
+      {
+        "id": 4566,
+        "name": "Alan Rickman",
+        "character": "Severus Snape",
+        "profile_path": "/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+      }
+    ],
+    "runtime": 138,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America",
+    "language": "en",
+    "rating": 7.672,
+    "popularity": 20.3292,
+    "trailer": "MQ8r1rNso8k",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hrgw8w6f32al\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "La révolte a commencé.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Harry Potter - Saga",
+    "studios": [
+      "Warner Bros. Pictures",
+      "Heyday Films"
+    ],
+    "tmdbId": 675,
+    "poster": "https://image.tmdb.org/t/p/w500/9ZfpCVNx0y8jpColnnfdA1HI4Zb.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/pkxPkHOPJjOvzfQOclANEBT8OfK.jpg",
+    "overview": "Alors qu’il entame sa cinquième année d’étude à Poudlard, Harry Potter découvre qu’une bonne partie de la communauté des sorciers feint d’ignorer sa récente confrontation avec Lord Voldemort, et préfèrent nier cette aveuglante évidence : le Seigneur des Ténèbres est bel et bien vivant. De plus, la communauté magique lit les mensonges de Rita Skeeter dans la Gazette du Sorcier sous contrôle du Ministère de la Magie. Craignant que le puissant Albus Dumbledore ne mente à propos du retour de Voldemort dans le but de saper son autorité et de lui ravir son poste, le Ministre de la Magie Cornélius Fudge nomme un nouveau Professeur de Défense contre les Forces du Mal, qu’il charge de surveiller le vieux doyen et ses étudiants. Mais celle‐ci, Dolores Ombrage, se révèle incapable de préparer les collégiens à affronter les nouvelles menaces qui planent sur Poudlard…",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "The Grudge 2",
     "slug": "the-grudge-2",
     "originalTitle": "The Grudge 2",
@@ -8784,6 +9236,120 @@
     "homeFeatured": false
   },
   {
+    "title": "Harry Potter et la Coupe de feu",
+    "slug": "harry-potter-et-la-coupe-de-feu",
+    "originalTitle": "Harry Potter and the Goblet of Fire",
+    "year": "2005",
+    "releaseDate": "2005-11-16",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "Mike Newell",
+    "cast": [
+      {
+        "id": 10980,
+        "name": "Daniel Radcliffe",
+        "character": "Harry Potter",
+        "profile_path": "/uUFfo8RANo7tuckB6AZAnESne55.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uUFfo8RANo7tuckB6AZAnESne55.jpg"
+      },
+      {
+        "id": 10989,
+        "name": "Rupert Grint",
+        "character": "Ron Weasley",
+        "profile_path": "/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+      },
+      {
+        "id": 10990,
+        "name": "Emma Watson",
+        "character": "Hermione Granger",
+        "profile_path": "/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+      },
+      {
+        "id": 2039,
+        "name": "Brendan Gleeson",
+        "character": "Alastor 'Mad-Eye' Moody",
+        "profile_path": "/ctPPJu5ZYDZr1IPmzoNpezczrm0.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ctPPJu5ZYDZr1IPmzoNpezczrm0.jpg"
+      },
+      {
+        "id": 5658,
+        "name": "Michael Gambon",
+        "character": "Albus Dumbledore",
+        "profile_path": "/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg"
+      },
+      {
+        "id": 11288,
+        "name": "Robert Pattinson",
+        "character": "Cedric Diggory",
+        "profile_path": "/3qZ09UE7lN6AtorfXFRYpEtSY93.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3qZ09UE7lN6AtorfXFRYpEtSY93.jpg"
+      },
+      {
+        "id": 5469,
+        "name": "Ralph Fiennes",
+        "character": "Lord Voldemort",
+        "profile_path": "/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pCnVXH1Uo2ODoOit4UXni8OD9VB.jpg"
+      },
+      {
+        "id": 1923,
+        "name": "Robbie Coltrane",
+        "character": "Rubeus Hagrid",
+        "profile_path": "/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg"
+      },
+      {
+        "id": 4566,
+        "name": "Alan Rickman",
+        "character": "Severus Snape",
+        "profile_path": "/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+      },
+      {
+        "id": 20049,
+        "name": "David Tennant",
+        "character": "Barty Crouch Junior",
+        "profile_path": "/mGfrEMbxjUWjek1WDSq1j4TULIR.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mGfrEMbxjUWjek1WDSq1j4TULIR.jpg"
+      }
+    ],
+    "runtime": 157,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America",
+    "language": "en",
+    "rating": 7.803,
+    "popularity": 22.4828,
+    "trailer": "8Mvo64z9doU",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/wx0o4wrqf2a4\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Des heures sombres et difficiles s’annoncent.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Harry Potter - Saga",
+    "studios": [
+      "Warner Bros. Pictures",
+      "Heyday Films",
+      "Patalex IV Productions"
+    ],
+    "tmdbId": 674,
+    "poster": "https://image.tmdb.org/t/p/w500/hBak1pn5pbI4ycAbrgMMn1YI7P1.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/1OV7hau4D3rWGS5bu8sqBYeVpe.jpg",
+    "overview": "La quatrième année à l’école de Poudlard est marquée par le « Tournoi des trois sorciers ». Les participants sont choisis par la fameuse « Coupe de feu » qui est à l’origine d’un scandale. Elle sélectionne Harry Potter alors qu’il n’a pas l’âge requis. Accusé de tricherie et mis à mal par une série d’épreuves physiques de plus en plus difficiles, ce dernier sera enfin confronté à Celui dont on ne doit pas prononcer le nom, Lord V.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
     "title": "Star Wars, épisode III - La Revanche des Sith",
     "slug": "star-wars-episode-iii-la-revanche-des-sith",
     "originalTitle": "Star Wars: Episode III - Revenge of the Sith",
@@ -8891,6 +9457,121 @@
     "poster": "https://image.tmdb.org/t/p/w500/2RcBuU8cdxFxCJibbiYCGNLApfz.jpg",
     "backdrop": "https://image.tmdb.org/t/p/w1280/jniabJVBSW3EqLlyhjxWCZjVkiE.jpg",
     "overview": "La Guerre des Clones fait rage. Une franche hostilité oppose désormais le Chancelier Palpatine au Conseil Jedi. Anakin Skywalker, jeune Chevalier Jedi pris entre deux feux, hésite sur la conduite à tenir. Séduit par la promesse d'un pouvoir sans précédent, tenté par le côté obscur de la Force, il prête allégeance au maléfique Darth Sidious et devient Dark Vador. Les Seigneurs Sith s'unissent alors pour préparer leur revanche, qui commence par l'extermination des Jedi. Seuls rescapés du massacre, Yoda et Obi-Wan se lancent à la poursuite des Sith. La traque se conclut par un spectaculaire combat au sabre entre Anakin et Obi-Wan, qui décidera du sort de la galaxie…",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
+  },
+  {
+    "title": "Harry Potter et le Prisonnier d'Azkaban",
+    "slug": "harry-potter-et-le-prisonnier-d-azkaban",
+    "originalTitle": "Harry Potter and the Prisoner of Azkaban",
+    "year": "2004",
+    "releaseDate": "2004-05-31",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "Alfonso Cuarón",
+    "cast": [
+      {
+        "id": 10980,
+        "name": "Daniel Radcliffe",
+        "character": "Harry Potter",
+        "profile_path": "/uUFfo8RANo7tuckB6AZAnESne55.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uUFfo8RANo7tuckB6AZAnESne55.jpg"
+      },
+      {
+        "id": 10989,
+        "name": "Rupert Grint",
+        "character": "Ron Weasley",
+        "profile_path": "/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+      },
+      {
+        "id": 10990,
+        "name": "Emma Watson",
+        "character": "Hermione Granger",
+        "profile_path": "/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+      },
+      {
+        "id": 1923,
+        "name": "Robbie Coltrane",
+        "character": "Rubeus Hagrid",
+        "profile_path": "/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg"
+      },
+      {
+        "id": 5658,
+        "name": "Michael Gambon",
+        "character": "Albus Dumbledore",
+        "profile_path": "/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3jdWkDKf4IODbG4JKTeaC7AzxZH.jpg"
+      },
+      {
+        "id": 64,
+        "name": "Gary Oldman",
+        "character": "Sirius Black",
+        "profile_path": "/yhaSM5habNNI1Tf4ALRwRk3VvSZ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yhaSM5habNNI1Tf4ALRwRk3VvSZ.jpg"
+      },
+      {
+        "id": 11207,
+        "name": "David Thewlis",
+        "character": "Remus Lupin",
+        "profile_path": "/sNuYyT8ocLlQr3TdAW9CoKVbCU8.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/sNuYyT8ocLlQr3TdAW9CoKVbCU8.jpg"
+      },
+      {
+        "id": 9191,
+        "name": "Timothy Spall",
+        "character": "Peter Pettigrew",
+        "profile_path": "/pcR6t8kpAgGwIUo4UjlP5gyKkNA.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/pcR6t8kpAgGwIUo4UjlP5gyKkNA.jpg"
+      },
+      {
+        "id": 4566,
+        "name": "Alan Rickman",
+        "character": "Severus Snape",
+        "profile_path": "/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+      },
+      {
+        "id": 10993,
+        "name": "Tom Felton",
+        "character": "Draco Malfoy",
+        "profile_path": "/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg"
+      }
+    ],
+    "runtime": 142,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America",
+    "language": "en",
+    "rating": 8.008,
+    "popularity": 23.189,
+    "trailer": "CLncEeVf4ks",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ekn6hzoemgef\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Tout va changer.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Harry Potter - Saga",
+    "studios": [
+      "Warner Bros. Pictures",
+      "1492 Pictures",
+      "Heyday Films",
+      "P of A Productions"
+    ],
+    "tmdbId": 673,
+    "poster": "https://image.tmdb.org/t/p/w500/t4P2079IyK19njHDP2GwQrKdvzd.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/htmYEfH7TQgzsXHCnNXxmoYKQtL.jpg",
+    "overview": "Sirius Black, un dangereux sorcier criminel, s’échappe de la sombre prison d’Azkaban avec un seul et unique but : retrouver Harry Potter, en troisième année à l’école de Poudlard. Selon la légende, Black aurait jadis livré les parents du jeune sorcier à leur assassin, Lord Voldemort, et serait maintenant déterminé à tuer Harry…",
     "featured": false,
     "premium": false,
     "homeFeatured": false,
@@ -9575,6 +10256,121 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false
+  },
+  {
+    "title": "Harry Potter et la Chambre des secrets",
+    "slug": "harry-potter-et-la-chambre-des-secrets",
+    "originalTitle": "Harry Potter and the Chamber of Secrets",
+    "year": "2002",
+    "releaseDate": "2002-11-13",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Fantastique"
+    ],
+    "director": "Chris Columbus",
+    "cast": [
+      {
+        "id": 10980,
+        "name": "Daniel Radcliffe",
+        "character": "Harry Potter",
+        "profile_path": "/uUFfo8RANo7tuckB6AZAnESne55.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uUFfo8RANo7tuckB6AZAnESne55.jpg"
+      },
+      {
+        "id": 10989,
+        "name": "Rupert Grint",
+        "character": "Ron Weasley",
+        "profile_path": "/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2KZZ0ltTEl7Sf8volNFV1JDEP4.jpg"
+      },
+      {
+        "id": 10990,
+        "name": "Emma Watson",
+        "character": "Hermione Granger",
+        "profile_path": "/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/A14lLCZYDhfYdBa0fFRpwMDiwRN.jpg"
+      },
+      {
+        "id": 11181,
+        "name": "Kenneth Branagh",
+        "character": "Gilderoy Lockhart",
+        "profile_path": "/AbCqqFxNi5w3nDUFdQt0DGMFh5H.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/AbCqqFxNi5w3nDUFdQt0DGMFh5H.jpg"
+      },
+      {
+        "id": 13014,
+        "name": "Toby Jones",
+        "character": "Dobby (voice)",
+        "profile_path": "/y6kLmjLgZ1sceaE4Zi1fwF0YsvZ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/y6kLmjLgZ1sceaE4Zi1fwF0YsvZ.jpg"
+      },
+      {
+        "id": 1923,
+        "name": "Robbie Coltrane",
+        "character": "Rubeus Hagrid",
+        "profile_path": "/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/jOHs3xvlwRiiG2CLtso5zzmGCXg.jpg"
+      },
+      {
+        "id": 194,
+        "name": "Richard Harris",
+        "character": "Albus Dumbledore",
+        "profile_path": "/lCvcVMuxrg1f5A8OMqY9AqkkcZR.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lCvcVMuxrg1f5A8OMqY9AqkkcZR.jpg"
+      },
+      {
+        "id": 4566,
+        "name": "Alan Rickman",
+        "character": "Severus Snape",
+        "profile_path": "/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7tADZs4ILE93oJ5pAh6mKQFEq2m.jpg"
+      },
+      {
+        "id": 10993,
+        "name": "Tom Felton",
+        "character": "Draco Malfoy",
+        "profile_path": "/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/etmtUBzJ1i1XJTLS6MkotJFE1se.jpg"
+      },
+      {
+        "id": 11355,
+        "name": "Jason Isaacs",
+        "character": "Lucius Malfoy",
+        "profile_path": "/s6XRFjqUsrDJfDQuXPOoExAYPmb.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/s6XRFjqUsrDJfDQuXPOoExAYPmb.jpg"
+      }
+    ],
+    "runtime": 161,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America, Germany",
+    "language": "en",
+    "rating": 7.7,
+    "popularity": 24.5715,
+    "trailer": "XrduUzX6tRw",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/w76sgiowzu15\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Quelque chose de maléfique est de retour à Poudlard !",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Harry Potter - Saga",
+    "studios": [
+      "Warner Bros. Pictures",
+      "Heyday Films",
+      "1492 Pictures",
+      "MIRACLE Productions"
+    ],
+    "tmdbId": 672,
+    "poster": "https://image.tmdb.org/t/p/w500/8KpHRokGpiaqEGpjYe0rpywtvUx.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/1stUIsjawROZxjiCMtqqXqgfZWC.jpg",
+    "overview": "Après de très mauvaises vacances passées chez ses odieux oncle et tante et son affreux cousin, Harry rejoint, non sans mal, l'École des Sorciers où, avec ses amis Ron et Hermione et l'aide ponctuelle de nouveaux venus, il parvient à élucider le mystère de la Chambre des secrets, malgré les pièges tendus par ses ennemis et sans le concours de Lockhart, un nouveau professeur fanfaron et lâche, chargé pourtant de vaincre les Forces du Mal.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "bubbleReasons": {}
   },
   {
     "title": "Le Seigneur des anneaux : Les Deux Tours",
