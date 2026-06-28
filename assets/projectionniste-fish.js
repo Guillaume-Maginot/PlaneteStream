@@ -660,66 +660,150 @@ function fishMovieLine(movie, index) {
  return `${index + 1}. ${fishDisplayTitle(movie)}${fishMovieDetailsForDisplay(movie)}`;
 }
 
+
+function fishPickText(list) {
+  const values = Array.isArray(list) ? list.filter(Boolean) : [];
+
+  if (!values.length) {
+    return '';
+  }
+
+  return values[Math.floor(Math.random() * values.length)];
+}
+
+function fishDescribeMediaFromIntent(intent) {
+  const type = intent && intent.requestedType ? normalize(intent.requestedType) : '';
+
+  if (type === 'serie') return 'série';
+  if (type === 'manga') return 'manga';
+  if (type === 'film') return 'film';
+
+  return 'titre';
+}
+
 function fishRandomIntro(intent, results) {
+  const count = Array.isArray(results) ? results.length : 0;
+  const media = fishDescribeMediaFromIntent(intent);
+  const plural = media === 'série' ? 'séries' : media === 'manga' ? 'mangas' : media === 'film' ? 'films' : 'titres';
 
   const intros = {
     default: [
-      "Voici les titres qui correspondent le mieux :",
-      "J'ai trouvé quelques films qui devraient te plaire :",
-      "Le catalogue me souffle ces titres :",
-      "Voilà ce qui ressort de ma recherche :",
-      "J'ai repéré ces films pour toi :",
-      "Le projecteur s'est arrêté sur ceux-ci :",
-      "Ces titres correspondent plutôt bien à ta demande :",
-      "Tiens, regarde ceux-là :",
-      "Je pense que ceux-ci valent un coup d'œil :",
-      "Le catalogue est plutôt d'accord sur ceux-là :",
-      "Les bobines ont fini de tourner, voici le verdict :",
-      "Le projecteur a fait son choix :",
-      "Après vérification du catalogue, je te propose :",
-      "J'ai trouvé une sélection qui mérite une séance :",
-      "Ces films semblent les plus pertinents pour ta recherche :"
+      "J’ai fouillé les étagères du bocal et voici ce qui remonte :",
+      "Le projecteur a arrêté de tousser, j’ai trouvé ceci :",
+      "Après inspection des bobines, je te propose :",
+      "J’ai passé le catalogue au tamis à nageoires, verdict :",
+      "Le catalogue a répondu présent avec ces titres :",
+      "J’ai quelques candidats sérieux pour ta séance :",
+      "Voilà ce qui colle le mieux à ta demande :",
+      "Le bocal a parlé, et pour une fois il articule :",
+      "Je t’ai sorti les meilleurs candidats du catalogue :",
+      "J’ai vérifié sans inventer de sardine, voici le résultat :",
+      "Les bobines les plus pertinentes sont celles-ci :",
+      "Le projecteur pointe plutôt vers ça :",
+      "Je garde le hasard en laisse, voici les correspondances fiables :",
+      "J’ai plongé dans le JSON et je suis remonté avec ça :",
+      "Voici la petite pêche du catalogue :"
+    ],
+
+    single: [
+      "J’ai trouvé un candidat qui ressort nettement :",
+      "Une bobine se détache très clairement :",
+      "Le catalogue ne m’en sort qu’un vraiment solide :",
+      "Un seul titre nage devant les autres :",
+      "Je ne vais pas gonfler la liste au chalumeau, le meilleur résultat est :"
     ],
 
     actor: [
-      "Voici ce que le catalogue indique :",
-      "J'ai retrouvé cet acteur dans ces films :",
-      "Son nom apparaît dans les titres suivants :",
-      "Je l'ai repéré au casting de :",
-      "Le catalogue l'a vu passer ici :",
-      "Voici les films où il apparaît :"
+      "J’ai recoupé le casting et voici ce que je trouve :",
+      "Son nom apparaît dans ces bobines :",
+      "Le catalogue l’a repéré au casting de :",
+      "J’ai suivi la piste de l’acteur, elle mène ici :",
+      "Côté casting, le poisson coche ces titres :",
+      "La nageoire sur le générique, je trouve :",
+      "J’ai vérifié les noms dans le JSON, pas de doublure en mousse :"
     ],
 
     director: [
-      "Voici les films réalisés par ce réalisateur :",
-      "J'ai retrouvé sa filmographie dans le catalogue :",
-      "Le catalogue indique ces réalisations :",
-      "Voici les titres associés à ce réalisateur :"
+      "J’ai suivi la piste du réalisateur, elle mène ici :",
+      "Côté réalisation, le catalogue indique :",
+      "J’ai fouillé les crédits, voici les titres associés :",
+      "Le clap de réalisation pointe vers :",
+      "Le JSON sort sa petite casquette de metteur en scène avec :",
+      "J’ai retrouvé cette filmographie dans le catalogue :"
     ],
 
     premium: [
       "Direction les fauteuils rouges :",
-      "Voici la sélection Premium :",
+      "J’ai ouvert la petite salle Premium, voici ce qu’elle contient :",
       "Le coin Premium propose ceci :",
-      "Les fauteuils rouges sont prêts :"
+      "Les fauteuils rouges sont prêts pour :",
+      "J’ai filtré le Premium sans confondre avec la vitrine :",
+      "La sélection à coussin moelleux donne :"
     ],
 
     random: [
-      "Le bocal a remué les bobines, voici ma pioche :",
-      "Le hasard m'a soufflé ce titre :",
-      "Une bobine est remontée à la surface :",
-      "J'ai laissé le hasard choisir :"
+      "J’ai laissé une bulle choisir dans le bocal :",
+      "Le hasard a tapé contre la vitre et propose :",
+      "Je mélange les bobines, j’en attrape une :",
+      "Le bocal a remué les titres, voici la prise :",
+      "Une bobine vient de remonter toute seule :",
+      "Le poisson ferme les yeux, ouvre une nageoire, et tombe sur :"
+    ],
+
+    duration: [
+      "J’ai sorti le chronomètre du tiroir humide, voici les options :",
+      "Côté durée, ces titres rentrent dans le filet :",
+      "J’ai vérifié les minutes avant de parler, voilà ce qui passe :",
+      "Le poisson a compté les minutes sur ses nageoires, résultat :",
+      "Pour une séance calibrée sans marathon, je trouve :"
+    ],
+
+    best: [
+      "J’ai laissé les mieux placés remonter en surface :",
+      "Côté valeurs sûres du catalogue, je vois :",
+      "Les titres les plus solides semblent être :",
+      "Le haut du panier du bocal donne :",
+      "Je privilégie les titres qui ressortent le mieux :"
+    ],
+
+    mood: [
+      "Pour cette ambiance, le bocal me souffle :",
+      "J’ai cherché une couleur de séance, et ça donne :",
+      "Côté atmosphère, je partirais plutôt sur :",
+      "Pour cette humeur de canapé, je propose :",
+      "J’ai trié par sensation plus que par étiquette, voici :"
+    ],
+
+    session: [
+      "Pour ce type de séance, je mettrais ça sur le projecteur :",
+      "Vu le contexte, je te proposerais plutôt :",
+      "Pour cette configuration de canapé, voici ma sélection :",
+      "J’ai ajusté la pêche à la soirée, résultat :",
+      "Le bocal adapte la séance et sort :"
     ]
   };
 
-  let list = intros.default;
+  if (count === 1) return fishPickText(intros.single);
+  if (intent?.matchedActors?.length) return fishPickText(intros.actor);
+  if (intent?.matchedDirectors?.length) return fishPickText(intros.director);
+  if (intent?.wantsPremium) return fishPickText(intros.premium);
+  if (intent?.wantsRandom) return fishPickText(intros.random);
+  if (intent?.durationMax || intent?.wantsShort) return fishPickText(intros.duration);
+  if (intent?.wantsBest) return fishPickText(intros.best);
+  if (intent?.matchedSessionProfiles?.length) return fishPickText(intros.session);
+  if (intent?.matchedMoods?.length) return fishPickText(intros.mood);
 
-  if (intent?.actor) list = intros.actor;
-  else if (intent?.director) list = intros.director;
-  else if (intent?.premium) list = intros.premium;
-  else if (intent?.random) list = intros.random;
+  if (media !== 'titre') {
+    return fishPickText([
+      `J’ai trouvé quelques ${plural} qui collent bien :`,
+      `Côté ${media}, le catalogue me donne :`,
+      `Pour ce rayon ${media}, je remonte avec :`,
+      `J’ai filtré les ${plural} sans salir l’aquarium, résultat :`,
+      `Dans la zone ${media}, les meilleurs candidats sont :`
+    ]);
+  }
 
-  return list[Math.floor(Math.random() * list.length)];
+  return fishPickText(intros.default);
 }
 
 function fishCommentForResults(results, context = {}) {
@@ -738,39 +822,117 @@ function fishCommentForResults(results, context = {}) {
   const runtimeText = firstRuntime ? ` (${fishFormatDuration(firstRuntime)})` : '';
 
   if (/premium|fauteuil rouge|selection premium/.test(message)) {
-    return '\n\nLa sélection Premium est filtrée proprement : ici, le poisson ne confond pas “Premium” avec “simplement mis en avant”. Il a rangé ses lunettes, mais pas trop loin.';
+    return '\n\n' + fishPickText([
+      'La sélection Premium est filtrée proprement : ici, le poisson ne confond pas “Premium” avec “simplement mis en avant”.',
+      'J’ai vérifié le vrai statut Premium. Pas de fauteuil rouge peint au feutre.',
+      'Ce sont bien des titres Premium d’après le JSON, pas juste des bobines qui font les importantes.',
+      'Le bocal valide le badge Premium. Les sardines ordinaires restent dans le couloir.',
+      'J’ai gardé uniquement les vrais Premium. Le poisson aime le velours, mais il aime surtout les données propres.'
+    ]);
   }
 
   if (/plus long|le plus long|longue duree|longue durée/.test(message)) {
-    return `\n\nLe plus costaud du lot semble être ${firstTitle}${runtimeText}. Prévois le canapé réglementaire, et peut-être une boisson avec un permis de construire.`;
+    return '\n\n' + fishPickText([
+      `Le plus costaud du lot semble être ${firstTitle}${runtimeText}. Prévois le canapé réglementaire.`,
+      `${firstTitle}${runtimeText} prend la tête côté endurance. Là, on n’est plus sur une séance, on signe presque un bail.`,
+      `Si tu veux du long, ${firstTitle}${runtimeText} a les nageoires larges.`,
+      `${firstTitle}${runtimeText} sort du lot pour une soirée qui assume son côté tunnel de pop-corn.`,
+      `Le chronomètre pointe vers ${firstTitle}${runtimeText}. Le poisson conseille une boisson avec autonomie étendue.`
+    ]);
   }
 
   if (/plus court|court|rapide|pas trop long|moins de|moins d|sous|max|maximum/.test(message)) {
-    return `\n\nLe premier choix, ${firstTitle}${runtimeText}, colle bien à une envie de séance qui ne transforme pas la soirée en randonnée administrative.`;
+    return '\n\n' + fishPickText([
+      `Le premier choix, ${firstTitle}${runtimeText}, colle bien à une envie de séance qui ne transforme pas la soirée en randonnée administrative.`,
+      `${firstTitle}${runtimeText} semble le plus pratique si tu veux regarder quelque chose sans demander un congé au canapé.`,
+      `Je mets ${firstTitle}${runtimeText} devant : durée raisonnable, bocal content, soirée encore vivante après le générique.`,
+      `${firstTitle}${runtimeText} passe bien pour une séance calibrée. Le poisson a rangé le mètre ruban.`,
+      `Côté durée, ${firstTitle}${runtimeText} a le bon format : assez pour s’installer, pas assez pour fusionner avec le plaid.`
+    ]);
   }
 
   if (firstGenres.includes('zombie') || /zombie|zombies|mort vivant|morts vivants/.test(message)) {
-    return `\n\nLe bocal valide : on est bien sur du mort-vivant, pas sur une simple résurrection de planning foireux.`;
+    return '\n\n' + fishPickText([
+      'Le bocal valide : on est bien sur du mort-vivant, pas sur une simple résurrection de planning foireux.',
+      'J’ai bien cherché du zombie. Pas juste un titre avec “résurrection” qui essaie de passer en douce.',
+      'Ça sent le mort-vivant réglementaire. Le poisson garde quand même une distance sanitaire.',
+      'Le filtre zombie est strict : pas de cadavre administratif dans la liste.',
+      'On reste dans le domaine des mâchoires qui claquent et des couloirs mal éclairés.'
+    ]);
   }
 
   if (firstGenres.includes('horreur') || firstGenres.includes('epouvante') || /horreur|epouvante|épouvante|peur/.test(message)) {
-    return `\n\nCôté ambiance, ça devrait grincer juste ce qu’il faut dans les couloirs du canapé.`;
+    return '\n\n' + fishPickText([
+      'Côté ambiance, ça devrait grincer juste ce qu’il faut dans les couloirs du canapé.',
+      'Le bocal conseille de vérifier derrière le rideau. Pure procédure qualité.',
+      'On est sur une sélection qui peut faire travailler les coussins en défense rapprochée.',
+      'L’ambiance devrait être suffisamment sombre pour que le pop-corn se sente observé.',
+      'Le poisson ne garantit pas le sommeil après, il ne gère que le catalogue.'
+    ]);
   }
 
-  if (firstGenres.includes('science fiction') || firstGenres.includes('science-fiction') || /\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
-    return `\n\nBon choix pour décoller sans quitter le canapé. Le carburant officiel reste le pop-corn.`;
+  if (firstGenres.includes('science fiction') || firstGenres.includes('science-fiction') || /sf|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
+    return '\n\n' + fishPickText([
+      'Bon choix pour décoller sans quitter le canapé. Le carburant officiel reste le pop-corn.',
+      'Le bocal a capté un signal venu du futur. Il grésille un peu, mais il répond.',
+      'Ça devrait satisfaire l’envie de vaisseaux, de mondes étranges ou de concepts qui portent des lunettes.',
+      'Le poisson a mis son casque spatial. Il est ridicule, mais concentré.',
+      'On part sur de la science-fiction avec assez de matière pour faire vibrer les néons du salon.'
+    ]);
   }
 
   if (firstGenres.includes('comedie') || firstGenres.includes('comédie') || /comedie|comédie|humour|drole|drôle/.test(message)) {
-    return `\n\nÇa sent la séance détente. Pas forcément un prix Nobel, mais parfois le cerveau demande juste une couverture et une bêtise bien cadrée.`;
+    return '\n\n' + fishPickText([
+      'Ça sent la séance détente. Pas forcément un prix Nobel, mais parfois le cerveau demande juste une couverture et une bêtise bien cadrée.',
+      'Le bocal classe ça dans la zone sourire potentiel. Pas une science exacte, mais le poisson y croit.',
+      'Bonne piste pour laisser le cerveau en chaussons.',
+      'On part sur une sélection qui devrait éviter les dissertations à 23h47.',
+      'Le poisson approuve : parfois le rire est plus utile qu’un tableau Excel.'
+    ]);
+  }
+
+  if (/manga|anime|animé/.test(message)) {
+    return '\n\n' + fishPickText([
+      'Côté manga, le catalogue est encore petit, donc je préfère viser juste plutôt que remplir le bocal avec des algues.',
+      'Le rayon manga n’est pas immense, mais les correspondances sont propres.',
+      'Le poisson a parlé japonais approximatif au JSON. Étonnamment, ça passe.',
+      'Je reste prudent sur les mangas : peu de titres, donc pas de remplissage décoratif.',
+      'La sélection manga est courte, mais elle ne triche pas.'
+    ]);
+  }
+
+  if (/serie|série|series|séries/.test(message)) {
+    return '\n\n' + fishPickText([
+      'Côté série, je filtre strictement le type pour éviter les films déguisés avec une moustache.',
+      'Le bocal reste dans le rayon série. Aucun film clandestin dans la nasse.',
+      'La sélection reste cohérente avec ta demande de série.',
+      'J’ai gardé le filtre série allumé. Il fait un petit bruit, mais il travaille.',
+      'Pas de mélange de rayons : ici, le poisson garde les séries entre elles.'
+    ]);
   }
 
   if (list.length === 1) {
-    return '\n\nUn seul candidat ressort vraiment. Le poisson évite de gonfler la liste avec des titres au chausse-pied.';
+    return '\n\n' + fishPickText([
+      'Un seul candidat ressort vraiment. Le poisson évite de gonfler la liste avec des titres au chausse-pied.',
+      'Je pourrais remplir avec du tiède, mais le bocal a encore un peu de dignité.',
+      'Un seul titre tient franchement la route. Le reste serait de la décoration humide.',
+      'Je préfère une réponse courte et honnête à une fanfare de faux positifs.',
+      'Le catalogue n’a qu’un vrai candidat solide pour cette demande.'
+    ]);
   }
 
-  return '\n\nLe premier titre est celui qui ressort le mieux pour ta demande. Le reste suit, comme une petite file d’attente de bobines bien élevées.';
+  return '\n\n' + fishPickText([
+    'Le premier titre est celui qui ressort le mieux pour ta demande. Le reste suit, comme une petite file d’attente de bobines bien élevées.',
+    'J’ai classé les réponses par pertinence. Enfin, autant qu’un poisson avec un JSON peut le faire.',
+    'Le haut de la liste semble le plus solide. Ensuite, on descend doucement dans les bonnes possibilités.',
+    'Je mets les meilleurs candidats devant, les figurants suivent derrière.',
+    'La première proposition est celle qui coche le plus de cases. Les autres restent dans le bon courant.',
+    'J’ai évité les résultats décoratifs. Si c’est dans la liste, c’est que le catalogue donne un vrai signal.',
+    'Les titres sont rangés par affinité avec ta demande, pas par humeur de bulle.',
+    'Le poisson a trié sans trop éclabousser.'
+  ]);
 }
+
 let fishLastResults = [];
 let fishLastOffset = 0;
 function fishContinueLastResults() {
@@ -2516,7 +2678,12 @@ fishLastOffset = Math.min(5, derniers.length);
 
 const visibles = derniers.slice(0, 5);
 
-let reponse = "🐠 Bloup ! Voici les derniers films ajoutés au catalogue :\n\n";
+let reponse = fishPickText([
+  "🐠 Bloup ! Les dernières bobines arrivées dans le bocal :\n\n",
+  "J’ai regardé les ajouts récents, voici ce qui vient d’arriver :\n\n",
+  "Le rayon nouveautés frétille un peu, regarde :\n\n",
+  "Voici les derniers titres posés sur l’étagère Planete Stream :\n\n"
+]);
 
 reponse += visibles
   .map((film, index) => `${index + 1}. ${film.title}`)
@@ -2559,10 +2726,14 @@ return reponse;
         .slice(0, 5);
 
       if (!results.length) {
-        return 'Bloup... je n’ai trouvé aucun film Premium dans le JSON. Et je ne compte pas les titres “à la une” comme Premium.';
+        return fishPickText([
+          'Bloup... je n’ai trouvé aucun film Premium dans le JSON. Et je ne compte pas les titres “à la une” comme Premium.',
+          'La salle Premium est vide pour l’instant. Le poisson a même regardé sous les fauteuils.',
+          'Aucun vrai Premium dans le JSON. Je ne vais pas confondre tapis rouge et post-it brillant.'
+        ]);
       }
 
-      return `Voici les films Premium du catalogue :\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
+      return `${fishPickText(['Direction les fauteuils rouges :', 'La sélection Premium du bocal donne :', 'J’ai ouvert la salle Premium, voici les titres :'])}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { rawMessage })}`;
     }
     // Questions réalisateur d’un titre
     if (/qui a realise|realisateur de|realisatrice de|realise par qui|c est qui le realisateur|c est qui la realisatrice|quel est le realisateur|quelle est la realisatrice/.test(message)) {
@@ -2587,28 +2758,39 @@ return reponse;
       return explainNoResult(intent);
     }
 
-    let intro = 'J’ai trouvé ça dans le catalogue Planete Stream :';
+    let intro = fishRandomIntro(intent, results);
 
-    if (results.length === 1) {
-      intro = 'J’ai trouvé une excellente correspondance :';
-      } else if (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length) {
-      intro = `Pour une séance ${intent.matchedSessionProfiles.map(profile => profile.label).join(', ')}, je te propose :`;
-      } else if (intent.matchedMoods && intent.matchedMoods.length) {
-      intro = `Voici une sélection avec une ambiance ${intent.matchedMoods.map(mood => mood.label).join(', ')} :`;
-    } else if (intent.matchedDirectors.length) {
-      intro = `Voici ce que le catalogue indique pour ${intent.matchedDirectors.join(', ')} :`;
-    } else if (intent.matchedActors.length) {
-      intro = `Voici ce que le catalogue indique avec ${intent.matchedActors.join(', ')} :`;
-    } else if (intent.wantsBest) {
-      intro = 'Voici les titres les mieux placés dans le catalogue :';
-    } else if (intent.wantsRandom) {
-      intro = 'Le bocal a remué les bobines, voici une suggestion :';
-    } else if (results.length <= 5) {
-      intro = 'Voici les titres qui correspondent le mieux :';
-      
+    if (intent.matchedSessionProfiles && intent.matchedSessionProfiles.length && Math.random() < 0.5) {
+      intro = `Pour une séance ${intent.matchedSessionProfiles.map(profile => profile.label).join(', ')}, ${fishPickText([
+        'je mettrais ça sur le projecteur :',
+        'le bocal propose :',
+        'voici ma petite sélection :',
+        'je partirais plutôt sur :'
+      ])}`;
+    } else if (intent.matchedMoods && intent.matchedMoods.length && Math.random() < 0.5) {
+      intro = `Pour une ambiance ${intent.matchedMoods.map(mood => mood.label).join(', ')}, ${fishPickText([
+        'je te propose :',
+        'le catalogue remonte :',
+        'je sortirais plutôt :',
+        'voici ce qui colle le mieux :'
+      ])}`;
+    } else if (intent.matchedDirectors.length && Math.random() < 0.5) {
+      intro = `Pour ${intent.matchedDirectors.join(', ')}, ${fishPickText([
+        'le catalogue indique :',
+        'j’ai retrouvé :',
+        'je trouve :',
+        'les bobines disponibles sont :'
+      ])}`;
+    } else if (intent.matchedActors.length && Math.random() < 0.5) {
+      intro = `Avec ${intent.matchedActors.join(', ')}, ${fishPickText([
+        'je trouve :',
+        'le catalogue me donne :',
+        'j’ai repéré :',
+        'voici ce qui ressort :'
+      ])}`;
     }
 
-    return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, intent)}`;
+    return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { ...intent, rawMessage })}`;
   }
 function fishIsFollowUpMessage(rawMessage) {
   const m = normalize(rawMessage);
@@ -2663,11 +2845,23 @@ function fishApplyConversationMemory(rawMessage) {
     }
 
     if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(message)) {
-      return 'Bloup ! Je suis réveillé. Enfin, autant qu’un poisson rouge peut l’être sans café.';
+      return fishPickText([
+        'Bloup ! Je suis réveillé. Enfin, autant qu’un poisson rouge peut l’être sans café.',
+        'Salut ! Le projecteur chauffe, le bocal aussi. Qu’est-ce qu’on cherche ?',
+        'Bloup ! J’étais en train de compter les bulles, mais je peux travailler.',
+        'Bonjour ! Le poisson est en poste, les bobines n’ont qu’à bien se tenir.',
+        'Coucou ! Donne-moi un genre, un acteur, une durée ou une envie de séance, et je plonge.'
+      ]);
     }
 
     if (/merci|thanks/.test(message)) {
-      return 'Avec plaisir. Je retourne surveiller les bobines depuis mon bocal.';
+      return fishPickText([
+        'Avec plaisir. Je retourne surveiller les bobines depuis mon bocal.',
+        'Toujours partant pour une fouille de catalogue. Bloup de service.',
+        'Avec plaisir ! Le poisson range l’épuisette, mais il reste dans le coin.',
+        'De rien. J’ajoute une bulle de satisfaction au rapport.',
+        'Service rendu, nageoire propre.'
+      ]);
     }
 
     if (/comment tu t appelles|ton nom|tu t appelles|bubulle/.test(message)) {
@@ -2675,11 +2869,23 @@ function fishApplyConversationMemory(rawMessage) {
 }
 
 if (/qui es tu|t es qui|tu es qui|projectionniste|poisson|ia|intelligence artificielle/.test(message)) {
-      return 'Je suis le Projectionniste de Planete Stream : petit poisson, cerveau JSON. Je vérifie le catalogue avant de répondre, donc je préfère dire “je ne sais pas” plutôt que d’inventer un film sorti d’une palourde.';
+      return fishPickText([
+        'Je suis le Projectionniste de Planete Stream : petit poisson, cerveau JSON. Je vérifie le catalogue avant de répondre, donc je préfère dire “je ne sais pas” plutôt que d’inventer un film sorti d’une palourde.',
+        'Je suis Bubulle, le projectionniste local : je fouille le catalogue, je trie les bobines et je refuse les réponses au pif.',
+        'Officiellement, je suis un poisson. Officieusement, je suis un moteur de recherche avec des nageoires et un avis sur le pop-corn.',
+        'Je suis le gardien du bocal : je lis le JSON, je compare les titres, et quand je ne sais pas, je bloupe honnêtement.',
+        'Je suis une petite IA de catalogue déguisée en poisson. C’est absurde, donc forcément assez fiable.'
+      ]);
     }
 
     if (/aide|help|comment|que peux tu faire/.test(message)) {
-      return 'Tu peux me demander un film par genre, durée, acteur, réalisateur, note, Premium, ou une suggestion au hasard. Exemple : “un film de SF de moins de 2h”, “un film avec Sigourney Weaver” ou “qui a réalisé Titanic ?”.';
+      return fishPickText([
+        'Tu peux me demander un film, une série ou un manga par genre, durée, acteur, réalisateur, Premium, ou une suggestion au hasard. Exemple : “un film de SF de moins de 2h”, “un manga action” ou “qui a réalisé Titanic ?”.',
+        'Donne-moi une envie simple : “film d’horreur”, “série drame”, “manga aventure”, “avec Sigourney Weaver”, “moins de 2h”, ou même “surprends-moi”. Je compare avec le catalogue avant de parler.',
+        'Je peux filtrer par genre, durée, acteur, réalisateur, Premium, type de média, ambiance de soirée et hasard contrôlé. Le hasard incontrôlé, c’est pour les mouettes.',
+        'Essaie une phrase naturelle : “un film pour ce soir”, “un truc pas trop long”, “une série de science-fiction”, “un manga d’action”, “un film avec Keanu Reeves”. Je trie ensuite dans le bocal.',
+        'Je suis utile pour trouver quoi regarder sans fouiller tout le catalogue : genre, durée, casting, réalisateur, Premium, nouveautés, ou simple envie de canapé.'
+      ]);
     }
 
     try {
