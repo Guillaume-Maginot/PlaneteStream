@@ -747,7 +747,8 @@
         "spectacle": "eleve",
         "violence": "moyen",
         "humour": "faible",
-        "emotion": "moyen"
+        "emotion": "moyen",
+        "family": false
       }
     }
   },
@@ -1515,7 +1516,8 @@
         "spectacle": "eleve",
         "violence": "faible",
         "humour": "eleve",
-        "emotion": "moyen"
+        "emotion": "moyen",
+        "family": true
       }
     }
   },
@@ -5261,7 +5263,8 @@
         "spectacle": "moyen",
         "violence": "eleve",
         "humour": "faible",
-        "emotion": "moyen"
+        "emotion": "moyen",
+        "family": false
       }
     }
   },

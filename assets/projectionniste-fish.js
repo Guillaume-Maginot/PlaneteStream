@@ -2389,6 +2389,182 @@ const SESSION_PROFILE_RULES = [
     return Number(value) || 0;
   }
 
+  /* =========================================================
+     Bubulle - Profil enrichi côté admin
+     Objectif : lire bubulle.profile sans casser les anciennes fiches.
+     Si une fiche n'a pas encore de profil, le poisson continue comme avant.
+     ========================================================= */
+
+  function fishNormalizeProfileValue(value) {
+    const v = normalize(value);
+
+    if (!v) return '';
+
+    if (v === 'eleve' || v === 'elevee' || v === 'elevé' || v === 'élevé' || v === 'haute' || v === 'fort' || v === 'forte') {
+      return 'eleve';
+    }
+
+    if (v === 'moyenne') return 'moyen';
+    if (v === 'basse') return 'faible';
+
+    if (['faible', 'moyen', 'rapide', 'lent'].includes(v)) {
+      return v;
+    }
+
+    return v;
+  }
+
+  function fishReadBubulleProfile(item) {
+    const source = item && item.item ? item.item : item;
+    const rawProfile =
+      source &&
+      source.bubulle &&
+      source.bubulle.profile &&
+      typeof source.bubulle.profile === 'object'
+        ? source.bubulle.profile
+        : {};
+
+    return {
+      pace: fishNormalizeProfileValue(rawProfile.pace),
+      complexity: fishNormalizeProfileValue(rawProfile.complexity),
+      spectacle: fishNormalizeProfileValue(rawProfile.spectacle),
+      violence: fishNormalizeProfileValue(rawProfile.violence),
+      humour: fishNormalizeProfileValue(rawProfile.humour),
+      emotion: fishNormalizeProfileValue(rawProfile.emotion),
+      family: rawProfile.family === true || rawProfile.family === 'true'
+        ? true
+        : rawProfile.family === false || rawProfile.family === 'false'
+          ? false
+          : null
+    };
+  }
+
+  function fishHasBubulleProfile(record) {
+    const profile = record && record.bubulleProfile ? record.bubulleProfile : null;
+
+    if (!profile) return false;
+
+    return Boolean(
+      profile.pace ||
+      profile.complexity ||
+      profile.spectacle ||
+      profile.violence ||
+      profile.humour ||
+      profile.emotion ||
+      profile.family !== null
+    );
+  }
+
+  function fishScoreBubulleProfile(record, intent = {}) {
+    if (!fishHasBubulleProfile(record)) {
+      return { score: 0, reject: false, reasons: [] };
+    }
+
+    const profile = record.bubulleProfile;
+    const m = normalize(intent.rawMessage || '');
+    let score = 0;
+    const reasons = [];
+
+    function add(points, reason) {
+      score += points;
+      if (reason) reasons.push(`${points > 0 ? '+' : ''}${points} ${reason}`);
+    }
+
+    const wantsFamily =
+      intent.wantsKids ||
+      /en famille|avec les enfants|avec mes enfants|enfants|petits|tout public|familial|kids|avec mes parents|parents/.test(m);
+
+    const wantsSoft =
+      /pas violent|pas de violence|sans violence|pas gore|sans gore|soft|calme|tranquille/.test(m);
+
+    const wantsLight =
+      /sans prise de tete|pas prise de tete|prise de tete|debrancher|deconnecter|poser le cerveau|cerveau off|simple|facile|leger|chill|fatigue/.test(m);
+
+    const wantsFunny =
+      /rire|rigoler|drole|marrant|humour|comedie|fun|bonne humeur|fais moi rire/.test(m);
+
+    const wantsSpectacle =
+      /spectacle|plein les yeux|claque|epique|blockbuster|explosif|action|ca bouge|baston|grand spectacle/.test(m);
+
+    const wantsEmotion =
+      /pleurer|larme|larmes|emouvant|emotion|touchant|triste|poignant|bouleversant|belle histoire|histoire humaine/.test(m);
+
+    const wantsBrain =
+      /reflechir|intelligent|complexe|tordu|mindfuck|twist|psychologique|concept|enquete|mystere|scenario/.test(m);
+
+    const wantsFast =
+      /rythme|rythme|nerveux|rapide|pas de temps mort|ca bouge|dynamique/.test(m);
+
+    const wantsSlow =
+      /lent|contemplatif|pose|posé|prendre son temps|calme/.test(m);
+
+    if (wantsFamily) {
+      if (profile.family === false || profile.violence === 'eleve') {
+        return { score, reject: true, reasons: ['Profil non familial'] };
+      }
+
+      if (profile.family === true) add(70, 'Profil familial');
+      if (profile.violence === 'faible') add(20, 'Violence faible');
+      if (profile.complexity === 'faible') add(8, 'Simple en famille');
+    }
+
+    if (wantsSoft) {
+      if (profile.violence === 'eleve') {
+        return { score, reject: true, reasons: ['Violence élevée'] };
+      }
+
+      if (profile.violence === 'faible') add(45, 'Violence faible');
+      else if (profile.violence === 'moyen') add(10, 'Violence moyenne');
+    }
+
+    if (wantsLight) {
+      if (profile.complexity === 'eleve') add(-70, 'Complexité élevée');
+      if (profile.complexity === 'faible') add(45, 'Complexité faible');
+      if (profile.complexity === 'moyen') add(15, 'Complexité moyenne');
+      if (profile.humour === 'eleve') add(15, 'Humour élevé');
+      if (profile.family === true) add(8, 'Profil doux');
+    }
+
+    if (wantsFunny) {
+      if (profile.humour === 'eleve') add(55, 'Humour élevé');
+      else if (profile.humour === 'moyen') add(25, 'Humour moyen');
+      else if (profile.humour === 'faible') add(-20, 'Humour faible');
+    }
+
+    if (wantsSpectacle) {
+      if (profile.spectacle === 'eleve') add(55, 'Spectacle élevé');
+      else if (profile.spectacle === 'moyen') add(20, 'Spectacle moyen');
+      else if (profile.spectacle === 'faible') add(-20, 'Spectacle faible');
+    }
+
+    if (wantsEmotion) {
+      if (profile.emotion === 'eleve') add(45, 'Émotion élevée');
+      else if (profile.emotion === 'moyen') add(15, 'Émotion moyenne');
+      else if (profile.emotion === 'faible') add(-10, 'Émotion faible');
+    }
+
+    if (wantsBrain) {
+      if (profile.complexity === 'eleve') add(35, 'Complexité élevée');
+      else if (profile.complexity === 'moyen') add(15, 'Complexité moyenne');
+      else if (profile.complexity === 'faible') add(-10, 'Complexité faible');
+    }
+
+    if (wantsFast) {
+      if (profile.pace === 'rapide') add(30, 'Rythme rapide');
+      else if (profile.pace === 'moyen') add(15, 'Rythme moyen');
+      else if (profile.pace === 'lent') add(-20, 'Rythme lent');
+    }
+
+    if (wantsSlow) {
+      if (profile.pace === 'lent') add(30, 'Rythme lent');
+      else if (profile.pace === 'moyen') add(10, 'Rythme moyen');
+      else if (profile.pace === 'rapide') add(-10, 'Rythme rapide');
+    }
+
+    return { score, reject: false, reasons };
+  }
+
+
    
   function isPremiumItemV2(item) {
     if (!item) return false;
@@ -2501,6 +2677,7 @@ const SESSION_PROFILE_RULES = [
       runtime,
       rating,
       type,
+      bubulleProfile: fishReadBubulleProfile(item),
             premium: isPremiumItemV2(item),
       titleNorm: normalize(titleText),
       directorNorm: normalize(directorText),
@@ -3551,6 +3728,7 @@ debugReasons.push("+80 Premium");
 
     if (intent.wantsKids) {
       const hasFamilySignal =
+        record.bubulleProfile && record.bubulleProfile.family === true ||
         recordHasGenre(record, 'familial') ||
         recordHasGenre(record, 'comedie') ||
         record.genreNorm.includes('family') ||
@@ -3575,6 +3753,18 @@ debugReasons.push("+80 Premium");
 
       if (!isFamily) return -999;
       score += 35;
+    }
+
+    const bubulleProfileScore = fishScoreBubulleProfile(record, intent);
+
+    if (bubulleProfileScore.reject) {
+      debugReasons.push('-999 Profil Bubulle');
+      return -999;
+    }
+
+    if (bubulleProfileScore.score) {
+      score += bubulleProfileScore.score;
+      debugReasons.push(...bubulleProfileScore.reasons);
     }
 
     if (intent.matchedDirectors.length) {
