@@ -958,7 +958,7 @@ function fishCommentForResults(results, context = {}) {
     ]);
   }
 
-  if (firstGenres.includes('science fiction') || firstGenres.includes('science-fiction') || /sf|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
+  if (firstGenres.includes('science fiction') || firstGenres.includes('science-fiction') || /\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
     return '\n\n' + fishPickText([
       'Bon choix pour décoller sans quitter le canapé. Le carburant officiel reste le pop-corn.',
       'Le bocal a capté un signal venu du futur. Il grésille un peu, mais il répond.',

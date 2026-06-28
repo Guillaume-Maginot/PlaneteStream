@@ -249,7 +249,7 @@
     .catalogue-editor-grid.is-editing-content + textarea#jsonOutput{display:none}
     .catalogue-editor-grid.is-editing-content .edit-actions{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(12,11,25,.78),rgba(12,11,25,.98));border-top:1px solid rgba(255,255,255,.08);padding-top:14px;z-index:5}
     .catalogue-editor-grid.is-editing-content .edit-panel{box-shadow:0 22px 70px rgba(0,0,0,.35), 0 0 0 1px rgba(195,77,255,.12)}
-    .catalogue-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto auto 210px;gap:10px;margin-bottom:14px}
+    .catalogue-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto auto auto 210px;gap:10px;margin-bottom:14px}
     .catalogue-toolbar input,.catalogue-toolbar select{min-width:0;width:100%;border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;background:#10111f;padding:12px 13px;outline:none;font:inherit;box-shadow:inset 0 0 0 1px rgba(195,77,255,.04)}
     .catalogue-filter-btn{min-height:48px;padding:12px 16px;border-radius:12px;font-weight:900;white-space:nowrap}.catalogue-filter-btn.is-active{border-color:rgba(195,77,255,.75);background:linear-gradient(135deg,rgba(139,44,255,.38),rgba(195,77,255,.22));box-shadow:0 0 20px rgba(195,77,255,.18)}
     .catalogue-toolbar input:focus,.catalogue-toolbar select:focus{border-color:rgba(195,77,255,.58);box-shadow:0 0 22px rgba(139,44,255,.18)}
@@ -278,6 +278,19 @@
     .edit-grid textarea{min-height:92px;resize:vertical}.edit-grid textarea.embed-field{min-height:130px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px}
     .edit-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
     @media(max-width:900px){.catalogue-editor-grid{grid-template-columns:1fr}.catalogue-toolbar{grid-template-columns:1fr}.catalogue-item{grid-template-columns:70px 1fr}.catalogue-item img,.catalogue-thumb{width:70px;height:104px}.catalogue-buttons{grid-column:1/-1;justify-content:flex-start}.catalogue-item h3{font-size:17px}}
+
+
+    .catalogue-badge.bubulle-ready{border-color:rgba(98,255,178,.36);background:rgba(98,255,178,.10);color:#cffff0}
+    .catalogue-badge.bubulle-missing{border-color:rgba(195,77,255,.45);background:rgba(139,44,255,.12);color:#f4d8ff}
+    .catalogue-item.is-missing-bubulle{box-shadow:0 0 0 1px rgba(195,77,255,.10),0 14px 34px rgba(0,0,0,.24)}
+    .bubble-reasons-editor{border:1px solid rgba(195,77,255,.20);border-radius:16px;background:linear-gradient(135deg,rgba(139,44,255,.08),rgba(255,255,255,.035));padding:14px;margin-top:4px}
+    .bubble-reasons-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+    .bubble-reasons-head h3{margin:0;color:#fff;font-size:16px}.bubble-reasons-head p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+    .bubble-reasons-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .bubble-reasons-grid label{display:grid;gap:6px;color:var(--muted);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .bubble-reasons-grid textarea{min-height:86px;font-family:inherit;font-size:12px;line-height:1.45;text-transform:none;letter-spacing:0;color:#fff}
+    .bubble-reasons-note{margin-top:10px!important;color:#cdbdff!important;font-size:12px!important;line-height:1.45!important}
+    @media(max-width:820px){.bubble-reasons-grid{grid-template-columns:1fr}}
 
     .series-episode-manager{margin-top:16px;border:1px solid rgba(195,77,255,.20);border-radius:16px;background:linear-gradient(135deg,rgba(139,44,255,.08),rgba(255,255,255,.035));padding:14px;grid-column:1/-1}
     .series-episode-manager.is-hidden{display:none}
@@ -1536,6 +1549,11 @@
 
         <section class="admin-module" id="admin-module-catalogue" data-admin-module="catalogue" hidden>
           <div class="admin-module-kicker">📽 Module catalogue</div>
+          <div class="admin-empty" id="bubulleAdminPanel" style="margin:0 0 18px;border-color:rgba(195,77,255,.42);background:linear-gradient(135deg,rgba(139,44,255,.14),rgba(255,255,255,.035));">
+            <strong>🐠 Moulinette Bubulle active</strong><br>
+            <span id="catalogueBubbleStatus">Scan des justifications Bubulle…</span>
+            <br><small>Utilise le filtre “Sans Bubulle”, puis ouvre une fiche avec “Modifier” pour remplir les justifications.</small>
+          </div>
     <div class="admin-layout">
       <section class="admin-box">
         <h2>1. Rechercher un contenu</h2>
@@ -1655,6 +1673,7 @@
             </select>
             <button class="ghost catalogue-filter-btn is-active" id="showAllEmbedsBtn" type="button">Tous les contenus</button>
             <button class="ghost catalogue-filter-btn" id="showMissingEmbedsBtn" type="button">Sans embed</button>
+            <button class="ghost catalogue-filter-btn" id="showMissingBubbleBtn" type="button">🐠 Sans Bubulle</button>
             <select id="catalogueSort">
               <option value="missing-first">Embeds manquants d’abord</option>
               <option value="recent">Ajout récent</option>
@@ -1692,6 +1711,27 @@
             <label class="full">Bande-annonce YouTube ID<input id="editTrailer" type="text"></label>
             <label class="full">🎬 Code embed  vidéo<textarea id="editVideoEmbed" class="embed-field" spellcheck="false" placeholder="<iframe src=&quot;https://...&quot; allowfullscreen></iframe>"></textarea></label>
             <label class="full">Résumé<textarea id="editOverview"></textarea></label>
+
+            <div class="bubble-reasons-editor full">
+              <div class="bubble-reasons-head">
+                <div>
+                  <h3>🐠 Justifications Bubulle</h3>
+                  <p>Ces phrases enrichissent les recommandations quand l’utilisateur demande une ambiance. Laisse vide si ce n’est pas pertinent.</p>
+                </div>
+              </div>
+              <div class="bubble-reasons-grid">
+                <label>Voyager<textarea id="editReasonVoyager" placeholder="Ex : Son univers donne une vraie impression d’évasion..."></textarea></label>
+                <label>Frissonner<textarea id="editReasonFrissonner" placeholder="Ex : La tension monte progressivement..."></textarea></label>
+                <label>Rire<textarea id="editReasonRire" placeholder="Ex : Son ton léger fonctionne pour une séance souriante..."></textarea></label>
+                <label>Fatigue<textarea id="editReasonFatigue" placeholder="Ex : Son rythme accessible permet de décrocher sans effort..."></textarea></label>
+                <label>Réfléchir<textarea id="editReasonReflechir" placeholder="Ex : Le scénario laisse matière à réfléchir..."></textarea></label>
+                <label>Spectacle<textarea id="editReasonSpectacle" placeholder="Ex : Son ampleur visuelle en fait une vraie séance grand spectacle..."></textarea></label>
+                <label>Émotion<textarea id="editReasonEmotion" placeholder="Ex : Le récit met en avant un enjeu humain fort..."></textarea></label>
+                <label>Famille<textarea id="editReasonFamille" placeholder="Ex : Son univers reste adapté à une séance familiale..."></textarea></label>
+              </div>
+              <p class="bubble-reasons-note">Bubulle utilisera ces textes en priorité. Si aucune phrase ne correspond, il retombera sur ses justifications génériques.</p>
+            </div>
+
 
             <div class="series-episode-manager is-hidden" id="seriesEpisodeManager">
               <div class="series-episode-head">
@@ -1881,7 +1921,7 @@
   </main>
 
   <script src="assets/auth.js?v=3.0.5-real-data-rest"></script>
-  <script src="assets/admin.js?v=3.4.3-alpha-sort"></script>
+  <script src="assets/admin.js?v=3.4.4-bubulle-admin"></script>
   <script src="assets/admin-community.js?v=3.0.5-real-data-rest"></script>
   <script src="assets/admin-reports.js?v=3.1.5-real-data-rest"></script>
   <script>

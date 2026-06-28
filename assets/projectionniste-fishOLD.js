@@ -958,7 +958,7 @@ function fishCommentForResults(results, context = {}) {
     ]);
   }
 
-  if (firstGenres.includes('science fiction') || firstGenres.includes('science-fiction') || /sf|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
+  if (firstGenres.includes('science fiction') || firstGenres.includes('science-fiction') || /\bsf\b|science fiction|science-fiction|sci fi|sci-fi/.test(message)) {
     return '\n\n' + fishPickText([
       'Bon choix pour décoller sans quitter le canapé. Le carburant officiel reste le pop-corn.',
       'Le bocal a capté un signal venu du futur. Il grésille un peu, mais il répond.',
@@ -2122,7 +2122,80 @@ function fishReasonLabel(value) {
   return labels[normalized] || clean;
 }
 
+function fishBubbleReasonKeysFromIntent(intent = {}) {
+  const keys = [];
+
+  const moodMap = {
+    evasif: 'voyager',
+    flippant: 'frissonner',
+    'bonne humeur': 'rire',
+    intelligent: 'reflechir',
+    spectaculaire: 'spectacle',
+    emotion: 'emotion',
+    chill: 'fatigue',
+    adrénaline: 'action',
+    adrenaline: 'action'
+  };
+
+  const profileMap = [
+    [/voyage|evasion/, 'voyager'],
+    [/se faire peur|stress|nuit blanche/, 'frissonner'],
+    [/besoin de rire/, 'rire'],
+    [/fatigue|sans prise de tete|apres le boulot|repas plateau|il est tard|pause courte/, 'fatigue'],
+    [/reflechir|enquete/, 'reflechir'],
+    [/grand spectacle|action pure|super heros|catastrophe|science fiction|fantastique magie/, 'spectacle'],
+    [/emotion|romantique/, 'emotion'],
+    [/famille|enfant|parents/, 'famille']
+  ];
+
+  (intent.matchedMoods || []).forEach(mood => {
+    const label = normalize(mood.label || '');
+    const key = moodMap[label];
+
+    if (key && !keys.includes(key)) {
+      keys.push(key);
+    }
+  });
+
+  (intent.matchedSessionProfiles || []).forEach(profile => {
+    const label = normalize(profile.label || '');
+    const found = profileMap.find(([pattern]) => pattern.test(label));
+
+    if (found && !keys.includes(found[1])) {
+      keys.push(found[1]);
+    }
+  });
+
+  if (intent.wantsRandom && !keys.includes('surprise')) {
+    keys.push('surprise');
+  }
+
+  return keys;
+}
+
+function fishStoredBubbleReason(record, intent = {}) {
+  const reasons = (record && record.item && record.item.bubbleReasons) || record.bubbleReasons || {};
+  const keys = fishBubbleReasonKeysFromIntent(intent);
+
+  for (const key of keys) {
+    const value = reasons[key];
+
+    if (value && String(value).trim()) {
+      return String(value).trim();
+    }
+  }
+
+  return '';
+}
+
+
 function fishRecommendationReason(record, intent = {}) {
+  const storedReason = fishStoredBubbleReason(record, intent);
+
+  if (storedReason) {
+    return storedReason;
+  }
+
   const reasons = [];
 
   if (!record) return '';

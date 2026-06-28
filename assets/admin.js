@@ -2,6 +2,7 @@ let draft = [];
 let selectedItem = null;
 let editingIndex = -1;
 let catalogueMissingMode = false;
+let catalogueBubbleMissingMode = false;
 
 const output = document.querySelector('#jsonOutput');
 const results = document.querySelector('#results');
@@ -24,7 +25,9 @@ const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
 const catalogueSort = document.querySelector('#catalogueSort');
 const showAllEmbedsBtn = document.querySelector('#showAllEmbedsBtn');
 const showMissingEmbedsBtn = document.querySelector('#showMissingEmbedsBtn');
+const showMissingBubbleBtn = document.querySelector('#showMissingBubbleBtn');
 const catalogueEmbedStatus = document.querySelector('#catalogueEmbedStatus');
+const catalogueBubbleStatus = document.querySelector('#catalogueBubbleStatus');
 const catalogueList = document.querySelector('#catalogueList');
 const catalogueEditorGrid = document.querySelector('.catalogue-editor-grid');
 const catalogueCount = document.querySelector('#catalogueCount');
@@ -49,7 +52,15 @@ const editFields = {
   trailer: document.querySelector('#editTrailer'),
   videoEmbed: document.querySelector('#editVideoEmbed'),
   slug: document.querySelector('#editSlug'),
-  overview: document.querySelector('#editOverview')
+  overview: document.querySelector('#editOverview'),
+  reasonVoyager: document.querySelector('#editReasonVoyager'),
+  reasonFrissonner: document.querySelector('#editReasonFrissonner'),
+  reasonRire: document.querySelector('#editReasonRire'),
+  reasonFatigue: document.querySelector('#editReasonFatigue'),
+  reasonReflechir: document.querySelector('#editReasonReflechir'),
+  reasonSpectacle: document.querySelector('#editReasonSpectacle'),
+  reasonEmotion: document.querySelector('#editReasonEmotion'),
+  reasonFamille: document.querySelector('#editReasonFamille')
 };
 
 if (document.body?.classList.contains('admin-locked')) {
@@ -90,6 +101,7 @@ async function init() {
   clearBtn?.addEventListener('click', clearSelection);
   catalogueSearch?.addEventListener('input', () => {
     catalogueMissingMode = false;
+    catalogueBubbleMissingMode = false;
     updateCatalogueFilterButtons();
     renderCatalogueList();
   });
@@ -97,11 +109,20 @@ async function init() {
   catalogueSort?.addEventListener('change', renderCatalogueList);
   showAllEmbedsBtn?.addEventListener('click', () => {
     catalogueMissingMode = false;
+    catalogueBubbleMissingMode = false;
     updateCatalogueFilterButtons();
     renderCatalogueList();
   });
   showMissingEmbedsBtn?.addEventListener('click', () => {
     catalogueMissingMode = true;
+    catalogueBubbleMissingMode = false;
+    if (catalogueSearch) catalogueSearch.value = '';
+    updateCatalogueFilterButtons();
+    renderCatalogueList();
+  });
+  showMissingBubbleBtn?.addEventListener('click', () => {
+    catalogueMissingMode = false;
+    catalogueBubbleMissingMode = true;
     if (catalogueSearch) catalogueSearch.value = '';
     updateCatalogueFilterButtons();
     renderCatalogueList();
@@ -374,9 +395,72 @@ function updatePreview(item) {
 
 
 
+
+const BUBBLE_REASON_KEYS = [
+  'voyager',
+  'frissonner',
+  'rire',
+  'fatigue',
+  'reflechir',
+  'spectacle',
+  'emotion',
+  'famille'
+];
+
+function getBubbleReasons(entry = {}) {
+  const reasons = entry.bubbleReasons;
+  return reasons && typeof reasons === 'object' && !Array.isArray(reasons) ? reasons : {};
+}
+
+function hasBubbleReasons(entry = {}) {
+  const reasons = getBubbleReasons(entry);
+  return BUBBLE_REASON_KEYS.some(key => String(reasons[key] || '').trim());
+}
+
+function needsBubbleReasons(entry = {}) {
+  return !hasBubbleReasons(entry);
+}
+
+function getBubbleReasonBadge(entry = {}) {
+  return hasBubbleReasons(entry)
+    ? '<span class="catalogue-badge bubulle-ready">🐠 Bubulle OK</span>'
+    : '<span class="catalogue-badge bubulle-missing">🐠 À enrichir</span>';
+}
+
+function collectBubbleReasonsFromEditor() {
+  const reasons = {
+    voyager: editFields.reasonVoyager?.value.trim() || '',
+    frissonner: editFields.reasonFrissonner?.value.trim() || '',
+    rire: editFields.reasonRire?.value.trim() || '',
+    fatigue: editFields.reasonFatigue?.value.trim() || '',
+    reflechir: editFields.reasonReflechir?.value.trim() || '',
+    spectacle: editFields.reasonSpectacle?.value.trim() || '',
+    emotion: editFields.reasonEmotion?.value.trim() || '',
+    famille: editFields.reasonFamille?.value.trim() || ''
+  };
+
+  return Object.fromEntries(
+    Object.entries(reasons).filter(([, value]) => value)
+  );
+}
+
+function fillBubbleReasonFields(entry = {}) {
+  const reasons = getBubbleReasons(entry);
+
+  if (editFields.reasonVoyager) editFields.reasonVoyager.value = reasons.voyager || '';
+  if (editFields.reasonFrissonner) editFields.reasonFrissonner.value = reasons.frissonner || '';
+  if (editFields.reasonRire) editFields.reasonRire.value = reasons.rire || '';
+  if (editFields.reasonFatigue) editFields.reasonFatigue.value = reasons.fatigue || '';
+  if (editFields.reasonReflechir) editFields.reasonReflechir.value = reasons.reflechir || '';
+  if (editFields.reasonSpectacle) editFields.reasonSpectacle.value = reasons.spectacle || '';
+  if (editFields.reasonEmotion) editFields.reasonEmotion.value = reasons.emotion || '';
+  if (editFields.reasonFamille) editFields.reasonFamille.value = reasons.famille || '';
+}
+
 function updateCatalogueFilterButtons() {
-  showAllEmbedsBtn?.classList.toggle('is-active', !catalogueMissingMode);
+  showAllEmbedsBtn?.classList.toggle('is-active', !catalogueMissingMode && !catalogueBubbleMissingMode);
   showMissingEmbedsBtn?.classList.toggle('is-active', catalogueMissingMode);
+  showMissingBubbleBtn?.classList.toggle('is-active', catalogueBubbleMissingMode);
 }
 
 function renderCatalogueList() {
@@ -395,6 +479,10 @@ function renderCatalogueList() {
 
   if (catalogueMissingMode) {
     items = items.filter(({ entry }) => getMediaEmbedSummary(entry).missing);
+  }
+
+  if (catalogueBubbleMissingMode) {
+    items = items.filter(({ entry }) => needsBubbleReasons(entry));
   }
 
   if (query) {
@@ -416,19 +504,37 @@ function renderCatalogueList() {
 
   if (catalogueCount) {
     const visible = items.length;
-    catalogueCount.textContent = catalogueMissingMode || query || type !== 'all'
+    catalogueCount.textContent = catalogueMissingMode || catalogueBubbleMissingMode || query || type !== 'all'
       ? `${visible} / ${draft.length} contenu${draft.length > 1 ? 's' : ''}`
       : `${draft.length} contenu${draft.length > 1 ? 's' : ''}`;
   }
 
   if (catalogueEmbedStatus) {
-    catalogueEmbedStatus.textContent = missingTotal
-      ? `${missingTotal} contenu${missingTotal > 1 ? 's' : ''} à compléter côté embed`
-      : 'Tous les embeds sont renseignés';
+    const bubbleMissingTotal = draft.filter(entry => needsBubbleReasons(entry)).length;
+    const embedText = missingTotal
+      ? `${missingTotal} contenu${missingTotal > 1 ? 's' : ''} sans embed`
+      : 'embeds OK';
+    const bubbleText = bubbleMissingTotal
+      ? `${bubbleMissingTotal} fiche${bubbleMissingTotal > 1 ? 's' : ''} sans Bubulle`
+      : 'Bubulle OK';
+    catalogueEmbedStatus.textContent = `${embedText} · ${bubbleText}`;
+  }
+
+  if (catalogueBubbleStatus) {
+    const bubbleMissingTotal = draft.filter(entry => needsBubbleReasons(entry)).length;
+    const bubbleReadyTotal = draft.length - bubbleMissingTotal;
+    catalogueBubbleStatus.textContent = bubbleMissingTotal
+      ? `${bubbleMissingTotal} fiche${bubbleMissingTotal > 1 ? 's' : ''} à enrichir · ${bubbleReadyTotal} déjà prête${bubbleReadyTotal > 1 ? 's' : ''}`
+      : `Toutes les fiches ont au moins une justification Bubulle. Le bocal est propre.`;
   }
 
   if (showMissingEmbedsBtn) {
     showMissingEmbedsBtn.textContent = missingTotal ? `Sans embed (${missingTotal})` : 'Sans embed';
+  }
+
+  if (showMissingBubbleBtn) {
+    const bubbleMissingTotal = draft.filter(entry => needsBubbleReasons(entry)).length;
+    showMissingBubbleBtn.textContent = bubbleMissingTotal ? `🐠 Sans Bubulle (${bubbleMissingTotal})` : '🐠 Sans Bubulle';
   }
 
   updateCatalogueFilterButtons();
@@ -465,6 +571,7 @@ function catalogueRow(entry, index) {
   const typeLabel = getMediaLabel(entry);
   const featured = entry.featured ? '<span class="catalogue-badge">À la une</span>' : '';
   const premium = entry.premium ? '<span class="catalogue-badge premium">⭐ Premium</span>' : '';
+  const bubbleBadge = getBubbleReasonBadge(entry);
   const mediaSummary = getMediaEmbedSummary(entry);
   const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
   const readyBadge = mediaSummary.missing
@@ -476,6 +583,7 @@ function catalogueRow(entry, index) {
   const overview = String(entry.overview || '').trim();
 
   if (mediaSummary.missing) el.classList.add('is-missing-embed');
+  if (needsBubbleReasons(entry)) el.classList.add('is-missing-bubulle');
 
   el.innerHTML = `
     ${poster ? `<img src="${escapeAttr(poster)}" alt="Affiche ${escapeAttr(entry.title || '')}">` : '<div class="catalogue-thumb">Sans affiche</div>'}
@@ -488,6 +596,7 @@ function catalogueRow(entry, index) {
         ${readyBadge}
         ${featured}
         ${premium}
+        ${bubbleBadge}
       </div>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
       ${overview ? `<p class="catalogue-summary">${escapeHtml(overview)}</p>` : ''}
@@ -530,6 +639,7 @@ function openEditor(index) {
   if (editFields.videoEmbed) editFields.videoEmbed.value = entry.videoEmbed || entry.video_embed || '';
   editFields.slug.value = entry.slug || slugify(entry.title || 'contenu');
   editFields.overview.value = entry.overview || '';
+  fillBubbleReasonFields(entry);
 
   renderSeriesEpisodeEditor(entry);
 
@@ -551,6 +661,7 @@ function saveEditedItem() {
   const updatedSeasonsData = collectSeriesEpisodeData(current);
   const isSeries = isSeriesEntry(current);
   const firstEpisodeEmbed = getFirstEpisodeEmbed(updatedSeasonsData);
+  const bubbleReasons = collectBubbleReasonsFromEditor();
 
   draft[editingIndex] = {
     ...current,
@@ -570,7 +681,8 @@ function saveEditedItem() {
     seasonsData: isSeries ? updatedSeasonsData : current.seasonsData,
     seasons: isSeries ? updatedSeasonsData.length : Number(current.seasons || 0),
     episodes: isSeries ? countEpisodes(updatedSeasonsData) : Number(current.episodes || 0),
-    overview: editFields.overview.value.trim()
+    overview: editFields.overview.value.trim(),
+    bubbleReasons
   };
 
   sortDraft();
@@ -710,6 +822,7 @@ function mergeTmdbRefresh(current, tmdbItem) {
     featured: Boolean(current.featured),
     premium: Boolean(current.premium),
     homeFeatured: Boolean(current.homeFeatured),
+    bubbleReasons: current.bubbleReasons || {},
     videoEmbed: currentVideo
   };
 
