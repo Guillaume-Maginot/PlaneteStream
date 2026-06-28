@@ -1285,64 +1285,328 @@ if (hasActorIntent && !actorQuery) {
   const MOOD_RULES = [
   {
     label: 'intelligent',
-    pattern: /intelligent|profond|psychologique|cerebral|cérébral|reflechir|réfléchir|reflexion|réflexion/,
+    pattern: /intelligent|profond|psychologique|cerebral|reflechir|reflexion|scenario malin|scenario complexe|scenario tordu|film tordu|truc tordu|retourne le cerveau|prise de tete utile|cerveau qui travaille|twist|mindfuck|enquete complexe|histoire complexe/,
     genres: ['drame', 'science-fiction', 'mystère', 'thriller'],
-    terms: ['psychologique', 'enquete', 'enquête', 'dystopie', 'temps', 'ia']
+    terms: ['psychologique', 'enquete', 'dystopie', 'temps', 'ia', 'mystere', 'complot']
   },
   {
     label: 'flippant',
-    pattern: /flippant|angoissant|angoisse|peur|terrifiant|glauque|cauchemar/,
+    pattern: /flippant|angoissant|angoisse|peur|terrifiant|glauque|cauchemar|frisson|frissonner|fais moi peur|faire peur|sursauter|ambiance sombre|ambiance malsaine|tension|stress|stressant|horreur|creepy/,
     genres: ['horreur', 'thriller'],
-    terms: ['zombie', 'vampire', 'monstre', 'fantome', 'fantôme', 'gore']
+    terms: ['zombie', 'vampire', 'monstre', 'fantome', 'gore', 'meurtre']
   },
   {
     label: 'chill',
-    pattern: /chill|facile|reposant|sans prise de tete|sans prise de tête|calme|detente|détente|tranquille|leger|léger|pas prise de tete|pas prise de tête|marrant/,
-    genres: ['comédie', 'animation', 'familial', 'romance'],
+    pattern: /chill|facile|reposant|sans prise de tete|calme|detente|tranquille|leger|pas prise de tete|marrant|simple|debrancher|deconnecter|poser le cerveau|cerveau en chaussons|film doudou|film confortable|un truc doux/,
+    genres: ['comédie', 'animation', 'familial', 'romance', 'aventure'],
     maxRuntime: 115
   },
   {
     label: 'spectaculaire',
-    pattern: /spectaculaire|qui envoie du lourd|gros spectacle|plein les yeux|explosif|epoustouflant|époustouflant|impressionnant|epique|épique|grand spectacle|blockbuster|visuel/,
+    pattern: /spectaculaire|qui envoie du lourd|gros spectacle|plein les yeux|explosif|epoustouflant|impressionnant|epique|grand spectacle|blockbuster|visuel|ca explose|explosions|grosse claque|grandiose|du lourd|gros film|film qui claque/,
     genres: ['action', 'aventure', 'science-fiction'],
     terms: ['espace', 'guerre', 'vaisseau', 'monstre', 'catastrophe']
+  },
+  {
+    label: 'emotion',
+    pattern: /emouvant|touchant|triste|pleurer|faire pleurer|larme|larmes|belle histoire|histoire touchante|histoire humaine|emotion|emotions|bouleversant|poignant|coeur serre|remuer le coeur/,
+    genres: ['drame', 'romance'],
+    terms: ['famille', 'amour', 'deuil', 'vie']
+  },
+  {
+    label: 'bonne humeur',
+    pattern: /bonne humeur|remonte moi le moral|remonter le moral|besoin de rire|envie de rire|fais moi rire|rigoler|sourire|joyeux|positif|feel good|feelgood|anti depression|moral dans les chaussettes/,
+    genres: ['comédie', 'animation', 'familial', 'romance'],
+    maxRuntime: 125
+  },
+  {
+    label: 'adrénaline',
+    pattern: /adrenaline|tension|nerveux|rythme|ca bouge|qui bouge|action pure|course poursuite|bagarre|baston|combat|poursuite|sous pression|pas de temps mort|nerfs/,
+    genres: ['action', 'thriller', 'aventure'],
+    terms: ['mission', 'course', 'combat', 'agent']
+  },
+  {
+    label: 'evasif',
+    pattern: /voyager|evasion|evader|ailleurs|emmene moi ailleurs|partir loin|depaysement|grand univers|univers immense|monde immense|autre monde|aventure depaysante|besoin d air/,
+    genres: ['aventure', 'science-fiction', 'fantastique'],
+    terms: ['monde', 'espace', 'royaume', 'planete']
   }
 ];
 
 const SESSION_PROFILE_RULES = [
   {
     label: 'pour ce soir',
-    pattern: /ce soir|pour ce soir|quoi regarder|je regarde quoi|un film sympa|un bon film|ce soir je regarde quoi|un truc pour ce soir|quoi voir ce soir|un film a voir|un film à voir/,
+    pattern: /ce soir|pour ce soir|quoi regarder|je regarde quoi|ce soir je regarde quoi|un truc pour ce soir|quoi voir ce soir|un film a voir|un film sympa|un bon film|une serie pour ce soir|un manga pour ce soir/,
     genres: ['aventure', 'science-fiction', 'comedie'],
     maxRuntime: 150,
     preferRating: true
   },
   {
-    label: 'fatigué',
-    pattern: /fatigue|fatigué|creve|crevé|pas trop complique|pas envie de reflechir|pas envie de réfléchir|cerveau off|pas lourd|pas trop compliqué|cerveau eteint|cerveau éteint/,
-    genres: ['comedie', 'animation', 'aventure'],
+    label: 'fatigue',
+    pattern: /fatigue|fatiguee|creve|crevee|rince|rincee|lessive|lessivee|eclate|eclatee|epuise|epuisee|ko|hs|j en peux plus|plus de batterie|plus d energie|journee interminable|grosse journee|journee de dingue|journee pourrie|cerveau off|cerveau eteint|plus de cerveau|plus un neurone|je suis mort|je suis cuite|je suis cuit|yeux qui piquent/,
+    genres: ['comedie', 'animation', 'aventure', 'familial'],
     maxRuntime: 120,
     preferLight: true
   },
   {
-    label: 'avec les enfants',
-    pattern: /avec les enfants|en famille|familial|pour enfant|pour les enfants|avec mon fils|avec ma fille|kids/,
-    genres: ['animation', 'familial', 'aventure'],
+    label: 'sans prise de tete',
+    pattern: /pas trop complique|pas trop compliquee|pas envie de reflechir|sans reflechir|sans prise de tete|pas prise de tete|truc simple|film simple|un truc facile|je veux debrancher|je veux deconnecter|poser le cerveau|cerveau en pause|cerveau en chaussons|rien de lourd|pas lourd|leger/,
+    genres: ['comedie', 'animation', 'aventure', 'familial'],
+    maxRuntime: 125,
+    preferLight: true
+  },
+  {
+    label: 'besoin de rire',
+    pattern: /besoin de rire|envie de rire|fais moi rire|faire rire|rigoler|marrant|drole|humour|comedie|remonte moi le moral|moral bas|moral dans les chaussettes|bonne humeur|un truc fun|film fun|je veux sourire/,
+    genres: ['comedie', 'animation', 'familial'],
+    maxRuntime: 130,
+    preferLight: true
+  },
+  {
+    label: 'se faire peur',
+    pattern: /fais moi peur|je veux avoir peur|envie d avoir peur|faire peur|frissonner|frissons|sursauter|film qui fait peur|ambiance sombre|truc glauque|glauque|angoissant|angoisse|cauchemar|halloween|soiree horreur/,
+    genres: ['horreur', 'thriller'],
+    maxRuntime: 130
+  },
+  {
+    label: 'stress et tension',
+    pattern: /je veux stresser|mets moi sous tension|sous tension|tendu|tension|suspense|thriller nerveux|haletant|pas respirer|tenir en haleine|stress|stressant|angoisse mais pas horreur/,
+    genres: ['thriller', 'crime', 'action'],
+    maxRuntime: 140
+  },
+  {
+    label: 'grand spectacle',
+    pattern: /grand spectacle|gros spectacle|plein les yeux|blockbuster|epique|epique|film epique|grosse claque|qui envoie du lourd|du lourd|spectaculaire|explosif|ca explose|explosions|grandiose|film qui claque/,
+    genres: ['action', 'aventure', 'science-fiction'],
+    preferSpectacle: true
+  },
+  {
+    label: 'action pure',
+    pattern: /action pure|ca bouge|qui bouge|baston|combat|bagarre|course poursuite|poursuite|armes|explosions|film nerveux|rythme rapide|pas de temps mort|adrénaline|adrenaline/,
+    genres: ['action', 'thriller', 'aventure'],
+    preferSpectacle: true
+  },
+  {
+    label: 'envie de reflechir',
+    pattern: /envie de reflechir|faire reflechir|qui fait reflechir|film intelligent|truc intelligent|scenario complexe|scenario tordu|film tordu|retourne le cerveau|twist|mindfuck|histoire originale|concept fort|cerveau qui travaille/,
+    genres: ['science-fiction', 'thriller', 'mystère', 'drame'],
+    maxRuntime: 160,
+    preferRating: true
+  },
+  {
+    label: 'enquete',
+    pattern: /enquete|enquête|detective|policier|polar|crime|criminel|meurtre|mystere|mystere a resoudre|qui a fait le coup|investigation|flic|police/,
+    genres: ['crime', 'thriller', 'mystère', 'drame'],
+    maxRuntime: 150
+  },
+  {
+    label: 'emotion',
+    pattern: /envie d emotion|emouvant|touchant|je veux pleurer|faire pleurer|belle histoire|histoire touchante|histoire humaine|triste|poignant|romantique triste|film sensible|coeur serre/,
+    genres: ['drame', 'romance'],
+    maxRuntime: 150,
+    preferRating: true
+  },
+  {
+    label: 'romantique',
+    pattern: /romantique|histoire d amour|film d amour|romance|en amoureux|avec ma copine|avec mon copain|avec ma femme|avec mon mari|date night|soirée couple|soiree couple|a deux|à deux/,
+    genres: ['romance', 'comedie', 'drame'],
+    maxRuntime: 140
+  },
+  {
+    label: 'famille',
+    pattern: /en famille|familial|famille|avec les enfants|pour enfant|pour les enfants|avec mon fils|avec ma fille|avec les petits|tout public|pas trop violent|pas violent|film familial|kids|goûter|gouter/,
+    genres: ['animation', 'familial', 'aventure', 'comedie'],
     maxRuntime: 130
   },
   {
     label: 'entre amis',
-    pattern: /entre amis|entre potes|avec des amis|avec les potes|soirée film|soiree film|a plusieurs|à plusieurs|film de groupe|soirée entre amis|soiree entre amis/,
+    pattern: /entre amis|entre potes|avec des amis|avec les potes|soiree film|soirée film|a plusieurs|à plusieurs|film de groupe|soiree entre amis|soirée entre amis|on est plusieurs|on est quatre|on est 4|pizza|soiree pizza|soirée pizza/,
     genres: ['action', 'aventure', 'comedie', 'science-fiction'],
     preferSpectacle: true
   },
   {
-    label: 'en amoureux',
-    pattern: /en amoureux|avec ma copine|avec mon copain|avec ma femme|avec mon mari|date night|romantique/,
-    genres: ['romance', 'comedie', 'drame'],
+    label: 'parents presents',
+    pattern: /avec mes parents|mes parents sont la|parents sont la|avec la famille|repas de famille|film avec parents|pas trop gore|pas de gore|pas trop trash|rien de trop violent|soft mais bien/,
+    genres: ['drame', 'aventure', 'comedie', 'familial'],
+    maxRuntime: 140,
+    preferRating: true
+  },
+  {
+    label: 'enfants couches',
+    pattern: /enfants couches|enfants sont couches|les petits dorment|maintenant que les enfants dorment|adultes seulement|enfin tranquille|soirée adulte|soiree adulte/,
+    genres: ['thriller', 'science-fiction', 'drame', 'action'],
+    maxRuntime: 150
+  },
+  {
+    label: 'il est tard',
+    pattern: /il est tard|tard|trop tard|pas trop long|petit film|film court|une heure devant moi|1h devant moi|pas le temps|vite fait|avant de dormir|avant dodo|je dors bientot/,
+    genres: ['comedie', 'animation', 'thriller', 'aventure'],
+    maxRuntime: 105,
+    preferLight: true
+  },
+  {
+    label: 'dimanche tranquille',
+    pattern: /dimanche|dimanche soir|dimanche apres midi|apres midi tranquille|aprem tranquille|cocooning|plaid|canape|canapé|the et plaid|cafe et plaid|film du dimanche/,
+    genres: ['comedie', 'aventure', 'familial', 'romance'],
+    maxRuntime: 130,
+    preferLight: true
+  },
+  {
+    label: 'jour de pluie',
+    pattern: /pluie|il pleut|jour de pluie|temps pourri|temps gris|meteo pourrie|meteo nulle|plaid obligatoire|ambiance pluie|reste a la maison/,
+    genres: ['drame', 'thriller', 'fantastique', 'aventure'],
+    maxRuntime: 150
+  },
+  {
+    label: 'canicule',
+    pattern: /canicule|trop chaud|il fait chaud|chaleur|je fonds|ventilo|ventilateur|film frais|besoin de frais|soirée d ete|soiree d ete/,
+    genres: ['comedie', 'aventure', 'animation'],
+    maxRuntime: 120,
+    preferLight: true
+  },
+  {
+    label: 'nostalgie',
+    pattern: /nostalgie|nostalgique|vieux film|ancien film|classique|film culte|culte|retour en enfance|annees 80|années 80|annees 90|années 90|souvenir|madeleine/,
+    genres: ['aventure', 'science-fiction', 'comedie', 'action'],
+    preferRating: true
+  },
+  {
+    label: 'science fiction',
+    pattern: /envie de sf|envie de science fiction|futur|futuriste|espace|vaisseau|planete|planète|alien|extraterrestre|robot|ia|intelligence artificielle|cyberpunk|dystopie/,
+    genres: ['science-fiction', 'aventure', 'action'],
+    preferSpectacle: true
+  },
+  {
+    label: 'fantastique magie',
+    pattern: /magie|magique|fantastique|fantasy|sorcier|sorciere|royaume|dragon|creature|monde magique|quete|quête|sortilege|sortilège/,
+    genres: ['fantastique', 'aventure', 'familial'],
+    maxRuntime: 150
+  },
+  {
+    label: 'voyage evasion',
+    pattern: /voyager|evasion|evader|ailleurs|emmene moi ailleurs|partir loin|depaysement|grand univers|autre monde|aventure depaysante|besoin d air|changer d air|horizon/,
+    genres: ['aventure', 'science-fiction', 'fantastique'],
+    maxRuntime: 160,
+    preferSpectacle: true
+  },
+  {
+    label: 'apres le boulot',
+    pattern: /apres le boulot|apres le travail|sortie du boulot|journee de boulot|journee travail|boulot termine|je rentre du travail|je rentre du taf|apres le taf|grosse journee de taf/,
+    genres: ['comedie', 'aventure', 'action'],
+    maxRuntime: 125,
+    preferLight: true
+  },
+  {
+    label: 'pause courte',
+    pattern: /pause courte|petite pause|j ai pas longtemps|pas longtemps|pas beaucoup de temps|une petite heure|moins de deux heures|moins de 2h|format court|court mais bien/,
+    genres: ['comedie', 'thriller', 'animation', 'action'],
+    maxRuntime: 110,
+    preferRating: true
+  },
+  {
+    label: 'nuit blanche',
+    pattern: /nuit blanche|je ne dors pas|impossible de dormir|insomnie|je suis reveille|je suis réveillé|milieu de la nuit|3h du matin|trois heures du matin/,
+    genres: ['thriller', 'horreur', 'science-fiction', 'mystère'],
     maxRuntime: 140
+  },
+  {
+    label: 'repas plateau',
+    pattern: /plateau repas|je mange devant|devant le repas|pizza devant|burger devant|sushi devant|film avec repas|diner devant|dîner devant|manger devant/,
+    genres: ['comedie', 'aventure', 'action'],
+    maxRuntime: 130,
+    preferLight: true
+  },
+  {
+    label: 'premiere serie',
+    pattern: /commencer une serie|nouvelle serie|premier episode|premiere episode|une serie a commencer|je veux une serie|lancer une serie|debuter une serie/,
+    genres: ['drame', 'science-fiction', 'crime', 'action'],
+    maxRuntime: 70,
+    preferRating: true
+  },
+  {
+    label: 'manga anime',
+    pattern: /un anime|un animé|un manga|manga sympa|anime sympa|animé sympa|japonais|japanimation|shonen|isekai|animation japonaise/,
+    genres: ['animation', 'action', 'aventure', 'fantastique'],
+    maxRuntime: 60
+  },
+  {
+    label: 'super heros',
+    pattern: /super heros|super héros|marvel|dc|batman|superman|spider man|spiderman|avengers|venom|joker|deadpool|x men|x-men|cape|costume/,
+    genres: ['action', 'aventure', 'science-fiction', 'fantastique'],
+    preferSpectacle: true
+  },
+  {
+    label: 'catastrophe',
+    pattern: /catastrophe|fin du monde|apocalypse|survie|survivre|monde qui s ecroule|monde qui s effondre|tempete|tremblement|meteorite|asteroide|danger global/,
+    genres: ['action', 'thriller', 'science-fiction', 'aventure'],
+    preferSpectacle: true
+  },
+  {
+    label: 'zombies',
+    pattern: /zombie|zombies|mort vivant|morts vivants|infecte|infectes|walking dead|resident evil|survie zombie|apocalypse zombie/,
+    genres: ['horreur', 'action', 'thriller'],
+    maxRuntime: 130
+  },
+  {
+    label: 'vampires',
+    pattern: /vampire|vampires|dracula|sang|gothique|creature de la nuit|nuit gothique/,
+    genres: ['horreur', 'fantastique', 'thriller'],
+    maxRuntime: 140
+  },
+  {
+    label: 'guerre',
+    pattern: /guerre|militaire|soldat|soldats|armee|armée|combat militaire|mission militaire|front|bataille|commando/,
+    genres: ['action', 'drame', 'thriller', 'guerre'],
+    maxRuntime: 160
+  },
+  {
+    label: 'espionnage',
+    pattern: /espion|espionnage|agent secret|mission secrete|mission secrète|infiltration|cia|mi6|agent double|complot|mission impossible/,
+    genres: ['action', 'thriller', 'aventure'],
+    maxRuntime: 150
+  },
+  {
+    label: 'cyber sombre',
+    pattern: /cyberpunk|neon|néon|futur noir|ville futuriste|dystopie|techno sombre|ia dangereuse|monde controle|monde contrôlé|piratage|hacker/,
+    genres: ['science-fiction', 'thriller', 'action'],
+    maxRuntime: 150
+  },
+  {
+    label: 'animation douce',
+    pattern: /dessin anime|dessin animé|animation douce|animation familiale|film mignon|truc mignon|pour se poser|animation calme|mignon mais pas bebe/,
+    genres: ['animation', 'familial', 'aventure', 'comedie'],
+    maxRuntime: 115,
+    preferLight: true
+  },
+  {
+    label: 'choix au hasard',
+    pattern: /surprends moi|surprend moi|surprise|au hasard|choisis pour moi|je te laisse choisir|n importe quoi|je sais pas quoi regarder|je ne sais pas quoi regarder|peu importe/,
+    genres: ['aventure', 'science-fiction', 'comedie', 'thriller', 'action'],
+    maxRuntime: 150,
+    preferRating: true
+  },
+  {
+    label: 'selection premium',
+    pattern: /premium|fauteuil rouge|selection premium|sélection premium|un truc premium|film premium|meilleur fauteuil/,
+    genres: ['action', 'aventure', 'science-fiction', 'drame'],
+    maxRuntime: 170,
+    preferRating: true
+  },
+  {
+    label: 'bonne note',
+    pattern: /bien note|bien noté|bonne note|meilleur|meilleure|top|valeur sure|valeur sûre|incontournable|un bon truc|quelque chose de solide/,
+    genres: ['drame', 'science-fiction', 'aventure', 'thriller'],
+    maxRuntime: 160,
+    preferRating: true
+  },
+  {
+    label: 'decouverte',
+    pattern: /decouverte|découverte|surprenant|original|pas connu|moins connu|truc original|change moi|je veux changer|hors des sentiers|curiosite|curiosité/,
+    genres: ['science-fiction', 'thriller', 'fantastique', 'drame'],
+    maxRuntime: 150
   }
 ];
+
 
   function randomBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
