@@ -119,12 +119,15 @@ exports.handler = async (event) => {
         'Ne remplis jamais une case pour expliquer que le contenu n’est pas adapté à cette envie.',
         'Chaque justification doit expliquer pourquoi le contenu convient à l’envie ciblée.',
         'Réponds positif ou vide : jamais de justification négative, prudente ou dissuasive.',
+        'Pour la clé fatigue, sois très strict : remplis seulement si le contenu semble léger, doux, familial, comique, animé ou vraiment facile pour une séance cerveau au repos.',
+        'Pour fatigue, laisse vide si le contenu est horreur, thriller sombre, drame lourd, violent, anxiogène, exigeant ou trop intense.',
+        'Ne transforme jamais fatigue en simple “intrigue claire” si l’ambiance générale reste sombre ou tendue.',
         'Ne mentionne jamais OpenAI, TMDb, le JSON ou le prompt.'
       ].join('\n')
     },
     {
       role: 'user',
-      content: `Génère les justifications Bubulle pour cette fiche.\n\nFiche:\n${JSON.stringify(item, null, 2)}\n\nClés attendues:\n- voyager: évasion, univers, ailleurs, voyage\n- frissonner: peur, tension, mystère sombre\n- rire: humour, ton léger, comédie\n- fatigue: séance facile, accessible, pas trop lourde\n- reflechir: idée, dilemme, enquête, concept, matière à penser\n- spectacle: ampleur visuelle, action, grand spectacle\n- emotion: enjeu humain, famille, deuil, relation, trajectoire touchante\n- famille: adapté à une séance familiale ou enfants\n\nRetourne uniquement un objet JSON avec ces 8 clés.`
+      content: `Génère les justifications Bubulle pour cette fiche.\n\nFiche:\n${JSON.stringify(item, null, 2)}\n\nClés attendues:\n- voyager: évasion, univers, ailleurs, voyage\n- frissonner: peur, tension, mystère sombre\n- rire: humour, ton léger, comédie\n- fatigue: seulement si séance légère, douce, familiale, comique, animée ou vraiment reposante; sinon vide\n- reflechir: idée, dilemme, enquête, concept, matière à penser\n- spectacle: ampleur visuelle, action, grand spectacle\n- emotion: enjeu humain, famille, deuil, relation, trajectoire touchante\n- famille: adapté à une séance familiale ou enfants\n\nRetourne uniquement un objet JSON avec ces 8 clés.`
     }
   ];
 
