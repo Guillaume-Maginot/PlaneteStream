@@ -74,7 +74,8 @@ const editFields = {
   bubbleSpectacle: document.querySelector('#editBubbleSpectacle'),
   bubbleViolence: document.querySelector('#editBubbleViolence'),
   bubbleHumour: document.querySelector('#editBubbleHumour'),
-  bubbleEmotion: document.querySelector('#editBubbleEmotion')
+  bubbleEmotion: document.querySelector('#editBubbleEmotion'),
+  bubbleFamily: document.querySelector('#editBubbleFamily')
 };
 
 if (document.body?.classList.contains('admin-locked')) {
@@ -658,6 +659,7 @@ async function generateBubblePaceForCurrentEntry() {
   const existingViolence = editFields.bubbleViolence?.value.trim() || '';
   const existingHumour = editFields.bubbleHumour?.value.trim() || '';
   const existingEmotion = editFields.bubbleEmotion?.value.trim() || '';
+  const existingFamily = editFields.bubbleFamily?.value.trim() || '';
 
   const visibleProfileFields = [
     existingPace,
@@ -665,7 +667,8 @@ async function generateBubblePaceForCurrentEntry() {
     existingSpectacle,
     existingViolence,
     existingHumour,
-    existingEmotion
+    existingEmotion,
+    existingFamily
   ];
 
   if (visibleProfileFields.every(Boolean)) {
@@ -739,6 +742,15 @@ async function generateBubblePaceForCurrentEntry() {
         filledFields.push('émotion');
       } else if (existingEmotion) {
         keptFields.push('émotion');
+      }
+    }
+
+    if (editFields.bubbleFamily) {
+      if (!existingFamily && typeof profile.family === 'boolean') {
+        editFields.bubbleFamily.value = profile.family ? 'true' : 'false';
+        filledFields.push('familial');
+      } else if (existingFamily) {
+        keptFields.push('familial');
       }
     }
 
@@ -1165,6 +1177,7 @@ function openEditor(index) {
   if (editFields.bubbleViolence) editFields.bubbleViolence.value = getBubulleProfile(entry).violence || '';
   if (editFields.bubbleHumour) editFields.bubbleHumour.value = getBubulleProfile(entry).humour || '';
   if (editFields.bubbleEmotion) editFields.bubbleEmotion.value = getBubulleProfile(entry).emotion || '';
+  if (editFields.bubbleFamily) editFields.bubbleFamily.value = typeof getBubulleProfile(entry).family === 'boolean' ? String(getBubulleProfile(entry).family) : '';
 
   renderSeriesEpisodeEditor(entry);
 
@@ -1218,7 +1231,8 @@ function saveEditedItem() {
         spectacle: editFields.bubbleSpectacle?.value.trim() || '',
         violence: editFields.bubbleViolence?.value.trim() || '',
         humour: editFields.bubbleHumour?.value.trim() || '',
-        emotion: editFields.bubbleEmotion?.value.trim() || ''
+        emotion: editFields.bubbleEmotion?.value.trim() || '',
+        family: editFields.bubbleFamily?.value === 'true'
       }
     }
   };

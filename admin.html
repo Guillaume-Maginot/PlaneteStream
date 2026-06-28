@@ -1758,7 +1758,7 @@
               <div class="bubble-reasons-head">
                 <div>
                   <h3>🧠 Profil Bubulle</h3>
-                  <p>Profil structuré utilisé par Bubulle pour mieux adapter ses recommandations. On dévoile les champs doucement : rythme, complexité, spectacle, violence, humour puis émotion.</p>
+                  <p>Profil structuré utilisé par Bubulle pour mieux adapter ses recommandations. On dévoile les champs doucement : rythme, complexité, spectacle, violence, humour, émotion puis familial.</p>
                 </div>
                 <button class="primary" type="button" id="generateBubblePaceBtn">✨ Générer le profil</button>
               </div>
@@ -1811,8 +1811,15 @@
                     <option value="eleve">❤️ Élevée</option>
                   </select>
                 </label>
+                <label>Familial
+                  <select id="editBubbleFamily">
+                    <option value="">Non renseigné</option>
+                    <option value="true">👨‍👩‍👧 Adapté famille</option>
+                    <option value="false">🚫 Pas familial</option>
+                  </select>
+                </label>
               </div>
-              <p class="bubble-reasons-note">Le bouton interroge la fonction unique generate-bubble-profile. Pour l’instant, rythme, complexité, spectacle, violence, humour et émotion sont visibles.</p>
+              <p class="bubble-reasons-note">Le bouton interroge la fonction unique generate-bubble-profile. Pour l’instant, rythme, complexité, spectacle, violence, humour, émotion et familial sont visibles.</p>
             </div>
 
 

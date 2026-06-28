@@ -746,7 +746,8 @@
         "complexity": "eleve",
         "spectacle": "eleve",
         "violence": "moyen",
-        "humour": "faible"
+        "humour": "faible",
+        "emotion": "moyen"
       }
     }
   },
@@ -1513,7 +1514,8 @@
         "complexity": "faible",
         "spectacle": "eleve",
         "violence": "faible",
-        "humour": "eleve"
+        "humour": "eleve",
+        "emotion": "moyen"
       }
     }
   },
@@ -5258,7 +5260,8 @@
         "complexity": "moyen",
         "spectacle": "moyen",
         "violence": "eleve",
-        "humour": "faible"
+        "humour": "faible",
+        "emotion": "moyen"
       }
     }
   },
