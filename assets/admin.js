@@ -73,7 +73,8 @@ const editFields = {
   bubbleComplexity: document.querySelector('#editBubbleComplexity'),
   bubbleSpectacle: document.querySelector('#editBubbleSpectacle'),
   bubbleViolence: document.querySelector('#editBubbleViolence'),
-  bubbleHumour: document.querySelector('#editBubbleHumour')
+  bubbleHumour: document.querySelector('#editBubbleHumour'),
+  bubbleEmotion: document.querySelector('#editBubbleEmotion')
 };
 
 if (document.body?.classList.contains('admin-locked')) {
@@ -656,13 +657,15 @@ async function generateBubblePaceForCurrentEntry() {
   const existingSpectacle = editFields.bubbleSpectacle?.value.trim() || '';
   const existingViolence = editFields.bubbleViolence?.value.trim() || '';
   const existingHumour = editFields.bubbleHumour?.value.trim() || '';
+  const existingEmotion = editFields.bubbleEmotion?.value.trim() || '';
 
   const visibleProfileFields = [
     existingPace,
     existingComplexity,
     existingSpectacle,
     existingViolence,
-    existingHumour
+    existingHumour,
+    existingEmotion
   ];
 
   if (visibleProfileFields.every(Boolean)) {
@@ -727,6 +730,15 @@ async function generateBubblePaceForCurrentEntry() {
         filledFields.push('humour');
       } else if (existingHumour) {
         keptFields.push('humour');
+      }
+    }
+
+    if (editFields.bubbleEmotion) {
+      if (!existingEmotion && profile.emotion) {
+        editFields.bubbleEmotion.value = profile.emotion;
+        filledFields.push('émotion');
+      } else if (existingEmotion) {
+        keptFields.push('émotion');
       }
     }
 
@@ -1152,6 +1164,7 @@ function openEditor(index) {
   if (editFields.bubbleSpectacle) editFields.bubbleSpectacle.value = getBubulleProfile(entry).spectacle || '';
   if (editFields.bubbleViolence) editFields.bubbleViolence.value = getBubulleProfile(entry).violence || '';
   if (editFields.bubbleHumour) editFields.bubbleHumour.value = getBubulleProfile(entry).humour || '';
+  if (editFields.bubbleEmotion) editFields.bubbleEmotion.value = getBubulleProfile(entry).emotion || '';
 
   renderSeriesEpisodeEditor(entry);
 
@@ -1204,7 +1217,8 @@ function saveEditedItem() {
         complexity: editFields.bubbleComplexity?.value.trim() || '',
         spectacle: editFields.bubbleSpectacle?.value.trim() || '',
         violence: editFields.bubbleViolence?.value.trim() || '',
-        humour: editFields.bubbleHumour?.value.trim() || ''
+        humour: editFields.bubbleHumour?.value.trim() || '',
+        emotion: editFields.bubbleEmotion?.value.trim() || ''
       }
     }
   };
