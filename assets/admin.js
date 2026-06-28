@@ -72,7 +72,8 @@ const editFields = {
   bubblePace: document.querySelector('#editBubblePace'),
   bubbleComplexity: document.querySelector('#editBubbleComplexity'),
   bubbleSpectacle: document.querySelector('#editBubbleSpectacle'),
-  bubbleViolence: document.querySelector('#editBubbleViolence')
+  bubbleViolence: document.querySelector('#editBubbleViolence'),
+  bubbleHumour: document.querySelector('#editBubbleHumour')
 };
 
 if (document.body?.classList.contains('admin-locked')) {
@@ -654,8 +655,9 @@ async function generateBubblePaceForCurrentEntry() {
   const existingComplexity = editFields.bubbleComplexity?.value.trim() || '';
   const existingSpectacle = editFields.bubbleSpectacle?.value.trim() || '';
   const existingViolence = editFields.bubbleViolence?.value.trim() || '';
+  const existingHumour = editFields.bubbleHumour?.value.trim() || '';
 
-  if (existingPace || existingComplexity || existingSpectacle || existingViolence) {
+  if (existingPace || existingComplexity || existingSpectacle || existingViolence || existingHumour) {
     const replace = confirm('Cette fiche contient déjà un profil Bubulle. Tu veux le remplacer par une génération OpenAI ?');
     if (!replace) return;
   }
@@ -688,9 +690,13 @@ async function generateBubblePaceForCurrentEntry() {
       editFields.bubbleViolence.value = profile.violence || '';
     }
 
+    if (editFields.bubbleHumour) {
+      editFields.bubbleHumour.value = profile.humour || '';
+    }
+
     showMessage(
-      profile.pace || profile.complexity || profile.spectacle || profile.violence
-        ? `Profil généré : rythme ${profile.pace || '—'}, complexité ${profile.complexity || '—'}, spectacle ${profile.spectacle || '—'}, violence ${profile.violence || '—'}. Relis, ajuste si besoin, puis clique sur Enregistrer.`
+      profile.pace || profile.complexity || profile.spectacle || profile.violence || profile.humour
+        ? `Profil généré : rythme ${profile.pace || '—'}, complexité ${profile.complexity || '—'}, spectacle ${profile.spectacle || '—'}, violence ${profile.violence || '—'}, humour ${profile.humour || '—'}. Relis, ajuste si besoin, puis clique sur Enregistrer.`
         : 'OpenAI n’a pas retourné de profil exploitable. Les champs restent vides.'
     );
   } catch (err) {
@@ -1108,6 +1114,7 @@ function openEditor(index) {
   if (editFields.bubbleComplexity) editFields.bubbleComplexity.value = getBubulleProfile(entry).complexity || '';
   if (editFields.bubbleSpectacle) editFields.bubbleSpectacle.value = getBubulleProfile(entry).spectacle || '';
   if (editFields.bubbleViolence) editFields.bubbleViolence.value = getBubulleProfile(entry).violence || '';
+  if (editFields.bubbleHumour) editFields.bubbleHumour.value = getBubulleProfile(entry).humour || '';
 
   renderSeriesEpisodeEditor(entry);
 
@@ -1159,7 +1166,8 @@ function saveEditedItem() {
         pace: editFields.bubblePace?.value.trim() || '',
         complexity: editFields.bubbleComplexity?.value.trim() || '',
         spectacle: editFields.bubbleSpectacle?.value.trim() || '',
-        violence: editFields.bubbleViolence?.value.trim() || ''
+        violence: editFields.bubbleViolence?.value.trim() || '',
+        humour: editFields.bubbleHumour?.value.trim() || ''
       }
     }
   };

@@ -742,10 +742,9 @@
     "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance de science-fiction qui prend son temps, avec de l'aventure et un héros qui doit affronter une planète franchement pas commode.",
     "bubulle": {
       "profile": {
-        "pace": "lent",
-        "complexity": "eleve",
-        "spectacle": "eleve",
-        "violence": "moyen"
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve"
       }
     }
   },
@@ -1504,16 +1503,7 @@
       "famille": "Le film est familial, en animation, avec une aventure accessible pour petits et grands."
     },
     "premium": false,
-    "homeFeatured": false,
-    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance en famille, avec Mario et sa bande qui embarquent dans une aventure galactique pleine de fantaisie et de personnages connus.",
-    "bubulle": {
-      "profile": {
-        "pace": "rapide",
-        "complexity": "faible",
-        "spectacle": "eleve",
-        "violence": "faible"
-      }
-    }
+    "homeFeatured": false
   },
   {
     "title": "The Punisher : One Last Kill",
@@ -5248,15 +5238,6 @@
       "frissonner": "Une enquête macabre mène à une maison maudite, idéale pour un frisson de mystère sombre.",
       "reflechir": "L'enquêtrice remonte une affaire macabre, avec une piste à démêler et une maison maudite à explorer.",
       "emotion": "L'histoire s'ancre dans une enquête marquée par une maison maudite et une forte charge tragique."
-    },
-    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance sombre et tendue, si tu aimes les enquêtes qui basculent vers l'horreur et les maisons maudites qui collent à la peau.",
-    "bubulle": {
-      "profile": {
-        "pace": "moyen",
-        "complexity": "moyen",
-        "spectacle": "moyen",
-        "violence": "eleve"
-      }
     }
   },
   {
