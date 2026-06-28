@@ -78,8 +78,15 @@ const FISH_GENRE_SYNONYMS = {
     'humour',
     'humor',
     'comedy',
+    'rire',
+    'rigoler',
+    'marrant',
+    'marrante',
+    'fun',
     'film drole',
-    'film drôle'
+    'film drôle',
+    'truc drole',
+    'truc drôle'
   ],
 
   drame: [
@@ -768,6 +775,77 @@ function fishResolveOpenAdviceFollowUp(rawMessage) {
   return '';
 }
 
+
+/*
+  Mini traducteur d'envies :
+  "je veux rire" n'est pas un genre brut, c'est une intention.
+  On la convertit en demande que le moteur sait déjà traiter proprement.
+*/
+function fishResolveDesirePhrase(rawMessage) {
+  const m = normalize(rawMessage);
+
+  if (!m) return '';
+
+  let desire = '';
+
+  const desireMatch = m.match(/^(?:je veux|j ai envie de|j aimerais|je voudrais|envie de|besoin de|je cherche|trouve moi|donne moi|propose moi)\s+(.+)$/);
+
+  if (desireMatch && desireMatch[1]) {
+    desire = desireMatch[1].trim();
+  } else {
+    desire = m;
+  }
+
+  desire = desire
+    .replace(/^(?:un|une|des|du|de la|de l|le|la|les)\s+/, '')
+    .replace(/^(?:film|films|serie|series|série|séries|manga|anime|animé|truc|quelque chose)\s+/, '')
+    .trim();
+
+  if (!desire) return '';
+
+  if (/\b(rire|rigoler|drole|drôle|humour|comedie|comédie|marrant|marrante|fun|sourire)\b/.test(desire)) {
+    return 'un film drôle';
+  }
+
+  if (/\b(avoir peur|peur|frissonner|frissons|flipper|sursauter|horreur|angoisse|angoissant|cauchemar|terrifiant|glauque)\b/.test(desire)) {
+    return 'un film qui fait peur';
+  }
+
+  if (/\b(pleurer|emotion|émotion|emouvant|émouvant|touchant|triste|poignant|bouleversant)\b/.test(desire)) {
+    return 'un film émouvant';
+  }
+
+  if (/\b(reflechir|réfléchir|intelligent|cerebral|cérébral|cerveau|prise de tete|prise de tête|scenario tordu|scénario tordu|mindfuck|twist)\b/.test(desire)) {
+    return 'un film intelligent';
+  }
+
+  if (/\b(action|baston|combat|bagarre|adrenaline|adrénaline|explosion|explosions|course poursuite|poursuite|nerveux)\b/.test(desire)) {
+    return 'un film d’action';
+  }
+
+  if (/\b(voyager|voyage|evasion|évasion|ailleurs|depaysement|dépaysement|aventure|grand spectacle|spectacle|epique|épique)\b/.test(desire)) {
+    return 'un film d’aventure pour voyager';
+  }
+
+  if (/\b(rever|rêver|fantastique|fantasy|magie|magique|sorcier|dragon|royaume)\b/.test(desire)) {
+    return 'un film fantastique';
+  }
+
+  if (/\b(sf|science fiction|science-fiction|sci fi|sci-fi|espace|spatial|vaisseau|alien|robot|ia|cyberpunk|futur)\b/.test(desire)) {
+    return 'un film de science-fiction';
+  }
+
+  if (/\b(chill|detente|détente|leger|léger|tranquille|simple|sans prise de tete|sans prise de tête|poser le cerveau|debrancher|débrancher)\b/.test(desire)) {
+    return 'un film léger sans prise de tête';
+  }
+
+  if (/\b(amour|romance|romantique|couple|date night)\b/.test(desire)) {
+    return 'un film romantique';
+  }
+
+  return '';
+}
+
 function fishRandomIntro(intent, results) {
   const count = Array.isArray(results) ? results.length : 0;
   const media = fishDescribeMediaFromIntent(intent);
@@ -1271,7 +1349,7 @@ if (hasActorIntent && !actorQuery) {
     ['thriller', ['thriller', 'suspense']],
     ['action', ['action', 'baston', 'combat']],
     ['aventure', ['aventure']],
-    ['comédie', ['comedie', 'comédie', 'comique', 'humour', 'humoristique', 'drole', 'drôle', 'fun']],
+    ['comédie', ['comedie', 'comédie', 'comique', 'humour', 'humoristique', 'drole', 'drôle', 'rire', 'rigoler', 'marrant', 'marrante', 'fun']],
     ['drame', ['drame', 'dramatique', 'triste', 'emouvant', 'émouvant']],
     ['crime', ['crime', 'criminel', 'policier', 'enquete', 'enquête']],
     ['mystère', ['mystere', 'mystère']],
@@ -3744,6 +3822,14 @@ function fishApplyConversationMemory(rawMessage) {
       } else if (!fishIsOpenAdvicePrompt(clean)) {
         fishOpenAdvicePending = false;
       }
+    }
+
+    const resolvedDesire = fishResolveDesirePhrase(clean);
+
+    if (resolvedDesire && normalize(resolvedDesire) !== message) {
+      fishDebug('Envie reformulée', clean, '=>', resolvedDesire);
+      clean = resolvedDesire;
+      message = normalize(clean);
     }
 
     if (/^(salut|bonjour|hello|coucou|yo|bonsoir)\b/.test(message)) {
