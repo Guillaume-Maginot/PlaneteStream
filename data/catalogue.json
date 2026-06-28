@@ -2527,7 +2527,17 @@
     "overview": "Quelques années après les événements sur le vaisseau Nostromo, un groupe de jeunes colons de l'espace travaillent en tant que mineurs dans l'espoir de rejoindre une autre planète verdoyante, Yvaga. Un des membres propose d'utiliser une station spatiale abandonnée en orbite autour de leur planète actuelle afin de se rendre sur Yvaga. Cependant, ils se retrouvent face-à-face avec la forme de vie la plus terrifiante de l'univers alors qu'ils fouillent les profondeurs de cette station.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Voyager par Spoofle",
+      "frissonner": "Frissonner par spoofle",
+      "rire": "Rire par spoofle",
+      "fatigue": "Fatigue par spoofle",
+      "reflechir": "Réfléchir par spoofle",
+      "spectacle": "Spectacle par spoofle",
+      "emotion": "Émotion par spoofle",
+      "famille": "Famille par spoofle"
+    }
   },
   {
     "title": "John Wick : Chapitre 4",

@@ -157,7 +157,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/cLFbDVfhllIMybpo2fkGNzehiQG.jpg",
     "overview": "Après l'impact dévastateur d'une comète qui a réduit la Terre en ruines, la famille Garrity doit quitter la sécurité de son bunker au Groenland. Commence alors un périple pour leur survie et l'avenir de l'Humanité à travers un monde dévasté à la recherche d'un nouveau foyer.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3m3gifu4om1n\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/3m3gifu4om1n\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le périple à travers un monde dévasté donne une vraie sensation de déplacement et de survie en terrain inconnu.",
+      "frissonner": "La recherche d’un nouveau foyer après une catastrophe mondiale garde une pression constante sur la famille Garrity.",
+      "spectacle": "Le monde en ruines après l’impact d’une comète donne une toile de fond catastrophe très visuelle.",
+      "emotion": "La survie de la famille Garrity donne un enjeu humain au milieu du chaos."
+    }
   },
   {
     "title": "Kartavya : Le sens du devoir",
@@ -362,7 +368,12 @@
     "overview": "Michael dresse le portrait cinématographique de la vie et de l’héritage de l’un des artistes les plus influents de notre époque.  Le film raconte l’histoire de Michael Jackson au-delà de la musique, depuis la découverte d’un talent hors du commun en tant que leader des Jackson Five, jusqu’à l’artiste visionnaire dont l’ambition créative a alimenté une quête incessante pour devenir le plus grand artiste au monde.  Mettant en lumière sa vie hors scène et ses performances les plus emblématiques de ses débuts en solo, le film offre au public une place au premier rang pour découvrir Michael Jackson comme jamais auparavant.",
     "featured": true,
     "premium": true,
-    "homeFeatured": true
+    "homeFeatured": true,
+    "bubbleReasons": {
+      "emotion": "Le portrait de Michael Jackson au-delà de la scène met l’accent sur une trajectoire humaine et artistique.",
+      "spectacle": "Les performances emblématiques et l’ambition créative promettent une séance portée par la musique et la scène.",
+      "reflechir": "Le film semble interroger ce qui se cache derrière la construction d’une icône mondiale."
+    }
   },
   {
     "title": "Dune : Deuxième partie",
@@ -472,7 +483,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/eZ239CUp1d6OryZEBPnO2n87gMG.jpg",
     "overview": "Le voyage mythique de Paul Atreides qui s'allie à Chani et aux Fremen dans sa quête de vengeance envers les conspirateurs qui ont anéanti sa famille. Devant choisir entre l'amour de sa vie et le destin de l'univers, il fera tout pour éviter un terrible futur que lui seul peut prédire.",
     "featured": true,
-    "premium": true
+    "premium": true,
+    "bubbleReasons": {
+      "voyager": "Le parcours de Paul avec Chani et les Fremen prolonge l’immersion dans un monde désertique chargé de rites et de conflits.",
+      "spectacle": "La vengeance, les Fremen et le destin de l’univers donnent une ampleur très forte à la séance.",
+      "reflechir": "Le choix entre l’amour et le destin de l’univers apporte une vraie tension morale au récit.",
+      "emotion": "Le dilemme de Paul entre Chani et un futur qu’il veut éviter donne une dimension plus personnelle à l’épopée."
+    }
   },
   {
     "title": "Gran Turismo",
@@ -674,7 +691,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/qVgZu5BTx6pu4owCvVOm4zjTfOi.jpg",
     "overview": "L'histoire de Paul Atreides, jeune homme aussi doué que brillant, voué à connaître un destin hors du commun qui le dépasse totalement. Car, s'il veut préserver l'avenir de sa famille et de son peuple, il devra se rendre sur Dune, la planète la plus dangereuse de l'Univers. Mais aussi la seule à même de fournir la ressource la plus précieuse capable de décupler la puissance de l'Humanité. Tandis que des forces maléfiques se disputent le contrôle de cette planète, seuls ceux qui parviennent à dominer leur peur pourront survivre…",
     "featured": true,
-    "premium": true
+    "premium": true,
+    "bubbleReasons": {
+      "voyager": "Arrakis, planète dangereuse et précieuse, donne une forte sensation de dépaysement dès le cœur du récit.",
+      "spectacle": "La lutte autour de Dune et de sa ressource précieuse installe une aventure ample, politique et visuelle.",
+      "reflechir": "Le destin de Paul, la peur et les rapports de pouvoir donnent une matière plus cérébrale qu’une simple aventure spatiale.",
+      "emotion": "L’histoire de Paul est portée par sa famille, son peuple et un destin qui le dépasse."
+    }
   },
   {
     "title": "Malnazidos",
@@ -722,7 +745,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/h6XfgbzQEV4sitsIVY63pawLI0s.jpg",
     "overview": "En pleine guerre d'Espagne, une poignée d'ennemis se voient obligés de faire alliance pour affronter de terribles créatures mangeuses de chair créées par les nazis.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/zyj152ahtjqz\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/zyj152ahtjqz\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "frissonner": "Les créatures mangeuses de chair créées par les nazis donnent une menace directe et très lisible.",
+      "rire": "Le mélange comédie, horreur et guerre crée une proposition plus décalée qu’un film de zombies totalement sérieux.",
+      "fatigue": "Son concept simple et sa durée raisonnable en font une séance facile à comprendre, même avec le cerveau en chaussons.",
+      "action": "L’alliance forcée face aux créatures donne un moteur d’action immédiat."
+    }
   },
   {
     "title": "Le Mans 66",
@@ -813,7 +842,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/x1j5VVU4ypEx1hM0PDYGwCJvwtS.jpg",
     "overview": "L'équipe de tournage d'un urbex d'horreur se rend dans un asile abandonné pour une diffusion en direct. Le lieu dépasse leurs attentes alors qu'ils s'enfoncent plus profondément dans le vieux bâtiment cauchemardesque.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1k2jx633koim\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/1k2jx633koim\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "frissonner": "L’urbex en direct dans un asile abandonné installe un terrain parfait pour une tension qui monte pièce après pièce.",
+      "fatigue": "Avec 1h35, c’est une option assez compacte si tu veux une séance d’horreur sans marathon.",
+      "spectacle": "Le dispositif de tournage en direct donne une tension immédiate et une immersion nerveuse.",
+      "reflechir": "Le film joue surtout sur l’immersion et la peur du lieu, pas sur une réflexion complexe."
+    }
   },
   {
     "title": "Deepwater",
@@ -908,7 +943,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/th26RNksfM9nn7DPH06OqiV6BA2.jpg",
     "overview": "Entre le courage et l’effroi, l’humanité et la monstruosité, il existe une frontière qui ne doit en aucun cas céder. William Garin, un mercenaire emprisonné dans les geôles de la Grande Muraille de Chine, découvre la fonction secrète de la plus colossale des merveilles du monde. L’édifice tremble sous les attaques incessantes de créatures monstrueuses, dont l’acharnement n’a d’égal que leur soif d’anéantir l’espèce humaine dans sa totalité. Il rejoint alors ses geôliers, une faction d’élite de l’armée chinoise, dans un ultime affrontement pour la survie de l’humanité. C’est en combattant cette force incommensurable qu’il trouvera sa véritable vocation : l’héroïsme.",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8psrkqne65vx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8psrkqne65vx\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "La Grande Muraille de Chine, ses geôles et son armée d’élite offrent un décor dépaysant dès le départ.",
+      "spectacle": "Les assauts de créatures monstrueuses contre une merveille colossale donnent une promesse de grand affrontement.",
+      "action": "La défense de la Muraille face aux créatures place l’action au centre de la séance.",
+      "fatigue": "Son format d’1h44 permet d’avoir de l’aventure et du spectacle sans partir sur une traversée interminable."
+    }
   },
   {
     "title": "Grave Encounters 2",
@@ -1135,7 +1176,12 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/1uyDZmTjUQsbflqfkUJZvAGV3bv.jpg",
     "overview": "Walt Kowalski est un ancien de la guerre de Corée, un homme inflexible, amer et pétri de préjugés surannés. Après des années de travail à la chaîne, il vit replié sur lui-même, occupant ses journées à bricoler, traînasser et siroter des bières. Avant de mourir, sa femme exprima le vœu qu'il aille à confesse, mais Walt n'a rien à avouer, ni personne à qui parler. Hormis sa chienne Daisy, il ne fait confiance qu'à son M-1, toujours propre, toujours prêt à l'usage… Ses anciens voisins ont déménagé ou sont morts depuis longtemps. Son quartier est aujourd'hui peuplé d'immigrants asiatiques qu'il méprise, et Walt ressasse ses haines, innombrables - à l'encontre de ses voisins, des ados Hmong, latinos et afro-américains « qui croient faire la loi », de ses propres enfants, devenus pour lui des étrangers. Walt tue le temps comme il peut, en attendant le grand départ, jusqu'au jour où un ado Hmong du quartier tente de lui voler sa précieuse Ford Gran Torino…",
     "featured": true,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hvxqkt8glhjw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/hvxqkt8glhjw\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "emotion": "Le portrait de Walt, isolé et enfermé dans ses rancœurs, ouvre la porte à une histoire humaine forte.",
+      "reflechir": "Le film s’appuie sur les préjugés, la solitude et la possibilité de changer, ce qui laisse de la matière après le générique.",
+      "fatigue": "Ce n’est pas le choix le plus léger, mais son récit humain reste clair et accessible."
+    }
   },
   {
     "title": "Mortal Kombat II",
@@ -1277,7 +1323,13 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg",
     "overview": "Le professeur de sciences Ryland Grace se réveille à bord d’un vaisseau spatial, à des années-lumière de la Terre, sans aucun souvenir de qui il est ni de la façon dont il est arrivé là. À mesure que sa mémoire lui revient, il commence à découvrir sa mission : résoudre l’énigme d’une mystérieuse substance qui provoque l’extinction du Soleil. Il doit faire appel à ses connaissances scientifiques et ses idées peu orthodoxes pour sauver toute vie sur Terre mais une amitié inattendue pourrait signifier qu’il n’aura pas à accomplir cette tâche seul.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ot0x3va7r7mu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ot0x3va7r7mu\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "Le réveil à bord d’un vaisseau à des années-lumière de la Terre donne une impression immédiate de vertige spatial.",
+      "reflechir": "La mission scientifique autour de l’extinction du Soleil repose sur une énigme à résoudre plutôt que sur l’action pure.",
+      "emotion": "L’amitié inattendue évoquée par le synopsis donne un contrepoint humain à la mission de survie.",
+      "spectacle": "L’enjeu de sauver toute vie sur Terre donne une ampleur très forte à cette aventure spatiale."
+    }
   },
   {
     "title": "Super Mario Galaxy, le film",
@@ -1326,7 +1378,14 @@
     "backdrop": "https://image.tmdb.org/t/p/w1280/9Z2uDYXqJrlmePznQQJhL6d92Rq.jpg",
     "overview": "Mario et Luigi gèrent les tracas du royaume Champignon, se lient d'amitié avec Yoshi, tentent de réhabiliter mini-Bowser et se préparent pour l'anniversaire de Peach. Mais quand un appel à l'aide arrive de l'autre bout de la galaxie, l'équipe part découvrir des mondes nouveaux, des menaces inattendues et des personnages emblématiques, comme Rosalina et Bowser Jr.",
     "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rvheyqz4yp8k\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>"
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/rvheyqz4yp8k\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "bubbleReasons": {
+      "voyager": "L’appel venu de l’autre bout de la galaxie envoie l’équipe vers des mondes nouveaux et très dépaysants.",
+      "rire": "Le royaume Champignon, Yoshi et mini-Bowser donnent une base légère et ludique pour une séance souriante.",
+      "fatigue": "Son ton familial, coloré et son format de 100 minutes en font une option facile à suivre quand le cerveau réclame un coussin.",
+      "famille": "L’univers Mario et l’aventure galactique restent adaptés à une séance familiale sans trop charger le bocal.",
+      "spectacle": "La promesse de nouveaux mondes et de personnages emblématiques donne une aventure vive et visuelle."
+    }
   },
   {
     "title": "The Punisher : One Last Kill",
@@ -1601,7 +1660,13 @@
     "overview": "Après la mort de Neteyam, Jake et Neytiri affrontent leur chagrin tout en faisant face au Peuple des Cendres, une tribu Na’vi redoutable menée par la fougueuse Varang, alors que le conflit sur Pandora s’intensifie et qu’une nouvelle quête morale s’amorce.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "La rencontre avec le Peuple des Cendres élargit encore Pandora et donne l’impression d’explorer une facette plus sombre du monde.",
+      "spectacle": "Le conflit qui s’intensifie sur Pandora promet une séance ample, visuelle et très dépaysante.",
+      "emotion": "Le deuil de Jake et Neytiri donne une couleur plus intime à cette nouvelle quête.",
+      "reflechir": "La nouvelle quête morale annoncée dans le synopsis donne matière à suivre autre chose qu’un simple affrontement."
+    }
   },
   {
     "title": "Ça : Bienvenue à Derry",
@@ -2806,7 +2871,13 @@
     "overview": "Une dizaine d'années s'est écoulée depuis les précédents évènements survenus sur Pandora. Jake Sully et Neytiri sont devenus parents. Leur vie idyllique, proche de la nature, est menacée lorsque la « Ressources Développement Administration », dangereuse organisation non-gouvernementale, est de retour sur Pandora. Contraints de quitter leur habitat naturel, Jake et sa famille se rendent sur les récifs, où ils pensent trouver asile. Mais ils tombent sur un clan, les Metkayina, aux mœurs différentes des leurs.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le déplacement vers un autre peuple de Pandora donne une vraie impression de découverte et de changement d’horizon.",
+      "spectacle": "Pandora, la nature et les grands espaces aquatiques en font une séance pensée pour l’immersion visuelle.",
+      "emotion": "La menace qui pèse sur la famille de Jake et Neytiri donne un enjeu plus intime à l’aventure.",
+      "famille": "Le récit place la famille au centre de l’histoire, même si la durée demande un canapé bien préparé."
+    }
   },
   {
     "title": "Black Summoner",
@@ -10493,7 +10564,13 @@
     "overview": "Après 57 ans de dérive dans l’espace, Ellen Ripley est secourue par la corporation Weyland‐Yutani. Malgré son rapport concernant l’incident survenu sur le Nostromo, elle n’est pas prise au sérieux par les militaires quant à la présence de xénomorphes sur la planète LV‐426 où se posa son équipage… planète où plusieurs familles de colons ont été envoyées en mission de « terraformage ». Après la disparition de ces derniers, Ripley décide d’accompagner une escouade de marines dans leur mission de sauvetage… et d’affronter à nouveau la Bête.",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le retour sur LV-426 prolonge l’exploration spatiale avec une colonie coupée du reste du monde.",
+      "frissonner": "La présence des xénomorphes et la mission militaire créent une tension plus nerveuse que contemplative.",
+      "spectacle": "Son mélange d’action, de science-fiction et de survie en fait une séance dense et très énergique.",
+      "action": "La mission militaire et l’affrontement avec les xénomorphes donnent un rythme plus frontal et musclé."
+    }
   },
   {
     "title": "Scarface",
@@ -10645,7 +10722,13 @@
     "overview": "En 2122, le Nostromo, vaisseau de commerce, fait route vers la Terre avec à son bord un équipage de sept personnes en hibernation et une cargaison de minerais. Il interrompt soudain sa course suite à la réception d’un mystérieux message provenant d’une planète inexplorée. Réveillé par l’ordinateur de bord, l’équipage se rend sur place et découvre les restes d’un gigantesque vaisseau extraterrestre dont le seul passager semble être mort dans d’étranges circonstances…",
     "featured": false,
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "bubbleReasons": {
+      "voyager": "Le message venu d’une planète inexplorée et le voyage du Nostromo installent une vraie sensation d’éloignement total.",
+      "frissonner": "Le réveil de l’équipage, le signal mystérieux et la menace inconnue construisent une tension froide et progressive.",
+      "reflechir": "Le film joue sur la survie, l’inconnu et la vulnérabilité humaine face à une menace que personne ne comprend vraiment.",
+      "spectacle": "Son décor spatial et son ambiance de vaisseau isolé donnent une séance très immersive sans avoir besoin d’en faire trop."
+    }
   },
   {
     "title": "La Guerre des étoiles",

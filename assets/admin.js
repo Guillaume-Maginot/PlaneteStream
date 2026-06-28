@@ -26,6 +26,7 @@ const catalogueSort = document.querySelector('#catalogueSort');
 const showAllEmbedsBtn = document.querySelector('#showAllEmbedsBtn');
 const showMissingEmbedsBtn = document.querySelector('#showMissingEmbedsBtn');
 const showMissingBubbleBtn = document.querySelector('#showMissingBubbleBtn');
+const generateBubbleReasonsBtn = document.querySelector('#generateBubbleReasonsBtn');
 const catalogueEmbedStatus = document.querySelector('#catalogueEmbedStatus');
 const catalogueBubbleStatus = document.querySelector('#catalogueBubbleStatus');
 const catalogueList = document.querySelector('#catalogueList');
@@ -127,6 +128,7 @@ async function init() {
     updateCatalogueFilterButtons();
     renderCatalogueList();
   });
+  generateBubbleReasonsBtn?.addEventListener('click', generateBubbleReasonsForCurrentEntry);
   saveEditBtn?.addEventListener('click', saveEditedItem);
   cancelEditBtn?.addEventListener('click', closeEditor);
   topCancelEditBtn?.addEventListener('click', closeEditor);
@@ -426,6 +428,107 @@ function getBubbleReasonBadge(entry = {}) {
     ? '<span class="catalogue-badge bubulle-ready">🐠 Bubulle OK</span>'
     : '<span class="catalogue-badge bubulle-missing">🐠 À enrichir</span>';
 }
+
+
+function getCurrentEditorBubblePayload() {
+  const current = editingIndex >= 0 ? draft[editingIndex] : null;
+  const isSeries = current ? isSeriesEntry(current) : false;
+
+  return {
+    title: editFields.title?.value.trim() || current?.title || '',
+    originalTitle: current?.originalTitle || '',
+    year: editFields.year?.value.trim() || current?.year || '',
+    type: current ? getMediaLabel(current) : '',
+    mediaType: current ? getCatalogueMediaType(current) : '',
+    category: editFields.category?.value || current?.category || '',
+    genres: editFields.genres?.value
+      .split(',')
+      .map(genre => genre.trim())
+      .filter(Boolean) || [],
+    runtime: Number(current?.runtime || 0),
+    seasons: Number(current?.seasons || 0),
+    episodes: Number(current?.episodes || 0),
+    director: current?.director || '',
+    cast: getCastSearchTerms(current?.cast || []).slice(0, 10),
+    overview: editFields.overview?.value.trim() || current?.overview || '',
+    isSeries
+  };
+}
+
+function applyBubbleReasonsToEditor(reasons = {}) {
+  if (editFields.reasonVoyager) editFields.reasonVoyager.value = reasons.voyager || '';
+  if (editFields.reasonFrissonner) editFields.reasonFrissonner.value = reasons.frissonner || '';
+  if (editFields.reasonRire) editFields.reasonRire.value = reasons.rire || '';
+  if (editFields.reasonFatigue) editFields.reasonFatigue.value = reasons.fatigue || '';
+  if (editFields.reasonReflechir) editFields.reasonReflechir.value = reasons.reflechir || '';
+  if (editFields.reasonSpectacle) editFields.reasonSpectacle.value = reasons.spectacle || '';
+  if (editFields.reasonEmotion) editFields.reasonEmotion.value = reasons.emotion || '';
+  if (editFields.reasonFamille) editFields.reasonFamille.value = reasons.famille || '';
+}
+
+async function generateBubbleReasonsForCurrentEntry() {
+  if (editingIndex < 0 || !draft[editingIndex]) {
+    showMessage('Ouvre une fiche avant de lancer Bubulle.');
+    return;
+  }
+
+  const payload = getCurrentEditorBubblePayload();
+
+  if (!payload.title || !payload.overview) {
+    showMessage('Il faut au moins un titre et un résumé pour générer des justifications propres.');
+    return;
+  }
+
+  const existingReasons = collectBubbleReasonsFromEditor();
+
+  if (Object.keys(existingReasons).length) {
+    const replace = confirm('Cette fiche contient déjà des justifications Bubulle. Tu veux les remplacer par une génération OpenAI ?');
+    if (!replace) return;
+  }
+
+  const originalLabel = generateBubbleReasonsBtn?.textContent || '✨ Générer Bubulle';
+
+  try {
+    if (generateBubbleReasonsBtn) {
+      generateBubbleReasonsBtn.disabled = true;
+      generateBubbleReasonsBtn.textContent = '🐠 Génération...';
+    }
+
+    showMessage(`Bubulle interroge OpenAI pour “${payload.title}”…`);
+
+    const res = await fetch('/.netlify/functions/generate-bubble-reasons', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      throw new Error(data.error || data.details || 'Réponse OpenAI invalide');
+    }
+
+    const reasons = data.bubbleReasons || data.reasons || {};
+
+    applyBubbleReasonsToEditor(reasons);
+
+    const generatedCount = Object.values(reasons).filter(value => String(value || '').trim()).length;
+    showMessage(
+      generatedCount
+        ? `Bubulle a généré ${generatedCount} justification${generatedCount > 1 ? 's' : ''}. Relis, puis clique sur Enregistrer.`
+        : 'OpenAI n’a rien rempli de pertinent. La fiche reste à enrichir manuellement.'
+    );
+  } catch (err) {
+    console.error(err);
+    showMessage(`Génération Bubulle impossible : ${err.message}`);
+  } finally {
+    if (generateBubbleReasonsBtn) {
+      generateBubbleReasonsBtn.disabled = false;
+      generateBubbleReasonsBtn.textContent = originalLabel;
+    }
+  }
+}
+
 
 function collectBubbleReasonsFromEditor() {
   const reasons = {
