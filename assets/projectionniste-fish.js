@@ -3244,6 +3244,52 @@ return reponse;
 
     return `${intro}\n\n${results.map(itemLine).join('\n')}${fishCommentForResults(results, { ...intent, rawMessage })}`;
   }
+
+function fishIsPositiveFeedback(rawMessage) {
+  const m = normalize(rawMessage);
+
+  return /^(ok|okay|cool|super|parfait|nickel|top|ça me va|ca me va|ça me convient|ca me convient|ça marche|ca marche|validé|valide|on part la dessus|on part là dessus|je prends|go|bonne idee|bonne idée|merci)$/.test(m);
+}
+
+function fishIsAlternativeFeedback(rawMessage) {
+  const m = normalize(rawMessage);
+
+  return (
+    /^(autre chose|autre selection|autre sélection|une autre selection|une autre sélection|tu as autre chose|t as autre chose|t as mieux|tu as mieux|encore autre chose|change|change moi ça|change moi ca|trouve autre chose|essaie autre chose|propose autre chose)$/.test(m) ||
+    /^(bof|mouais|mouai|pas terrible|pas convaincu|pas convaincue|non|non merci|pas ça|pas ca|nul|c est nul|cest nul)$/.test(m) ||
+    /\b(c est nul|cest nul|pas terrible|pas convaincu|pas convaincue|trouve autre chose|essaie autre chose|change moi ça|change moi ca)\b/.test(m)
+  );
+}
+
+function fishPositiveFeedbackAnswer() {
+  return fishPickText([
+    "Parfait, je range l’épuisette. Bonne séance ! 🍿",
+    "Nickel. Le projecteur valide aussi, et il est rarement aimable.",
+    "Très bon choix. Je retourne surveiller les bobines depuis le bocal.",
+    "Ça marche. Si le canapé approuve, le poisson approuve.",
+    "Validé côté bocal. Bonne projection !"
+  ]);
+}
+
+function fishNoSelectionToChangeAnswer() {
+  return fishPickText([
+    "Je peux changer de cap, mais je n’ai pas encore de vraie sélection à remplacer. Tu veux plutôt film, série, manga ou surprise ?",
+    "Je veux bien trouver autre chose, mais donne-moi d’abord une première piste : rire, frissonner, voyager, réfléchir ?",
+    "Le bocal n’a pas encore de sélection en mémoire. Donne-moi une envie et je relance le projecteur.",
+    "Je peux refaire une pêche, mais il me faut un courant de départ : film, série, manga ou une humeur ?"
+  ]);
+}
+
+function fishAlternativeIntro() {
+  return fishPickText([
+    "D’accord, je change de bobine. Nouvelle pêche :",
+    "Bien reçu. On oublie cette sélection et je relance le bocal :",
+    "Le canapé n’est pas convaincu, le poisson recommence :",
+    "Je remélange les bobines sans discuter. Nouvelle proposition :",
+    "Message reçu : on change de courant. Je te propose plutôt :"
+  ]);
+}
+
 function fishIsFollowUpMessage(rawMessage) {
   const m = normalize(rawMessage);
 
@@ -3263,6 +3309,8 @@ function fishShouldRememberMessage(rawMessage) {
   if (/qui es tu|t es qui|tu es qui|comment tu t appelles|ton nom|tu t appelles|bubulle/.test(m)) return false;
   if (/aide|help|comment|que peux tu faire/.test(m)) return false;
   if (fishIsOpenAdvicePrompt(rawMessage)) return false;
+  if (fishIsPositiveFeedback(rawMessage)) return false;
+  if (fishIsAlternativeFeedback(rawMessage)) return false;
 
   return true;
 }
@@ -3305,6 +3353,32 @@ function fishApplyConversationMemory(rawMessage) {
   async function localBrain(rawMessage) {
     let clean = rawMessage.trim();
     let message = normalize(clean);
+
+    if (fishIsPositiveFeedback(clean)) {
+      return fishPositiveFeedbackAnswer();
+    }
+
+    if (fishIsAlternativeFeedback(clean)) {
+      if (!fishLastSearchMessage) {
+        return fishNoSelectionToChangeAnswer();
+      }
+
+      try {
+        const catalogue = await loadCatalogue();
+        const alternativeMessage = `${fishLastSearchMessage} surprends moi`;
+        const answer = buildCatalogueAnswer(alternativeMessage, catalogue);
+
+        if (fishShouldRememberMessage(fishLastSearchMessage)) {
+          fishLastSearchMessage = alternativeMessage;
+        }
+
+        return answer.replace(/^.*?\n/, `${fishAlternativeIntro()}\n`);
+      } catch (error) {
+        console.error(error);
+        return 'Bloup... je voulais changer de bobine, mais le catalogue vient de glisser dans le bocal.';
+      }
+    }
+
     if (/^(encore|la suite|continue|autre|d'autres|encore !?)$/.test(message)) {
     return fishContinueLastResults();
     }
