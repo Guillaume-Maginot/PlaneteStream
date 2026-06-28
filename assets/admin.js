@@ -607,7 +607,7 @@ function getBubulleProfile(entry = {}) {
 }
 
 async function requestBubblePace(payload) {
-  const res = await fetch('/.netlify/functions/generate-bubble-pace', {
+  const res = await fetch('/.netlify/functions/generate-bubble-profile', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
@@ -619,7 +619,12 @@ async function requestBubblePace(payload) {
     throw new Error(data.error || data.details || 'Réponse OpenAI invalide');
   }
 
-  return String(data.pace || data.bubblePace || '').trim();
+  return String(
+  data.profile?.pace ||
+  data.pace ||
+  data.bubblePace ||
+  ''
+).trim();
 }
 
 async function generateBubblePaceForCurrentEntry() {
