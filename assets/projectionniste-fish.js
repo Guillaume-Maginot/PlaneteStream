@@ -1789,6 +1789,238 @@ const SESSION_PROFILE_RULES = [
       .trim();
   }
 
+
+
+  /* =========================================================
+     Bubulle - compréhension pondérée des phrases naturelles
+     Objectif : additionner plusieurs petits indices au lieu
+     d'attendre UNE expression parfaite.
+     Exemples :
+     - "journée de merde + poser le cerveau + drôle"
+     - "pizzas + on est quatre + ça envoie"
+     ========================================================= */
+
+  function fishSignalScore(messageNorm, patterns) {
+    return patterns.reduce((score, pattern) => {
+      return pattern.test(messageNorm) ? score + 1 : score;
+    }, 0);
+  }
+
+  function fishUniqueRulesByLabel(rules) {
+    const seen = new Set();
+
+    return (Array.isArray(rules) ? rules : []).filter(rule => {
+      const label = normalize(rule && rule.label ? rule.label : '');
+
+      if (!label || seen.has(label)) {
+        return false;
+      }
+
+      seen.add(label);
+      return true;
+    });
+  }
+
+  function fishBuildWeightedContext(rawMessage) {
+    const m = normalize(rawMessage);
+    const profiles = [];
+    const moods = [];
+
+    const addProfile = (profile) => {
+      profiles.push({
+        inferred: true,
+        label: profile.label,
+        genres: profile.genres || [],
+        maxRuntime: profile.maxRuntime || null,
+        preferLight: Boolean(profile.preferLight),
+        preferRating: Boolean(profile.preferRating),
+        preferSpectacle: Boolean(profile.preferSpectacle)
+      });
+    };
+
+    const addMood = (mood) => {
+      moods.push({
+        inferred: true,
+        label: mood.label,
+        genres: mood.genres || [],
+        terms: mood.terms || [],
+        maxRuntime: mood.maxRuntime || null
+      });
+    };
+
+    const profileSpecs = [
+      {
+        label: 'fatigue douce',
+        threshold: 2,
+        genres: ['comedie', 'animation', 'aventure', 'familial'],
+        maxRuntime: 120,
+        preferLight: true,
+        patterns: [
+          /journee|boulot|travail|taf|service|semaine|fatigue|creve|rince|epuise|ko|hs|lessive/,
+          /merde|pourrie|nulle|longue|interminable|difficile|galere|saoulant|lourd/,
+          /poser le cerveau|cerveau off|cerveau eteint|debrancher|deconnecter|sans reflechir|sans prise de tete|simple|facile|leger|tranquille/,
+          /rire|rigoler|drole|marrant|humour|comedie|fun|sourire|bonne humeur/
+        ]
+      },
+      {
+        label: 'rire leger',
+        threshold: 1,
+        genres: ['comedie', 'animation', 'familial'],
+        maxRuntime: 130,
+        preferLight: true,
+        patterns: [
+          /rire|rigoler|drole|marrant|humour|comedie|fun|fais moi rire|bonne humeur|sourire/,
+          /moral|chausettes|remonte|besoin de rire|envie de rire/
+        ]
+      },
+      {
+        label: 'pizza spectacle',
+        threshold: 2,
+        genres: ['action', 'aventure', 'science-fiction', 'comedie'],
+        preferSpectacle: true,
+        patterns: [
+          /pizza|potes|amis|copains|soiree|plusieurs|groupe|on est|a quatre|quatre|4/,
+          /envoie|lourd|claque|spectacle|blockbuster|explose|explosions|epique|bouge|action|baston|nerveux/,
+          /pas de temps mort|plein les yeux|grand spectacle|qui claque/
+        ]
+      },
+      {
+        label: 'frisson intelligent',
+        threshold: 2,
+        genres: ['thriller', 'horreur', 'crime', 'mystère'],
+        maxRuntime: 140,
+        patterns: [
+          /peur|flipper|frisson|angoisse|sursauter|cauchemar|glauque|creepy|sombre|malsain/,
+          /thriller|suspense|tension|stresser|haleine|nerveux/,
+          /pas horreur|sans gore|pas trop gore/
+        ]
+      },
+      {
+        label: 'cerveau actif',
+        threshold: 1,
+        genres: ['science-fiction', 'thriller', 'mystère', 'drame'],
+        maxRuntime: 160,
+        preferRating: true,
+        patterns: [
+          /reflechir|intelligent|scenario|complexe|tordu|mindfuck|twist|cerveau qui travaille|profond|psychologique|concept|original/,
+          /enquete|mystere|complot|dystopie|ia|temps|paradoxe/
+        ]
+      },
+      {
+        label: 'emotion sensible',
+        threshold: 1,
+        genres: ['drame', 'romance'],
+        maxRuntime: 150,
+        preferRating: true,
+        patterns: [
+          /pleurer|larme|larmes|emouvant|emotion|touchant|triste|poignant|bouleversant|belle histoire|histoire humaine|coeur serre/,
+          /romance|amour|couple|sensible/
+        ]
+      },
+      {
+        label: 'evasion grand air',
+        threshold: 1,
+        genres: ['aventure', 'science-fiction', 'fantastique'],
+        maxRuntime: 160,
+        preferSpectacle: true,
+        patterns: [
+          /voyager|evasion|ailleurs|partir loin|changer d air|depaysement|grand univers|autre monde|aventure|horizon/,
+          /espace|planete|vaisseau|royaume|magie|fantasy|fantastique/
+        ]
+      },
+      {
+        label: 'seance courte',
+        threshold: 1,
+        genres: ['comedie', 'animation', 'thriller', 'action'],
+        maxRuntime: 110,
+        preferRating: true,
+        patterns: [
+          /pas longtemps|pas beaucoup de temps|vite fait|petite heure|court|rapide|avant de dormir|tard|dodo|format court/,
+          /moins de deux heures|moins de 2h|moins d une heure|moins de 90|moins de 100/
+        ]
+      },
+      {
+        label: 'famille prudente',
+        threshold: 1,
+        genres: ['animation', 'familial', 'aventure', 'comedie'],
+        maxRuntime: 130,
+        preferLight: true,
+        patterns: [
+          /en famille|avec les enfants|enfants|petits|tout public|familial|kids|avec mes parents|parents|pas violent|pas gore|soft/
+        ]
+      }
+    ];
+
+    const moodSpecs = [
+      {
+        label: 'bonne humeur',
+        threshold: 1,
+        genres: ['comédie', 'animation', 'familial', 'romance'],
+        maxRuntime: 125,
+        patterns: [/rire|rigoler|drole|marrant|humour|fun|sourire|moral|bonne humeur/]
+      },
+      {
+        label: 'chill',
+        threshold: 1,
+        genres: ['comédie', 'animation', 'familial', 'romance', 'aventure'],
+        maxRuntime: 115,
+        patterns: [/poser le cerveau|sans prise de tete|simple|facile|leger|tranquille|chill|debrancher|deconnecter|fatigue/]
+      },
+      {
+        label: 'spectaculaire',
+        threshold: 1,
+        genres: ['action', 'aventure', 'science-fiction'],
+        terms: ['espace', 'guerre', 'vaisseau', 'monstre', 'catastrophe'],
+        patterns: [/spectacle|lourd|claque|epique|explosif|explose|blockbuster|plein les yeux|qui claque|ca bouge|action/]
+      },
+      {
+        label: 'flippant',
+        threshold: 1,
+        genres: ['horreur', 'thriller'],
+        terms: ['zombie', 'vampire', 'monstre', 'fantome', 'gore', 'meurtre'],
+        patterns: [/peur|flipper|frisson|angoisse|sursauter|cauchemar|glauque|creepy|horreur/]
+      },
+      {
+        label: 'intelligent',
+        threshold: 1,
+        genres: ['drame', 'science-fiction', 'mystère', 'thriller'],
+        terms: ['psychologique', 'enquete', 'dystopie', 'temps', 'ia', 'mystere', 'complot'],
+        patterns: [/reflechir|intelligent|complexe|tordu|mindfuck|twist|psychologique|concept|enquete|mystere/]
+      },
+      {
+        label: 'emotion',
+        threshold: 1,
+        genres: ['drame', 'romance'],
+        terms: ['famille', 'amour', 'deuil', 'vie'],
+        patterns: [/pleurer|larme|emouvant|emotion|touchant|triste|poignant|romance|amour/]
+      },
+      {
+        label: 'evasif',
+        threshold: 1,
+        genres: ['aventure', 'science-fiction', 'fantastique'],
+        terms: ['monde', 'espace', 'royaume', 'planete'],
+        patterns: [/voyager|evasion|ailleurs|partir loin|changer d air|depaysement|grand univers|autre monde|aventure/]
+      }
+    ];
+
+    profileSpecs.forEach(spec => {
+      if (fishSignalScore(m, spec.patterns) >= spec.threshold) {
+        addProfile(spec);
+      }
+    });
+
+    moodSpecs.forEach(spec => {
+      if (fishSignalScore(m, spec.patterns) >= spec.threshold) {
+        addMood(spec);
+      }
+    });
+
+    return {
+      profiles: fishUniqueRulesByLabel(profiles),
+      moods: fishUniqueRulesByLabel(moods)
+    };
+  }
+
   function escapeHtml(text) {
     return String(text)
       .replaceAll('&', '&amp;')
@@ -3063,8 +3295,15 @@ function findTitleFamilyMatches(records, query) {
     const wantsPremium = /premium|fauteuil rouge|selection premium|sélection premium/.test(m);
     const wantsKids = /enfant|famille|familial|kids|dessin anime|dessin animé|animation/.test(m);
     const wantsShort = /court|rapide|pas trop long/.test(m);
-    const matchedMoods = MOOD_RULES.filter(rule => rule.pattern.test(m));
-    const matchedSessionProfiles = SESSION_PROFILE_RULES.filter(rule => rule.pattern.test(m));
+    const inferredContext = fishBuildWeightedContext(rawMessage);
+    const matchedMoods = fishUniqueRulesByLabel([
+      ...MOOD_RULES.filter(rule => rule.pattern.test(m)),
+      ...inferredContext.moods
+    ]);
+    const matchedSessionProfiles = fishUniqueRulesByLabel([
+      ...SESSION_PROFILE_RULES.filter(rule => rule.pattern.test(m)),
+      ...inferredContext.profiles
+    ]);
 
 matchedSessionProfiles.forEach(profile => {
   if (profile.genres) {
@@ -3125,6 +3364,8 @@ const missingDirector = directorRequest && !matchedDirectors.length;
   topics: topics.map(t => t.label),
   matchedActors,
   matchedDirectors,
+  inferredProfiles: inferredContext.profiles.map(profile => profile.label),
+  inferredMoods: inferredContext.moods.map(mood => mood.label),
   wantsPremium,
   wantsBest,
   wantsRandom,
