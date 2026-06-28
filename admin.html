@@ -294,12 +294,6 @@
     .bubble-advice-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
     .bubble-advice-head h3{margin:0;color:#fff;font-size:16px}.bubble-advice-head p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
     .bubble-advice-editor textarea{min-height:92px;font-family:inherit;font-size:13px;line-height:1.5;color:#fff}
-    .bubble-profile-editor{border:1px solid rgba(98,255,178,.22);border-radius:16px;background:linear-gradient(135deg,rgba(98,255,178,.07),rgba(139,44,255,.045));padding:14px;margin-top:4px}
-    .bubble-profile-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
-    .bubble-profile-head h3{margin:0;color:#fff;font-size:16px}.bubble-profile-head p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
-    .bubble-profile-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
-    .bubble-profile-grid label{display:grid;gap:6px;color:var(--muted);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
-    .bubble-profile-grid select{width:100%;border:1px solid rgba(255,255,255,.12);border-radius:12px;color:#fff;background:#10111f;padding:12px;outline:none;font:inherit;text-transform:none;letter-spacing:0}
     @media(max-width:820px){.bubble-reasons-grid{grid-template-columns:1fr}}
 
     .series-episode-manager{margin-top:16px;border:1px solid rgba(195,77,255,.20);border-radius:16px;background:linear-gradient(135deg,rgba(139,44,255,.08),rgba(255,255,255,.035));padding:14px;grid-column:1/-1}
@@ -1760,25 +1754,33 @@
             </div>
 
 
-            <div class="bubble-profile-editor full">
-              <div class="bubble-profile-head">
+            <div class="bubble-reasons-editor full">
+              <div class="bubble-reasons-head">
                 <div>
                   <h3>🧠 Profil Bubulle</h3>
-                  <p>Étape douce : on commence par le rythme. Ce champ sera enregistré dans <code>bubulle.profile.pace</code>.</p>
+                  <p>Profil structuré utilisé par Bubulle pour mieux adapter ses recommandations. On dévoile les champs doucement : rythme puis complexité.</p>
                 </div>
-                <button class="primary" type="button" id="generateBubblePaceBtn">✨ Générer le rythme</button>
+                <button class="primary" type="button" id="generateBubblePaceBtn">✨ Générer le profil</button>
               </div>
-              <div class="bubble-profile-grid">
+              <div class="bubble-reasons-grid">
                 <label>Rythme
                   <select id="editBubblePace">
-                    <option value="">À compléter</option>
-                    <option value="lent">Lent</option>
-                    <option value="moyen">Moyen</option>
-                    <option value="rapide">Rapide</option>
+                    <option value="">Non renseigné</option>
+                    <option value="lent">🐢 Lent</option>
+                    <option value="moyen">🚶 Moyen</option>
+                    <option value="rapide">🏃 Rapide</option>
+                  </select>
+                </label>
+                <label>Complexité
+                  <select id="editBubbleComplexity">
+                    <option value="">Non renseignée</option>
+                    <option value="faible">🟢 Faible</option>
+                    <option value="moyen">🟡 Moyenne</option>
+                    <option value="eleve">🔴 Élevée</option>
                   </select>
                 </label>
               </div>
-              <p class="bubble-reasons-note">Lent = contemplatif ou posé. Moyen = équilibré. Rapide = nerveux, dynamique ou très rythmé.</p>
+              <p class="bubble-reasons-note">Le bouton interroge la fonction unique generate-bubble-profile. Pour l’instant, seuls rythme et complexité sont visibles.</p>
             </div>
 
 

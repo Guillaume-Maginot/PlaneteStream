@@ -69,7 +69,8 @@ const editFields = {
   reasonEmotion: document.querySelector('#editReasonEmotion'),
   reasonFamille: document.querySelector('#editReasonFamille'),
   projectionnisteAdvice: document.querySelector('#editProjectionnisteAdvice'),
-  bubblePace: document.querySelector('#editBubblePace')
+  bubblePace: document.querySelector('#editBubblePace'),
+  bubbleComplexity: document.querySelector('#editBubbleComplexity')
 };
 
 if (document.body?.classList.contains('admin-locked')) {
@@ -606,7 +607,7 @@ function getBubulleProfile(entry = {}) {
     : {};
 }
 
-async function requestBubblePace(payload) {
+async function requestBubbleProfile(payload) {
   const res = await fetch('/.netlify/functions/generate-bubble-profile', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -619,12 +620,19 @@ async function requestBubblePace(payload) {
     throw new Error(data.error || data.details || 'Réponse OpenAI invalide');
   }
 
-  return String(
-  data.profile?.pace ||
-  data.pace ||
-  data.bubblePace ||
-  ''
-).trim();
+  const profile = data.profile && typeof data.profile === 'object' && !Array.isArray(data.profile)
+    ? data.profile
+    : {};
+
+  return {
+    pace: String(profile.pace || data.pace || data.bubblePace || '').trim(),
+    complexity: String(profile.complexity || data.complexity || '').trim(),
+    humour: String(profile.humour || data.humour || '').trim(),
+    violence: String(profile.violence || data.violence || '').trim(),
+    spectacle: String(profile.spectacle || data.spectacle || '').trim(),
+    emotion: String(profile.emotion || data.emotion || '').trim(),
+    family: typeof profile.family === 'boolean' ? profile.family : Boolean(data.family)
+  };
 }
 
 async function generateBubblePaceForCurrentEntry() {
@@ -641,9 +649,10 @@ async function generateBubblePaceForCurrentEntry() {
   }
 
   const existingPace = editFields.bubblePace?.value.trim() || '';
+  const existingComplexity = editFields.bubbleComplexity?.value.trim() || '';
 
-  if (existingPace) {
-    const replace = confirm('Cette fiche contient déjà un rythme Bubulle. Tu veux le remplacer par une génération OpenAI ?');
+  if (existingPace || existingComplexity) {
+    const replace = confirm('Cette fiche contient déjà un profil Bubulle. Tu veux le remplacer par une génération OpenAI ?');
     if (!replace) return;
   }
 
@@ -652,25 +661,29 @@ async function generateBubblePaceForCurrentEntry() {
   try {
     if (generateBubblePaceBtn) {
       generateBubblePaceBtn.disabled = true;
-      generateBubblePaceBtn.textContent = '🐠 Rythme...';
+      generateBubblePaceBtn.textContent = '🐠 Profil...';
     }
 
-    showMessage(`Bubulle évalue le rythme de “${payload.title}”…`);
+    showMessage(`Bubulle évalue le profil de “${payload.title}”…`);
 
-    const pace = await requestBubblePace(payload);
+    const profile = await requestBubbleProfile(payload);
 
     if (editFields.bubblePace) {
-      editFields.bubblePace.value = pace;
+      editFields.bubblePace.value = profile.pace || '';
+    }
+
+    if (editFields.bubbleComplexity) {
+      editFields.bubbleComplexity.value = profile.complexity || '';
     }
 
     showMessage(
-      pace
-        ? `Rythme généré : ${pace}. Relis, ajuste si besoin, puis clique sur Enregistrer.`
-        : 'OpenAI n’a pas retourné de rythme exploitable. Le champ reste vide.'
+      profile.pace || profile.complexity
+        ? `Profil généré : rythme ${profile.pace || '—'}, complexité ${profile.complexity || '—'}. Relis, ajuste si besoin, puis clique sur Enregistrer.`
+        : 'OpenAI n’a pas retourné de profil exploitable. Les champs restent vides.'
     );
   } catch (err) {
     console.error(err);
-    showMessage(`Génération du rythme impossible : ${err.message}`);
+    showMessage(`Génération du profil impossible : ${err.message}`);
   } finally {
     if (generateBubblePaceBtn) {
       generateBubblePaceBtn.disabled = false;
@@ -1080,6 +1093,7 @@ function openEditor(index) {
   fillBubbleReasonFields(entry);
   if (editFields.projectionnisteAdvice) editFields.projectionnisteAdvice.value = entry.projectionnisteAdvice || '';
   if (editFields.bubblePace) editFields.bubblePace.value = getBubulleProfile(entry).pace || '';
+  if (editFields.bubbleComplexity) editFields.bubbleComplexity.value = getBubulleProfile(entry).complexity || '';
 
   renderSeriesEpisodeEditor(entry);
 
@@ -1128,7 +1142,8 @@ function saveEditedItem() {
       ...getBubulleData(current),
       profile: {
         ...getBubulleProfile(current),
-        pace: editFields.bubblePace?.value.trim() || ''
+        pace: editFields.bubblePace?.value.trim() || '',
+        complexity: editFields.bubbleComplexity?.value.trim() || ''
       }
     }
   };
