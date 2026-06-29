@@ -7097,3 +7097,80 @@ img,svg,video,canvas{
   .nav-actions{display:none!important;}
   body.ps-mobile-nav-open .menu{display:flex!important;}
 }
+
+/* V4.5.2 - Correctif rails mobile : stop aux fiches qui jouent au millefeuille. */
+@media(max-width:620px){
+  .grid.rail{
+    display:grid!important;
+    grid-auto-flow:column!important;
+    grid-auto-columns:minmax(156px, calc((100vw - 44px) / 2))!important;
+    grid-template-columns:none!important;
+    gap:12px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding:3px 1px 14px!important;
+    scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .grid.rail .card{
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    scroll-snap-align:start;
+    overflow:hidden!important;
+    contain:layout paint;
+  }
+
+  .grid.rail .poster{
+    height:auto!important;
+    aspect-ratio:2 / 3!important;
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+
+  .grid.rail .poster::after{
+    display:none!important;
+    content:""!important;
+  }
+
+  .grid.rail .info{
+    min-height:136px!important;
+    padding:10px!important;
+    overflow:hidden!important;
+  }
+
+  .grid.rail .catalog-card-title{
+    min-height:30px!important;
+    max-height:32px!important;
+    margin-bottom:7px!important;
+    font-size:12.5px!important;
+    line-height:1.12!important;
+    overflow:hidden!important;
+  }
+
+  .grid.rail .compact-meta,
+  .grid.rail .compact-genres{
+    font-size:9.5px!important;
+    line-height:1.25!important;
+  }
+
+  .grid.rail .compact-genres{
+    min-height:24px!important;
+    max-height:25px!important;
+    overflow:hidden!important;
+  }
+
+  .grid.rail .card-actions{
+    margin-top:auto!important;
+    grid-template-columns:1fr!important;
+    gap:6px!important;
+  }
+
+  .grid.rail .card-actions a{
+    min-height:30px!important;
+    font-size:10px!important;
+    padding:6px 5px!important;
+    white-space:nowrap!important;
+  }
+}
