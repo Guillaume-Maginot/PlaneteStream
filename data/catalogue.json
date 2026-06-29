@@ -248,6 +248,18 @@
       "reflechir": "Le policier est confronté à un dilemme sur la façon d'accomplir son devoir.",
       "spectacle": "Le film promet de l'action et une montée de tension dans un cadre de crime.",
       "emotion": "La menace qui pèse sur sa famille donne un enjeu humain fort à l'histoire."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue où l'on aime voir un policier poussé à bout entre crime, drame et suspense, avec la famille au cœur du danger.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "faible",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -697,6 +709,18 @@
       "reflechir": "Le film met en avant une équipe d'experts face à une catastrophe naturelle à gérer.",
       "spectacle": "Le supervolcan en éruption promet une action ample et des images de grand chaos.",
       "emotion": "La population menacée donne un fort enjeu humain à la mission de sauvetage."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et sans pause, quand tu as envie d'un cataclysme à Hawaï et d'un téléfilm catastrophe qui file droit en 85 minutes.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -1218,6 +1242,18 @@
       "reflechir": "Le film joue sur l'idée d'un documentaire sur une expérience surnaturelle et sur un lieu maudit à comprendre.",
       "spectacle": "La progression dans un grand bâtiment abandonné et les attaques d'un esprit offrent une horreur à effet de mise en scène.",
       "emotion": "Le groupe tente de s'en sortir ensemble, avec un vrai enjeu humain de survie et de solidarité."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de frisson entre amis, quand tu as envie d'un huis clos hanté qui ne laisse pas beaucoup de répit.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -1268,6 +1304,18 @@
     "bubbleReasons": {
       "frissonner": "Une virée dans un hôpital psychiatrique hanté promet une ambiance de peur et de mystère sombre.",
       "reflechir": "Le huis clos dans un lieu hanté apporte une idée de survie et de chasse aux fantômes à suivre."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance frisson à huis clos, avec son faux tournage de télé-réalité dans un hôpital abandonné qui promet une nuit bien corsée.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -1517,6 +1565,18 @@
       "reflechir": "Le tournoi aux règles changées et les alliances mouvantes donnent matière à penser.",
       "spectacle": "Les affrontements spectaculaires et les arts martiaux annoncent un grand spectacle d'action.",
       "emotion": "Les alliances qui se forment et les loyautés troubles créent un enjeu relationnel fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance musclée entre potes, si tu aimes les tournois qui s'enchaînent, les affrontements spectaculaires et les alliances qui partent de travers.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "moyen",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -1571,6 +1631,18 @@
       "reflechir": "Le dilemme stratégique pose une vraie matière à penser sur la guerre et la décision.",
       "spectacle": "L'ampleur de la plus vaste invasion maritime annonce un grand spectacle historique.",
       "emotion": "Le poids du choix et l'enjeu du monde libre donnent une forte intensité humaine."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et historique, quand tu as envie d'un thriller de guerre qui serre le temps et les nerfs sans traîner en longueur.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -1627,7 +1699,19 @@
       "emotion": "L'amitié inattendue au cœur de la mission apporte une trajectoire humaine touchante."
     },
     "premium": false,
-    "homeFeatured": false
+    "homeFeatured": false,
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de SF aventure qui aime les grandes idées, le suspense et un voyage spatial de 155 minutes, avec un Ryan Gosling perdu dans le vide mais pas tout seul.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "eleve",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
+    }
   },
   {
     "title": "Super Mario Galaxy, le film",
@@ -1752,6 +1836,18 @@
       "reflechir": "Le parcours de Frank Castle interroge le sens de sa vie au-delà de la vengeance.",
       "spectacle": "L'action domine avec un héros replongé au cœur du combat.",
       "emotion": "Le récit suit un homme en quête de sens, avec un enjeu personnel fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci quand tu veux une séance tendue et nerveuse : un Frank Castle en quête de sens, mais qui retombe dans le combat, entre action, drame et crime.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -1874,6 +1970,18 @@
       "reflechir": "Le parcours d'un ingénieur militaire face à une mission extrême apporte une idée de dépassement et de choix.",
       "spectacle": "L'action d'un film de science-fiction avec une gigantesque machine promet un grand spectacle.",
       "emotion": "La dernière mission éprouvante donne un enjeu humain fort au parcours du héros et de son unité."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance qui veut du muscle, de la tension et un bon gros déluge d'action SF sans souffler entre deux assauts.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -2208,6 +2316,18 @@
       "frissonner": "Des événements étranges et la présence de Pennywise installent une tension sombre et mystérieuse.",
       "reflechir": "Le mystère autour des événements de Derry invite à s'interroger et à mener l'enquête.",
       "emotion": "La série suit plusieurs personnages liés à Derry, avec des enjeux humains au cœur du récit."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance de mystère un peu grinçante, avec Derry dans les années 1960 et Pennywise en embuscade : pas le genre à regarder en traînant des pieds.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -2530,6 +2650,18 @@
       "frissonner": "Le face-à-face avec Göring installe une tension psychologique sombre et soutenue.",
       "reflechir": "Le procès international et le dilemme de justice offrent une forte matière à penser.",
       "emotion": "Le duel entre Kelley et Göring met en jeu des trajectoires humaines intenses."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance longue et tendue, si tu aimes les drames d'histoire où l'on observe un duel psychologique plutôt qu'un grand spectacle.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "eleve",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -2583,6 +2715,18 @@
       "reflechir": "Le destin de Raju soulève un dilemme humain autour de l'exil et du retour.",
       "spectacle": "L'action et l'ampleur du périple promettent un vrai film de spectacle.",
       "emotion": "L'histoire de Raju et Sathya met en avant une relation forte et touchante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci si tu aimes les récits de retour sous tension, où romance, drame et thriller avancent ensemble sur une belle durée de 152 minutes.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -2704,6 +2848,18 @@
       "reflechir": "Le film mêle science-fiction et mystère, avec une situation qui pousse à s'interroger sur ce qui se cache sous la surface.",
       "spectacle": "Deux agents entraînés doivent survivre dans une gorge mystérieuse, avec une montée d'action et de grand danger.",
       "emotion": "La relation qui naît entre les deux agents donne un enjeu humain au cœur du danger."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance où tu veux un mélange de tension et de sentiments, avec un duo qui doit s'entendre face à un mystère bien sombre.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -2826,6 +2982,18 @@
       "reflechir": "Une partie d'échecs policière qui met les cerveaux, la loyauté et le secret à l'épreuve.",
       "spectacle": "Un thriller d'action avec piratage, police et affrontement à grande échelle.",
       "emotion": "Le lien secret entre deux policiers donne un enjeu humain au cœur de l'enquête."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et nerveuse, quand tu veux un polar d'action où la course-poursuite se joue autant dans les têtes que dans la ville.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -3081,6 +3249,18 @@
       "reflechir": "La traque de la Grande Table et le combat de John Wick donnent matière à penser.",
       "spectacle": "L'action à grande échelle et les affrontements dans plusieurs villes promettent un grand spectacle.",
       "emotion": "Le parcours de John Wick face à des adversaires redoutables porte un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une grande séance d'action bien tendue, avec John Wick traqué de New York à Paris et Berlin, quand tu as envie d'un long duel contre la Grande Table.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -3336,6 +3516,18 @@
       "reflechir": "Le film fait confronter la famille à un nouveau clan et à des mœurs différentes.",
       "spectacle": "L'action et les grands paysages de Pandora promettent un très grand spectacle.",
       "emotion": "Jake et Neytiri devenus parents affrontent un danger qui menace leur vie de famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance immersive, si tu aimes l'aventure qui prend son temps et t'embarque dans Pandora avec un souffle de cinéma XXL.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -3558,6 +3750,18 @@
       "reflechir": "Le troc entre souvenirs et compétences pose une idée intrigante sur l'identité.",
       "spectacle": "L'univers fantastique et le rôle d'invocateur promettent de l'action et de l'ampleur.",
       "emotion": "Le lien entre Kelvin et la déesse devenue sa première adepte apporte une relation marquante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance d'isekai d'action et de fantasy, avec 12 épisodes courts : parfait si tu veux suivre Kelvin sans trop traîner en salle.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -3797,6 +4001,18 @@
       "reflechir": "Le face-à-face entre la police et le groupe nourrit l'enquête et le suspense.",
       "spectacle": "Le braquage et l'action promettent une série tendue et spectaculaire.",
       "emotion": "Les otages et les enjeux humains du braquage donnent du poids à l'histoire."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance nerveuse de braquage et d'enquête, avec assez de mystère pour te garder au siège jusqu'au bout.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -3919,6 +4135,18 @@
       "reflechir": "Il met en jeu un dilemme humain face au courage, à la loyauté et au sacrifice.",
       "spectacle": "L'explosion du réacteur et la mission sous haute pression promettent une action intense.",
       "emotion": "Le récit repose sur le courage de volontaires confrontés à un sacrifice extrême."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et grave, quand tu as envie d'un drame historique qui met le courage à l'épreuve.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -4040,6 +4268,18 @@
       "reflechir": "Le film joue sur le choix entre rester dans la Matrice et prendre son envol, avec une forte idée de dilemme.",
       "spectacle": "L'action de science-fiction promet un grand spectacle visuel et des scènes d'aventure amples.",
       "emotion": "Le retour de Neo et Trinity donne un enjeu humain et relationnel fort à l'histoire."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance SF-action un peu nostalgique, quand tu as envie de retrouver Neo sans trop te demander de faire court : 148 minutes pour replonger dans la Matrice.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -4212,6 +4452,18 @@
       "frissonner": "La série plonge dans une catastrophe historique tendue et dramatique.",
       "reflechir": "Le récit vrai invite à réfléchir aux causes et aux conséquences d'un drame humain.",
       "emotion": "Le sacrifice de personnages face au drame donne une forte dimension humaine."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance tendue et grave, quand tu veux plonger dans un drame en 5 épisodes sur une histoire vraie qui ne te lâche pas.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -4333,6 +4585,18 @@
       "reflechir": "L'excommunication de John pose une règle et un dilemme au cœur du récit.",
       "spectacle": "L'action et la chasse à l'homme promettent un grand spectacle visuel.",
       "emotion": "Le parcours de John en solo face à tout le monde donne un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et nerveuse, si tu aimes voir John Wick traqué sans répit par les tueurs les plus dangereux du monde.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -4688,6 +4952,18 @@
       "reflechir": "L'intrigue interroge les causes et les mystères de l'invasion, avec une vraie matière à penser.",
       "spectacle": "L'invasion et l'exode des survivants promettent une ampleur dramatique et des moments spectaculaires.",
       "emotion": "Elle suit des survivants confrontés à la perte de leurs proches et de tous leurs repères."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance de science-fiction tendue, où l'exode et le drame des survivants prennent le pas sur le simple spectacle extraterrestre.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -4802,6 +5078,18 @@
       "reflechir": "Le couple défie les conventions sociales, avec un contexte qui fait réfléchir.",
       "spectacle": "L'affrontement avec une invasion extraterrestre promet une ampleur visuelle forte.",
       "emotion": "Le couple se bat pour sa vie, avec un enjeu humain et relationnel marqué."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de SF dramatique qui aime mêler conventions bousculées et invasion extraterrestre, avec juste 3 épisodes pour se laisser happer sans traîner.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -4922,6 +5210,18 @@
       "reflechir": "Le conflit autour du pouvoir de Kylo Ren et du retour de Palpatine donne matière à penser.",
       "spectacle": "Les genres action et science-fiction promettent une aventure ample et spectaculaire.",
       "emotion": "Le deuil de Luke et les liens autour de Leia et Rey donnent un vrai enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance popcorn et sabre laser, si tu veux suivre la Résistance et Rey dans un final galactique signé J.J. Abrams.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -5378,6 +5678,18 @@
       "reflechir": "La série questionne le pouvoir, la vérité et les dérives des super-héros.",
       "spectacle": "L'action et les super-pouvoirs promettent un grand spectacle.",
       "emotion": "La quête des Boys donne un enjeu humain autour de la vérité et de la justice."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance nerveuse et ironique, quand tu veux voir des super-héros dérailler et une vérité qui gratte un peu.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "moyen",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -6531,6 +6843,18 @@
       "reflechir": "L'idée d'un héros en Slime avec des compétences uniques apporte un concept original.",
       "spectacle": "L'action et l'aventure promettent des affrontements et un univers ample.",
       "emotion": "Le parcours de Satoru dans un autre monde donne une trajectoire personnelle marquante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une longue séance d'aventure légère, entre combats, fantastique et petites pointes de comédie, surtout si tu aimes suivre un héros qui monte en puissance épisode après épisode.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -6585,6 +6909,18 @@
       "reflechir": "Le dilemme évoluer ou mourir donne une vraie matière à penser sur l'avenir de l'humanité.",
       "spectacle": "L'histoire promet une aventure de science-fiction à grande échelle avec des soldats et un monde en crise.",
       "emotion": "L'enjeu pour l'avenir de l'humanité apporte une dimension humaine et touchante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de SF tendue, avec un futur sec et un dilemme d'évolution qui fera l'affaire si tu aimes les courses contre la montre.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -6838,6 +7174,18 @@
       "reflechir": "Le serment et les liens entre anciens associés donnent une intrigue de loyauté et de choix.",
       "spectacle": "L'action promet un grand spectacle avec des affrontements intenses et des tueurs redoutables.",
       "emotion": "Le film repose sur un serment et sur le lien qui force John à reprendre la route."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et sans temps mort, si tu aimes les bagarres chorégraphiées et les virées de John Wick à Rome.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "faible",
+        "family": false
+      }
     }
   },
   {
@@ -6957,6 +7305,18 @@
       "reflechir": "Rey cherche à convaincre Luke de lui enseigner la Force, avec un vrai enjeu de transmission.",
       "spectacle": "Le film promet de grandes batailles spatiales et de l'action à l'échelle de la galaxie.",
       "emotion": "Les liens entre Rey, Luke, Leia et la Résistance donnent un fort enjeu humain et affectif."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance pop-corn bien nerveuse, avec de l'aventure, de l'action et un détour par la Force qui laisse peu de répit.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -7211,6 +7571,18 @@
       "reflechir": "La guerre éternelle et le sacrifice final donnent matière à penser sur les choix et leurs conséquences.",
       "spectacle": "L'action, le fantastique et les affrontements de clans promettent un film spectaculaire.",
       "emotion": "Selene se bat jusqu'au sacrifice ultime pour mettre fin à une guerre qui la dépasse."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et sombre, si tu aimes Selene plongée au cœur d'une guerre éternelle entre Lycans et vampires, sans trop traîner avec ses 93 minutes.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -7332,6 +7704,18 @@
       "frissonner": "Le séisme et la course contre la catastrophe installent une tension constante.",
       "spectacle": "Le film mise sur l'ampleur du séisme et une action spectaculaire.",
       "emotion": "La quête pour sauver leur fille donne un fort enjeu familial et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de catastrophe bien tendue, avec action et thriller en mode grand frisson, quand tu veux un film qui ne te laisse pas souffler.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -7452,6 +7836,18 @@
       "reflechir": "La quête de Rey et la crise de Finn apportent des dilemmes et des trajectoires à suivre.",
       "spectacle": "L'action et la destruction par le Premier Ordre promettent un grand spectacle de science-fiction.",
       "emotion": "La disparition de Luke et la quête de Rey donnent un enjeu humain et une trajectoire touchante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance pop-corn bien nerveuse, si tu veux de l'aventure et de l'action en mode grand spectacle, avec une virée en galaxie lointaine.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -7574,6 +7970,18 @@
       "reflechir": "La lutte pour survivre et la vengeance donnent matière à penser.",
       "spectacle": "L'ampleur des paysages sauvages et l'épreuve physique promettent un grand spectacle.",
       "emotion": "Le parcours de Hugh Glass, porté par la survie et la vengeance, est intense et humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et ample, si tu aimes les récits de survie âpres où la nature, le froid et la vengeance prennent toute la place.",
+    "bubulle": {
+      "profile": {
+        "pace": "lent",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -7826,6 +8234,18 @@
       "reflechir": "L'intrigue autour de Tchernobyl et de la ville abandonnée donne matière à penser.",
       "spectacle": "L'exploration d'une ville fantôme et la fuite du groupe promettent une belle intensité visuelle.",
       "emotion": "Le film suit des vacanciers pris au piège, avec un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance courte qui aime les virées qui tournent mal, avec une bonne dose de frisson et de tension en ville fantôme.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "faible",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "faible",
+        "family": false
+      }
     }
   },
   {
@@ -7948,6 +8368,18 @@
       "reflechir": "L'enquête sur l'origine de l'humanité donne une vraie matière à penser.",
       "spectacle": "Le voyage aux confins de l'univers promet une ampleur visuelle de science-fiction.",
       "emotion": "Le destin de l'humanité donne un enjeu humain fort à l'aventure."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance de science-fiction troublante, quand tu as envie d'un voyage spatial qui glisse vite vers le mystère et l'horreur.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -8070,6 +8502,18 @@
       "spectacle": "Le rassemblement des alliés et l'affrontement final promettent un grand spectacle.",
       "emotion": "Bella, Edward et leur famille affrontent une épreuve qui renforce l'enjeu affectif.",
       "famille": "La famille Cullen et la protection de Renésmée en font un récit familial."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de saga jusqu'au bout, avec romance, drame et un ultime affrontement qui parle aux fans de vampires et de grandes histoires de clan.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -8192,6 +8636,18 @@
       "reflechir": "Le film oppose humains, vampires et Lycans autour d'une nouvelle alliance et d'un basculement de conflit.",
       "spectacle": "Le mélange d'action et de fantastique promet des affrontements à grande échelle.",
       "emotion": "Selene est pourchassée et convoitée, ce qui donne un enjeu personnel à l'histoire."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et sombre, si tu as envie d'un mix de fantastique, d'action et d'horreur qui ne traîne pas en route.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -8312,6 +8768,18 @@
       "spectacle": "Le film annonce une ultime épreuve de force et une grande ampleur d'action.",
       "emotion": "Les enjeux pour les personnages rendent cette conclusion très intense.",
       "famille": "L'univers de sorciers et l'aventure en font un choix familial."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de grande bataille en fantasy, quand tu veux voir Poudlard basculer dans l'ultime affrontement sans traîner en route.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -8434,6 +8902,18 @@
       "reflechir": "Le récit pose un choix difficile entre rester humaine et affronter les conséquences de cette grossesse.",
       "spectacle": "Le duel entre vampires et loups-garous et l'univers fantastique donnent une vraie ampleur visuelle.",
       "emotion": "Le film repose sur le couple Bella-Edward, leur relation et une situation familiale chargée d'enjeux."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance romance fantastique un peu torse au cœur, avec du drame en embuscade et un choix qui fait monter la tension.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -8687,6 +9167,18 @@
       "reflechir": "La quête des Horcruxes et les secrets révélés donnent matière à penser sur le sacrifice et le pouvoir.",
       "spectacle": "L'aventure fantastique et les périls à grande échelle offrent un grand souffle visuel et épique.",
       "emotion": "L'amitié de Harry, Ron et Hermione est mise à rude épreuve par les sacrifices et les liens fragiles."
+    },
+    "projectionnisteAdvice": "Je te conseillerais cette séance pour une grande virée d'aventure et de fantaisie, quand tu veux suivre Harry, Ron et Hermione dans une mission sombre où la tension monte sans répit.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -8810,6 +9302,18 @@
       "reflechir": "Le choix de Bella entre Edward et Jacob pose un dilemme central qui fait réfléchir.",
       "spectacle": "L'affrontement entre clans et l'armée qui approche promet un grand spectacle.",
       "emotion": "Bella doit choisir entre amour et amitié, avec un enjeu humain très fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de romance fantastique avec tensions de clans et dilemme amoureux, quand tu veux 124 minutes de drame un peu mordant.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -9064,6 +9568,18 @@
       "spectacle": "Le film mêle aventure et fantastique dans un grand affrontement au cœur du monde des sorciers.",
       "emotion": "La relation entre Harry et Dumbledore donne une trajectoire humaine forte autour de la bataille finale.",
       "famille": "Le décor de Poudlard et l'aventure fantastique en font une séance possible pour la famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance d'aventure fantastique un peu plus sombre, quand tu veux suivre Harry, Dumbledore et Poudlard dans une montée en tension de 153 minutes.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -9184,6 +9700,18 @@
       "reflechir": "Le secret pour briser la malédiction apporte une idée centrale et un vrai enjeu à suivre.",
       "spectacle": "L'affrontement avec le fantôme de Kayako promet une tension visuelle et des moments intenses.",
       "emotion": "Une famille se bat pour survivre ensemble, avec un destin tragique à sauver."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nocturne bien frissonnante, si tu aimes les malédictions, les fantômes et les 90 minutes qui filent avec tension.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -9307,6 +9835,18 @@
       "reflechir": "Le film explore l'ambiguïté des sentiments entre Bella, Edward et Jacob.",
       "spectacle": "L'aventure et le fantastique promettent un grand décor de cinéma.",
       "emotion": "L'abandon, l'amour passionnel et la relation triangulaire donnent une forte charge émotionnelle."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance mélancolique et romantique, si tu as envie de suivre Bella entre manque, danger et triangle amoureux qui se resserre.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "faible",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -9429,6 +9969,18 @@
       "reflechir": "Le film met en jeu l'équilibre entre clans et le dilemme d'un amour interdit.",
       "spectacle": "L'action fantastique et la guerre entre vampires et lycans promettent un grand spectacle.",
       "emotion": "L'amour entre la fille de Victor et Lucian nourrit un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance sombre et nerveuse, si tu as envie d'un fantastique d'action au Moyen-Âge, avec guerre sanglante et tensions qui mordent.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -9551,6 +10103,18 @@
       "reflechir": "Le film explore le dilemme d'une romance impossible et la découverte d'un vampire.",
       "spectacle": "Le fantastique donne une ampleur visuelle à cette histoire de vampires et de lycée.",
       "emotion": "La romance entre Bella et Edward porte l'enjeu humain central du film."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de romance sombre et de frissons discrets, quand tu veux suivre une histoire sensuelle et un peu dangereuse sans quitter la pluie de Forks.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "faible",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -9674,6 +10238,18 @@
       "reflechir": "L'enquête du journaliste et le mystère autour de la légende donnent matière à penser.",
       "spectacle": "L'arrivée d'un serpent géant et la destruction de Los Angeles annoncent un grand spectacle.",
       "emotion": "Le récit suit un journaliste pris dans une menace qui engage aussi un enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de créature géante et de légende coréenne, quand tu veux du fantastique qui file droit vers l'action et le chaos à Los Angeles.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -9793,6 +10369,18 @@
       "reflechir": "Le film parle de mensonges, de pouvoir et de vérité à défendre, avec un vrai dilemme à suivre.",
       "spectacle": "L'aventure à Poudlard promet des affrontements magiques et un grand souffle de fantasy.",
       "emotion": "Harry doit affronter le déni, la menace et la solitude au sein de son monde."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance d'aventure fantastique un peu plus sombre, quand tu veux retrouver Poudlard avec une tension qui monte et un duel bien tendu contre Ombrage.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -9913,6 +10501,18 @@
       "reflechir": "L'histoire mêle une enquête autour de meurtres inexpliqués, de disparitions et d'étranges comportements.",
       "spectacle": "Le film multiplie les lieux et les situations à Tokyo pour un thriller d'horreur à forte tension visuelle.",
       "emotion": "Le récit touche à la famille, à la sœur hospitalisée et aux liens qui se tendent entre proches."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de frissons en terrain glacial : Tokyo, une malédiction qui s'étend et un thriller horrifique qui aime faire monter la tension.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -10033,6 +10633,18 @@
       "reflechir": "L'intrigue explore les origines des personnages et le secret derrière la guerre, avec de vrais enjeux de vérité.",
       "spectacle": "L'action oppose vampires et lycans dans un affrontement ambitieux et spectaculaire.",
       "emotion": "Le secret du massacre familial et la solitude de Selene donnent une forte charge humaine."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nocturne, si tu aimes les affrontements sombres, l'action nerveuse et les mystères de vampires et lycans qui se resserrent sans répit.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -10154,6 +10766,18 @@
       "spectacle": "Le Tournoi des trois sorciers promet de grandes épreuves et de l'action.",
       "emotion": "Harry est mis à mal et doit affronter de lourds enjeux personnels.",
       "famille": "L'univers de Harry Potter reste une aventure connue pour une séance en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une longue séance d'aventure à Poudlard, avec des épreuves qui montent en pression et un tournant plus sombre pour Harry.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -10274,6 +10898,18 @@
       "spectacle": "Des combats au sabre et une guerre galactique offrent un grand spectacle d'action.",
       "emotion": "Le destin d'Anakin, d'Obi-Wan et de Padmé porte de forts enjeux humains.",
       "famille": "Une aventure de science-fiction emblématique à partager en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance grand spectacle, quand tu veux de l'aventure et des duels au sabre qui font monter la tension jusqu'au bout.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -10396,6 +11032,18 @@
       "spectacle": "L'aventure à Poudlard promet un grand spectacle fantastique et visuel.",
       "emotion": "Le lien avec les parents de Harry et son histoire personnelle donnent un vrai enjeu humain.",
       "famille": "L'univers de Harry Potter en fait une séance appréciable pour toute la famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance d'aventure fantastique bien tendue, avec Harry face à Sirius Black et l'ombre d'Azkaban qui plane sur Poudlard.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -10514,6 +11162,18 @@
       "frissonner": "La malédiction, l'horreur et le mystère créent une tension sombre et inquiétante.",
       "reflechir": "Le récit pousse à comprendre la malédiction pour espérer survivre, avec une vraie dimension d'enquête.",
       "emotion": "Karen est confrontée à l'horreur et lutte pour survivre, ce qui donne un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance de frissons tendue et sans répit, quand tu as envie d'une horreur mystérieuse qui te happe en 91 minutes chrono.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -10636,6 +11296,18 @@
       "spectacle": "La bataille pour la Terre du Milieu promet une grande ampleur d'action et de scènes épiques.",
       "emotion": "La mission de Frodon et Sam et le combat d'Aragorn donnent un fort enjeu humain.",
       "famille": "Une grande aventure fantastique connue pour pouvoir se partager en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une grande séance au long cours, quand tu veux te laisser emporter par l'aventure, le fantastique et l'action sans regarder l'horloge.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -10758,6 +11430,18 @@
       "reflechir": "Le film met Neo face à un choix douloureux et à une vérité qui invite à réfléchir.",
       "spectacle": "L'action, l'assaut des Machines et l'ampleur de la lutte promettent un grand spectacle.",
       "emotion": "Neo porte tout l'espoir de Sion, avec un parcours de destinée et de choix très humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et spectaculaire, si tu aimes les virages d'action, de SF et de thriller avec Neo sous pression.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "eleve",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -10880,6 +11564,18 @@
       "reflechir": "Le film explore le libre arbitre, le pouvoir et la fin d'une guerre entre humains et Machines.",
       "spectacle": "La bataille finale et l'action explosive promettent un grand spectacle visuel.",
       "emotion": "La défense de Sion et la quête de liberté portent un fort enjeu humain et collectif."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de fin de saga, quand tu veux du grand spectacle, des batailles explosives et un vrai face-à-face SF qui ne laisse pas souffler.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -10996,6 +11692,18 @@
       "reflechir": "Une amitié forte et une communauté bouleversée donnent matière à penser sur l'acceptation et le regard des autres.",
       "emotion": "La relation entre Harold et Radio porte un récit humain touchant et profondément émouvant.",
       "famille": "L'histoire d'amitié et de communauté peut se partager en séance familiale."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance émouvante, quand tu as envie d'un drame humain sur l'amitié et le regard des autres, sans chercher de gros effets.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "faible",
+        "spectacle": "faible",
+        "violence": "faible",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": true
+      }
     }
   },
   {
@@ -11116,6 +11824,18 @@
       "reflechir": "Le choix de Selene entre passion et fidélité donne un vrai dilemme à suivre.",
       "spectacle": "L'affrontement entre vampires et lycans promet de l'action et un grand spectacle.",
       "emotion": "Le conflit de Selene avec ses sentiments et sa loyauté donne un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance sombre et nerveuse, si tu as envie d'un duel vampires-lycans avec Selene au cœur d'un thriller fantastique bien tendu.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -11239,6 +11959,18 @@
       "spectacle": "L'aventure magique promet des pièges, de l'action et un grand univers visuel.",
       "emotion": "L'amitié de Harry, Ron et Hermione porte un enjeu humain chaleureux.",
       "famille": "L'aventure magique avec ses amis en fait une séance adaptée à la famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance d'aventure fantastique de 161 minutes, avec Harry, Ron et Hermione lancés dans le mystère de la Chambre des secrets.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -11360,6 +12092,18 @@
       "reflechir": "La quête de l'Anneau et le choix des héros donnent matière à penser.",
       "spectacle": "Batailles, armées en marche et aventure fantastique offrent un grand spectacle.",
       "emotion": "La séparation de la Communauté et l'entraide de Frodon et Sam créent un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance d'aventure, quand tu as envie d'un voyage long de 3h où la quête bascule franchement dans la bataille.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -11480,6 +12224,18 @@
       "spectacle": "Aventure, action et science-fiction pour un grand spectacle galactique.",
       "emotion": "La protection de Padmé et le lien entre Anakin et Obi-Wan portent l'enjeu humain.",
       "famille": "Une grande aventure de science-fiction qui peut se partager en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance d'aventure spatiale bien chargée, avec politique galactique, clones et duels de Jedi, surtout si tu as envie de retrouver Anakin, Obi-Wan et Padmé pendant 132 minutes.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -12001,6 +12757,18 @@
       "spectacle": "L'aventure interplanétaire et les affrontements Jedi promettent un grand spectacle.",
       "emotion": "L'histoire suit des personnages liés par leur mission et la protection de Naboo.",
       "famille": "L'univers d'aventure et de héros emblématiques en fait une séance accessible en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance d'aventure spatiale généreuse, si tu as envie de te laisser embarquer par la galaxie et ses enjeux politiques sans regarder l'heure.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -12186,6 +12954,18 @@
       "reflechir": "L'histoire fait penser à l'amour, aux choix et aux écarts de classe.",
       "spectacle": "Le Titanic et son naufrage promettent une ampleur visuelle impressionnante.",
       "emotion": "La romance sur fond de drame donne une trajectoire très touchante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une grande séance romantique, avec du souffle et du drame, quand tu as envie de te laisser embarquer longtemps par une histoire d'amour sur fond de catastrophe.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "faible",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -12306,6 +13086,18 @@
       "reflechir": "L'intrigue repose sur une accusation, une enquête et la recherche d'une vérité cachée.",
       "spectacle": "Les scènes d'action, l'infiltration de la CIA et le train à grande vitesse promettent un grand spectacle.",
       "emotion": "Ethan Hunt est seul face à l'accusation et avance dans une quête personnelle forte."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et bien tendue, si tu aimes les courses-poursuites, les infiltrations impossibles et les films d'espionnage qui ne laissent pas souffler.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -13157,6 +13949,18 @@
       "reflechir": "Le film interroge la parole de Ripley face au doute des militaires et à la mission de sauvetage.",
       "spectacle": "L'affrontement avec les marines et la Bête promet une action ample et spectaculaire.",
       "emotion": "Ripley protège des colons et accompagne une mission de sauvetage, avec un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et musclée, si tu aimes suivre Ripley dans un face-à-face nerveux avec les xénomorphes sur LV-426.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -13277,6 +14081,18 @@
       "spectacle": "Aventure, action et science-fiction pour une mission d'envergure à l'échelle de la galaxie.",
       "emotion": "Le lien entre Luke et Dark Vador donne un enjeu familial fort et touchant.",
       "famille": "Une grande aventure de science-fiction accessible pour une séance familiale."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance d'aventure galactique bien rythmée, quand tu veux du grand spectacle et une mission qui embarque du début à la fin.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -13329,6 +14145,18 @@
       "reflechir": "Une trajectoire de pouvoir et d'ascension qui fait réfléchir aux choix et à leurs conséquences.",
       "spectacle": "Un film d'action ample, porté par une ambition de grand spectacle.",
       "emotion": "Le parcours de Tony Montana met en jeu une trajectoire humaine forte."
+    },
+    "projectionnisteAdvice": "Je te conseillerais Scarface pour une grande séance de crime tendue et ample, quand tu as envie de suivre Tony Montana dans une ascension sans scrupules sous la main de Brian De Palma.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   },
   {
@@ -13448,6 +14276,18 @@
       "reflechir": "Le film pose un dilemme entre poursuivre l'entraînement ou secourir ses amis.",
       "spectacle": "Aventure spatiale, combats et poursuites offrent un grand spectacle de science-fiction.",
       "emotion": "L'amitié et le lien entre les héros portent un enjeu humain fort au cœur de l'histoire."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance d'aventure SF qui ne traîne pas, avec Hoth, Bespin et un duel qui remet la galaxie en tension.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": true
+      }
     }
   },
   {
@@ -13825,6 +14665,18 @@
       "reflechir": "L'intrigue mêle pouvoir, trahison et enquête autour du coupable.",
       "spectacle": "Le récit déploie l'ascension d'un empire criminel avec des enjeux d'ampleur.",
       "emotion": "La saga familiale suit Michael, Vito et leurs liens sous le poids du pouvoir."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une longue séance de drame criminel, quand tu veux te laisser happer par la saga des Corleone et sa montée en tension.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "eleve",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
+        "family": false
+      }
     }
   },
   {
@@ -13945,6 +14797,18 @@
       "reflechir": "Le film pose un dilemme de succession et de loyauté au cœur des affaires familiales.",
       "spectacle": "L'ampleur des règlements de comptes et des affrontements donne un vrai souffle de grand film.",
       "emotion": "L'histoire suit une famille soudée et ses héritiers dans une trajectoire marquante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une grande séance de drame criminel, quand tu veux suivre la montée en puissance de Michael Corleone sans regarder le temps filer.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
     }
   }
 ]
