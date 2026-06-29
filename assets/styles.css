@@ -7357,8 +7357,6 @@ img,svg,video,canvas{
 /* V4.6 - lien discret vers diagnostic vidéo */
 .ps-diagnostic-link{color:#e7dcff;text-decoration:none;font-weight:850;opacity:.9}
 .ps-diagnostic-link:hover{opacity:1;color:#fff;text-decoration:underline;text-decoration-color:rgba(195,77,255,.7)}
-.footer-bottom .ps-diagnostic-link{margin-left:10px}
-@media (max-width:700px){.footer-bottom .ps-diagnostic-link{display:inline-flex;margin-left:0;margin-top:6px}}
 
 
 /* V4.6 assistance vidéo : lien d'aide visible au bon moment */
