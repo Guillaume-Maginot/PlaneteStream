@@ -303,26 +303,47 @@
           </article>
         </div>
 
-        <div class="home-v2-grid" id="cinemaReleaseModule" aria-label="Sorties cinéma et activité récente">
+        <div class="home-v2-grid" aria-label="Nouveaux modules accueil">
           <section class="home-release-card" aria-labelledby="homeReleaseTitle">
             <div class="home-release-head">
               <div>
                 <p class="eyebrow">Sorties cinéma</p>
-                <h3 id="homeReleaseTitle">Sorties cinéma</h3>
+                <h3 id="homeReleaseTitle">Bandes-annonces à surveiller</h3>
               </div>
-              <a class="home-release-all" href="#catalogue">Calendrier cinéma <span aria-hidden="true">→</span></a>
+              <a class="home-release-all" href="#catalogue">Voir toutes les sorties <span aria-hidden="true">→</span></a>
             </div>
 
-            <div class="home-trailer-frame" id="homeTrailerFrame" aria-label="Bande-annonce mise en avant">
-              <button class="home-trailer-poster" id="homeTrailerPoster" type="button" aria-label="Lancer la bande-annonce">
-                <span class="home-trailer-logo" id="homeTrailerLogo">PLANÈTE STREAM</span>
-                <span class="home-trailer-play" aria-hidden="true">▶</span>
-                <span class="home-trailer-caption" id="homeTrailerCaption">Bande-annonce officielle</span>
-              </button>
+            <div class="home-trailer-frame" aria-label="Bande-annonce mise en avant">
+              <div class="home-trailer-embed">
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/?rel=0&modestbranding=1"
+                  title="Bande-annonce officielle"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+                <a class="home-trailer-fallback" href="https://www.youtube.com/results?search_query=Dune+Messiah+bande+annonce" target="_blank" rel="noopener" aria-label="Rechercher la bande-annonce de Dune Messiah sur YouTube">
+                  <span class="home-trailer-logo">DUNE</span>
+                  <span class="home-trailer-play" aria-hidden="true">▶</span>
+                  <span class="home-trailer-caption">Bande-annonce officielle</span>
+                </a>
+              </div>
             </div>
 
-            <div class="home-release-strip" id="homeReleaseStrip" aria-label="Prochaines sorties">
-              <p class="hall-muted">Chargement des prochaines sorties...</p>
+            <div class="home-release-now">
+              <div>
+                <span class="home-release-badge">À venir au cinéma</span>
+                <h4>Dune : Messiah</h4>
+              </div>
+              <p class="home-release-date">Décembre 2026</p>
+              <p>Le prochain chapitre d’Arrakis prend place dans ce module prototype. Plus tard, TMDb pourra fournir la vidéo, l’image, la date et la fiche liée.</p>
+              <a class="secondary home-release-button" href="#catalogue">Voir la fiche</a>
+            </div>
+
+            <div class="home-release-strip" aria-label="Prochaines sorties">
+              <button class="home-release-chip is-active" type="button"><span>Dune : Messiah</span><small>Déc. 2026</small></button>
+              <button class="home-release-chip" type="button"><span>Avatar 4</span><small>À venir</small></button>
+              <button class="home-release-chip" type="button"><span>Spider-Man</span><small>À venir</small></button>
+              <button class="home-release-chip" type="button"><span>Thunderbolts</span><small>À venir</small></button>
             </div>
 
             <article class="home-account-card home-account-row-card">

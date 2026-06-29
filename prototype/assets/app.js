@@ -39,9 +39,6 @@ function normalizeCatalogue(){
     premium: item.premium === true || item.premium === 'true',
     featured: item.featured === true || item.featured === 'true',
     homeFeatured: item.homeFeatured === true || item.homeFeatured === 'true',
-    cinemaRelease: item.cinemaRelease === true || item.cinemaRelease === 'true',
-    cinemaHero: item.cinemaHero === true || item.cinemaHero === 'true',
-    cinemaOrder: Number(item.cinemaOrder) || 999,
   }));
 }
 
@@ -87,18 +84,6 @@ function bindEvents(){
   });
 
   document.querySelector('#surpriseBtn')?.addEventListener('click', () => openRandomTitle());
-  document.querySelector('#homeReleaseStrip')?.addEventListener('click', event => {
-    const button = event.target.closest('[data-cinema-index]');
-    if(!button) return;
-    const index = Number(button.dataset.cinemaIndex || 0);
-    const releases = getCinemaReleases();
-    const item = releases[index];
-    if(item) renderCinemaHero(item, index, releases);
-  });
-  document.querySelector('#homeTrailerFrame')?.addEventListener('click', event => {
-    const target = event.target.closest('[data-cinema-trailer]');
-    if(target) playCinemaTrailer(target.dataset.cinemaTrailer);
-  });
   document.querySelector('#heroPrev')?.addEventListener('click', () => moveHero(-1));
   document.querySelector('#heroNext')?.addEventListener('click', () => moveHero(1));
 
@@ -292,8 +277,6 @@ function render(){
   const latest = [...standardCatalogue].sort(sortByLatest).slice(0,10);
   const latestManga = [...mangaCatalogue].sort(sortByLatest).slice(0,10);
   const topRated = [...standardCatalogue].sort(sortByRating).slice(0,10);
-
-  renderCinemaReleases();
 
   mountPremium('#premiumGrid', premium);
   mount('#featuredGrid', featured);
@@ -758,125 +741,6 @@ function createPremiumCard(item){
     </div>`;
   return card;
 }
-
-
-function getCinemaReleases(){
-  return state.catalogue
-    .filter(item => item.cinemaRelease)
-    .sort((a,b) => {
-      const orderA = Number(a.cinemaOrder) || 999;
-      const orderB = Number(b.cinemaOrder) || 999;
-      if(orderA !== orderB) return orderA - orderB;
-      return sortByLatest(a,b);
-    });
-}
-
-function renderCinemaReleases(){
-  const module = document.querySelector('#cinemaReleaseModule');
-  const strip = document.querySelector('#homeReleaseStrip');
-  if(!module || !strip) return;
-
-  const releases = getCinemaReleases();
-  if(!releases.length){
-    module.style.display = 'none';
-    return;
-  }
-
-  module.style.display = '';
-  const hero = releases.find(item => item.cinemaHero) || releases[0];
-  const heroIndex = Math.max(0, releases.indexOf(hero));
-  renderCinemaHero(hero, heroIndex, releases);
-}
-
-function renderCinemaHero(item, activeIndex=0, releases=getCinemaReleases()){
-  if(!item) return;
-
-  const title = item.title || 'Sortie cinéma';
-  const year = item.year || (item.releaseDate || '').slice(0,4) || 'À venir';
-  const releaseDate = formatCinemaReleaseDate(item.releaseDate);
-  const backdrop = item.backdrop || item.poster || '';
-  const poster = item.poster || '';
-  const trailerKey = getYoutubeKey(item.trailer);
-
-  const frame = document.querySelector('#homeTrailerFrame');
-  const strip = document.querySelector('#homeReleaseStrip');
-  const logo = document.querySelector('#homeTrailerLogo');
-  const caption = document.querySelector('#homeTrailerCaption');
-
-  if(frame){
-    frame.innerHTML = `
-      <button class="home-trailer-poster" type="button" ${trailerKey ? `data-cinema-trailer="${escapeHtml(trailerKey)}"` : ''} aria-label="${trailerKey ? `Lancer la bande-annonce de ${escapeHtml(title)}` : `Bande-annonce indisponible pour ${escapeHtml(title)}`}">
-        ${backdrop ? `<span class="home-trailer-backdrop" style="background-image:url('${escapeHtml(backdrop)}')"></span>` : ''}
-        <span class="home-trailer-shade"></span>
-        <span class="home-trailer-copy">
-          <span class="home-release-badge">À venir au cinéma</span>
-          <strong>${escapeHtml(title)}</strong>
-          <small>${escapeHtml(releaseDate || year)}</small>
-        </span>
-        <span class="home-trailer-play" aria-hidden="true">${trailerKey ? '▶' : '…'}</span>
-        <span class="home-trailer-caption">${trailerKey ? 'Bande-annonce officielle' : 'Bande-annonce à venir'}</span>
-      </button>`;
-  }
-
-  if(logo) logo.textContent = title;
-  if(caption) caption.textContent = trailerKey ? 'Bande-annonce officielle' : 'Bande-annonce à venir';
-
-  if(strip){
-    strip.innerHTML = releases.slice(0,6).map((release, index) => {
-      const active = release.slug === item.slug ? ' is-active' : '';
-      const releasePoster = release.poster || '';
-      const releaseTitle = release.title || 'Sortie cinéma';
-      const releaseDateLabel = formatCinemaShortDate(release.releaseDate) || (release.year || 'À venir');
-      return `
-        <button class="home-release-chip${active}" type="button" data-cinema-index="${index}">
-          <span class="home-release-chip-poster" ${releasePoster ? `style="background-image:url('${escapeHtml(releasePoster)}')"` : ''} data-letter="${escapeHtml(releaseTitle.slice(0,1) || '🎬')}"></span>
-          <span class="home-release-chip-copy">
-            <strong>${escapeHtml(releaseTitle)}</strong>
-            <small>${escapeHtml(releaseDateLabel)}</small>
-          </span>
-        </button>`;
-    }).join('');
-  }
-}
-
-function playCinemaTrailer(key){
-  const trailerKey = getYoutubeKey(key);
-  const frame = document.querySelector('#homeTrailerFrame');
-  if(!trailerKey || !frame) return;
-
-  frame.classList.add('is-playing');
-  frame.innerHTML = `
-    <iframe
-      src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailerKey)}?autoplay=1&rel=0&modestbranding=1"
-      title="Bande-annonce officielle"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen></iframe>`;
-}
-
-function getYoutubeKey(value=''){
-  const raw = String(value || '').trim();
-  if(!raw) return '';
-  const embedMatch = raw.match(/(?:youtube\.com\/embed\/|youtu\.be\/|youtube\.com\/watch\?v=)([A-Za-z0-9_-]{6,})/);
-  if(embedMatch) return embedMatch[1];
-  if(/^[A-Za-z0-9_-]{6,}$/.test(raw)) return raw;
-  return '';
-}
-
-function formatCinemaReleaseDate(value=''){
-  if(!value) return 'Date à venir';
-  const date = new Date(`${value}T00:00:00`);
-  if(Number.isNaN(date.getTime())) return String(value);
-  return date.toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
-}
-
-function formatCinemaShortDate(value=''){
-  if(!value) return 'À venir';
-  const date = new Date(`${value}T00:00:00`);
-  if(Number.isNaN(date.getTime())) return String(value);
-  const month = date.toLocaleDateString('fr-FR', {month:'short'}).replace('.', '');
-  return `${month} ${date.getFullYear()}`;
-}
-
 
 function mountPremium(selector, list){
   const grid = document.querySelector(selector);
