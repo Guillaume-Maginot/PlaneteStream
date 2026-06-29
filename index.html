@@ -3,10 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- V4.6 low-risk perf: connexion anticipée au CDN des affiches TMDb -->
-  <link rel="preconnect" href="https://image.tmdb.org" crossorigin>
-  <link rel="dns-prefetch" href="//image.tmdb.org">
-
 
   <meta property="og:title" content="Planète Stream">
 <meta property="og:description" content="Explorez films, séries et mangas dans une galaxie de streaming.">
@@ -24,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=4.5.3-rail-flex" />
+  <link rel="stylesheet" href="assets/styles.css?v=4.6-mobile-fish-cv" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
   
   <style>
@@ -194,7 +190,7 @@
 
   </style>
 
-  <link rel="stylesheet" href="assets/projectionniste-fish.css?v=3.4.5-fish-local">
+  <link rel="stylesheet" href="assets/projectionniste-fish.css?v=4.6-mobile-hidden">
 </head>
 <body>
   <header>
@@ -357,7 +353,7 @@
         <img
             src="assets/sagas.png"
             alt="Sagas Planète Stream"
-            loading="lazy" decoding="async">
+            loading="lazy">
     </a>
 
 </section>
@@ -525,13 +521,13 @@
     <div class="ps-fish-glow"></div>
 
     <div class="ps-fish-sprite" id="psFishSprite" aria-hidden="true">
-      <img class="ps-fish-pose is-active" decoding="async" src="assets/fish_immobile.png" alt="" data-pose="idle-1">
-      <img class="ps-fish-pose" decoding="async" src="assets/fish_immobile2.png" alt="" data-pose="idle-2">
-      <img class="ps-fish-pose" decoding="async" src="assets/fish_bulle.png" alt="" data-pose="thinking">
-      <img class="ps-fish-pose" decoding="async" src="assets/fish_sourire.png" alt="" data-pose="talking">
+      <img class="ps-fish-pose is-active" src="assets/fish_immobile.png" alt="" data-pose="idle-1">
+      <img class="ps-fish-pose" src="assets/fish_immobile2.png" alt="" data-pose="idle-2">
+      <img class="ps-fish-pose" src="assets/fish_bulle.png" alt="" data-pose="thinking">
+      <img class="ps-fish-pose" src="assets/fish_sourire.png" alt="" data-pose="talking">
     </div>
   </div>
-  <script src="assets/projectionniste-fish.js?v=3.4.5-fish-local"></script>
+  <script src="assets/projectionniste-fish.js?v=4.6-mobile-hidden"></script>
 
   <script src="assets/mobile-optimizations.js?v=4.5-mobile-opt" defer></script>
 </body>

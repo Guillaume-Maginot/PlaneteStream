@@ -1,4 +1,8 @@
 (function () {
+  // V4.6 : Bubulle est désactivé au chargement sur mobile pour éviter un widget inutilisable et économiser un peu de JS.
+  if (window.matchMedia && window.matchMedia('(max-width: 767px)').matches) {
+    return;
+  }
   // ======================================
 // MODE DEBUG BUBULLE
 // false = désactivé

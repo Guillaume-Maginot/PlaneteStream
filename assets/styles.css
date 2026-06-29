@@ -7329,3 +7329,27 @@ img,svg,video,canvas{
     white-space:nowrap!important;
   }
 }
+
+
+/* === V4.6 micro-patch : rendu mobile plus léger ===
+   Les grosses sections hors écran sont calculées seulement quand elles approchent du viewport.
+   Aucun changement HTML/JS : optimisation navigateur uniquement. */
+@media (max-width: 768px) {
+  #hall-cinema,
+  #premiumSection,
+  #featuredSection,
+  #latestSection,
+  #latestMangaSection,
+  #topRatedSection,
+  #sagasSection,
+  #catalogueFullSection,
+  .discord-cta,
+  .site-footer {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 720px;
+  }
+
+  #catalogueFullSection {
+    contain-intrinsic-size: 1px 1400px;
+  }
+}

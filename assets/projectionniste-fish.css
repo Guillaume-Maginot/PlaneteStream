@@ -755,3 +755,16 @@
   }
 }
 
+
+
+/* === V4.6 micro-patch : Bubulle reste au bocal sur mobile ===
+   Sur petit écran, le widget prend trop de place et gêne l’usage.
+   Masquage CSS seulement : desktop/tablette gardent le Projectionniste. */
+@media (max-width: 767px) {
+  .ps-fish-widget,
+  .ps-fish-chat {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
