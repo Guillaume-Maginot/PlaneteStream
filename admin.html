@@ -1555,12 +1555,12 @@
           <div class="admin-module-kicker">📽 Module catalogue</div>
           <div class="admin-empty" id="bubulleAdminPanel" style="margin:0 0 18px;border-color:rgba(195,77,255,.42);background:linear-gradient(135deg,rgba(139,44,255,.14),rgba(255,255,255,.035));">
             <strong>🐠 Moulinette Bubulle active</strong><br>
-            <span id="catalogueBubbleStatus">Scan des justifications Bubulle…</span>
+            <span id="catalogueBubbleStatus">Scan Bubulle complet : justifications, avis et profil…</span>
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
-              <button class="primary" type="button" id="generateAllBubbleReasonsBtn">✨ Mouliner les fiches sans Bubulle</button>
+              <button class="primary" type="button" id="generateAllBubbleReasonsBtn">✨ Mouliner les fiches sans justifications</button>
               <button class="ghost" type="button" id="stopBubbleBatchBtn" disabled>Stopper la moulinette</button>
             </div>
-            <br><small>Le mode lot enrichit uniquement les fiches sans Bubulle et ne remplace pas les justifications existantes.</small>
+            <br><small>Le mode lot enrichit uniquement les fiches sans justifications et ne remplace pas les textes existants. Le compteur Bubulle complet vérifie aussi l’avis et le profil.</small>
           </div>
     <div class="admin-layout">
       <section class="admin-box">
@@ -1681,7 +1681,7 @@
             </select>
             <button class="ghost catalogue-filter-btn is-active" id="showAllEmbedsBtn" type="button">Tous les contenus</button>
             <button class="ghost catalogue-filter-btn" id="showMissingEmbedsBtn" type="button">Sans embed</button>
-            <button class="ghost catalogue-filter-btn" id="showMissingBubbleBtn" type="button">🐠 Sans Bubulle</button>
+            <button class="ghost catalogue-filter-btn" id="showMissingBubbleBtn" type="button">🐠 Bubulle incomplet</button>
             <select id="catalogueSort">
               <option value="missing-first">Embeds manquants d’abord</option>
               <option value="recent">Ajout récent</option>

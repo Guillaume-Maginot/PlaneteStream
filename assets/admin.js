@@ -444,10 +444,66 @@ function needsBubbleReasons(entry = {}) {
   return !hasBubbleReasons(entry);
 }
 
+const BUBULLE_PROFILE_REQUIRED_KEYS = [
+  'pace',
+  'complexity',
+  'spectacle',
+  'violence',
+  'humour',
+  'emotion'
+];
+
+function hasProjectionnisteAdvice(entry = {}) {
+  return String(entry.projectionnisteAdvice || '').trim().length > 0;
+}
+
+function hasCompleteBubulleProfile(entry = {}) {
+  const profile = getBubulleProfile(entry);
+
+  const hasTextFields = BUBULLE_PROFILE_REQUIRED_KEYS.every(key => {
+    return String(profile[key] || '').trim().length > 0;
+  });
+
+  return hasTextFields && typeof profile.family === 'boolean';
+}
+
+function getBubulleCompletionStatus(entry = {}) {
+  const reasons = hasBubbleReasons(entry);
+  const advice = hasProjectionnisteAdvice(entry);
+  const profile = hasCompleteBubulleProfile(entry);
+
+  return {
+    reasons,
+    advice,
+    profile,
+    complete: reasons && advice && profile
+  };
+}
+
+function needsBubulleCompletion(entry = {}) {
+  return !getBubulleCompletionStatus(entry).complete;
+}
+
+function getBubulleMissingLabels(entry = {}) {
+  const status = getBubulleCompletionStatus(entry);
+  const labels = [];
+
+  if (!status.reasons) labels.push('justifs');
+  if (!status.advice) labels.push('avis');
+  if (!status.profile) labels.push('profil');
+
+  return labels;
+}
+
 function getBubbleReasonBadge(entry = {}) {
-  return hasBubbleReasons(entry)
-    ? '<span class="catalogue-badge bubulle-ready">🐠 Bubulle OK</span>'
-    : '<span class="catalogue-badge bubulle-missing">🐠 À enrichir</span>';
+  const status = getBubulleCompletionStatus(entry);
+
+  if (status.complete) {
+    return '<span class="catalogue-badge bubulle-ready">🐠 Bubulle complet</span>';
+  }
+
+  const missing = getBubulleMissingLabels(entry).join(', ');
+  return `<span class="catalogue-badge bubulle-missing">🐠 Incomplet : ${escapeHtml(missing)}</span>`;
 }
 
 
@@ -842,7 +898,7 @@ function setBubbleBatchUi(isRunning, label = '') {
 
   if (generateAllBubbleReasonsBtn) {
     generateAllBubbleReasonsBtn.disabled = isRunning;
-    generateAllBubbleReasonsBtn.textContent = isRunning ? (label || '🐠 Moulinette en cours...') : '✨ Mouliner les fiches sans Bubulle';
+    generateAllBubbleReasonsBtn.textContent = isRunning ? (label || '🐠 Moulinette en cours...') : '✨ Mouliner les fiches sans justifications';
   }
 
   if (stopBubbleBatchBtn) {
@@ -1012,7 +1068,7 @@ function renderCatalogueList() {
   }
 
   if (catalogueBubbleMissingMode) {
-    items = items.filter(({ entry }) => needsBubbleReasons(entry));
+    items = items.filter(({ entry }) => needsBubulleCompletion(entry));
   }
 
   if (query) {
@@ -1040,22 +1096,27 @@ function renderCatalogueList() {
   }
 
   if (catalogueEmbedStatus) {
-    const bubbleMissingTotal = draft.filter(entry => needsBubbleReasons(entry)).length;
+    const bubbleMissingTotal = draft.filter(entry => needsBubulleCompletion(entry)).length;
+    const bubbleCompleteTotal = draft.length - bubbleMissingTotal;
     const embedText = missingTotal
       ? `${missingTotal} contenu${missingTotal > 1 ? 's' : ''} sans embed`
       : 'embeds OK';
-    const bubbleText = bubbleMissingTotal
-      ? `${bubbleMissingTotal} fiche${bubbleMissingTotal > 1 ? 's' : ''} sans Bubulle`
+    const bubbleText = draft.length
+      ? `Bubulle ${bubbleCompleteTotal}/${draft.length}`
       : 'Bubulle OK';
     catalogueEmbedStatus.textContent = `${embedText} · ${bubbleText}`;
   }
 
   if (catalogueBubbleStatus) {
-    const bubbleMissingTotal = draft.filter(entry => needsBubbleReasons(entry)).length;
+    const missingReasonsTotal = draft.filter(entry => !hasBubbleReasons(entry)).length;
+    const missingAdviceTotal = draft.filter(entry => !hasProjectionnisteAdvice(entry)).length;
+    const missingProfileTotal = draft.filter(entry => !hasCompleteBubulleProfile(entry)).length;
+    const bubbleMissingTotal = draft.filter(entry => needsBubulleCompletion(entry)).length;
     const bubbleReadyTotal = draft.length - bubbleMissingTotal;
+
     catalogueBubbleStatus.textContent = bubbleMissingTotal
-      ? `${bubbleMissingTotal} fiche${bubbleMissingTotal > 1 ? 's' : ''} à enrichir · ${bubbleReadyTotal} déjà prête${bubbleReadyTotal > 1 ? 's' : ''}`
-      : `Toutes les fiches ont au moins une justification Bubulle. Le bocal est propre.`;
+      ? `Bubulle complet ${bubbleReadyTotal}/${draft.length} · justifs manquantes ${missingReasonsTotal} · avis manquants ${missingAdviceTotal} · profils manquants ${missingProfileTotal}`
+      : `Toutes les fiches ont justifications, avis et profil Bubulle complet. Le bocal est vraiment propre.`;
   }
 
   if (showMissingEmbedsBtn) {
@@ -1063,8 +1124,8 @@ function renderCatalogueList() {
   }
 
   if (showMissingBubbleBtn) {
-    const bubbleMissingTotal = draft.filter(entry => needsBubbleReasons(entry)).length;
-    showMissingBubbleBtn.textContent = bubbleMissingTotal ? `🐠 Sans Bubulle (${bubbleMissingTotal})` : '🐠 Sans Bubulle';
+    const bubbleMissingTotal = draft.filter(entry => needsBubulleCompletion(entry)).length;
+    showMissingBubbleBtn.textContent = bubbleMissingTotal ? `🐠 Bubulle incomplet (${bubbleMissingTotal})` : '🐠 Bubulle complet';
   }
 
   updateCatalogueFilterButtons();
@@ -1113,7 +1174,7 @@ function catalogueRow(entry, index) {
   const overview = String(entry.overview || '').trim();
 
   if (mediaSummary.missing) el.classList.add('is-missing-embed');
-  if (needsBubbleReasons(entry)) el.classList.add('is-missing-bubulle');
+  if (needsBubulleCompletion(entry)) el.classList.add('is-missing-bubulle');
 
   el.innerHTML = `
     ${poster ? `<img src="${escapeAttr(poster)}" alt="Affiche ${escapeAttr(entry.title || '')}">` : '<div class="catalogue-thumb">Sans affiche</div>'}
