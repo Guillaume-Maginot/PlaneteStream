@@ -3192,6 +3192,15 @@ function fishIsNonActorAvecContext(message) {
 const FISH_CANONICAL_TITLES = {
   "alien": "Alien, le huitième passager",
   "dune": "Dune",
+  "dune 1": "Dune - Première partie",
+  "dune premiere partie": "Dune - Première partie",
+  "dune premier partie": "Dune - Première partie",
+  "dune 2": "Dune : Deuxième partie",
+  "dune deuxieme partie": "Dune : Deuxième partie",
+  "mario": "Super Mario Galaxy, le film",
+  "super mario": "Super Mario Galaxy, le film",
+  "the grudge": "The Grudge",
+  "grudge": "The Grudge",
   "avatar": "Avatar",
   "matrix": "Matrix",
   "rocky": "Rocky",
@@ -3305,6 +3314,131 @@ function findTitleFamilyMatches(records, query) {
   return records.filter(record => {
     return record.titleNorm.includes(q) && record.titleNorm !== q;
   });
+}
+
+function fishHasProjectionnisteAdviceIntent(rawMessage) {
+  const m = normalize(rawMessage);
+
+  return (
+    /\b(avis|ton avis|conseil|conseilles|conseillerais|recommandes|recommanderais)\b/.test(m) ||
+    /\b(tu en penses quoi|t en penses quoi|qu en penses tu|que penses tu)\b/.test(m) ||
+    /\b(c est bien|c est bon|ca vaut le coup|ça vaut le coup|vaut le coup|je regarde|je lance)\b/.test(m)
+  );
+}
+
+function fishCleanAdviceTitleQuery(value) {
+  return normalize(value)
+    .replace(/\b(est ce que|est ce qu|tu|me|le|la|les|un|une|des|ce|cet|cette|film|serie|série|manga)\b/g, ' ')
+    .replace(/\b(avis|ton avis|conseil|conseilles|conseillerais|recommandes|recommanderais|recommande|penser|penses|pense|quoi|bien|bon|vaut|coup|regarde|lance|sur|de|du|en|ca|ça|c est|qu en|que|t)\b/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function fishExtractProjectionnisteAdviceTitleQuery(rawMessage) {
+  const m = normalize(rawMessage);
+
+  const patterns = [
+    /(?:ton avis sur|avis sur|un avis sur)\s+(.+)$/,
+    /(?:que penses tu de|qu en penses tu de|tu penses quoi de|tu en penses quoi de|t en penses quoi de)\s+(.+)$/,
+    /(?:tu me conseilles|tu conseillerais|tu recommandes|tu recommanderais|est ce que tu me conseilles|est ce que tu recommandes)\s+(.+)$/,
+    /(?:je regarde|je lance)\s+(.+)$/,
+    /^(.+?)\s+(?:tu en penses quoi|t en penses quoi|qu en penses tu|c est bien|c est bon|ca vaut le coup|ça vaut le coup|vaut le coup)$/,
+    /^(.+?)\s+(?:tu me le conseilles|tu me la conseilles|tu le conseilles|tu la conseilles)$/
+  ];
+
+  for (const pattern of patterns) {
+    const match = m.match(pattern);
+    if (match && match[1]) {
+      return fishCleanAdviceTitleQuery(match[1]);
+    }
+  }
+
+  return fishCleanAdviceTitleQuery(m);
+}
+
+function fishFindMentionedTitleForAdvice(records, rawMessage) {
+  const m = normalize(rawMessage);
+
+  for (const [alias, canonicalTitle] of Object.entries(FISH_CANONICAL_TITLES)) {
+    if (fishHasPhrase(m, alias)) {
+      const record = findBestTitleMatch(records, canonicalTitle);
+      if (record) return record;
+    }
+  }
+
+  const directTitle = records
+    .filter(record => record.titleNorm && record.titleNorm.length > 3 && fishHasPhrase(m, record.titleNorm))
+    .sort((a, b) => b.titleNorm.length - a.titleNorm.length)[0];
+
+  return directTitle || null;
+}
+
+function fishReadProjectionnisteAdvice(record) {
+  const item = record && record.item ? record.item : record || {};
+  const bubulle = item && typeof item.bubulle === 'object' && !Array.isArray(item.bubulle)
+    ? item.bubulle
+    : {};
+
+  return String(
+    item.projectionnisteAdvice ||
+    bubulle.projectionnisteAdvice ||
+    item.bubbleAdvice ||
+    ''
+  ).trim();
+}
+
+function fishProfileSummaryForAdvice(record) {
+  const profile = record?.bubulleProfile || fishReadBubulleProfile(record?.item || record || {});
+  const bits = [];
+
+  const levelLabel = value => {
+    const clean = normalize(value);
+    if (clean === 'eleve') return 'élevé';
+    if (clean === 'moyen') return 'moyen';
+    if (clean === 'faible') return 'faible';
+    return '';
+  };
+
+  if (profile.family === true) bits.push('familial');
+  if (profile.family === false) bits.push('pas vraiment familial');
+  if (profile.complexity) bits.push(`complexité ${levelLabel(profile.complexity)}`);
+  if (profile.violence) bits.push(`violence ${levelLabel(profile.violence)}`);
+  if (profile.humour) bits.push(`humour ${levelLabel(profile.humour)}`);
+  if (profile.spectacle) bits.push(`spectacle ${levelLabel(profile.spectacle)}`);
+
+  return bits.filter(Boolean).join(', ');
+}
+
+function answerProjectionnisteAdviceOfTitle(rawMessage, records) {
+  if (!fishHasProjectionnisteAdviceIntent(rawMessage)) {
+    return '';
+  }
+
+  const titleQuery = fishExtractProjectionnisteAdviceTitleQuery(rawMessage);
+  const record = fishFindMentionedTitleForAdvice(records, rawMessage) || findBestTitleMatch(records, titleQuery);
+
+  if (!record) {
+    return '';
+  }
+
+  const advice = fishReadProjectionnisteAdvice(record);
+
+  if (advice) {
+    return `${fishDisplayTitle(record)} : ${advice}`;
+  }
+
+  const summary = fishProfileSummaryForAdvice(record);
+  const details = fishMovieDetailsForDisplay(record);
+
+  if (summary) {
+    return `Je n’ai pas encore d’avis du projectionniste pour ${fishDisplayTitle(record)}, mais sa fiche Bubulle indique : ${summary}.${details ? `\n${fishDisplayTitle(record)}${details}` : ''}`;
+  }
+
+  if (record.genres.length || record.runtime) {
+    return `Je n’ai pas encore d’avis du projectionniste pour ${fishDisplayTitle(record)}, mais je peux au moins te dire que le catalogue le classe comme ${record.type.toLowerCase()}${details}.`;
+  }
+
+  return `Je n’ai pas encore d’avis du projectionniste pour ${fishDisplayTitle(record)}. Le poisson a trouvé la bobine, mais pas encore la petite note griffonnée au dos.`;
 }
  function answerDirectorOfTitle(rawMessage, records) {
   const titleQuery = extractTitleQuestion(rawMessage) || removeKnownQuestionWords(rawMessage);
@@ -4152,6 +4286,11 @@ if (intent.wantedGenres.length) {
   const similarAnswer = answerSimilarRequest(rawMessage, records);
   if (similarAnswer) {
     return similarAnswer;
+  }
+
+  const projectionnisteAdviceAnswer = answerProjectionnisteAdviceOfTitle(rawMessage, records);
+  if (projectionnisteAdviceAnswer) {
+    return projectionnisteAdviceAnswer;
   }
 
  // ======================================================
