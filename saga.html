@@ -550,8 +550,20 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
   <script>
-    const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w1280";
-    const POSTER_BASE = "https://image.tmdb.org/t/p/w500";
+    function chooseTmdbImageSize(kind = "poster"){
+      const isMobile = window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
+      if(kind === "backdrop") return isMobile ? "w780" : "w1280";
+      return isMobile ? "w342" : "w500";
+    }
+    function tmdbImage(path, kind = "poster"){
+      if(!path) return "";
+      const raw = String(path).trim();
+      if(!raw) return "";
+      const size = chooseTmdbImageSize(kind);
+      if(raw.startsWith("/")) return `https://image.tmdb.org/t/p/${size}${raw}`;
+      if(/image\.tmdb\.org\/t\/p\//i.test(raw)) return raw.replace(/\/t\/p\/(?:original|w\d+)\//i, `/t/p/${size}/`);
+      return raw;
+    }
     const CATALOG_PATHS = ["data/catalogue.json","./data/catalogue.json"];
 
     const SAGA_PROFILES = [
@@ -616,14 +628,14 @@
       const raw = item.poster || item.posterUrl || item.poster_path || item.image || item.cover || "";
       if(!raw) return "";
       if(String(raw).startsWith("http")) return raw;
-      if(String(raw).startsWith("/")) return POSTER_BASE + raw;
+      if(String(raw).startsWith("/")) return tmdbImage(raw, "poster");
       return raw;
     }
     function getBackdrop(item){
       const raw = item.backdrop || item.backdropUrl || item.backdrop_path || item.background || "";
       if(!raw) return "";
       if(String(raw).startsWith("http")) return raw;
-      if(String(raw).startsWith("/")) return TMDB_IMAGE_BASE + raw;
+      if(String(raw).startsWith("/")) return tmdbImage(raw, "backdrop");
       return raw;
     }
     function getCollectionName(item){

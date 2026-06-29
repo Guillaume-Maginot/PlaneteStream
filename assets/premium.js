@@ -1,3 +1,20 @@
+
+function optimizeTmdbImageUrl(url, kind = 'poster'){
+  if(!url) return '';
+  const raw = String(url).trim();
+  if(!raw) return '';
+  const size = chooseTmdbImageSize(kind);
+  if(raw.startsWith('/')) return `https://image.tmdb.org/t/p/${size}${raw}`;
+  if(!/image\.tmdb\.org\/t\/p\//i.test(raw)) return raw;
+  return raw.replace(/\/t\/p\/(?:original|w\d+)\//i, `/t/p/${size}/`);
+}
+function chooseTmdbImageSize(kind = 'poster'){
+  const isMobile = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(max-width: 700px)').matches;
+  if(kind === 'backdrop') return isMobile ? 'w780' : 'w1280';
+  if(kind === 'profile') return 'w185';
+  return isMobile ? 'w342' : 'w500';
+}
+
 const premiumPage = document.querySelector('#premiumPage');
 
 async function initPremiumPage(){
@@ -31,8 +48,8 @@ async function initPremiumPage(){
 function renderPremium(item, catalogue, isLogged=false){
   const year = item.year || (item.releaseDate || '').slice(0, 4);
   const genres = item.genres || [];
-  const backdrop = item.backdrop || item.poster || '';
-  const poster = item.poster || '';
+  const backdrop = optimizeTmdbImageUrl(item.backdrop || item.poster || '', 'backdrop');
+  const poster = optimizeTmdbImageUrl(item.poster || '', 'poster');
   const runtime = getRuntimeLabel(item);
   const rating = item.rating ? Number(item.rating).toFixed(1) : '';
   const cast = normalizeCast(item.cast).slice(0, 10);
@@ -179,7 +196,7 @@ function normalizeCast(cast = []){
 function buildTmdbProfileUrl(path){
   if(!path) return '';
   if(/^https?:/i.test(path)) return path;
-  return `https://image.tmdb.org/t/p/w185${path}`;
+  return optimizeTmdbImageUrl(path, 'profile');
 }
 
 function getInitials(name=''){

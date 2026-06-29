@@ -13,6 +13,23 @@ const state = {
 
 const posterFallback = 'linear-gradient(145deg,#3b1c70,#111), radial-gradient(circle at 60% 35%,rgba(255,255,255,.25),transparent 18%)';
 
+function optimizeTmdbImageUrl(url, kind = 'poster'){
+  if(!url) return '';
+  const raw = String(url).trim();
+  if(!raw) return '';
+  const size = chooseTmdbImageSize(kind);
+  if(raw.startsWith('/')) return `https://image.tmdb.org/t/p/${size}${raw}`;
+  if(!/image\.tmdb\.org\/t\/p\//i.test(raw)) return raw;
+  return raw.replace(/\/t\/p\/(?:original|w\d+)\//i, `/t/p/${size}/`);
+}
+function chooseTmdbImageSize(kind = 'poster'){
+  const isMobile = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(max-width: 700px)').matches;
+  if(kind === 'backdrop') return isMobile ? 'w780' : 'w1280';
+  if(kind === 'profile') return 'w185';
+  return isMobile ? 'w342' : 'w500';
+}
+
+
 async function init(){
   try{
     const res = await fetch('data/catalogue.json');
@@ -489,7 +506,7 @@ function renderHero(animate = true){
   const heroShade = window.innerWidth < 620
     ? 'linear-gradient(180deg, rgba(2,3,10,.94) 0%, rgba(2,3,10,.78) 52%, rgba(2,3,10,.94) 100%)'
     : 'linear-gradient(90deg, rgba(2,3,10,.97) 0%, rgba(2,3,10,.78) 35%, rgba(2,3,10,.25) 78%)';
-  hero.style.backgroundImage = `${heroShade}, url('${item.backdrop || item.poster || ''}')`;
+  hero.style.backgroundImage = `${heroShade}, url('${optimizeTmdbImageUrl(item.backdrop || item.poster || '', 'backdrop')}')`;
   hero.style.backgroundPosition = state.heroDirection >= 0 ? 'center center' : 'right center';
   hero.querySelector('#heroEyebrow').textContent = item.homeFeatured ? 'Sous le projecteur' : (item.featured ? 'À la une' : 'Sélection Planète Stream');
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';
@@ -681,7 +698,7 @@ function createCard(item){
   const watchHref = getWatchHref(item);
   const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
   card.innerHTML = `
-    <a class="poster poster-link" href="${detailHref}" data-title="${escapeHtml(item.title)}" style="background-image:url('${item.poster || ''}'), ${posterFallback}" aria-label="Voir la fiche ${escapeHtml(item.title)}"></a>
+    <a class="poster poster-link" href="${detailHref}" data-title="${escapeHtml(item.title)}" style="background-image:url('${optimizeTmdbImageUrl(item.poster || '', 'poster')}'), ${posterFallback}" aria-label="Voir la fiche ${escapeHtml(item.title)}"></a>
     <div class="info">
       <h3 class="catalog-card-title">${escapeHtml(item.title)}</h3>
       <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
@@ -711,8 +728,8 @@ function createPremiumCard(item){
   const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
   const genres = (item.genres || []).slice(0,3).map(g => `<span>${escapeHtml(g)}</span>`).join('');
   const synopsis = item.overview || item.description || item.synopsis || '';
-  const backdrop = item.backdrop || item.poster || '';
-  const poster = item.poster || item.backdrop || '';
+  const backdrop = optimizeTmdbImageUrl(item.backdrop || item.poster || '', 'backdrop');
+  const poster = optimizeTmdbImageUrl(item.poster || item.backdrop || '', 'poster');
   const rating = item._rating ? item._rating.toFixed(1) : (item.rating ? Number(item.rating).toFixed(1) : '');
   card.style.setProperty('--premium-home-backdrop', backdrop ? `url('${backdrop}')` : 'none');
   const sand = Array.from({ length: 26 }, (_, i) => {

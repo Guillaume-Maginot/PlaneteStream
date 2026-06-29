@@ -1,3 +1,20 @@
+
+function optimizeTmdbImageUrl(url, kind = 'poster'){
+  if(!url) return '';
+  const raw = String(url).trim();
+  if(!raw) return '';
+  const size = chooseTmdbImageSize(kind);
+  if(raw.startsWith('/')) return `https://image.tmdb.org/t/p/${size}${raw}`;
+  if(!/image\.tmdb\.org\/t\/p\//i.test(raw)) return raw;
+  return raw.replace(/\/t\/p\/(?:original|w\d+)\//i, `/t/p/${size}/`);
+}
+function chooseTmdbImageSize(kind = 'poster'){
+  const isMobile = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(max-width: 700px)').matches;
+  if(kind === 'backdrop') return isMobile ? 'w780' : 'w1280';
+  if(kind === 'profile') return 'w185';
+  return isMobile ? 'w342' : 'w500';
+}
+
 const detailPage = document.querySelector('#detailPage');
 
 async function initDetail() {
@@ -31,8 +48,8 @@ async function initDetail() {
 }
 
 function renderDetail(item, catalogue, isLogged=false) {
-  const poster = item.poster || '';
- const backdrop = item.backdrop || '';
+  const poster = optimizeTmdbImageUrl(item.poster || '', 'poster');
+ const backdrop = optimizeTmdbImageUrl(item.backdrop || '', 'backdrop');
   const genres = item.genres || [];
 
   const year =
@@ -412,7 +429,7 @@ async function isMemberLoggedIn(){
 }
 
 function createRelatedCard(item) {
-  const poster = item.poster || '';
+  const poster = optimizeTmdbImageUrl(item.poster || '', 'poster');
   return `
     <button class="card" data-related-slug="${escapeHtml(item.slug)}" data-related-href="${item.premium ? `premium.html?slug=${encodeURIComponent(item.slug)}` : `detail.html?slug=${encodeURIComponent(item.slug)}`}">
       <div class="poster" data-title="${escapeHtml(item.title)}" style="background-image:url('${poster}')"></div>
