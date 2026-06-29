@@ -898,7 +898,7 @@ function setBubbleBatchUi(isRunning, label = '') {
 
   if (generateAllBubbleReasonsBtn) {
     generateAllBubbleReasonsBtn.disabled = isRunning;
-    generateAllBubbleReasonsBtn.textContent = isRunning ? (label || '🐠 Moulinette en cours...') : '✨ Mouliner les fiches sans justifications';
+    generateAllBubbleReasonsBtn.textContent = isRunning ? (label || '🐠 Moulinette en cours...') : '✨ Compléter Bubulle';
   }
 
   if (stopBubbleBatchBtn) {
@@ -933,22 +933,27 @@ async function generateMissingBubbleReasonsBatch() {
 
   const targets = draft
     .map((entry, index) => ({ entry, index }))
-    .filter(({ entry }) => needsBubbleReasons(entry))
+    .filter(({ entry }) => needsBubulleCompletion(entry))
     .filter(({ entry }) => {
       const payload = getBubblePayloadFromEntry(entry);
       return payload.title && payload.overview;
     });
 
   if (!targets.length) {
-    showMessage('Aucune fiche sans Bubulle exploitable. Le bocal est déjà propre ou il manque des résumés.');
+    showMessage('Aucune fiche Bubulle incomplète exploitable. Le bocal est déjà propre ou il manque des résumés.');
     return;
   }
 
+  const missingReasonsTotal = targets.filter(({ entry }) => needsBubbleReasons(entry)).length;
+  const missingAdviceTotal = targets.filter(({ entry }) => !hasProjectionnisteAdvice(entry)).length;
+  const missingProfileTotal = targets.filter(({ entry }) => !hasCompleteBubulleProfile(entry)).length;
+
   const confirmRun = confirm(
-    `Bubulle va enrichir ${targets.length} fiche${targets.length > 1 ? 's' : ''} sans justification.\n\n` +
-    'Il ne remplacera pas les fiches déjà enrichies.\n' +
+    `Bubulle va compléter ${targets.length} fiche${targets.length > 1 ? 's' : ''} incomplète${targets.length > 1 ? 's' : ''}.\n\n` +
+    `À générer : ${missingReasonsTotal} justification${missingReasonsTotal > 1 ? 's' : ''}, ${missingAdviceTotal} avis, ${missingProfileTotal} profil${missingProfileTotal > 1 ? 's' : ''}.\n\n` +
+    'Il complétera uniquement les champs manquants et ne remplacera pas ce qui existe déjà.\n' +
     'Tu pourras stopper après la fiche en cours.\n\n' +
-    'On lance la moulinette ?'
+    'On lance la moulinette complète ?'
   );
 
   if (!confirmRun) return;
@@ -957,7 +962,9 @@ async function generateMissingBubbleReasonsBatch() {
   setBubbleBatchUi(true);
 
   let done = 0;
-  let filled = 0;
+  let reasonsFilled = 0;
+  let adviceFilled = 0;
+  let profileFilled = 0;
   let skipped = 0;
   let failed = 0;
 
@@ -968,28 +975,82 @@ async function generateMissingBubbleReasonsBatch() {
       const { entry, index } = target;
       const title = entry.title || `fiche ${index + 1}`;
       const progress = `${done + 1}/${targets.length}`;
+      const payload = getBubblePayloadFromEntry(entry);
+      const patch = {};
+      const operations = [];
 
       setBubbleBatchUi(true, `🐠 ${progress} · ${title}`.slice(0, 46));
-      updateBubbleBatchStatus(`Moulinette Bubulle : ${progress} · ${title}`);
+      updateBubbleBatchStatus(`Moulinette Bubulle complète : ${progress} · ${title}`);
 
       try {
-        const payload = getBubblePayloadFromEntry(entry);
-        const reasons = cleanGeneratedBubbleReasons(await requestBubbleReasons(payload));
+        if (needsBubbleReasons(entry)) {
+          const reasons = cleanGeneratedBubbleReasons(await requestBubbleReasons(payload));
 
-        if (Object.keys(reasons).length) {
+          if (Object.keys(reasons).length) {
+            patch.bubbleReasons = reasons;
+            reasonsFilled += 1;
+            operations.push('justifs');
+          }
+
+          if (!bubbleBatchShouldStop) {
+            await waitBubbleBatch(450);
+          }
+        }
+
+        if (!hasProjectionnisteAdvice(entry)) {
+          const advice = await requestBubbleAdvice(payload);
+
+          if (advice) {
+            patch.projectionnisteAdvice = advice;
+            adviceFilled += 1;
+            operations.push('avis');
+          }
+
+          if (!bubbleBatchShouldStop) {
+            await waitBubbleBatch(450);
+          }
+        }
+
+        if (!hasCompleteBubulleProfile(entry)) {
+          const profile = await requestBubbleProfile(payload);
+          const cleanedProfile = {
+            ...getBubulleProfile(entry)
+          };
+
+          if (!String(cleanedProfile.pace || '').trim() && profile.pace) cleanedProfile.pace = profile.pace;
+          if (!String(cleanedProfile.complexity || '').trim() && profile.complexity) cleanedProfile.complexity = profile.complexity;
+          if (!String(cleanedProfile.spectacle || '').trim() && profile.spectacle) cleanedProfile.spectacle = profile.spectacle;
+          if (!String(cleanedProfile.violence || '').trim() && profile.violence) cleanedProfile.violence = profile.violence;
+          if (!String(cleanedProfile.humour || '').trim() && profile.humour) cleanedProfile.humour = profile.humour;
+          if (!String(cleanedProfile.emotion || '').trim() && profile.emotion) cleanedProfile.emotion = profile.emotion;
+          if (typeof cleanedProfile.family !== 'boolean' && typeof profile.family === 'boolean') cleanedProfile.family = profile.family;
+
+          const hasProfileData = BUBULLE_PROFILE_REQUIRED_KEYS.some(key => String(cleanedProfile[key] || '').trim()) || typeof cleanedProfile.family === 'boolean';
+
+          if (hasProfileData) {
+            patch.bubulle = {
+              ...(entry.bubulle && typeof entry.bubulle === 'object' && !Array.isArray(entry.bubulle) ? entry.bubulle : {}),
+              profile: cleanedProfile
+            };
+            profileFilled += 1;
+            operations.push('profil');
+          }
+        }
+
+        if (Object.keys(patch).length) {
           draft[index] = {
             ...draft[index],
-            bubbleReasons: reasons
+            ...patch
           };
-          filled += 1;
           syncOutput();
           localStorage.setItem('catalogueDraft', JSON.stringify(draft));
+          updateBubbleBatchStatus(`Moulinette Bubulle : ${progress} · ${title} · ${operations.join(', ')}`);
         } else {
           skipped += 1;
         }
       } catch (err) {
         failed += 1;
-        console.error(`Erreur génération Bubulle pour ${title}`, err);
+        console.error(`Erreur génération Bubulle complète pour ${title}`, err);
       }
 
       done += 1;
@@ -1005,7 +1066,7 @@ async function generateMissingBubbleReasonsBatch() {
 
     const stopped = bubbleBatchShouldStop ? ' Moulinette stoppée à la demande.' : '';
     updateBubbleBatchStatus(
-      `Bubulle a terminé : ${filled} enrichie${filled > 1 ? 's' : ''}, ${skipped} vide${skipped > 1 ? 's' : ''}, ${failed} erreur${failed > 1 ? 's' : ''}.${stopped}`
+      `Bubulle a terminé : ${reasonsFilled} justif${reasonsFilled > 1 ? 's' : ''}, ${adviceFilled} avis, ${profileFilled} profil${profileFilled > 1 ? 's' : ''}, ${skipped} sans ajout, ${failed} erreur${failed > 1 ? 's' : ''}.${stopped}`
     );
 
     bubbleBatchShouldStop = false;
