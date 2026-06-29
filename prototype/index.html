@@ -313,20 +313,30 @@
               <a class="home-release-all" href="#catalogue">Voir toutes les sorties <span aria-hidden="true">→</span></a>
             </div>
 
-            <div class="home-release-feature">
-              <a class="home-trailer-preview" href="https://www.youtube.com/results?search_query=Dune+Messiah+bande+annonce" target="_blank" rel="noopener" aria-label="Rechercher la bande-annonce de Dune Messiah sur YouTube">
-                <span class="home-trailer-logo">DUNE</span>
-                <span class="home-trailer-play" aria-hidden="true">▶</span>
-                <span class="home-trailer-caption">Bande-annonce officielle</span>
-              </a>
+            <div class="home-trailer-frame" aria-label="Bande-annonce mise en avant">
+              <div class="home-trailer-embed">
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/?rel=0&modestbranding=1"
+                  title="Bande-annonce officielle"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+                <a class="home-trailer-fallback" href="https://www.youtube.com/results?search_query=Dune+Messiah+bande+annonce" target="_blank" rel="noopener" aria-label="Rechercher la bande-annonce de Dune Messiah sur YouTube">
+                  <span class="home-trailer-logo">DUNE</span>
+                  <span class="home-trailer-play" aria-hidden="true">▶</span>
+                  <span class="home-trailer-caption">Bande-annonce officielle</span>
+                </a>
+              </div>
+            </div>
 
-              <div class="home-release-info">
+            <div class="home-release-now">
+              <div>
                 <span class="home-release-badge">À venir au cinéma</span>
                 <h4>Dune : Messiah</h4>
-                <p class="home-release-date">Décembre 2026</p>
-                <p>Le prochain chapitre d’Arrakis prend place dans ce module prototype. Plus tard, TMDb pourra fournir la vidéo, l’image, la date et la fiche liée.</p>
-                <a class="secondary home-release-button" href="#catalogue">Voir la fiche</a>
               </div>
+              <p class="home-release-date">Décembre 2026</p>
+              <p>Le prochain chapitre d’Arrakis prend place dans ce module prototype. Plus tard, TMDb pourra fournir la vidéo, l’image, la date et la fiche liée.</p>
+              <a class="secondary home-release-button" href="#catalogue">Voir la fiche</a>
             </div>
 
             <div class="home-release-strip" aria-label="Prochaines sorties">
@@ -335,10 +345,8 @@
               <button class="home-release-chip" type="button"><span>Spider-Man</span><small>À venir</small></button>
               <button class="home-release-chip" type="button"><span>Thunderbolts</span><small>À venir</small></button>
             </div>
-          </section>
 
-          <aside class="home-v2-side" aria-label="Communauté et compte">
-            <article class="home-account-card">
+            <article class="home-account-card home-account-row-card">
               <div class="home-account-head">
                 <h3>Pourquoi créer un compte ?</h3>
                 <a href="account.html">Mon espace <span aria-hidden="true">→</span></a>
@@ -350,7 +358,9 @@
                 <span><strong>🔔 Alertes</strong><small>Suivez les réponses</small></span>
               </div>
             </article>
+          </section>
 
+          <aside class="home-v2-side" aria-label="Activité du site">
             <article class="hall-card hall-timeline-card home-timeline-compact">
               <div class="hall-card-head">
                 <h3 class="hall-timeline-title"><img class="hall-title-planet-img" src="assets/ic_planete.png" alt="" loading="lazy" style="width:16px;height:16px;min-width:16px;object-fit:contain;"> Activité récente</h3>
