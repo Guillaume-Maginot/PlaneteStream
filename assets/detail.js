@@ -411,7 +411,7 @@ function renderWatchAction(item, isLogged){
     return '<span class="ghost is-disabled" aria-disabled="true">🎬 Vidéo indisponible</span>';
   }
   if(isLogged){
-    return `<a class="primary" href="${getWatchUrl(item)}">▶ Regarder <span class="soft-note"></span></a>`;
+    return `<div class="detail-watch-actions"><a class="primary" href="${getWatchUrl(item)}">▶ Regarder <span class="soft-note"></span></a><a class="detail-video-help" href="diagnostic-video.html">❓ La vidéo ne démarre pas ? Assistance vidéo</a></div>`;
   }
   return '<a class="primary" href="account.html">🔐 Connexion requise pour la  vidéo</a>';
 }

@@ -161,7 +161,7 @@
 
     const now = new Date();
     const text = [
-      "=== Planète Stream - Diagnostic vidéo ===",
+      "=== Planète Stream - Assistance vidéo ===",
       `Date : ${now.toLocaleString()}`,
       "",
       `Connexion : ${online ? "OK" : "Hors ligne"}`,
@@ -189,7 +189,7 @@
       `Mémoire : ${memory}`,
       `Cœurs CPU : ${cores}`,
       "",
-      "Note : ce diagnostic est généré localement dans le navigateur."
+      "Note : ce diagnostic est généré localement dans le navigateur. Il sert à orienter vos recherches, pas à fournir une assistance personnalisée."
     ].filter(Boolean).join("\n");
 
     const box = $("diagnosticCopyBox");
@@ -202,7 +202,7 @@
     const state = $("copyState");
     try{
       await navigator.clipboard.writeText(text);
-      if(state) state.textContent = "Diagnostic copié. Vous pouvez le coller sur Discord.";
+      if(state) state.textContent = "Diagnostic copié. Vous pouvez l’utiliser pour vos recherches.";
     }catch(e){
       if(state) state.textContent = "Copie automatique impossible. Sélectionnez le bloc puis copiez-le manuellement.";
     }
@@ -210,8 +210,10 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     const copyBtn = $("copyDiagnosticBtn");
+    const copyBtnBottom = $("copyDiagnosticBtnBottom");
     const refreshBtn = $("refreshDiagnosticBtn");
     if(copyBtn) copyBtn.addEventListener("click", copyDiagnostic);
+    if(copyBtnBottom) copyBtnBottom.addEventListener("click", copyDiagnostic);
     if(refreshBtn) refreshBtn.addEventListener("click", runDiagnostic);
     runDiagnostic();
   });

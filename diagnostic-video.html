@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diagnostic vidéo | Planète Stream</title>
-  <meta name="description" content="Page de diagnostic vidéo Planète Stream : navigateur, cookies, lecteur HTML5, bloqueur de contenu et informations utiles pour demander de l'aide." />
+  <title>Assistance vidéo | Planète Stream</title>
+  <meta name="description" content="Centre d'assistance vidéo Planète Stream : vérifications navigateur, cookies, lecteur HTML5 et pistes simples si une vidéo ne démarre pas." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,65 +16,47 @@
     body.diagnostic-body{
       min-height:100vh;
       background:
-        radial-gradient(circle at 20% 0%, rgba(195,77,255,.22), transparent 34%),
-        radial-gradient(circle at 80% 18%, rgba(255,45,136,.14), transparent 30%),
-        linear-gradient(180deg,#080615 0%,#110920 48%,#070511 100%);
+        radial-gradient(circle at 20% 0%, rgba(195,77,255,.18), transparent 34%),
+        linear-gradient(180deg,#080615 0%,#10091d 52%,#070511 100%);
       color:#fff;
     }
-    .diagnostic-hero{padding:64px 0 26px;text-align:center}
-    .diagnostic-kicker{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 13px;border:1px solid rgba(195,77,255,.32);
-      border-radius:999px;background:rgba(255,255,255,.06);
-      color:#eadbff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;
-    }
-    .diagnostic-hero h1{margin:18px auto 12px;max-width:900px;font-size:clamp(34px,7vw,68px);line-height:.96;font-weight:950;letter-spacing:-.05em}
-    .diagnostic-hero p{max-width:820px;margin:0 auto;color:#d8cfff;font-size:clamp(15px,2.6vw,18px);line-height:1.7}
-    .diagnostic-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}
-    .diagnostic-btn{
-      border:1px solid rgba(255,255,255,.16);border-radius:999px;
-      padding:12px 18px;background:rgba(255,255,255,.08);color:#fff;
-      font-weight:900;text-decoration:none;cursor:pointer;min-height:46px;
-      box-shadow:0 16px 36px rgba(0,0,0,.22);
-    }
-    .diagnostic-btn.primary{background:linear-gradient(135deg,#ff2d88,#8b2cff);border-color:rgba(255,255,255,.24)}
-    .diagnostic-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin:22px auto 44px}
-    .diagnostic-card{
-      border:1px solid rgba(255,255,255,.12);border-radius:28px;
-      background:linear-gradient(135deg,rgba(22,13,43,.88),rgba(9,7,21,.95));
-      box-shadow:0 24px 70px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.035);
-      padding:22px;overflow:hidden;
-    }
-    .diagnostic-card h2{margin:0 0 12px;font-size:22px;letter-spacing:-.02em}
-    .diagnostic-card p{color:#cfc5e8;line-height:1.65;margin:8px 0 0}
-    .diagnostic-list{display:grid;gap:10px;margin-top:14px}
-    .diagnostic-row{
-      display:grid;grid-template-columns:minmax(150px,1fr) auto;gap:12px;align-items:center;
-      padding:13px 14px;border-radius:18px;background:rgba(255,255,255,.055);
-      border:1px solid rgba(255,255,255,.075);
-    }
-    .diagnostic-label{font-weight:850;color:#fff}
-    .diagnostic-help{display:block;margin-top:3px;color:#b8acd8;font-size:12px;line-height:1.4;font-weight:600}
-    .diagnostic-status{justify-self:end;text-align:right;font-weight:950;border-radius:999px;padding:7px 11px;font-size:12px;white-space:nowrap;border:1px solid rgba(255,255,255,.12)}
+    .assist-wrap{max-width:940px;margin:0 auto;padding:54px 20px 42px}
+    .assist-hero{padding:22px 0 18px}
+    .assist-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(195,77,255,.28);border-radius:999px;background:rgba(255,255,255,.055);color:#eadbff;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+    .assist-hero h1{margin:18px 0 12px;font-size:clamp(34px,7vw,60px);line-height:1;font-weight:950;letter-spacing:-.045em}
+    .assist-intro{max-width:780px;color:#ddd5f7;font-size:17px;line-height:1.72;margin:0}
+    .assist-limit{margin-top:18px;padding:16px 18px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.105);color:#e9e1ff;line-height:1.65}
+    .assist-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+    .assist-btn{border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:12px 17px;background:rgba(255,255,255,.08);color:#fff;font-weight:900;text-decoration:none;cursor:pointer;min-height:46px}
+    .assist-btn.primary{background:linear-gradient(135deg,#ff2d88,#8b2cff);border-color:rgba(255,255,255,.24)}
+    .assist-section{margin-top:20px;padding:22px;border-radius:26px;background:linear-gradient(135deg,rgba(22,13,43,.84),rgba(9,7,21,.94));border:1px solid rgba(255,255,255,.11);box-shadow:0 18px 50px rgba(0,0,0,.28)}
+    .assist-section h2{margin:0 0 14px;font-size:23px;letter-spacing:-.02em}
+    .assist-section p{color:#cfc5e8;line-height:1.65;margin:8px 0 0}
+    .diagnostic-list{display:grid;gap:0;margin-top:8px;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.09)}
+    .diagnostic-row{display:grid;grid-template-columns:minmax(145px,1fr) auto;gap:14px;align-items:start;padding:13px 15px;background:rgba(255,255,255,.045);border-bottom:1px solid rgba(255,255,255,.075)}
+    .diagnostic-row:last-child{border-bottom:0}
+    .diagnostic-label{font-weight:900;color:#fff}
+    .diagnostic-help{display:block;margin-top:3px;color:#b9afd7;font-size:12px;line-height:1.45;font-weight:600}
+    .diagnostic-status{justify-self:end;text-align:right;font-weight:950;border-radius:999px;padding:6px 10px;font-size:12px;white-space:nowrap;border:1px solid rgba(255,255,255,.12)}
     .diagnostic-status.ok{background:rgba(64,255,156,.12);color:#baffd9;border-color:rgba(64,255,156,.25)}
     .diagnostic-status.warn{background:rgba(255,190,72,.12);color:#ffe0a0;border-color:rgba(255,190,72,.25)}
     .diagnostic-status.bad{background:rgba(255,72,120,.12);color:#ffc0d0;border-color:rgba(255,72,120,.25)}
     .diagnostic-status.info{background:rgba(116,156,255,.12);color:#cbd8ff;border-color:rgba(116,156,255,.25)}
-    .diagnostic-note{margin-top:14px;padding:14px;border-radius:18px;background:rgba(195,77,255,.09);border:1px solid rgba(195,77,255,.18);color:#e8dcff;line-height:1.6}
-    .diagnostic-tips{display:grid;gap:10px;margin:12px 0 0;padding:0;list-style:none}
-    .diagnostic-tips li{padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.075);color:#ddd4f4;line-height:1.55}
-    .diagnostic-copybox{margin-top:14px;white-space:pre-wrap;word-break:break-word;border-radius:20px;background:#070511;border:1px solid rgba(255,255,255,.11);padding:15px;color:#d8d1eb;font-size:12px;line-height:1.6;max-height:330px;overflow:auto}
+    .assist-steps{counter-reset:step;display:grid;gap:10px;margin:12px 0 0;padding:0;list-style:none}
+    .assist-steps li{counter-increment:step;position:relative;padding:12px 14px 12px 48px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.075);color:#e2daf5;line-height:1.55}
+    .assist-steps li::before{content:counter(step);position:absolute;left:13px;top:12px;width:24px;height:24px;border-radius:999px;display:grid;place-items:center;background:rgba(195,77,255,.18);border:1px solid rgba(195,77,255,.28);font-weight:950;color:#fff;font-size:12px}
+    .assist-search-list{margin:12px 0 0;padding-left:20px;color:#e2daf5;line-height:1.7}
+    .diagnostic-copybox{margin-top:14px;white-space:pre-wrap;word-break:break-word;border-radius:18px;background:#070511;border:1px solid rgba(255,255,255,.11);padding:15px;color:#d8d1eb;font-size:12px;line-height:1.6;max-height:280px;overflow:auto}
     .diagnostic-copy-state{min-height:20px;margin-top:10px;color:#baffd9;font-weight:800;font-size:13px}
-    .diagnostic-footer-link{color:#e6d8ff;text-decoration:none;font-weight:850;border-bottom:1px solid rgba(195,77,255,.45)}
-    @media (max-width: 820px){
-      .diagnostic-hero{padding:42px 0 18px;text-align:left}
-      .diagnostic-hero h1{margin-left:0;margin-right:0}
-      .diagnostic-hero p{margin-left:0;margin-right:0}
-      .diagnostic-actions{justify-content:flex-start}
-      .diagnostic-grid{grid-template-columns:1fr;gap:14px;margin-bottom:30px}
-      .diagnostic-card{border-radius:22px;padding:17px}
+    .assist-footer{max-width:940px;margin:0 auto;padding:0 20px 30px;color:#bdb2dc;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px}
+    .assist-footer a{color:#e6d8ff;text-decoration:none;font-weight:850;border-bottom:1px solid rgba(195,77,255,.45)}
+    @media (max-width: 720px){
+      .assist-wrap{padding:34px 16px 30px}
+      .assist-section{padding:17px;border-radius:22px}
       .diagnostic-row{grid-template-columns:1fr;gap:8px}
       .diagnostic-status{justify-self:start;text-align:left}
+      .assist-actions{display:grid;grid-template-columns:1fr}
+      .assist-btn{text-align:center;width:100%}
     }
   </style>
 </head>
@@ -88,7 +70,7 @@
         <a href="index.html?filter=serie#catalogue">Séries</a>
         <a href="index.html?filter=manga#catalogue">Mangas</a>
         <a class="sagas-nav-link" href="sagas.html">Sagas</a>
-        <a href="diagnostic-video.html" aria-current="page">Diagnostic vidéo</a>
+        <a href="diagnostic-video.html" aria-current="page">Assistance vidéo</a>
       </nav>
       <div class="nav-actions">
         <a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a>
@@ -97,66 +79,77 @@
     </div>
   </header>
 
-  <main>
-    <section class="container diagnostic-hero">
-      <span class="diagnostic-kicker">🎬 Aide lecture vidéo</span>
-      <h1>Diagnostic vidéo</h1>
-      <p>Cette page vérifie les points les plus courants quand une vidéo ne démarre pas sur téléphone ou navigateur. Elle ne répare pas le téléphone, sinon elle demanderait une blouse blanche et un salaire. Elle donne surtout des pistes claires.</p>
-      <div class="diagnostic-actions">
-        <button class="diagnostic-btn primary" id="copyDiagnosticBtn" type="button">Copier le diagnostic</button>
-        <button class="diagnostic-btn" id="refreshDiagnosticBtn" type="button">Relancer les tests</button>
+  <main class="assist-wrap">
+    <section class="assist-hero">
+      <span class="assist-kicker">🎬 Assistance vidéo</span>
+      <h1>Centre d’assistance vidéo</h1>
+      <p class="assist-intro">Cette page vérifie uniquement que votre navigateur peut utiliser correctement Planète Stream et ses lecteurs. Elle donne des pistes simples si une vidéo refuse de démarrer.</p>
+      <div class="assist-limit"><strong>Important :</strong> ce diagnostic ne peut pas réparer un téléphone, modifier un navigateur ou contourner un bloqueur de contenu. Il affiche les informations utiles pour comprendre le problème et faire vos propres recherches si nécessaire.</div>
+      <div class="assist-actions">
+        <button class="assist-btn primary" id="copyDiagnosticBtn" type="button">Copier le diagnostic</button>
+        <button class="assist-btn" id="refreshDiagnosticBtn" type="button">Relancer les tests</button>
       </div>
     </section>
 
-    <section class="container diagnostic-grid" aria-live="polite">
-      <article class="diagnostic-card">
-        <h2>État essentiel</h2>
-        <p>Les vérifications les plus importantes pour comprendre si le navigateur peut afficher correctement Planète Stream et ses lecteurs.</p>
-        <div class="diagnostic-list" id="essentialDiagnostics"></div>
-      </article>
+    <section class="assist-section" aria-live="polite">
+      <h2>Vérifications</h2>
+      <p>Les points essentiels : connexion, sécurité, cookies, JavaScript et blocage éventuel.</p>
+      <div class="diagnostic-list" id="essentialDiagnostics"></div>
+    </section>
 
-      <article class="diagnostic-card">
-        <h2>Votre appareil</h2>
-        <p>Informations utiles si vous demandez de l’aide sur Discord. Aucune donnée personnelle n’est envoyée.</p>
-        <div class="diagnostic-list" id="deviceDiagnostics"></div>
-      </article>
+    <section class="assist-section">
+      <h2>Votre appareil</h2>
+      <p>Ces informations aident à formuler une recherche précise. Aucune donnée n’est envoyée automatiquement.</p>
+      <div class="diagnostic-list" id="deviceDiagnostics"></div>
+    </section>
 
-      <article class="diagnostic-card">
-        <h2>Compatibilité vidéo</h2>
-        <p>Le navigateur peut accepter certains formats et en refuser d’autres. Sur mobile, l’autoplay bloqué est normal.</p>
-        <div class="diagnostic-list" id="videoDiagnostics"></div>
-      </article>
+    <section class="assist-section">
+      <h2>Compatibilité vidéo</h2>
+      <p>Un navigateur peut accepter certains formats et en refuser d’autres. Sur mobile, l’autoplay bloqué est normal.</p>
+      <div class="diagnostic-list" id="videoDiagnostics"></div>
+    </section>
 
-      <article class="diagnostic-card">
-        <h2>Causes fréquentes</h2>
-        <ul class="diagnostic-tips">
-          <li><strong>Écran noir :</strong> essayez de recharger la page, puis testez Chrome ou Firefox.</li>
-          <li><strong>Chargement infini :</strong> vérifiez la connexion, changez de réseau si possible, puis réessayez.</li>
-          <li><strong>Lecteur bloqué :</strong> désactivez temporairement le bloqueur de contenu ou autorisez les cookies.</li>
-          <li><strong>Téléphone ancien :</strong> fermez les autres applications et désactivez l’économie d’énergie pendant le test.</li>
-        </ul>
-        <div class="diagnostic-note">Planète Stream peut indiquer des pistes, mais certains blocages viennent du navigateur, du téléphone, du réseau ou des réglages de sécurité.</div>
-      </article>
+    <section class="assist-section">
+      <h2>Si une vidéo ne démarre pas</h2>
+      <ol class="assist-steps">
+        <li>Rechargez la page, puis relancez la vidéo.</li>
+        <li>Vérifiez que JavaScript et les cookies sont autorisés.</li>
+        <li>Désactivez temporairement votre bloqueur de contenu si vous en utilisez un.</li>
+        <li>Essayez un autre navigateur récent, par exemple Chrome ou Firefox.</li>
+        <li>Réessayez plus tard si le lecteur externe semble indisponible.</li>
+      </ol>
+    </section>
 
-      <article class="diagnostic-card" style="grid-column:1 / -1;">
-        <h2>Diagnostic à copier</h2>
-        <p>Collez ce bloc sur Discord si vous demandez de l’aide. C’est plus efficace que “ça marche pas”, même si cette phrase a une certaine poésie dramatique.</p>
-        <div class="diagnostic-copybox" id="diagnosticCopyBox">Préparation du diagnostic...</div>
-        <div class="diagnostic-copy-state" id="copyState"></div>
-      </article>
+    <section class="assist-section">
+      <h2>Aller plus loin</h2>
+      <p>Si le problème persiste, effectuez une recherche en indiquant les éléments ci-dessous. C’est souvent plus efficace qu’une recherche vague du type “vidéo marche pas”, même si c’est tentant quand le lecteur fait le hérisson.</p>
+      <ul class="assist-search-list">
+        <li>le modèle de votre téléphone ;</li>
+        <li>votre navigateur ;</li>
+        <li>le problème rencontré : écran noir, chargement infini, cookies bloqués, lecture impossible ;</li>
+        <li>les informations affichées dans le diagnostic.</li>
+      </ul>
+    </section>
+
+    <section class="assist-section">
+      <h2>Diagnostic à copier</h2>
+      <p>Le bouton ci-dessous copie les informations utiles. Vous pouvez les garder pour vos propres recherches.</p>
+      <div class="assist-actions">
+        <button class="assist-btn primary" id="copyDiagnosticBtnBottom" type="button">Copier le diagnostic</button>
+      </div>
+      <div class="diagnostic-copybox" id="diagnosticCopyBox">Préparation du diagnostic...</div>
+      <div class="diagnostic-copy-state" id="copyState"></div>
     </section>
   </main>
 
-  <footer>
-    <div class="container footer-bottom">
-      <span>Diagnostic local : aucune donnée n’est envoyée automatiquement.</span>
-      <span><a class="diagnostic-footer-link" href="index.html">Retour à l’accueil</a></span>
-    </div>
+  <footer class="assist-footer">
+    <span>Diagnostic local : aucune donnée n’est envoyée automatiquement.</span>
+    <a href="index.html">Retour à l’accueil</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
-  <script src="assets/video-diagnostic.js?v=4.6-diagnostic-video"></script>
+  <script src="assets/video-diagnostic.js?v=4.6-video-assistance"></script>
   <script src="assets/mobile-optimizations.js?v=4.5-mobile-opt" defer></script>
 </body>
 </html>
