@@ -1626,6 +1626,27 @@
               <option value="true">🎬 Oui, sous le projecteur</option>
             </select>
           </div>
+
+          <div class="admin-field">
+            <label for="cinemaReleaseSelect">Sorties cinéma</label>
+            <select id="cinemaReleaseSelect">
+              <option value="false">Non</option>
+              <option value="true">🎞️ Afficher dans Sorties cinéma</option>
+            </select>
+          </div>
+
+          <div class="admin-field">
+            <label for="cinemaReleaseOrderInput">Ordre sortie</label>
+            <input id="cinemaReleaseOrderInput" type="number" min="1" step="1" value="1">
+          </div>
+
+          <div class="admin-field">
+            <label for="cinemaReleaseFeaturedSelect">Bande-annonce vedette</label>
+            <select id="cinemaReleaseFeaturedSelect">
+              <option value="false">Non</option>
+              <option value="true">▶ Oui, vidéo principale</option>
+            </select>
+          </div>
         </div>
 
         <div class="result-list" id="results">
@@ -1711,6 +1732,9 @@
             <label>Mise en avant<select id="editFeatured"><option value="false">Standard</option><option value="true">Mis en avant</option></select></label>
             <label>Présentation<select id="editPremium"><option value="false">Fiche standard</option><option value="true">⭐ Fiche Premium</option></select></label>
             <label>Film vedette accueil<select id="editHomeFeatured"><option value="false">Non</option><option value="true">🎬 Oui, sous le projecteur</option></select></label>
+            <label>Sorties cinéma<select id="editCinemaRelease"><option value="false">Non</option><option value="true">🎞️ Afficher</option></select></label>
+            <label>Ordre sortie<input id="editCinemaReleaseOrder" type="number" min="1" step="1"></label>
+            <label>Bande-annonce vedette<select id="editCinemaReleaseFeatured"><option value="false">Non</option><option value="true">▶ Vidéo principale</option></select></label>
             <label class="full">Genres<input id="editGenres" type="text" placeholder="Action, Science-fiction"></label>
             <label>Note TMDb<input id="editRating" type="number" step="0.1"></label>
             <label>Slug<input id="editSlug" type="text"></label>

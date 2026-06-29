@@ -21,6 +21,9 @@ const sectionSelect = document.querySelector('#sectionSelect');
 const featuredSelect = document.querySelector('#featuredSelect');
 const premiumSelect = document.querySelector('#premiumSelect');
 const homeFeaturedSelect = document.querySelector('#homeFeaturedSelect');
+const cinemaReleaseSelect = document.querySelector('#cinemaReleaseSelect');
+const cinemaReleaseOrderInput = document.querySelector('#cinemaReleaseOrderInput');
+const cinemaReleaseFeaturedSelect = document.querySelector('#cinemaReleaseFeaturedSelect');
 const genreSelect = document.querySelector('#genreSelect');
 const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
@@ -52,6 +55,9 @@ const editFields = {
   featured: document.querySelector('#editFeatured'),
   premium: document.querySelector('#editPremium'),
   homeFeatured: document.querySelector('#editHomeFeatured'),
+  cinemaRelease: document.querySelector('#editCinemaRelease'),
+  cinemaReleaseOrder: document.querySelector('#editCinemaReleaseOrder'),
+  cinemaReleaseFeatured: document.querySelector('#editCinemaReleaseFeatured'),
   genres: document.querySelector('#editGenres'),
   rating: document.querySelector('#editRating'),
   poster: document.querySelector('#editPoster'),
@@ -345,7 +351,10 @@ function buildCatalogueEntry(item) {
     overview: item.overview || '',
     featured: featuredSelect?.value === 'true',
     premium: premiumSelect?.value === 'true',
-    homeFeatured: homeFeaturedSelect?.value === 'true'
+    homeFeatured: homeFeaturedSelect?.value === 'true',
+    cinemaRelease: cinemaReleaseSelect?.value === 'true',
+    cinemaReleaseOrder: Math.max(1, Number(cinemaReleaseOrderInput?.value || 1)),
+    cinemaReleaseFeatured: cinemaReleaseFeaturedSelect?.value === 'true'
   };
 }
 
@@ -1223,6 +1232,7 @@ function catalogueRow(entry, index) {
   const typeLabel = getMediaLabel(entry);
   const featured = entry.featured ? '<span class="catalogue-badge">À la une</span>' : '';
   const premium = entry.premium ? '<span class="catalogue-badge premium">⭐ Premium</span>' : '';
+  const cinemaReleaseBadge = entry.cinemaRelease ? `<span class="catalogue-badge">🎞️ Sortie cinéma${entry.cinemaReleaseFeatured ? ' · vedette' : ''}${entry.cinemaReleaseOrder ? ` #${escapeHtml(String(entry.cinemaReleaseOrder))}` : ''}</span>` : '';
   const bubbleBadge = getBubbleReasonBadge(entry);
   const mediaSummary = getMediaEmbedSummary(entry);
   const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
@@ -1248,6 +1258,7 @@ function catalogueRow(entry, index) {
         ${readyBadge}
         ${featured}
         ${premium}
+        ${cinemaReleaseBadge}
         ${bubbleBadge}
       </div>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
@@ -1283,6 +1294,9 @@ function openEditor(index) {
   editFields.featured.value = entry.featured ? 'true' : 'false';
   if (editFields.premium) editFields.premium.value = entry.premium ? 'true' : 'false';
   if (editFields.homeFeatured) editFields.homeFeatured.value = entry.homeFeatured ? 'true' : 'false';
+  if (editFields.cinemaRelease) editFields.cinemaRelease.value = entry.cinemaRelease ? 'true' : 'false';
+  if (editFields.cinemaReleaseOrder) editFields.cinemaReleaseOrder.value = Math.max(1, Number(entry.cinemaReleaseOrder || 1));
+  if (editFields.cinemaReleaseFeatured) editFields.cinemaReleaseFeatured.value = entry.cinemaReleaseFeatured ? 'true' : 'false';
   editFields.genres.value = Array.isArray(entry.genres) ? entry.genres.join(', ') : '';
   editFields.rating.value = entry.rating ?? 0;
   editFields.poster.value = entry.poster || '';
@@ -1332,6 +1346,9 @@ function saveEditedItem() {
     featured: editFields.featured.value === 'true',
     premium: editFields.premium?.value === 'true',
     homeFeatured: editFields.homeFeatured?.value === 'true',
+    cinemaRelease: editFields.cinemaRelease?.value === 'true',
+    cinemaReleaseOrder: Math.max(1, Number(editFields.cinemaReleaseOrder?.value || 1)),
+    cinemaReleaseFeatured: editFields.cinemaReleaseFeatured?.value === 'true',
     genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
     rating: Number(editFields.rating.value || 0),
     poster: editFields.poster.value.trim(),
