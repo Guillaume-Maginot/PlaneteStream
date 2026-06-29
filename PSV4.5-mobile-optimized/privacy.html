@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact | Planète Stream</title>
-  <meta name="description" content="Contactez Planète Stream pour une question, une demande RGPD, un signalement ou une suggestion." />
+  <title>Confidentialité & RGPD | Planète Stream</title>
+  <meta name="description" content="Politique de confidentialité et informations RGPD de Planète Stream." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="assets/styles.css?v=4.5-mobile-opt" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="assets/projectionniste-fish.css?v=3.4.5-fish-local">
 </head>
@@ -22,7 +22,6 @@
         <a href="index.html?filter=serie#catalogue" data-nav-filter="serie">Séries</a>
         <a href="index.html?filter=manga#catalogue" data-nav-filter="manga">Mangas</a>
         <a class="sagas-nav-link" href="sagas.html">Sagas</a>
-        <a class="active" href="contact.html">Contact</a>
         <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
           <span class="discord-icon-wrap" aria-hidden="true">
             <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
@@ -39,63 +38,81 @@
     </div>
   </header>
 
-  <main class="contact-page">
-    <section class="contact-hero container">
-      <div class="contact-hero-copy">
-        <p class="eyebrow">Contact</p>
-        <h1>Envoyer un message</h1>
-        <p>Une question, une demande RGPD, une suggestion ou un petit signalement de bug spatial ? Le formulaire ci-dessous est le sas officiel.</p>
+  <main class="privacy-page">
+    <section class="privacy-hero container">
+      <div class="privacy-hero-copy">
+        <p class="eyebrow">Protection des données</p>
+        <h1>Confidentialité & RGPD</h1>
+        <p>Planète Stream collecte uniquement les informations nécessaires pour faire fonctionner les comptes, les notes, les critiques et les échanges de la communauté.</p>
+        <p class="privacy-updated">Dernière mise à jour : 22 juin 2026</p>
       </div>
-      <div class="contact-orb" aria-hidden="true">✉️</div>
+      <div class="privacy-orb" aria-hidden="true">🛡️</div>
     </section>
 
-    <section class="container contact-layout" aria-label="Formulaire de contact">
-      <article class="contact-card contact-info-card">
-        <h2>Avant d’envoyer</h2>
-        <p>Pour les demandes liées aux données personnelles, indiquez clairement l’objet de votre demande afin de faciliter le traitement.</p>
-        <ul>
-          <li>Demande RGPD : accès, rectification, suppression ou opposition.</li>
-          <li>Signalement : bug, contenu problématique ou souci de compte.</li>
-          <li>Suggestion : titre à ajouter, amélioration ou retour utilisateur.</li>
-        </ul>
-        <p class="contact-note">Aucune adresse e-mail publique n’est affichée ici pour éviter que les robots spammeurs ne viennent planter leur tente.</p>
+    <section class="container privacy-grid" aria-label="Informations RGPD">
+      <article class="privacy-card privacy-card-wide">
+        <h2>1. Qui est responsable du traitement ?</h2>
+        <p>Le responsable du traitement des données est <strong>Guillaume MAGINOT</strong>, pour le site <strong>Planète Stream</strong>.</p>
+        <p>Pour toute demande liée à vos données personnelles, veuillez passer par le <a href="contact.html">formulaire de contact</a>.</p>
       </article>
 
-      <article class="contact-card contact-form-card">
-        <form name="contact" method="POST" action="/contact-success.html" data-netlify="true" netlify netlify-honeypot="bot-field" class="contact-form">
-          <input type="hidden" name="form-name" value="contact">
-          <p class="form-hidden">
-            <label>Ne pas remplir ce champ : <input name="bot-field"></label>
-          </p>
+      <article class="privacy-card">
+        <h2>2. Données collectées</h2>
+        <ul>
+          <li>Adresse e-mail utilisée pour créer le compte.</li>
+          <li>Pseudo, avatar, bio et préférences de profil.</li>
+          <li>Notes, critiques, réponses, likes, favoris et historique d’activité.</li>
+          <li>Données techniques nécessaires au fonctionnement et à la sécurité du site.</li>
+        </ul>
+      </article>
 
-          <div class="contact-field-grid">
-            <label for="contactName">Nom ou pseudo <span>optionnel</span></label>
-            <input id="contactName" name="name" type="text" maxlength="80" autocomplete="name" placeholder="Ex : Guillaume">
+      <article class="privacy-card">
+        <h2>3. Pourquoi ces données sont utilisées</h2>
+        <ul>
+          <li>Créer et sécuriser votre compte.</li>
+          <li>Afficher vos notes, critiques et interactions.</li>
+          <li>Faire fonctionner les notifications et le Hall du Cinéma.</li>
+          <li>Améliorer le site et corriger les erreurs.</li>
+          <li>Prévenir les abus et protéger la communauté.</li>
+        </ul>
+      </article>
 
-            <label for="contactEmail">Adresse e-mail</label>
-            <input id="contactEmail" name="email" type="email" required autocomplete="email" placeholder="ton@email.fr">
+      <article class="privacy-card">
+        <h2>4. Base légale</h2>
+        <p>Les données sont traitées selon les cas sur la base de votre consentement, de l’exécution du service demandé, de l’intérêt légitime lié à la sécurité et à l’amélioration du site, ou d’une obligation légale.</p>
+      </article>
 
-            <label for="contactSubject">Sujet</label>
-            <select id="contactSubject" name="subject" required>
-              <option value="">Choisir un sujet</option>
-              <option value="Demande RGPD">Demande RGPD</option>
-              <option value="Question compte">Question compte</option>
-              <option value="Signalement">Signalement</option>
-              <option value="Suggestion">Suggestion</option>
-              <option value="Autre demande">Autre demande</option>
-            </select>
+      <article class="privacy-card">
+        <h2>5. Conservation</h2>
+        <p>Les données de compte sont conservées tant que le compte existe. Les contenus publiés restent associés au compte jusqu’à suppression par l’utilisateur ou demande de suppression.</p>
+        <p>Les données techniques sont conservées uniquement pour la durée nécessaire à la sécurité et au bon fonctionnement du service.</p>
+      </article>
 
-            <label for="contactMessage">Message</label>
-            <textarea id="contactMessage" name="message" required minlength="10" rows="8" placeholder="Votre message..."></textarea>
-          </div>
+      <article class="privacy-card">
+        <h2>6. Services utilisés</h2>
+        <p>Planète Stream s’appuie sur des prestataires techniques pour héberger et faire fonctionner le site :</p>
+        <ul>
+          <li><strong>Netlify</strong> pour l’hébergement du site.</li>
+          <li><strong>Supabase</strong> pour l’authentification et la base de données.</li>
+          <li><strong>Resend</strong> pour l’envoi des e-mails transactionnels.</li>
+        </ul>
+      </article>
 
-          <label class="contact-consent">
-            <input type="checkbox" name="consent" required>
-            <span>J’accepte que les informations saisies soient utilisées uniquement pour répondre à ma demande.</span>
-          </label>
+      <article class="privacy-card">
+        <h2>7. Cookies</h2>
+        <p>Le site utilise uniquement les éléments nécessaires à la connexion, à la sécurité et au fonctionnement du service. Aucun suivi publicitaire n’est prévu dans cette version.</p>
+      </article>
 
-          <button class="primary contact-submit" type="submit">Envoyer le message</button>
-        </form>
+      <article class="privacy-card privacy-card-wide">
+        <h2>8. Vos droits</h2>
+        <p>Conformément au RGPD, vous pouvez demander l’accès, la rectification, l’effacement, la limitation ou la portabilité de vos données. Vous pouvez aussi vous opposer à certains traitements lorsque la loi le permet.</p>
+        <p>Pour exercer vos droits, utilisez le <a href="contact.html">formulaire de contact</a>.</p>
+        <p>Vous pouvez également introduire une réclamation auprès de la CNIL si vous estimez que vos droits ne sont pas respectés.</p>
+      </article>
+
+      <article class="privacy-card privacy-card-wide privacy-note">
+        <h2>En résumé</h2>
+        <p>Planète Stream n’a pas vocation à revendre vos données, ni à construire un labyrinthe publicitaire en sous-sol. Vos informations servent à faire fonctionner votre compte, vos avis et la vie de la communauté.</p>
       </article>
     </section>
   </main>
@@ -209,5 +226,6 @@
   </div>
   <script src="assets/projectionniste-fish.js?v=3.4.5-fish-local"></script>
 
+  <script src="assets/mobile-optimizations.js?v=4.5-mobile-opt" defer></script>
 </body>
 </html>

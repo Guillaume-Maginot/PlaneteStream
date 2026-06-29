@@ -23,7 +23,7 @@ const premiumSelect = document.querySelector('#premiumSelect');
 const homeFeaturedSelect = document.querySelector('#homeFeaturedSelect');
 const cinemaReleaseSelect = document.querySelector('#cinemaReleaseSelect');
 const cinemaOrderInput = document.querySelector('#cinemaOrderInput');
-const cinemaFeaturedSelect = document.querySelector('#cinemaFeaturedSelect');
+const cinemaHeroSelect = document.querySelector('#cinemaHeroSelect');
 const genreSelect = document.querySelector('#genreSelect');
 const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
@@ -57,7 +57,7 @@ const editFields = {
   homeFeatured: document.querySelector('#editHomeFeatured'),
   cinemaRelease: document.querySelector('#editCinemaRelease'),
   cinemaOrder: document.querySelector('#editCinemaOrder'),
-  cinemaFeatured: document.querySelector('#editCinemaFeatured'),
+  cinemaHero: document.querySelector('#editCinemaHero'),
   genres: document.querySelector('#editGenres'),
   rating: document.querySelector('#editRating'),
   poster: document.querySelector('#editPoster'),
@@ -304,7 +304,6 @@ function addItem(item) {
   }
 
   const entry = buildCatalogueEntry(normalized);
-  if (entry.cinemaFeatured) clearOtherCinemaFeatured(-1);
   draft.push(entry);
   sortDraft();
   syncOutput();
@@ -355,7 +354,7 @@ function buildCatalogueEntry(item) {
     homeFeatured: homeFeaturedSelect?.value === 'true',
     cinemaRelease: cinemaReleaseSelect?.value === 'true',
     cinemaOrder: Number(cinemaOrderInput?.value || 0),
-    cinemaFeatured: cinemaFeaturedSelect?.value === 'true'
+    cinemaHero: cinemaHeroSelect?.value === 'true'
   };
 }
 
@@ -1233,8 +1232,8 @@ function catalogueRow(entry, index) {
   const typeLabel = getMediaLabel(entry);
   const featured = entry.featured ? '<span class="catalogue-badge">À la une</span>' : '';
   const premium = entry.premium ? '<span class="catalogue-badge premium">⭐ Premium</span>' : '';
-  const cinemaRelease = entry.cinemaRelease ? `<span class="catalogue-badge cinema">🎬 Sortie cinéma${entry.cinemaOrder ? ` #${escapeHtml(String(entry.cinemaOrder))}` : ''}</span>` : '';
-  const cinemaFeatured = entry.cinemaFeatured ? '<span class="catalogue-badge cinema-featured">▶ Vedette trailer</span>' : '';
+  const cinema = entry.cinemaRelease ? `<span class="catalogue-badge cinema">🎬 Sortie${entry.cinemaOrder ? ` #${escapeHtml(String(entry.cinemaOrder))}` : ''}</span>` : '';
+  const cinemaHero = entry.cinemaHero ? '<span class="catalogue-badge hero">▶ Vedette BA</span>' : '';
   const bubbleBadge = getBubbleReasonBadge(entry);
   const mediaSummary = getMediaEmbedSummary(entry);
   const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
@@ -1260,8 +1259,8 @@ function catalogueRow(entry, index) {
         ${readyBadge}
         ${featured}
         ${premium}
-        ${cinemaRelease}
-        ${cinemaFeatured}
+        ${cinema}
+        ${cinemaHero}
         ${bubbleBadge}
       </div>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
@@ -1299,7 +1298,7 @@ function openEditor(index) {
   if (editFields.homeFeatured) editFields.homeFeatured.value = entry.homeFeatured ? 'true' : 'false';
   if (editFields.cinemaRelease) editFields.cinemaRelease.value = entry.cinemaRelease ? 'true' : 'false';
   if (editFields.cinemaOrder) editFields.cinemaOrder.value = entry.cinemaOrder || '';
-  if (editFields.cinemaFeatured) editFields.cinemaFeatured.value = entry.cinemaFeatured ? 'true' : 'false';
+  if (editFields.cinemaHero) editFields.cinemaHero.value = entry.cinemaHero ? 'true' : 'false';
   editFields.genres.value = Array.isArray(entry.genres) ? entry.genres.join(', ') : '';
   editFields.rating.value = entry.rating ?? 0;
   editFields.poster.value = entry.poster || '';
@@ -1351,7 +1350,7 @@ function saveEditedItem() {
     homeFeatured: editFields.homeFeatured?.value === 'true',
     cinemaRelease: editFields.cinemaRelease?.value === 'true',
     cinemaOrder: Number(editFields.cinemaOrder?.value || 0),
-    cinemaFeatured: editFields.cinemaFeatured?.value === 'true',
+    cinemaHero: editFields.cinemaHero?.value === 'true',
     genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
     rating: Number(editFields.rating.value || 0),
     poster: editFields.poster.value.trim(),
@@ -1379,7 +1378,6 @@ function saveEditedItem() {
     }
   };
 
-  if (draft[editingIndex]?.cinemaFeatured) clearOtherCinemaFeatured(editingIndex);
   sortDraft();
   syncOutput();
   renderCatalogueList();
@@ -1519,7 +1517,7 @@ function mergeTmdbRefresh(current, tmdbItem) {
     homeFeatured: Boolean(current.homeFeatured),
     cinemaRelease: Boolean(current.cinemaRelease),
     cinemaOrder: Number(current.cinemaOrder || 0),
-    cinemaFeatured: Boolean(current.cinemaFeatured),
+    cinemaHero: Boolean(current.cinemaHero),
     bubbleReasons: current.bubbleReasons || {},
     projectionnisteAdvice: current.projectionnisteAdvice || '',
     videoEmbed: currentVideo
@@ -1765,15 +1763,6 @@ function clearSelection() {
       </div>
     `;
   }
-}
-
-
-function clearOtherCinemaFeatured(currentIndex) {
-  draft.forEach((entry, index) => {
-    if (index !== currentIndex && entry?.cinemaFeatured) {
-      entry.cinemaFeatured = false;
-    }
-  });
 }
 
 function syncOutput() {

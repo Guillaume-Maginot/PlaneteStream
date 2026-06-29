@@ -90,7 +90,9 @@ function bindEvents(){
   const hero = document.querySelector('#dynamicHero');
   hero?.addEventListener('mouseenter', pauseHeroRotation);
   hero?.addEventListener('mouseleave', resumeHeroRotation);
-  hero?.addEventListener('mousemove', handleHeroParallax);
+  if(!window.matchMedia?.('(hover: none), (pointer: coarse)').matches){
+    hero?.addEventListener('mousemove', handleHeroParallax);
+  }
 
   const pageSizeSelect = document.querySelector('#cataloguePageSize');
   if(pageSizeSelect){
@@ -351,13 +353,13 @@ function getCataloguePageSize(){
 
   const grid = document.querySelector('#catalogueGrid');
   const containerWidth = grid?.clientWidth || document.querySelector('#catalogueFullSection')?.clientWidth || window.innerWidth;
-  const cardMinWidth = 220;
-  const gap = 18;
+  const cardMinWidth = window.innerWidth < 620 ? 150 : 220;
+  const gap = window.innerWidth < 620 ? 11 : 18;
   const columns = Math.max(1, Math.floor((containerWidth + gap) / (cardMinWidth + gap)));
 
   // Auto = une vraie page écran, pas un puits sans fond : assez pour respirer, pas assez pour noyer.
   const rows = window.innerWidth >= 1180 ? 4 : window.innerWidth >= 760 ? 3 : 4;
-  return Math.max(6, columns * rows);
+  return Math.max(window.innerWidth < 620 ? 8 : 6, columns * rows);
 }
 
 function renderCataloguePagination(pagination){
@@ -484,7 +486,10 @@ function renderHero(animate = true){
   }
   const year = item.year || (item.releaseDate || '').slice(0,4);
   const genres = (item.genres || []).slice(0,3).join(' • ');
-  hero.style.backgroundImage = `linear-gradient(90deg, rgba(2,3,10,.97) 0%, rgba(2,3,10,.78) 35%, rgba(2,3,10,.25) 78%), url('${item.backdrop || item.poster || ''}')`;
+  const heroShade = window.innerWidth < 620
+    ? 'linear-gradient(180deg, rgba(2,3,10,.94) 0%, rgba(2,3,10,.78) 52%, rgba(2,3,10,.94) 100%)'
+    : 'linear-gradient(90deg, rgba(2,3,10,.97) 0%, rgba(2,3,10,.78) 35%, rgba(2,3,10,.25) 78%)';
+  hero.style.backgroundImage = `${heroShade}, url('${item.backdrop || item.poster || ''}')`;
   hero.style.backgroundPosition = state.heroDirection >= 0 ? 'center center' : 'right center';
   hero.querySelector('#heroEyebrow').textContent = item.homeFeatured ? 'Sous le projecteur' : (item.featured ? 'À la une' : 'Sélection Planète Stream');
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';

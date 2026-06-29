@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Message envoyé | Planète Stream</title>
-  <meta name="description" content="Contactez Planète Stream pour une question, une demande RGPD, un signalement ou une suggestion." />
+  <title>Fiche Premium | Planète Stream</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css" />
+
+  <link rel="stylesheet" href="assets/styles.css?v=4.5-mobile-opt" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="assets/projectionniste-fish.css?v=3.4.5-fish-local">
 </head>
-<body>
-  <header>
+
+<body class="premium-body">
+  <header class="premium-header">
     <div class="container nav">
       <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+
       <nav class="menu">
         <a href="index.html">Accueil</a>
-        <a href="index.html?filter=film#catalogue" data-nav-filter="film">Films</a>
-        <a href="index.html?filter=serie#catalogue" data-nav-filter="serie">Séries</a>
-        <a href="index.html?filter=manga#catalogue" data-nav-filter="manga">Mangas</a>
+        <a href="index.html?filter=film#catalogue">Films</a>
+        <a href="index.html?filter=serie#catalogue">Séries</a>
+        <a href="index.html?filter=manga#catalogue">Mangas</a>
         <a class="sagas-nav-link" href="sagas.html">Sagas</a>
-        <a class="active" href="contact.html">Contact</a>
         <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
           <span class="discord-icon-wrap" aria-hidden="true">
             <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
@@ -31,26 +33,17 @@
           <span>Discord</span>
         </a>
       </nav>
+
       <div class="nav-actions">
         <a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a>
         <a class="primary" href="index.html#catalogue">Retour catalogue</a>
       </div>
-      <button class="hamb">☰</button>
     </div>
   </header>
 
-  <main class="contact-page">
-    <section class="contact-hero container contact-success-hero">
-      <div class="contact-hero-copy">
-        <p class="eyebrow">Message transmis</p>
-        <h1>Merci, c’est envoyé</h1>
-        <p>Votre message a bien été transmis. Il sera traité dès que possible, sans pigeon voyageur ni incantation obscure.</p>
-        <div class="contact-success-actions">
-          <a class="primary" href="index.html">Retour à l’accueil</a>
-          <a class="ghost" href="contact.html">Envoyer un autre message</a>
-        </div>
-      </div>
-      <div class="contact-orb" aria-hidden="true">✅</div>
+  <main id="premiumPage">
+    <section class="detail-loading">
+      Chargement de la fiche premium...
     </section>
   </main>
 
@@ -60,7 +53,7 @@
         <a class="logo footer-logo" href="index.html">PLANÈTE<span>STREAM</span></a>
         <p class="footer-tagline">Chaque œuvre a une histoire. Chaque spectateur aussi.</p>
         <p class="footer-description">Découvrez, notez et partagez les films, séries et mangas qui méritent d’être vus.</p>
-        <p class="footer-meta">© 2026 Planète Stream · v3.0 RC1.7</p>
+        <p class="footer-meta">© 2026 Planète Stream · v3.1 Premium</p>
       </section>
 
       <nav class="footer-links-grid" aria-label="Navigation secondaire">
@@ -100,8 +93,10 @@
       <span class="footer-version">Build v3.2</span>
     </div>
   </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
+  <script src="assets/premium.js?v=3.4-no-presentation"></script>
 
 
   <!-- Projectionniste poisson rouge : mascotte interactive, cerveau local -->
@@ -163,5 +158,6 @@
   </div>
   <script src="assets/projectionniste-fish.js?v=3.4.5-fish-local"></script>
 
+  <script src="assets/mobile-optimizations.js?v=4.5-mobile-opt" defer></script>
 </body>
 </html>

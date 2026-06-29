@@ -243,7 +243,7 @@
     });
 
     events.sort((a,b) => new Date(b.at) - new Date(a.at));
-    container.innerHTML = events.slice(0,4).map(event => `
+    container.innerHTML = events.slice(0,7).map(event => `
       <a class="hall-event" href="${escape(event.href)}">
         ${timelineIcon(event.iconType)}
         <div><strong>${escape(event.title)}</strong><small>${escape(event.text)}</small><em>${relativeDate(event.at)}</em></div>
