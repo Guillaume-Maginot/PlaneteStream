@@ -7174,3 +7174,158 @@ img,svg,video,canvas{
     white-space:nowrap!important;
   }
 }
+
+
+/* === V4.5.3 - Rails mobile blindés : fini les fiches accordéon. === */
+@media (max-width: 700px){
+  .grid.rail,
+  #featuredGrid,
+  #latestGrid,
+  #latestMangaGrid,
+  #topRatedGrid{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    align-items:stretch!important;
+    gap:12px!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding:4px 2px 16px!important;
+    scroll-snap-type:x proximity!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+    grid-template-columns:none!important;
+    grid-auto-flow:unset!important;
+    grid-auto-columns:unset!important;
+  }
+
+  .grid.rail::-webkit-scrollbar,
+  #featuredGrid::-webkit-scrollbar,
+  #latestGrid::-webkit-scrollbar,
+  #latestMangaGrid::-webkit-scrollbar,
+  #topRatedGrid::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  .grid.rail > .card,
+  #featuredGrid > .card,
+  #latestGrid > .card,
+  #latestMangaGrid > .card,
+  #topRatedGrid > .card{
+    flex:0 0 clamp(158px, calc((100vw - 44px) / 2), 190px)!important;
+    width:clamp(158px, calc((100vw - 44px) / 2), 190px)!important;
+    min-width:clamp(158px, calc((100vw - 44px) / 2), 190px)!important;
+    max-width:190px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    scroll-snap-align:start!important;
+    transform:none!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+
+  .grid.rail > .card:hover,
+  #featuredGrid > .card:hover,
+  #latestGrid > .card:hover,
+  #latestMangaGrid > .card:hover,
+  #topRatedGrid > .card:hover{
+    transform:none!important;
+  }
+
+  .grid.rail > .card .poster,
+  #featuredGrid > .card .poster,
+  #latestGrid > .card .poster,
+  #latestMangaGrid > .card .poster,
+  #topRatedGrid > .card .poster{
+    width:100%!important;
+    flex:0 0 auto!important;
+    height:auto!important;
+    aspect-ratio:2 / 3!important;
+    min-height:0!important;
+  }
+
+  .grid.rail > .card .info,
+  #featuredGrid > .card .info,
+  #latestGrid > .card .info,
+  #latestMangaGrid > .card .info,
+  #topRatedGrid > .card .info{
+    flex:1 1 auto!important;
+    min-height:142px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    padding:10px!important;
+  }
+
+  .grid.rail > .card .catalog-card-title,
+  #featuredGrid > .card .catalog-card-title,
+  #latestGrid > .card .catalog-card-title,
+  #latestMangaGrid > .card .catalog-card-title,
+  #topRatedGrid > .card .catalog-card-title{
+    font-size:12px!important;
+    line-height:1.08!important;
+    min-height:27px!important;
+    max-height:28px!important;
+    margin-bottom:6px!important;
+    overflow:hidden!important;
+  }
+
+  .grid.rail > .card .compact-meta,
+  .grid.rail > .card .compact-genres,
+  #featuredGrid > .card .compact-meta,
+  #featuredGrid > .card .compact-genres,
+  #latestGrid > .card .compact-meta,
+  #latestGrid > .card .compact-genres,
+  #latestMangaGrid > .card .compact-meta,
+  #latestMangaGrid > .card .compact-genres,
+  #topRatedGrid > .card .compact-meta,
+  #topRatedGrid > .card .compact-genres{
+    font-size:9.5px!important;
+    line-height:1.22!important;
+    gap:3px 5px!important;
+    overflow:hidden!important;
+  }
+
+  .grid.rail > .card .compact-genres,
+  #featuredGrid > .card .compact-genres,
+  #latestGrid > .card .compact-genres,
+  #latestMangaGrid > .card .compact-genres,
+  #topRatedGrid > .card .compact-genres{
+    min-height:23px!important;
+    max-height:24px!important;
+  }
+
+  .grid.rail > .card .catalog-card-rating,
+  #featuredGrid > .card .catalog-card-rating,
+  #latestGrid > .card .catalog-card-rating,
+  #latestMangaGrid > .card .catalog-card-rating,
+  #topRatedGrid > .card .catalog-card-rating{
+    font-size:10px!important;
+    margin:3px 0 8px!important;
+    padding:3px 8px!important;
+    min-height:22px!important;
+  }
+
+  .grid.rail > .card .card-actions,
+  #featuredGrid > .card .card-actions,
+  #latestGrid > .card .card-actions,
+  #latestMangaGrid > .card .card-actions,
+  #topRatedGrid > .card .card-actions{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:6px!important;
+    margin-top:auto!important;
+  }
+
+  .grid.rail > .card .card-actions a,
+  #featuredGrid > .card .card-actions a,
+  #latestGrid > .card .card-actions a,
+  #latestMangaGrid > .card .card-actions a,
+  #topRatedGrid > .card .card-actions a{
+    min-height:30px!important;
+    font-size:10px!important;
+    padding:6px 5px!important;
+    white-space:nowrap!important;
+  }
+}
