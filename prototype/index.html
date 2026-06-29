@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta property="og:title" content="Planète Stream">
+<meta property="og:description" content="Explorez films, séries et mangas dans une galaxie de streaming.">
+<meta property="og:image" content="https://planetestream.fr/assets/social-card.png">
+<meta property="og:url" content="https://planetestream.fr">
+<meta property="og:type" content="website">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Planète Stream">
+<meta name="twitter:description" content="Films, séries, mangas et communauté orbitale.">
+<meta name="twitter:image" content="https://planetestream.fr/assets/social-card.png">
+
+
+  <title>Planète Stream</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css?v=3.3.2-manga-rail-fix" />
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  
+  <style>
+    /* Patch V3.1.1 - pagination catalogue, anti-retour formulaire brut */
+    #catalogueFullSection .catalogue-bottom-panel{
+      margin-top:28px;
+      padding:16px 18px;
+      border:1px solid rgba(195,77,255,.24);
+      border-radius:24px;
+      background:linear-gradient(135deg,rgba(34,13,63,.86),rgba(8,6,20,.94));
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 20px 46px rgba(0,0,0,.32),0 0 32px rgba(139,44,255,.10);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    #catalogueFullSection .catalogue-tools{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-top:14px;
+      color:#e7dcff;
+      font-size:12px;
+      font-weight:900;
+      text-transform:none;
+    }
+    #catalogueFullSection .catalogue-tool-pill{
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:7px 9px 7px 15px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background:rgba(255,255,255,.065);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
+      white-space:nowrap;
+    }
+    #catalogueFullSection .catalogue-page-size,
+    #catalogueFullSection .catalogue-goto input{
+      height:32px;
+      border-radius:999px;
+      border:1px solid rgba(195,77,255,.36);
+      background:#100a22;
+      color:#fff;
+      padding:0 12px;
+      font-weight:950;
+      outline:none;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
+      accent-color:#b832ff;
+    }
+    #catalogueFullSection .catalogue-page-size{min-width:92px;cursor:pointer}
+    #catalogueFullSection .catalogue-goto{margin:0}
+    #catalogueFullSection .catalogue-goto input{width:78px;text-align:center}
+    #catalogueFullSection .catalogue-goto button,
+    #catalogueFullSection .pagination button{
+      min-height:36px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:999px;
+      background:rgba(255,255,255,.075);
+      color:#fff;
+      padding:0 14px;
+      font-weight:950;
+      cursor:pointer;
+      transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;
+    }
+    #catalogueFullSection .catalogue-goto button{
+      min-height:32px;
+      background:linear-gradient(135deg,#ff2d88,#8b2cff);
+      border-color:rgba(255,255,255,.18);
+    }
+    #catalogueFullSection .catalogue-goto button:hover,
+    #catalogueFullSection .pagination button:hover:not(:disabled){
+      transform:translateY(-1px);
+      border-color:rgba(216,108,255,.7);
+      box-shadow:0 0 20px rgba(139,44,255,.28);
+      background:rgba(195,77,255,.18);
+    }
+    #catalogueFullSection .pagination{
+      width:100%;
+      display:grid;
+      grid-template-columns:minmax(130px,1fr) auto minmax(130px,1fr);
+      align-items:center;
+      gap:10px;
+      margin:0;
+      padding:0;
+      background:transparent;
+      border:0;
+      box-shadow:none;
+    }
+    #catalogueFullSection .pagination .prev{justify-self:start;}
+    #catalogueFullSection .pagination .next{justify-self:end;}
+    #catalogueFullSection .pagination:empty{display:none}
+    #catalogueFullSection .pagination button:disabled{opacity:.38;cursor:not-allowed}
+    #catalogueFullSection .page-numbers{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;justify-self:center}
+    #catalogueFullSection .pagination .page-number{width:38px;padding:0;border-radius:12px}
+    #catalogueFullSection .pagination .page-number.active{border-color:rgba(255,45,136,.78);background:linear-gradient(135deg,#ff2d88,#8b2cff);box-shadow:0 0 24px rgba(195,77,255,.38)}
+    #catalogueFullSection .page-ellipsis{min-width:22px;text-align:center;color:#a79ac7;font-weight:950}
+    @media(max-width:760px){
+      #catalogueFullSection .catalogue-bottom-panel{padding:12px;border-radius:20px;gap:12px}
+      #catalogueFullSection .pagination{
+        display:flex;
+        justify-content:flex-start;
+        overflow-x:auto;
+        flex-wrap:nowrap;
+        scrollbar-width:none;
+        -webkit-overflow-scrolling:touch;
+        padding-bottom:2px;
+      }
+      #catalogueFullSection .pagination::-webkit-scrollbar{display:none}
+      #catalogueFullSection .pagination button{flex:0 0 auto;font-size:12px;padding:0 11px}
+      #catalogueFullSection .page-numbers{flex:0 0 auto;flex-wrap:nowrap}
+      #catalogueFullSection .catalogue-tools{justify-content:flex-start}
+    }
+    @media(max-width:520px){
+      #catalogueFullSection .catalogue-tools{display:grid;grid-template-columns:1fr}
+      #catalogueFullSection .catalogue-tool-pill,#catalogueFullSection .catalogue-goto{width:100%;justify-content:space-between}
+      #catalogueFullSection .catalogue-goto input{flex:1;width:auto;max-width:120px}
+    }
+
+    /* V3.2.7 - Hall CTA premium + compteurs zéro visibles, patch inline de sécurité */
+    #hall-cinema .hall-premium-cta{
+      position:relative !important;
+      overflow:hidden !important;
+      display:inline-flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      gap:8px !important;
+      padding:14px 22px !important;
+      border-radius:14px !important;
+      border:1px solid rgba(245,205,105,.82) !important;
+      background:radial-gradient(circle at 18% 0%, rgba(255,231,160,.30), transparent 40%),linear-gradient(135deg, rgba(86,56,24,.98), rgba(36,24,13,.98)) !important;
+      color:#ffe9ad !important;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 0 28px rgba(240,190,85,.22),0 14px 34px rgba(0,0,0,.32) !important;
+      text-shadow:0 1px 0 rgba(0,0,0,.45) !important;
+      white-space:nowrap !important;
+    }
+    #hall-cinema .hall-premium-cta::before{
+      content:"";
+      position:absolute;
+      top:-45%;
+      bottom:-45%;
+      left:-115%;
+      width:62%;
+      transform:skewX(-22deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
+      opacity:.8;
+      transition:left .85s ease;
+    }
+    #hall-cinema .hall-premium-cta::after{
+      content:"✦";
+      position:relative;
+      color:#ffd66c;
+      filter:drop-shadow(0 0 8px rgba(255,214,108,.65));
+    }
+    #hall-cinema .hall-premium-cta span{position:relative;z-index:1;}
+    #hall-cinema .hall-premium-cta:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,226,139,1) !important;
+      color:#fff4d1 !important;
+      box-shadow:inset 0 0 20px rgba(255,214,108,.12),0 0 40px rgba(240,190,85,.36),0 18px 40px rgba(0,0,0,.38) !important;
+    }
+    #hall-cinema .hall-premium-cta:hover::before{left:145%;}
+    #hallStats strong{display:block !important;visibility:visible !important;opacity:1 !important;color:#fff !important;min-height:28px !important;}
+    #hallStats strong:empty::before{content:"0";}
+
+  </style>
+
+  <link rel="stylesheet" href="assets/projectionniste-fish.css?v=3.4.5-fish-local">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a class="active" href="index.html">Accueil</a>
+        <a href="#catalogue" data-nav-filter="film">Films</a>
+        <a href="#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="#catalogue" data-nav-filter="manga">Mangas</a>
+        <a class="sagas-nav-link" href="sagas.html">Sagas</a>
+        <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
+          <span class="discord-icon-wrap" aria-hidden="true">
+            <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
+            <img class="discord-icon discord-icon-violet" src="assets/icons/discord_violet.png" alt="" />
+          </span>
+          <span>Discord</span>
+        </a>
+      </nav>
+      <div class="nav-actions"><a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a><input id="searchInput" class="search-input" placeholder="Rechercher un titre, acteur ou réalisateur..." aria-label="Rechercher un titre, acteur ou réalisateur" /></div>
+      <button class="hamb">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="brand-orbit" aria-label="Identité Planète Stream">
+      <div class="brand-stars"></div>
+      <div class="container brand-orbit-inner">
+        <div class="planet-logo-wrap">
+          <div class="planet-logo" aria-hidden="true"></div>
+        </div>
+        <div class="brand-copy">
+          <p class="eyebrow">Bienvenue sur l'orbite</p>
+          <h1>PLANÈTE <span>STREAM</span></h1>
+          <p>Tous les mondes du cinéma réunis en un seul catalogue.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero dynamic-hero compact-hero" id="dynamicHero">
+      <div class="container hero-content hero-dynamic-content">
+        <p class="eyebrow" id="heroEyebrow">Sélection Planète Stream</p>
+        <h1 id="heroTitle">Votre bibliothèque entre en scène</h1>
+        <p class="hero-meta" id="heroMeta">Films • Séries • Mangas</p>
+        <div class="hero-actions">
+          <a class="primary play" id="heroWatch" href="#catalogue">Lecture</a>
+          <a class="secondary" id="heroDetail" href="#catalogue">Voir la fiche</a>
+          <button class="secondary" id="surpriseBtn" type="button">🎲 Surprise</button>
+        </div>
+        <div class="badges stats-strip">
+          <div class="badge"><i id="statTotal">0</i> titres</div>
+          <div class="badge"><i id="statFilms">0</i> films</div>
+          <div class="badge"><i id="statSeries">0</i> séries</div>
+          <div class="badge"><i id="statGenres">0</i> genres</div>
+        </div>
+        <div class="hero-carousel-status hero-carousel-status-inline" aria-label="Progression du carrousel">
+          <div class="hero-progress" aria-hidden="true"><span id="heroProgressBar"></span></div>
+          <div class="hero-counter" id="heroCounter">01 / 01</div>
+          <div class="hero-controls hero-controls-inline" aria-label="Changer la sélection">
+            <button id="heroPrev" type="button" aria-label="Titre précédent">‹</button>
+            <button id="heroNext" type="button" aria-label="Titre suivant">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container cinema-hall" id="hall-cinema" aria-label="Hall du Cinéma">
+      <div class="hall-shell">
+        <div class="hall-head">
+          <div>
+            <p class="eyebrow">Hall du Cinéma</p>
+            <h2>Là où les films continuent après le générique.</h2>
+            <p>Critiques, débats, nouveaux membres et avis qui font vibrer l’orbite Planète Stream.</p>
+          </div>
+          <a class="secondary hall-cta hall-premium-cta" href="account.html"><span>Rejoindre les Planétiens</span></a>
+        </div>
+
+        <div class="hall-stats" id="hallStats" aria-label="Activité communautaire">
+          <span><strong>0</strong><small>critiques aujourd’hui</small></span>
+          <span><strong>0</strong><small>réponses</small></span>
+          <span><strong>0</strong><small>likes</small></span>
+          <span><strong>0</strong><small>nouveaux membres</small></span>
+        </div>
+
+        <article class="hall-planetian-ticker" aria-label="Activité du parcours des Planétiens">
+          <div class="hall-ticker-title">🏅 Parcours des Planétiens</div>
+          <div class="hall-ticker-viewport">
+            <div class="hall-ticker-track" id="hallJourneyTicker">
+              <span>Lecture des carnets de bord...</span>
+            </div>
+          </div>
+        </article>
+
+        <div class="hall-grid">
+          <article class="hall-card hall-hot" id="hallHotDiscussions">
+            <h3>🔥 Discussions du moment</h3>
+            <p class="hall-muted">Chargement des débats...</p>
+          </article>
+          <article class="hall-card" id="hallPopularReview">
+            <h3>❤️ Critique populaire</h3>
+            <p class="hall-muted">Recherche de la pépite...</p>
+          </article>
+          <article class="hall-card" id="hallWelcome">
+            <h3>🆕 Bienvenue</h3>
+            <p class="hall-muted">Ouverture du registre...</p>
+          </article>
+          <article class="hall-card" id="hallActiveMembers">
+            <h3>🏆 Membres actifs</h3>
+            <p class="hall-muted">Comptage des traces orbitales...</p>
+          </article>
+        </div>
+
+        <div class="home-v2-grid" id="cinemaReleaseModule" aria-label="Sorties cinéma et activité récente">
+          <section class="home-release-card" aria-labelledby="homeReleaseTitle">
+            <div class="home-release-head">
+              <div>
+                <p class="eyebrow">Sorties cinéma</p>
+                <h3 id="homeReleaseTitle">Sorties cinéma</h3>
+              </div>
+              <a class="home-release-all" href="#catalogue">Calendrier cinéma <span aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="home-trailer-frame" id="homeTrailerFrame" aria-label="Bande-annonce mise en avant">
+              <button class="home-trailer-poster" id="homeTrailerPoster" type="button" aria-label="Lancer la bande-annonce">
+                <span class="home-trailer-logo" id="homeTrailerLogo">PLANÈTE STREAM</span>
+                <span class="home-trailer-play" aria-hidden="true">▶</span>
+                <span class="home-trailer-caption" id="homeTrailerCaption">Bande-annonce officielle</span>
+              </button>
+            </div>
+
+            <div class="home-release-strip" id="homeReleaseStrip" aria-label="Prochaines sorties">
+              <p class="hall-muted">Chargement des prochaines sorties...</p>
+            </div>
+
+            <article class="home-account-card home-account-row-card">
+              <div class="home-account-head">
+                <h3>Pourquoi créer un compte ?</h3>
+                <a href="account.html">Mon espace <span aria-hidden="true">→</span></a>
+              </div>
+              <div class="home-account-grid">
+                <span><strong>⭐ Notez</strong><small>Partagez vos avis</small></span>
+                <span><strong>💬 Commentez</strong><small>Échangez avec la salle</small></span>
+                <span><strong>🔖 Listes</strong><small>Gardez vos pépites</small></span>
+                <span><strong>🔔 Alertes</strong><small>Suivez les réponses</small></span>
+              </div>
+            </article>
+          </section>
+
+          <aside class="home-v2-side" aria-label="Activité du site">
+            <article class="hall-card hall-timeline-card home-timeline-compact">
+              <div class="hall-card-head">
+                <h3 class="hall-timeline-title"><img class="hall-title-planet-img" src="assets/ic_planete.png" alt="" loading="lazy" style="width:16px;height:16px;min-width:16px;object-fit:contain;"> Activité récente</h3>
+                <span id="hallUpdatedAt">—</span>
+              </div>
+              <div class="hall-timeline" id="hallTimeline">
+                <p class="hall-muted">La timeline chauffe ses projecteurs...</p>
+              </div>
+            </article>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <div class="container" id="catalogue">
+      <div class="tabs" id="tabs">
+
+    <button class="active" data-filter="all">Tout</button>
+    <button data-filter="film">Films</button>
+    <button data-filter="serie">Séries</button>
+    <button data-filter="manga">Manga</button>
+
+    <select id="genreFilter" class="genre-filter">
+        <option value="">Tous les genres</option>
+    </select>
+
+</div>
+
+      <section id="premiumSection" class="premium-home-section"><div class="section-head"><h2 class="section-title">Sélection Premium</h2><p>Les fiches vitrines Planète Stream, servies dans le fauteuil rouge.</p></div><div class="premium-home-grid" id="premiumGrid"></div></section>
+      <section id="featuredSection"><div class="section-head"><h2 class="section-title">À la une</h2><p>Une sélection éditoriale des contenus à ne pas manquer.</p></div><div class="grid rail" id="featuredGrid"></div></section>
+      <section id="latestSection"><div class="section-head"><h2 class="section-title">Derniers ajouts</h2><p>Les nouveautés fraîchement posées sur l'étagère.</p></div><div class="grid rail" id="latestGrid"></div></section>
+      <section id="latestMangaSection"><div class="section-head"><h2 class="section-title">Derniers Mangas ajoutés</h2><p>Les animés et mangas fraîchement invoqués dans leur propre orbite.</p></div><div class="grid rail" id="latestMangaGrid"></div></section>
+      <section id="topRatedSection"><div class="section-head"><h2 class="section-title">Les mieux notés</h2><p>Le haut du panier, sans panier percé.</p></div><div class="grid rail" id="topRatedGrid"></div></section>
+     <section id="sagasSection" class="sagas-teaser-section" aria-label="Sagas Planète Stream">
+
+    <div class="section-head sagas-teaser-head">
+        <div>
+            <h2 class="section-title">Sagas</h2>
+            <p>Les plus grandes histoires, les univers les plus iconiques.</p>
+        </div>
+    </div>
+
+    <a href="sagas.html" class="sagas-banner sagas-banner-link">
+        <img
+            src="assets/sagas.png"
+            alt="Sagas Planète Stream"
+            loading="lazy">
+    </a>
+
+</section>
+      <section id="catalogueFullSection" class="catalogue-full-section">
+        <div class="section-head catalogue-head">
+          <div>
+            <h2 class="section-title">Catalogue complet</h2>
+            <p id="countLabel" class="catalogue-summary"></p>
+          </div>
+        </div>
+        <div class="grid" id="catalogueGrid"></div>
+        <div class="catalogue-bottom-panel" aria-label="Navigation du catalogue">
+          <nav class="pagination pagination-bottom" data-pagination aria-label="Pagination du catalogue"></nav>
+          <div class="catalogue-tools" aria-label="Options du catalogue">
+            <label class="catalogue-tool-pill">Par page
+              <select id="cataloguePageSize" class="catalogue-page-size">
+                <option value="auto">Auto</option>
+                <option value="12">12</option>
+                <option value="24">24</option>
+                <option value="36">36</option>
+                <option value="48">48</option>
+              </select>
+            </label>
+            <form id="catalogueGotoForm" class="catalogue-goto catalogue-tool-pill">
+              <label for="catalogueGotoInput">Aller page</label>
+              <input id="catalogueGotoInput" type="number" min="1" value="1" inputmode="numeric">
+              <button type="submit">Go</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+
+      <aside class="cta discord-cta" id="communaute">
+        <div class="cta-copy">
+          <div class="circle">💬</div>
+          <div>
+            <p class="eyebrow">Communauté</p>
+            <h2>Rejoignez le Discord Planète Stream</h2>
+            <p>Proposez des titres, partagez vos avis, signalez les petits bugs rescapés et participez aux prochaines évolutions du site. Le QG est ouvert, sans videur à l’entrée.</p>
+          </div>
+        </div>
+        <a class="primary" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le serveur</a>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="detailModal" class="modal"><button class="modal-close" data-close>×</button><div id="modalContent"></div></dialog>
+  <footer class="site-footer footer-redesign" aria-label="Pied de page Planète Stream">
+    <div class="container footer-shell">
+      <section class="footer-brand-block" aria-label="Présentation">
+        <a class="logo footer-logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+        <p class="footer-tagline">Chaque œuvre a une histoire. Chaque spectateur aussi.</p>
+        <p class="footer-description">Découvrez, notez et partagez les films, séries et mangas qui méritent d’être vus.</p>
+        <p class="footer-meta">© 2026 Planète Stream</p>
+      </section>
+
+      <nav class="footer-links-grid" aria-label="Navigation secondaire">
+        <section class="footer-col">
+          <h4>Explorer</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="index.html?filter=film#catalogue" data-footer-filter="film">Films</a></li>
+            <li><a href="index.html?filter=serie#catalogue" data-footer-filter="serie">Séries</a></li>
+            <li><a href="index.html?filter=manga#catalogue" data-footer-filter="manga">Mangas</a></li>
+            <li><a href="sagas.html">Sagas</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Communauté</h4>
+          <ul>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le Discord</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Suggestions de titres</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Retours et signalements</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Actualités du projet</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Planète Stream</h4>
+          <ul>
+            <li><a href="privacy.html">Confidentialité / RGPD</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>Notes des spectateurs</li>
+            <li>Critiques évolutives</li>
+            <li>Découvertes communautaires</li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+      
+  <div class="container footer-bottom">
+
+    <a
+        class="footer-studio-signature"
+        href="https://studio.moogwai-attitude.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WebDesign by Moogwai Attitude Studio">
+        <img
+            src="assets/logo-ma.png"
+            alt="WebDesign by Moogwai Attitude Studio">
+    </a>
+
+    <div class="footer-bottom-line">
+        <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
+        <span class="footer-version">Build v4</span>
+    </div>
+
+</div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/auth.js?v=3.0.4-architecte"></script>
+  <script src="assets/app.js?v=3.4.4-pagination-real"></script>
+  <script src="assets/hall.js?v=3.2.7-hall-final"></script>
+  
+
+  <!-- Projectionniste poisson rouge : mascotte interactive, cerveau local -->
+  <section class="ps-fish-chat" id="psFishChat" aria-label="Chat du Projectionniste" aria-hidden="true">
+    <header class="ps-fish-chat-header">
+      <div>
+        <strong>🐠 Le Projectionniste</strong>
+        <span id="psBrainStatus">Cerveau local actif</span>
+      </div>
+      <button class="ps-fish-chat-close" id="psFishChatClose" aria-label="Fermer le chat" type="button">×</button>
+    </header>
+
+    <div class="ps-fish-chat-messages" id="psFishMessages" aria-live="polite">
+      <article class="ps-fish-message ps-fish-message-bot">
+        <strong>🐠 Projectionniste</strong>
+        <p>Bloup ! Je suis en cerveau local pour l’instant. Pose-moi une question simple, le vrai catalogue arrive bientôt dans mon bocal.</p>
+      </article>
+    </div>
+
+    <form class="ps-fish-chat-form" id="psFishForm">
+      <input id="psFishInput" type="text" autocomplete="off" placeholder="Ex : un film pour ce soir..." aria-label="Message pour le Projectionniste">
+      <button type="submit">Envoyer</button>
+    </form>
+
+    <div class="ps-fish-suggestions" aria-label="Suggestions du Projectionniste">
+      <button type="button" data-ps-fish-suggestion="Qui es-tu ?">Qui es-tu ?</button>
+      <button type="button" data-ps-fish-suggestion="Je cherche un film pour enfant">Film enfant</button>
+      <button type="button" data-ps-fish-suggestion="Que peux-tu faire ?">Aide</button>
+    </div>
+  </section>
+
+  <div class="ps-fish-widget" id="psFishWidget" aria-label="Ouvrir le Projectionniste" role="button" tabindex="0" aria-expanded="false" aria-controls="psFishChat">
+    <div class="ps-fish-speech" id="psFishTooltip">
+      <strong>Bloup !</strong>
+      <span>Clique si tu veux parler au Projectionniste.</span>
+    </div>
+
+    <div class="ps-fish-bowl" aria-hidden="true">
+      <div class="ps-bowl-shine ps-bowl-shine-a"></div>
+      <div class="ps-bowl-shine ps-bowl-shine-b"></div>
+      <div class="ps-bowl-particle ps-particle-a"></div>
+      <div class="ps-bowl-particle ps-particle-b"></div>
+      <div class="ps-bowl-particle ps-particle-c"></div>
+    </div>
+
+    <div class="ps-bubble ps-bubble-a"></div>
+    <div class="ps-bubble ps-bubble-b"></div>
+    <div class="ps-bubble ps-bubble-c"></div>
+    <div class="ps-bubble ps-bubble-d"></div>
+
+    <div class="ps-fish-glow"></div>
+
+    <div class="ps-fish-sprite" id="psFishSprite" aria-hidden="true">
+      <img class="ps-fish-pose is-active" src="assets/fish_immobile.png" alt="" data-pose="idle-1">
+      <img class="ps-fish-pose" src="assets/fish_immobile2.png" alt="" data-pose="idle-2">
+      <img class="ps-fish-pose" src="assets/fish_bulle.png" alt="" data-pose="thinking">
+      <img class="ps-fish-pose" src="assets/fish_sourire.png" alt="" data-pose="talking">
+    </div>
+  </div>
+  <script src="assets/projectionniste-fish.js?v=3.4.5-fish-local"></script>
+
+</body>
+</html>
