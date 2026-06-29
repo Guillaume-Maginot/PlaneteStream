@@ -489,7 +489,7 @@ function renderHero(animate = true){
   const heroShade = window.innerWidth < 620
     ? 'linear-gradient(180deg, rgba(2,3,10,.94) 0%, rgba(2,3,10,.78) 52%, rgba(2,3,10,.94) 100%)'
     : 'linear-gradient(90deg, rgba(2,3,10,.97) 0%, rgba(2,3,10,.78) 35%, rgba(2,3,10,.25) 78%)';
-  hero.style.backgroundImage = `${heroShade}, url('${item.backdrop || item.poster || ''}')`;
+  hero.style.backgroundImage = `${heroShade}, url('${getBackdropImage(item)}')`;
   hero.style.backgroundPosition = state.heroDirection >= 0 ? 'center center' : 'right center';
   hero.querySelector('#heroEyebrow').textContent = item.homeFeatured ? 'Sous le projecteur' : (item.featured ? 'À la une' : 'Sélection Planète Stream');
   hero.querySelector('#heroTitle').textContent = item.title || 'Planète Stream';
@@ -681,7 +681,7 @@ function createCard(item){
   const watchHref = getWatchHref(item);
   const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
   card.innerHTML = `
-    <a class="poster poster-link" href="${detailHref}" data-title="${escapeHtml(item.title)}" style="background-image:url('${item.poster || ''}'), ${posterFallback}" aria-label="Voir la fiche ${escapeHtml(item.title)}"></a>
+    <a class="poster poster-link" href="${detailHref}" data-title="${escapeHtml(item.title)}" style="background-image:url('${getPosterImage(item)}'), ${posterFallback}" aria-label="Voir la fiche ${escapeHtml(item.title)}"></a>
     <div class="info">
       <h3 class="catalog-card-title">${escapeHtml(item.title)}</h3>
       <div class="compact-meta" aria-label="Informations ${escapeHtml(item.title)}">
@@ -711,8 +711,8 @@ function createPremiumCard(item){
   const watchTarget = isExternalHref(watchHref) ? ' target="_blank" rel="noopener noreferrer"' : '';
   const genres = (item.genres || []).slice(0,3).map(g => `<span>${escapeHtml(g)}</span>`).join('');
   const synopsis = item.overview || item.description || item.synopsis || '';
-  const backdrop = item.backdrop || item.poster || '';
-  const poster = item.poster || item.backdrop || '';
+  const backdrop = getBackdropImage(item);
+  const poster = getPosterImage(item);
   const rating = item._rating ? item._rating.toFixed(1) : (item.rating ? Number(item.rating).toFixed(1) : '');
   card.style.setProperty('--premium-home-backdrop', backdrop ? `url('${backdrop}')` : 'none');
   const sand = Array.from({ length: 26 }, (_, i) => {
