@@ -33,11 +33,11 @@
     .assist-section h2{margin:0 0 14px;font-size:23px;letter-spacing:-.02em}
     .assist-section p{color:#cfc5e8;line-height:1.65;margin:8px 0 0}
     .diagnostic-list{display:grid;gap:0;margin-top:8px;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.09)}
-    .diagnostic-row{display:grid;grid-template-columns:minmax(145px,1fr) auto;gap:14px;align-items:start;padding:13px 15px;background:rgba(255,255,255,.045);border-bottom:1px solid rgba(255,255,255,.075)}
+    .diagnostic-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(96px,220px);gap:14px;align-items:center;padding:12px 14px;background:rgba(255,255,255,.045);border-bottom:1px solid rgba(255,255,255,.075);min-height:0}
     .diagnostic-row:last-child{border-bottom:0}
-    .diagnostic-label{font-weight:900;color:#fff}
-    .diagnostic-help{display:block;margin-top:3px;color:#b9afd7;font-size:12px;line-height:1.45;font-weight:600}
-    .diagnostic-status{justify-self:end;text-align:right;font-weight:950;border-radius:999px;padding:6px 10px;font-size:12px;white-space:nowrap;border:1px solid rgba(255,255,255,.12)}
+    .diagnostic-label{font-weight:900;color:#fff;display:block;line-height:1.2}
+    .diagnostic-help{display:block;margin-top:3px;color:#b9afd7;font-size:12px;line-height:1.35;font-weight:600}
+    .diagnostic-status{justify-self:end;text-align:right;font-weight:950;border-radius:12px;padding:7px 10px;font-size:12px;line-height:1.2;white-space:normal;overflow-wrap:anywhere;border:1px solid rgba(255,255,255,.12);width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;max-width:220px!important;aspect-ratio:auto!important;display:inline-flex!important;align-items:center;justify-content:center}
     .diagnostic-status.ok{background:rgba(64,255,156,.12);color:#baffd9;border-color:rgba(64,255,156,.25)}
     .diagnostic-status.warn{background:rgba(255,190,72,.12);color:#ffe0a0;border-color:rgba(255,190,72,.25)}
     .diagnostic-status.bad{background:rgba(255,72,120,.12);color:#ffc0d0;border-color:rgba(255,72,120,.25)}
@@ -53,8 +53,8 @@
     @media (max-width: 720px){
       .assist-wrap{padding:34px 16px 30px}
       .assist-section{padding:17px;border-radius:22px}
-      .diagnostic-row{grid-template-columns:1fr;gap:8px}
-      .diagnostic-status{justify-self:start;text-align:left}
+      .diagnostic-row{grid-template-columns:1fr;gap:8px;align-items:start}
+      .diagnostic-status{justify-self:start;text-align:left;max-width:100%!important}
       .assist-actions{display:grid;grid-template-columns:1fr}
       .assist-btn{text-align:center;width:100%}
     }
@@ -148,7 +148,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/auth.js?v=3.0.4-architecte"></script>
-  <script src="assets/video-diagnostic.js?v=4.6-video-assistance"></script>
+  <script src="assets/video-diagnostic.js?v=4.6-video-assistance-compact"></script>
   <script src="assets/mobile-optimizations.js?v=4.5-mobile-opt" defer></script>
 </body>
 </html>
