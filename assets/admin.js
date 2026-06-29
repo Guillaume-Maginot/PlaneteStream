@@ -21,6 +21,9 @@ const sectionSelect = document.querySelector('#sectionSelect');
 const featuredSelect = document.querySelector('#featuredSelect');
 const premiumSelect = document.querySelector('#premiumSelect');
 const homeFeaturedSelect = document.querySelector('#homeFeaturedSelect');
+const cinemaReleaseSelect = document.querySelector('#cinemaReleaseSelect');
+const cinemaOrderInput = document.querySelector('#cinemaOrderInput');
+const cinemaHeroSelect = document.querySelector('#cinemaHeroSelect');
 const genreSelect = document.querySelector('#genreSelect');
 const catalogueSearch = document.querySelector('#catalogueSearch');
 const catalogueTypeFilter = document.querySelector('#catalogueTypeFilter');
@@ -52,6 +55,9 @@ const editFields = {
   featured: document.querySelector('#editFeatured'),
   premium: document.querySelector('#editPremium'),
   homeFeatured: document.querySelector('#editHomeFeatured'),
+  cinemaRelease: document.querySelector('#editCinemaRelease'),
+  cinemaOrder: document.querySelector('#editCinemaOrder'),
+  cinemaHero: document.querySelector('#editCinemaHero'),
   genres: document.querySelector('#editGenres'),
   rating: document.querySelector('#editRating'),
   poster: document.querySelector('#editPoster'),
@@ -345,7 +351,10 @@ function buildCatalogueEntry(item) {
     overview: item.overview || '',
     featured: featuredSelect?.value === 'true',
     premium: premiumSelect?.value === 'true',
-    homeFeatured: homeFeaturedSelect?.value === 'true'
+    homeFeatured: homeFeaturedSelect?.value === 'true',
+    cinemaRelease: cinemaReleaseSelect?.value === 'true',
+    cinemaOrder: Number(cinemaOrderInput?.value || 0),
+    cinemaHero: cinemaHeroSelect?.value === 'true'
   };
 }
 
@@ -1223,6 +1232,8 @@ function catalogueRow(entry, index) {
   const typeLabel = getMediaLabel(entry);
   const featured = entry.featured ? '<span class="catalogue-badge">À la une</span>' : '';
   const premium = entry.premium ? '<span class="catalogue-badge premium">⭐ Premium</span>' : '';
+  const cinema = entry.cinemaRelease ? `<span class="catalogue-badge cinema">🎬 Sortie${entry.cinemaOrder ? ` #${escapeHtml(String(entry.cinemaOrder))}` : ''}</span>` : '';
+  const cinemaHero = entry.cinemaHero ? '<span class="catalogue-badge hero">▶ Vedette BA</span>' : '';
   const bubbleBadge = getBubbleReasonBadge(entry);
   const mediaSummary = getMediaEmbedSummary(entry);
   const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
@@ -1248,6 +1259,8 @@ function catalogueRow(entry, index) {
         ${readyBadge}
         ${featured}
         ${premium}
+        ${cinema}
+        ${cinemaHero}
         ${bubbleBadge}
       </div>
       <p>${escapeHtml(genres || 'Genres à compléter')} · Note ${escapeHtml(String(entry.rating || 0))}</p>
@@ -1283,6 +1296,9 @@ function openEditor(index) {
   editFields.featured.value = entry.featured ? 'true' : 'false';
   if (editFields.premium) editFields.premium.value = entry.premium ? 'true' : 'false';
   if (editFields.homeFeatured) editFields.homeFeatured.value = entry.homeFeatured ? 'true' : 'false';
+  if (editFields.cinemaRelease) editFields.cinemaRelease.value = entry.cinemaRelease ? 'true' : 'false';
+  if (editFields.cinemaOrder) editFields.cinemaOrder.value = entry.cinemaOrder || '';
+  if (editFields.cinemaHero) editFields.cinemaHero.value = entry.cinemaHero ? 'true' : 'false';
   editFields.genres.value = Array.isArray(entry.genres) ? entry.genres.join(', ') : '';
   editFields.rating.value = entry.rating ?? 0;
   editFields.poster.value = entry.poster || '';
@@ -1332,6 +1348,9 @@ function saveEditedItem() {
     featured: editFields.featured.value === 'true',
     premium: editFields.premium?.value === 'true',
     homeFeatured: editFields.homeFeatured?.value === 'true',
+    cinemaRelease: editFields.cinemaRelease?.value === 'true',
+    cinemaOrder: Number(editFields.cinemaOrder?.value || 0),
+    cinemaHero: editFields.cinemaHero?.value === 'true',
     genres: editFields.genres.value.split(',').map(genre => genre.trim()).filter(Boolean),
     rating: Number(editFields.rating.value || 0),
     poster: editFields.poster.value.trim(),
@@ -1496,6 +1515,9 @@ function mergeTmdbRefresh(current, tmdbItem) {
     featured: Boolean(current.featured),
     premium: Boolean(current.premium),
     homeFeatured: Boolean(current.homeFeatured),
+    cinemaRelease: Boolean(current.cinemaRelease),
+    cinemaOrder: Number(current.cinemaOrder || 0),
+    cinemaHero: Boolean(current.cinemaHero),
     bubbleReasons: current.bubbleReasons || {},
     projectionnisteAdvice: current.projectionnisteAdvice || '',
     videoEmbed: currentVideo
