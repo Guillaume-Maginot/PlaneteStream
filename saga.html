@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=4.6-mobile-fish-cv" />
+  <link rel="stylesheet" href="assets/styles.css?v=4.6-saga-smooth" />
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <style>
     .saga-detail-page{
@@ -435,12 +435,78 @@
       .saga-movie-actions{grid-column:1 / -1;grid-template-columns:1fr}
     }
 
+
+
+    /* V4.6 saga smooth : la page saga était la seule à ramer sur vieux mobiles.
+       On garde le design, mais on retire les effets coûteux pendant le scroll. */
+    @media(max-width:700px){
+      .saga-detail-page{
+        overflow-x:hidden;
+        overflow-y:visible;
+      }
+
+      .saga-detail-bg{
+        position:absolute;
+        height:520px;
+        bottom:auto;
+        filter:none;
+        transform:translateZ(0);
+        will-change:auto;
+      }
+
+      .saga-detail-bg::after{
+        display:none;
+        animation:none!important;
+      }
+
+      .saga-detail-bg::before,
+      .saga-detail-page::before{
+        background:
+          linear-gradient(180deg,rgba(3,4,11,.72) 0%,rgba(3,4,11,.96) 44%,#03040b 100%);
+      }
+
+      .saga-stats-row,
+      .saga-movie-card{
+        -webkit-backdrop-filter:none!important;
+        backdrop-filter:none!important;
+        box-shadow:0 10px 24px rgba(0,0,0,.28);
+      }
+
+      .saga-movie-card{
+        contain:layout paint style;
+        content-visibility:auto;
+        contain-intrinsic-size:260px;
+        transition:none!important;
+      }
+
+      .saga-movie-card::after{
+        display:none;
+      }
+
+      .saga-movie-card:hover{
+        transform:none;
+        box-shadow:0 10px 24px rgba(0,0,0,.28);
+      }
+
+      .saga-movie-poster{
+        box-shadow:0 8px 18px rgba(0,0,0,.32);
+      }
+
+      .saga-movie-actions a{
+        transition:none!important;
+      }
+
+      .saga-movie-actions a:hover{
+        transform:none;
+      }
+    }
+
     @media(prefers-reduced-motion:reduce){
       .saga-detail-bg::after{animation:none!important}
       .saga-movie-card,.saga-movie-actions a{transition:none!important}
     }
   </style>
-  <link rel="stylesheet" href="assets/projectionniste-fish.css?v=4.6-mobile-hidden">
+  <link rel="stylesheet" href="assets/projectionniste-fish.css?v=4.6-saga-smooth">
 </head>
 <body>
   <header>
@@ -816,8 +882,8 @@
       <img class="ps-fish-pose" src="assets/fish_sourire.png" alt="" data-pose="talking">
     </div>
   </div>
-  <script src="assets/projectionniste-fish.js?v=4.6-mobile-hidden"></script>
+  <script src="assets/projectionniste-fish.js?v=4.6-saga-smooth"></script>
 
-  <script src="assets/mobile-optimizations.js?v=4.5-mobile-opt" defer></script>
+  <script src="assets/mobile-optimizations.js?v=4.6-saga-smooth" defer></script>
 </body>
 </html>
