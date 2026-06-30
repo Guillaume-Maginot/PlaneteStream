@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Message envoyé | Planète Stream</title>
+  <meta name="description" content="Contactez Planète Stream pour une question, une demande RGPD, un signalement ou une suggestion." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="assets/projectionniste-fish.css?v=3.4.5-fish-local">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+      <nav class="menu">
+        <a href="index.html">Accueil</a>
+        <a href="index.html?filter=film#catalogue" data-nav-filter="film">Films</a>
+        <a href="index.html?filter=serie#catalogue" data-nav-filter="serie">Séries</a>
+        <a href="index.html?filter=manga#catalogue" data-nav-filter="manga">Mangas</a>
+        <a class="sagas-nav-link" href="sagas.html">Sagas</a>
+        <a class="active" href="contact.html">Contact</a>
+        <a class="discord-link discord-nav-link" href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le Discord Planète Stream">
+          <span class="discord-icon-wrap" aria-hidden="true">
+            <img class="discord-icon discord-icon-white" src="assets/icons/discord_blanc.png" alt="" />
+            <img class="discord-icon discord-icon-violet" src="assets/icons/discord_violet.png" alt="" />
+          </span>
+          <span>Discord</span>
+        </a>
+      </nav>
+      <div class="nav-actions">
+        <a class="account-link" id="accountNavLink" href="account.html">Créer un compte / Se connecter</a>
+        <a class="primary" href="index.html#catalogue">Retour catalogue</a>
+      </div>
+      <button class="hamb">☰</button>
+    </div>
+  </header>
+
+  <main class="contact-page">
+    <section class="contact-hero container contact-success-hero">
+      <div class="contact-hero-copy">
+        <p class="eyebrow">Message transmis</p>
+        <h1>Merci, c’est envoyé</h1>
+        <p>Votre message a bien été transmis. Il sera traité dès que possible, sans pigeon voyageur ni incantation obscure.</p>
+        <div class="contact-success-actions">
+          <a class="primary" href="index.html">Retour à l’accueil</a>
+          <a class="ghost" href="contact.html">Envoyer un autre message</a>
+        </div>
+      </div>
+      <div class="contact-orb" aria-hidden="true">✅</div>
+    </section>
+  </main>
+
+  <footer class="site-footer footer-redesign" aria-label="Pied de page Planète Stream">
+    <div class="container footer-shell">
+      <section class="footer-brand-block" aria-label="Présentation">
+        <a class="logo footer-logo" href="index.html">PLANÈTE<span>STREAM</span></a>
+        <p class="footer-tagline">Chaque œuvre a une histoire. Chaque spectateur aussi.</p>
+        <p class="footer-description">Découvrez, notez et partagez les films, séries et mangas qui méritent d’être vus.</p>
+        <p class="footer-meta">© 2026 Planète Stream · v3.0 RC1.7</p>
+      </section>
+
+      <nav class="footer-links-grid" aria-label="Navigation secondaire">
+        <section class="footer-col">
+          <h4>Explorer</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="index.html?filter=film#catalogue" data-footer-filter="film">Films</a></li>
+            <li><a href="index.html?filter=serie#catalogue" data-footer-filter="serie">Séries</a></li>
+            <li><a href="index.html?filter=manga#catalogue" data-footer-filter="manga">Mangas</a></li>
+            <li><a href="sagas.html">Sagas</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Communauté</h4>
+          <ul>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Rejoindre le Discord</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Suggestions de titres</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Retours et signalements</a></li>
+            <li><a href="https://discord.gg/gGrrM7zbb" target="_blank" rel="noopener noreferrer">Actualités du projet</a></li>
+          </ul>
+        </section>
+        <section class="footer-col">
+          <h4>Planète Stream</h4>
+          <ul>
+            <li><a href="privacy.html">Confidentialité / RGPD</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li>Notes des spectateurs</li>
+            <li>Critiques évolutives</li>
+            <li>Découvertes communautaires</li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
+      <span>Construit avec ❤️ pour les passionnés de cinéma, séries et mangas.</span>
+      <span class="footer-version">Build v3.2</span>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/auth.js?v=3.0.4-architecte"></script>
+
+
+  <!-- Projectionniste poisson rouge : mascotte interactive, cerveau local -->
+  <section class="ps-fish-chat" id="psFishChat" aria-label="Chat du Projectionniste" aria-hidden="true">
+    <header class="ps-fish-chat-header">
+      <div>
+        <strong>🐠 Le Projectionniste</strong>
+        <span id="psBrainStatus">Cerveau local actif</span>
+      </div>
+      <button class="ps-fish-chat-close" id="psFishChatClose" aria-label="Fermer le chat" type="button">×</button>
+    </header>
+
+    <div class="ps-fish-chat-messages" id="psFishMessages" aria-live="polite">
+      <article class="ps-fish-message ps-fish-message-bot">
+        <strong>🐠 Projectionniste</strong>
+        <p>Bloup ! Je suis en cerveau local pour l’instant. Pose-moi une question simple, le vrai catalogue arrive bientôt dans mon bocal.</p>
+      </article>
+    </div>
+
+    <form class="ps-fish-chat-form" id="psFishForm">
+      <input id="psFishInput" type="text" autocomplete="off" placeholder="Ex : un film pour ce soir..." aria-label="Message pour le Projectionniste">
+      <button type="submit">Envoyer</button>
+    </form>
+
+    <div class="ps-fish-suggestions" aria-label="Suggestions du Projectionniste">
+      <button type="button" data-ps-fish-suggestion="Qui es-tu ?">Qui es-tu ?</button>
+      <button type="button" data-ps-fish-suggestion="Je cherche un film pour enfant">Film enfant</button>
+      <button type="button" data-ps-fish-suggestion="Que peux-tu faire ?">Aide</button>
+    </div>
+  </section>
+
+  <div class="ps-fish-widget" id="psFishWidget" aria-label="Ouvrir le Projectionniste" role="button" tabindex="0" aria-expanded="false" aria-controls="psFishChat">
+    <div class="ps-fish-speech" id="psFishTooltip">
+      <strong>Bloup !</strong>
+      <span>Clique si tu veux parler au Projectionniste.</span>
+    </div>
+
+    <div class="ps-fish-bowl" aria-hidden="true">
+      <div class="ps-bowl-shine ps-bowl-shine-a"></div>
+      <div class="ps-bowl-shine ps-bowl-shine-b"></div>
+      <div class="ps-bowl-particle ps-particle-a"></div>
+      <div class="ps-bowl-particle ps-particle-b"></div>
+      <div class="ps-bowl-particle ps-particle-c"></div>
+    </div>
+
+    <div class="ps-bubble ps-bubble-a"></div>
+    <div class="ps-bubble ps-bubble-b"></div>
+    <div class="ps-bubble ps-bubble-c"></div>
+    <div class="ps-bubble ps-bubble-d"></div>
+
+    <div class="ps-fish-glow"></div>
+
+    <div class="ps-fish-sprite" id="psFishSprite" aria-hidden="true">
+      <img class="ps-fish-pose is-active" src="assets/fish_immobile.png" alt="" data-pose="idle-1">
+      <img class="ps-fish-pose" src="assets/fish_immobile2.png" alt="" data-pose="idle-2">
+      <img class="ps-fish-pose" src="assets/fish_bulle.png" alt="" data-pose="thinking">
+      <img class="ps-fish-pose" src="assets/fish_sourire.png" alt="" data-pose="talking">
+    </div>
+  </div>
+  <script src="assets/projectionniste-fish.js?v=3.4.5-fish-local"></script>
+
+</body>
+</html>
