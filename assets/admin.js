@@ -1223,9 +1223,17 @@ function compareCatalogueItems(a, b, sortMode) {
   return 0;
 }
 
+function isCinemaTrailerOnly(entry) {
+  const hasTrailer = Boolean(String(entry?.trailer || '').trim());
+  const hasEmbed = Boolean(String(entry?.videoEmbed || entry?.video_embed || entry?.embed || '').trim());
+  return Boolean(entry?.cinemaRelease && hasTrailer && !hasEmbed && !isSeriesEntry(entry));
+}
+
 function catalogueRow(entry, index) {
   const el = document.createElement('article');
   el.className = 'catalogue-item';
+  const trailerOnly = isCinemaTrailerOnly(entry);
+  if (trailerOnly) el.classList.add('is-trailer-only');
   const poster = entry.poster || '';
   const genres = Array.isArray(entry.genres) ? entry.genres.slice(0, 5).join(', ') : '';
   const isSeries = isSeriesEntry(entry);
@@ -1239,7 +1247,7 @@ function catalogueRow(entry, index) {
   const stats = isSeries ? getEpisodeEmbedStats(entry) : null;
   const readyBadge = mediaSummary.missing
     ? `<span class="catalogue-badge missing">${escapeHtml(mediaSummary.label)}</span>`
-    : `<span class="catalogue-badge ready">${isSeries ? `${typeLabel} prêt${typeLabel === 'Série' ? 'e' : ''}` : 'Embed OK'}</span>`;
+    : `<span class="catalogue-badge ${trailerOnly ? 'trailer-only' : 'ready'}">${escapeHtml(mediaSummary.label || (isSeries ? `${typeLabel} prêt${typeLabel === 'Série' ? 'e' : ''}` : 'Embed OK'))}</span>`;
   const seriesBadge = isSeries
     ? `<span class="catalogue-badge">${escapeHtml(String(entry.seasons || (Array.isArray(entry.seasonsData) ? entry.seasonsData.length : 0)))} saison${Number(entry.seasons || 0) > 1 ? 's' : ''}</span><span class="catalogue-badge">${escapeHtml(String(entry.episodes || stats?.total || 0))} épisode${Number(entry.episodes || stats?.total || 0) > 1 ? 's' : ''}</span>`
     : '';
@@ -1644,8 +1652,15 @@ function getMediaEmbedSummary(entry) {
     if (stats.missing) return {ready:stats.ready, missing:true, label:`${stats.missing} épisode${stats.missing > 1 ? 's' : ''} sans embed`};
     return {ready:true, missing:false, label:'Tous les épisodes prêts'};
   }
-  const ready = Boolean(String(entry?.videoEmbed || entry?.video_embed || entry?.embed || '').trim());
-  return {ready, missing:!ready, label:'Embed manquant'};
+
+  const hasEmbed = Boolean(String(entry?.videoEmbed || entry?.video_embed || entry?.embed || '').trim());
+  const hasTrailer = Boolean(String(entry?.trailer || '').trim());
+
+  if (entry?.cinemaRelease && hasTrailer && !hasEmbed) {
+    return {ready:true, missing:false, label:'BA seule'};
+  }
+
+  return {ready:hasEmbed, missing:!hasEmbed, label:hasEmbed ? 'Embed OK' : 'Embed manquant'};
 }
 
 function renderSeriesEpisodeEditor(entry) {

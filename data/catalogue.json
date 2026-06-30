@@ -1513,6 +1513,122 @@
     }
   },
   {
+    "title": "Avatar 4",
+    "slug": "avatar-4",
+    "originalTitle": "Avatar 4",
+    "year": "2029",
+    "releaseDate": "2029-12-19",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Science-Fiction",
+      "Aventure",
+      "Action"
+    ],
+    "director": "James Cameron",
+    "cast": [
+      {
+        "id": 65731,
+        "name": "Sam Worthington",
+        "character": "Jake Sully",
+        "profile_path": "/vM1WIfYQ1HUBtlVPwB9Hp9fLcn8.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/vM1WIfYQ1HUBtlVPwB9Hp9fLcn8.jpg"
+      },
+      {
+        "id": 8691,
+        "name": "Zoe Saldaña",
+        "character": "Neytiri",
+        "profile_path": "/fCJuIn1PMUQtYdRRSnnoZeMJVWs.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fCJuIn1PMUQtYdRRSnnoZeMJVWs.jpg"
+      },
+      {
+        "id": 32747,
+        "name": "Stephen Lang",
+        "character": "Colonel Miles Quaritch",
+        "profile_path": "/gnO5VfkDgA2fsHweD0622LUY3Hu.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gnO5VfkDgA2fsHweD0622LUY3Hu.jpg"
+      },
+      {
+        "id": 10205,
+        "name": "Sigourney Weaver",
+        "character": "Kiri",
+        "profile_path": "/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+      },
+      {
+        "id": 566331,
+        "name": "Oona Chaplin",
+        "character": "Varang",
+        "profile_path": "/uYnBSVKcFgw48Wxts01Dh5Gxlar.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uYnBSVKcFgw48Wxts01Dh5Gxlar.jpg"
+      },
+      {
+        "id": 1771,
+        "name": "Giovanni Ribisi",
+        "character": "Parker Selfridge",
+        "profile_path": "/8EAiS9D3YtGOrwNM0OrwmDpWK7s.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/8EAiS9D3YtGOrwNM0OrwmDpWK7s.jpg"
+      },
+      {
+        "id": 59231,
+        "name": "Joel David Moore",
+        "character": "Norm Spellman",
+        "profile_path": "/mMVhVglj6BZFuvqAXnEibce08k7.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mMVhVglj6BZFuvqAXnEibce08k7.jpg"
+      },
+      {
+        "id": 30485,
+        "name": "CCH Pounder",
+        "character": "Mo'at",
+        "profile_path": "/mr6BLDN75T8DJl9dNK3hN4YwqJa.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mr6BLDN75T8DJl9dNK3hN4YwqJa.jpg"
+      },
+      {
+        "id": 98215,
+        "name": "Matt Gerald",
+        "character": "Corporal Lyle Wainfleet",
+        "profile_path": "/six7c3aZpiEomHjj4ZYokq8Vgtx.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/six7c3aZpiEomHjj4ZYokq8Vgtx.jpg"
+      },
+      {
+        "id": 55936,
+        "name": "Jemaine Clement",
+        "character": "Dr. Ian Garvin",
+        "profile_path": "/6eiNbeurpHb2fxIeT0RrJ0wRI25.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/6eiNbeurpHb2fxIeT0RrJ0wRI25.jpg"
+      }
+    ],
+    "runtime": 0,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 0,
+    "popularity": 5.4327,
+    "trailer": "",
+    "videoEmbed": "",
+    "tagline": "",
+    "status": "Planned",
+    "homepage": "",
+    "collection": "Avatar - Saga",
+    "studios": [
+      "20th Century Studios",
+      "Lightstorm Entertainment"
+    ],
+    "tmdbId": 216527,
+    "poster": "https://image.tmdb.org/t/p/w500/qzMYKnT4MG1d0gnhwytr4cKhUvS.jpg",
+    "backdrop": "",
+    "overview": "Le quatrième volet de la saga Avatar.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": true,
+    "cinemaOrder": 2,
+    "cinemaHero": false
+  },
+  {
     "title": "Dune : Troisième partie",
     "slug": "dune-troisieme-partie",
     "originalTitle": "Dune: Part Three",
@@ -1827,6 +1943,124 @@
         "family": false
       }
     }
+  },
+  {
+    "title": "Spider-Man: Brand New Day",
+    "slug": "spider-man-brand-new-day",
+    "originalTitle": "Spider-Man: Brand New Day",
+    "year": "2026",
+    "releaseDate": "2026-07-29",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Science-Fiction",
+      "Action",
+      "Aventure"
+    ],
+    "director": "Destin Daniel Cretton",
+    "cast": [
+      {
+        "id": 1136406,
+        "name": "Tom Holland",
+        "character": "Peter Parker / Spider-Man",
+        "profile_path": "/xKBAaPIa1c7tzZD3Y0MhBLv4hPE.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xKBAaPIa1c7tzZD3Y0MhBLv4hPE.jpg"
+      },
+      {
+        "id": 505710,
+        "name": "Zendaya",
+        "character": "MJ",
+        "profile_path": "/yCpzzMJ9gS7Rp7xgrVOsntW1m7D.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yCpzzMJ9gS7Rp7xgrVOsntW1m7D.jpg"
+      },
+      {
+        "id": 1590797,
+        "name": "Sadie Sink",
+        "character": "",
+        "profile_path": "/fV0KHJcK3fYX2acMorDUf1Uv9mY.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fV0KHJcK3fYX2acMorDUf1Uv9mY.jpg"
+      },
+      {
+        "id": 1649152,
+        "name": "Jacob Batalon",
+        "character": "Ned Leeds",
+        "profile_path": "/53YhaL4xw4Sb1ssoHkeSSBaO29c.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/53YhaL4xw4Sb1ssoHkeSSBaO29c.jpg"
+      },
+      {
+        "id": 19498,
+        "name": "Jon Bernthal",
+        "character": "Frank Castle / Punisher",
+        "profile_path": "/o0t6EVkJOrFAjESDilZUlf46IbQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/o0t6EVkJOrFAjESDilZUlf46IbQ.jpg"
+      },
+      {
+        "id": 2028037,
+        "name": "Tramell Tillman",
+        "character": "Bill Metzger",
+        "profile_path": "/bEA15zMnkcXlRroYjKrFUWiiK7y.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/bEA15zMnkcXlRroYjKrFUWiiK7y.jpg"
+      },
+      {
+        "id": 829372,
+        "name": "Michael Mando",
+        "character": "Mac Gargan",
+        "profile_path": "/gvM2wG66bjEpiirdeQdyG9EzUfv.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gvM2wG66bjEpiirdeQdyG9EzUfv.jpg"
+      },
+      {
+        "id": 103,
+        "name": "Mark Ruffalo",
+        "character": "Bruce Banner / Hulk",
+        "profile_path": "/5GilHMOt5PAQh6rlUKZzGmaKEI7.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5GilHMOt5PAQh6rlUKZzGmaKEI7.jpg"
+      },
+      {
+        "id": 59693,
+        "name": "Liza Colón-Zayas",
+        "character": "Detective Jean DeWolff",
+        "profile_path": "/q2gHcef0wckji0AS8ZEO6cYx065.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q2gHcef0wckji0AS8ZEO6cYx065.jpg"
+      },
+      {
+        "id": 1962692,
+        "name": "Marvin Jones III",
+        "character": "Lonnie Lincoln / Tombstone",
+        "profile_path": "/nS4X8TP3idFsxDdV9UqTRbz585g.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/nS4X8TP3idFsxDdV9UqTRbz585g.jpg"
+      }
+    ],
+    "runtime": 150,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 0,
+    "popularity": 74.8606,
+    "trailer": "x07thQi2vqw",
+    "videoEmbed": "",
+    "tagline": "",
+    "status": "Post Production",
+    "homepage": "",
+    "collection": "Spider-Man (Avengers) - Saga",
+    "studios": [
+      "Marvel Studios",
+      "Columbia Pictures",
+      "Pascal Pictures",
+      "TSG Entertainment II"
+    ],
+    "tmdbId": 969681,
+    "poster": "https://image.tmdb.org/t/p/w500/yikio8CfJxIA7faZxgvB9FGXy6u.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/vjMvFSmGUxEtqVdaZgvFee9XkZl.jpg",
+    "overview": "Quatre ans se sont écoulés, Peter, désormais adulte, vit seul, s'est volontairement effacé de la vie et des souvenirs de ses proches. Luttant contre le crime dans un New York qui ne le reconnaît plus, il se consacre entièrement à la protection de la ville - un Spider-Man à plein temps - mais à mesure que les responsabilités s'intensifient, la pression provoque une transformation physique surprenante qui menace son existence, tandis qu'une étrange nouvelle vague de crimes donne naissance à l'une des menaces les plus redoutables qu'il ait jamais affrontées.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": true,
+    "cinemaOrder": 3,
+    "cinemaHero": false
   },
   {
     "title": "Super Mario Galaxy, le film",
