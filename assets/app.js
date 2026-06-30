@@ -232,8 +232,14 @@ function isManga(item){
   );
 }
 
+function isCinemaReleaseOnly(item){
+  const isCinema = item?.cinemaRelease === true || item?.cinemaRelease === 'true';
+  const hasPlayableVideo = Boolean(String(item?.videoEmbed || item?.video_embed || '').trim());
+  return isCinema && !hasPlayableVideo;
+}
+
 function isStandardCatalogueItem(item){
-  return !isManga(item);
+  return !isManga(item) && !isCinemaReleaseOnly(item);
 }
 
 function applySearchFromUrl(){
