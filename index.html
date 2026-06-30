@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=4.9-home-trailer-posters" />
+  <link rel="stylesheet" href="assets/styles.css?v=5.0-home-trailer-json" />
 
   <style id="home-trailer-critical-css">
     /* Correctif critique accueil V2 -> V1 : gardé inline pour éviter les caches CSS récalcitrants */
@@ -78,6 +78,7 @@
       background:#000!important;
       box-shadow:inset 0 -80px 120px rgba(0,0,0,.46), 0 16px 34px rgba(0,0,0,.28)!important;
     }
+    .home-trailer-empty{display:flex;align-items:center;justify-content:center;min-height:100%;margin:0;color:#cfc7dc;font-weight:800;text-align:center;padding:24px;}
     .home-trailer-embed iframe{
       position:absolute!important;
       inset:0!important;
@@ -503,24 +504,12 @@
             </div>
 
             <div class="home-trailer-frame" aria-label="Bande-annonce mise en avant">
-              <div class="home-trailer-embed">
-                <iframe
-                  id="homeTrailerPlayer"
-                  src="https://www.youtube-nocookie.com/embed/3_9vCamtuPY?rel=0&modestbranding=1&playsinline=1"
-                  title="Dune : Messiah - bande-annonce officielle"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-                  allowfullscreen></iframe>
+              <div class="home-trailer-embed" id="homeTrailerEmbed">
+                <p class="home-trailer-empty">Chargement des bandes-annonces du catalogue…</p>
               </div>
             </div>
 
-            <div class="home-release-strip" aria-label="Prochaines sorties">
-              <button class="home-release-chip is-active" type="button" data-trailer-id="3_9vCamtuPY" data-trailer-title="Dune : Messiah - bande-annonce officielle"><img src="https://img.youtube.com/vi/3_9vCamtuPY/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Dune : Messiah</span><small>Déc. 2026</small></span></button>
-              <button class="home-release-chip" type="button" data-trailer-id="nb_fFj_0rq8" data-trailer-title="Avatar 4 - bande-annonce officielle"><img src="https://img.youtube.com/vi/nb_fFj_0rq8/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Avatar 4</span><small>À venir</small></span></button>
-              <button class="home-release-chip" type="button" data-trailer-id="8TZMtslA3UY" data-trailer-title="Spider-Man - bande-annonce officielle"><img src="https://img.youtube.com/vi/8TZMtslA3UY/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Spider-Man</span><small>À venir</small></span></button>
-              <button class="home-release-chip" type="button" data-trailer-id="-sAOWhvheK8" data-trailer-title="Thunderbolts - bande-annonce officielle"><img src="https://img.youtube.com/vi/-sAOWhvheK8/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Thunderbolts</span><small>À venir</small></span></button>
-            </div>
+            <div class="home-release-strip" id="homeReleaseStrip" aria-label="Prochaines sorties"></div>
 
             <article class="home-account-card home-account-row-card">
               <div class="home-account-head">
@@ -764,9 +753,43 @@
 
 <script id="home-trailer-player-js">
 (function(){
-  const player = document.getElementById('homeTrailerPlayer');
-  const chips = Array.from(document.querySelectorAll('.home-release-chip[data-trailer-id]'));
-  if (!player || !chips.length) return;
+  const embed = document.getElementById('homeTrailerEmbed');
+  const strip = document.getElementById('homeReleaseStrip');
+  if (!embed || !strip) return;
+
+  const catalogueUrl = 'data/catalogue.json?v=5.0-home-trailer-json';
+  const MAX_TRAILERS = 4;
+
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#039;',
+    '"': '&quot;'
+  }[char]));
+
+  const normalizeYoutubeId = (value) => {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    const direct = raw.match(/^[a-zA-Z0-9_-]{6,}$/);
+    if (direct) return raw;
+    const found = raw.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{6,})/);
+    return found ? found[1] : '';
+  };
+
+  const parseDate = (item) => {
+    const raw = item.releaseDate || item.date || '';
+    const time = raw ? Date.parse(raw) : NaN;
+    return Number.isNaN(time) ? Number.MAX_SAFE_INTEGER : time;
+  };
+
+  const formatReleaseDate = (item) => {
+    if (!item.releaseDate) return item.year ? String(item.year) : 'À venir';
+    const date = new Date(item.releaseDate + 'T00:00:00');
+    if (Number.isNaN(date.getTime())) return item.year ? String(item.year) : 'À venir';
+    const month = date.toLocaleDateString('fr-FR', { month: 'short' }).replace('.', '');
+    return `${month.charAt(0).toUpperCase()}${month.slice(1)} ${date.getFullYear()}`;
+  };
 
   const makeSrc = (id, autoplay) => {
     const params = new URLSearchParams({
@@ -778,15 +801,66 @@
     return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?${params.toString()}`;
   };
 
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const id = chip.dataset.trailerId;
-      if (!id) return;
-      chips.forEach((item) => item.classList.toggle('is-active', item === chip));
-      player.src = makeSrc(id, true);
-      player.title = chip.dataset.trailerTitle || 'Bande-annonce officielle';
+  const renderPlayer = (item, autoplay) => {
+    const id = item._trailerId;
+    embed.innerHTML = `<iframe
+      id="homeTrailerPlayer"
+      src="${makeSrc(id, autoplay)}"
+      title="${escapeHtml(item.title || 'Bande-annonce officielle')} - bande-annonce officielle"
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+      allowfullscreen></iframe>`;
+  };
+
+  const renderChips = (items) => {
+    strip.innerHTML = items.map((item, index) => {
+      const title = escapeHtml(item.title || item.originalTitle || 'Sans titre');
+      const poster = escapeHtml(item.poster || `https://img.youtube.com/vi/${item._trailerId}/hqdefault.jpg`);
+      const date = escapeHtml(formatReleaseDate(item));
+      return `<button class="home-release-chip${index === 0 ? ' is-active' : ''}" type="button" data-index="${index}">
+        <img src="${poster}" alt="" loading="lazy">
+        <span class="home-release-chip-text"><span>${title}</span><small>${date}</small></span>
+      </button>`;
+    }).join('');
+
+    Array.from(strip.querySelectorAll('.home-release-chip')).forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const index = Number(chip.dataset.index || 0);
+        const item = items[index];
+        if (!item) return;
+        strip.querySelectorAll('.home-release-chip').forEach((node) => node.classList.toggle('is-active', node === chip));
+        renderPlayer(item, true);
+      });
     });
-  });
+  };
+
+  fetch(catalogueUrl)
+    .then((res) => {
+      if (!res.ok) throw new Error('catalogue inaccessible');
+      return res.json();
+    })
+    .then((catalogue) => {
+      const items = Array.isArray(catalogue) ? catalogue : [];
+      const trailers = items
+        .map((item) => ({ ...item, _trailerId: normalizeYoutubeId(item.trailer) }))
+        .filter((item) => item._trailerId && item.cinemaRelease === true)
+        .sort((a, b) => (Number(a.cinemaOrder ?? 999) - Number(b.cinemaOrder ?? 999)) || (parseDate(a) - parseDate(b)))
+        .slice(0, MAX_TRAILERS);
+
+      if (!trailers.length) {
+        embed.innerHTML = '<p class="home-trailer-empty">Aucune bande-annonce cinéma renseignée pour le moment.</p>';
+        strip.innerHTML = '';
+        return;
+      }
+
+      renderPlayer(trailers[0], false);
+      renderChips(trailers);
+    })
+    .catch(() => {
+      embed.innerHTML = '<p class="home-trailer-empty">Impossible de charger les bandes-annonces du catalogue.</p>';
+      strip.innerHTML = '';
+    });
 })();
 </script>
 
