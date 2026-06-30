@@ -1629,6 +1629,123 @@
     "cinemaHero": false
   },
   {
+    "title": "Avengers: Secret Wars",
+    "slug": "avengers-secret-wars",
+    "originalTitle": "Avengers: Secret Wars",
+    "year": "2027",
+    "releaseDate": "2027-12-16",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Science-Fiction",
+      "Action",
+      "Aventure"
+    ],
+    "director": "Joe Russo",
+    "cast": [
+      {
+        "id": 3223,
+        "name": "Robert Downey Jr.",
+        "character": "Victor von Doom  / Doctor Doom",
+        "profile_path": "/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
+      },
+      {
+        "id": 1253360,
+        "name": "Pedro Pascal",
+        "character": "Reed Richards / Mr. Fantastic",
+        "profile_path": "/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg"
+      },
+      {
+        "id": 556356,
+        "name": "Vanessa Kirby",
+        "character": "Sue Storm / The Invisible Woman",
+        "profile_path": "/tViEEsjvbhrJxWsOipUqIYjdHEb.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tViEEsjvbhrJxWsOipUqIYjdHEb.jpg"
+      },
+      {
+        "id": 21042,
+        "name": "Ebon Moss-Bachrach",
+        "character": "Ben Grimm / Thing",
+        "profile_path": "/xD8GVNayMpiTZxLfahy2DseYcQq.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xD8GVNayMpiTZxLfahy2DseYcQq.jpg"
+      },
+      {
+        "id": 1597365,
+        "name": "Joseph Quinn",
+        "character": "Johnny Storm / The Human Torch",
+        "profile_path": "/zshhuioZaH8S5ZKdMcojzWi1ntl.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zshhuioZaH8S5ZKdMcojzWi1ntl.jpg"
+      },
+      {
+        "id": 60898,
+        "name": "Sebastian Stan",
+        "character": "Bucky Barnes / Winter Soldier",
+        "profile_path": "/nKZgixTbHFXpkzzIpMFdLX98GYh.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/nKZgixTbHFXpkzzIpMFdLX98GYh.jpg"
+      },
+      {
+        "id": 1373737,
+        "name": "Florence Pugh",
+        "character": "Yelena Belova",
+        "profile_path": "/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg"
+      },
+      {
+        "id": 35029,
+        "name": "David Harbour",
+        "character": "Alexei Shostakov / Red Guardian",
+        "profile_path": "/qMFtMWlYVtFVyBoBhX5IoA5sN5a.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/qMFtMWlYVtFVyBoBhX5IoA5sN5a.jpg"
+      },
+      {
+        "id": 986808,
+        "name": "Wyatt Russell",
+        "character": "John Walker / U.S. Agent",
+        "profile_path": "/zIldBzXdBWskPZB7x35G2hYEVDo.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zIldBzXdBWskPZB7x35G2hYEVDo.jpg"
+      },
+      {
+        "id": 18182,
+        "name": "Olga Kurylenko",
+        "character": "Antonia / Taskmaster",
+        "profile_path": "/ei6eYUhQFw2AaV6U5fyPptBaPF0.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ei6eYUhQFw2AaV6U5fyPptBaPF0.jpg"
+      }
+    ],
+    "runtime": 0,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 0,
+    "popularity": 8.0151,
+    "trailer": "",
+    "videoEmbed": "",
+    "tagline": "",
+    "status": "Planned",
+    "homepage": "",
+    "collection": "Avengers - Saga",
+    "studios": [
+      "Marvel Studios",
+      "Kevin Feige Productions",
+      "AGBO"
+    ],
+    "tmdbId": 1003598,
+    "poster": "https://image.tmdb.org/t/p/w500/f0YBuh4hyiAheXhh4JnJWoKi9g5.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/rytc6Lf4447C0CDncwFa4gxe0vY.jpg",
+    "overview": "Adaptation de Secret Wars de Jim Shooter et un prochain film de la phase 6 du Marvel Cinematic Universe qui conclura la saga du multivers.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": true,
+    "cinemaOrder": 3,
+    "cinemaHero": false
+  },
+  {
     "title": "Dune : Troisième partie",
     "slug": "dune-troisieme-partie",
     "originalTitle": "Dune: Part Three",
@@ -2134,124 +2251,6 @@
         "family": true
       }
     }
-  },
-  {
-    "title": "The Angry Birds Movie 3",
-    "slug": "the-angry-birds-movie-3",
-    "originalTitle": "The Angry Birds Movie 3",
-    "year": "2026",
-    "releaseDate": "2026-12-23",
-    "type": "film",
-    "mediaType": "movie",
-    "category": "a-la-une",
-    "genres": [
-      "Animation",
-      "Comédie",
-      "Familial"
-    ],
-    "director": "John Rice",
-    "cast": [
-      {
-        "id": 58224,
-        "name": "Jason Sudeikis",
-        "character": "Red (voice)",
-        "profile_path": "/uuacnP9DOHMsmj8FhBi0cWWDgrn.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/uuacnP9DOHMsmj8FhBi0cWWDgrn.jpg"
-      },
-      {
-        "id": 54415,
-        "name": "Josh Gad",
-        "character": "Chuck (voice)",
-        "profile_path": "/p9hWNRwrVEBpl8We2bxLMHkk5Mj.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/p9hWNRwrVEBpl8We2bxLMHkk5Mj.jpg"
-      },
-      {
-        "id": 1453801,
-        "name": "Rachel Bloom",
-        "character": "Silver (voice)",
-        "profile_path": "/hfnU70X7QOdiURFEd1hM7gQIe6J.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/hfnU70X7QOdiURFEd1hM7gQIe6J.jpg"
-      },
-      {
-        "id": 62862,
-        "name": "Danny McBride",
-        "character": "Bomb (voice)",
-        "profile_path": "/sVFPzl2t5QlGudQKWAszIWZCXZv.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/sVFPzl2t5QlGudQKWAszIWZCXZv.jpg"
-      },
-      {
-        "id": 2604515,
-        "name": "Emma Myers",
-        "character": "June (voice)",
-        "profile_path": "/v1Y8RP39135ZOary9M4MbkrCAdn.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/v1Y8RP39135ZOary9M4MbkrCAdn.jpg"
-      },
-      {
-        "id": 1016168,
-        "name": "Lily James",
-        "character": "(voice)",
-        "profile_path": "/7UN8GVsDzccK9UVYzMx3hooLyzZ.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/7UN8GVsDzccK9UVYzMx3hooLyzZ.jpg"
-      },
-      {
-        "id": 3725495,
-        "name": "Marcello Hernández",
-        "character": "(voice)",
-        "profile_path": "/1HwInMPGpJ9Ne2eHe1Zirk6IDSN.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/1HwInMPGpJ9Ne2eHe1Zirk6IDSN.jpg"
-      },
-      {
-        "id": 2867506,
-        "name": "Walker Scobell",
-        "character": "Glider (voice)",
-        "profile_path": "/gfIZFH6SpwpOU8zc04e5MkeJcj2.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/gfIZFH6SpwpOU8zc04e5MkeJcj2.jpg"
-      },
-      {
-        "id": 1429453,
-        "name": "Sam Richardson",
-        "character": "(voice)",
-        "profile_path": "/hUN7IIbegvL7aSqQI5KRWoqqJLm.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/hUN7IIbegvL7aSqQI5KRWoqqJLm.jpg"
-      },
-      {
-        "id": 1683266,
-        "name": "Anna Cathcart",
-        "character": "(voice)",
-        "profile_path": "/fdWbljGWJ0T9ViOYB3BohnArM16.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/fdWbljGWJ0T9ViOYB3BohnArM16.jpg"
-      }
-    ],
-    "runtime": 0,
-    "seasons": 0,
-    "episodes": 0,
-    "seasonsData": [],
-    "country": "Finland, Japan, United States of America, India, Hong Kong, United Kingdom",
-    "language": "en",
-    "rating": 0,
-    "popularity": 12.048,
-    "trailer": "",
-    "videoEmbed": "",
-    "tagline": "",
-    "status": "In Production",
-    "homepage": "",
-    "collection": "Angry Birds - Saga",
-    "studios": [
-      "Rovio Animation",
-      "SEGA of America",
-      "Flywheel Media",
-      "One Cool Films"
-    ],
-    "tmdbId": 1300926,
-    "poster": "https://image.tmdb.org/t/p/w500/ty4gd1QFHbgqrucoR8SRFLSobA7.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/dNm06BNPg0yQ6rnxv5OQptaCLuW.jpg",
-    "overview": "",
-    "featured": false,
-    "premium": false,
-    "homeFeatured": false,
-    "cinemaRelease": true,
-    "cinemaOrder": 3,
-    "cinemaHero": false
   },
   {
     "title": "The Punisher : One Last Kill",
