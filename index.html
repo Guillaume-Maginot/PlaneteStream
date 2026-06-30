@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=4.7-home-trailer-css-hardfix" />
+  <link rel="stylesheet" href="assets/styles.css?v=4.8-home-trailer-player" />
 
   <style id="home-trailer-critical-css">
     /* Correctif critique accueil V2 -> V1 : gardé inline pour éviter les caches CSS récalcitrants */
@@ -488,24 +488,21 @@
             <div class="home-trailer-frame" aria-label="Bande-annonce mise en avant">
               <div class="home-trailer-embed">
                 <iframe
-                  src="https://www.youtube-nocookie.com/embed/?rel=0&modestbranding=1"
-                  title="Bande-annonce officielle"
+                  id="homeTrailerPlayer"
+                  src="https://www.youtube-nocookie.com/embed/3_9vCamtuPY?rel=0&modestbranding=1&playsinline=1"
+                  title="Dune : Messiah - bande-annonce officielle"
                   loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                   allowfullscreen></iframe>
-                <a class="home-trailer-fallback" href="https://www.youtube.com/results?search_query=Dune+Messiah+bande+annonce" target="_blank" rel="noopener" aria-label="Rechercher la bande-annonce de Dune Messiah sur YouTube">
-                  <span class="home-trailer-logo">DUNE</span>
-                  <span class="home-trailer-play" aria-hidden="true">▶</span>
-                  <span class="home-trailer-caption">Bande-annonce officielle</span>
-                </a>
               </div>
             </div>
 
             <div class="home-release-strip" aria-label="Prochaines sorties">
-              <button class="home-release-chip is-active" type="button"><span>Dune : Messiah</span><small>Déc. 2026</small></button>
-              <button class="home-release-chip" type="button"><span>Avatar 4</span><small>À venir</small></button>
-              <button class="home-release-chip" type="button"><span>Spider-Man</span><small>À venir</small></button>
-              <button class="home-release-chip" type="button"><span>Thunderbolts</span><small>À venir</small></button>
+              <button class="home-release-chip is-active" type="button" data-trailer-id="3_9vCamtuPY" data-trailer-title="Dune : Messiah - bande-annonce officielle"><span>Dune : Messiah</span><small>Déc. 2026</small></button>
+              <button class="home-release-chip" type="button" data-trailer-id="nb_fFj_0rq8" data-trailer-title="Avatar 4 - bande-annonce officielle"><span>Avatar 4</span><small>À venir</small></button>
+              <button class="home-release-chip" type="button" data-trailer-id="8TZMtslA3UY" data-trailer-title="Spider-Man - bande-annonce officielle"><span>Spider-Man</span><small>À venir</small></button>
+              <button class="home-release-chip" type="button" data-trailer-id="-sAOWhvheK8" data-trailer-title="Thunderbolts - bande-annonce officielle"><span>Thunderbolts</span><small>À venir</small></button>
             </div>
 
             <article class="home-account-card home-account-row-card">
@@ -747,5 +744,34 @@
   <script src="assets/projectionniste-fish.js?v=4.6-mobile-hidden"></script>
 
   <script src="assets/mobile-optimizations.js?v=4.5-mobile-opt" defer></script>
+
+<script id="home-trailer-player-js">
+(function(){
+  const player = document.getElementById('homeTrailerPlayer');
+  const chips = Array.from(document.querySelectorAll('.home-release-chip[data-trailer-id]'));
+  if (!player || !chips.length) return;
+
+  const makeSrc = (id, autoplay) => {
+    const params = new URLSearchParams({
+      rel: '0',
+      modestbranding: '1',
+      playsinline: '1'
+    });
+    if (autoplay) params.set('autoplay', '1');
+    return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?${params.toString()}`;
+  };
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const id = chip.dataset.trailerId;
+      if (!id) return;
+      chips.forEach((item) => item.classList.toggle('is-active', item === chip));
+      player.src = makeSrc(id, true);
+      player.title = chip.dataset.trailerTitle || 'Bande-annonce officielle';
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
