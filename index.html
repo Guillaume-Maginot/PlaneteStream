@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css?v=4.8-home-trailer-player" />
+  <link rel="stylesheet" href="assets/styles.css?v=4.9-home-trailer-posters" />
 
   <style id="home-trailer-critical-css">
     /* Correctif critique accueil V2 -> V1 : gardé inline pour éviter les caches CSS récalcitrants */
@@ -138,14 +138,31 @@
       margin-top:0!important;
     }
     .home-release-chip{
+      display:flex!important;
+      align-items:center!important;
+      gap:10px!important;
       text-align:left!important;
       border:1px solid rgba(255,255,255,.08)!important;
       border-radius:14px!important;
       background:rgba(255,255,255,.04)!important;
       color:#fff!important;
-      padding:12px!important;
+      padding:8px 10px!important;
       cursor:pointer!important;
       min-width:0!important;
+    }
+    .home-release-chip img{
+      width:34px!important;
+      height:48px!important;
+      flex:0 0 34px!important;
+      border-radius:7px!important;
+      object-fit:cover!important;
+      background:rgba(0,0,0,.35)!important;
+      box-shadow:0 5px 14px rgba(0,0,0,.32)!important;
+    }
+    .home-release-chip .home-release-chip-text{
+      display:block!important;
+      min-width:0!important;
+      flex:1!important;
     }
     .home-release-chip.is-active{
       background:rgba(139,44,255,.22)!important;
@@ -499,10 +516,10 @@
             </div>
 
             <div class="home-release-strip" aria-label="Prochaines sorties">
-              <button class="home-release-chip is-active" type="button" data-trailer-id="3_9vCamtuPY" data-trailer-title="Dune : Messiah - bande-annonce officielle"><span>Dune : Messiah</span><small>Déc. 2026</small></button>
-              <button class="home-release-chip" type="button" data-trailer-id="nb_fFj_0rq8" data-trailer-title="Avatar 4 - bande-annonce officielle"><span>Avatar 4</span><small>À venir</small></button>
-              <button class="home-release-chip" type="button" data-trailer-id="8TZMtslA3UY" data-trailer-title="Spider-Man - bande-annonce officielle"><span>Spider-Man</span><small>À venir</small></button>
-              <button class="home-release-chip" type="button" data-trailer-id="-sAOWhvheK8" data-trailer-title="Thunderbolts - bande-annonce officielle"><span>Thunderbolts</span><small>À venir</small></button>
+              <button class="home-release-chip is-active" type="button" data-trailer-id="3_9vCamtuPY" data-trailer-title="Dune : Messiah - bande-annonce officielle"><img src="https://img.youtube.com/vi/3_9vCamtuPY/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Dune : Messiah</span><small>Déc. 2026</small></span></button>
+              <button class="home-release-chip" type="button" data-trailer-id="nb_fFj_0rq8" data-trailer-title="Avatar 4 - bande-annonce officielle"><img src="https://img.youtube.com/vi/nb_fFj_0rq8/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Avatar 4</span><small>À venir</small></span></button>
+              <button class="home-release-chip" type="button" data-trailer-id="8TZMtslA3UY" data-trailer-title="Spider-Man - bande-annonce officielle"><img src="https://img.youtube.com/vi/8TZMtslA3UY/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Spider-Man</span><small>À venir</small></span></button>
+              <button class="home-release-chip" type="button" data-trailer-id="-sAOWhvheK8" data-trailer-title="Thunderbolts - bande-annonce officielle"><img src="https://img.youtube.com/vi/-sAOWhvheK8/hqdefault.jpg" alt="" loading="lazy"><span class="home-release-chip-text"><span>Thunderbolts</span><small>À venir</small></span></button>
             </div>
 
             <article class="home-account-card home-account-row-card">
