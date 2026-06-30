@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Test lecteur vidéo mobile</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#111;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+h1{
+    margin-bottom:20px;
+    font-size:1.3rem;
+}
+
+.player{
+    width:100%;
+    max-width:900px;
+    aspect-ratio:16/9;
+}
+
+.player iframe{
+    width:100%;
+    height:100%;
+    border:none;
+    border-radius:8px;
+    background:#000;
+}
+
+.info{
+    margin-top:20px;
+    color:#aaa;
+    text-align:center;
+    font-size:0.95rem;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Test lecteur PlayMogo</h1>
+
+<div class="player">
+<iframe
+    src="https://playmogo.com/e/rvheyqz4yp8k"
+    title="Lecteur vidéo"
+    loading="eager"
+    allowfullscreen
+    allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+    referrerpolicy="strict-origin-when-cross-origin">
+</iframe>
+</div>
+
+<div class="info">
+Si cette page fonctionne sur téléphone, le problème vient probablement de Planete Stream.<br>
+Si elle ne fonctionne toujours pas, le blocage vient probablement du lecteur PlayMogo lui-même.
+</div>
+
+</body>
+</html>
