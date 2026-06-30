@@ -6897,6 +6897,7 @@ section{margin:24px 0 34px}
 }
 
 .catalog-card-rating-tmdb{
+.catalog-card-rating-tmdb{
   border-color:rgba(255,210,90,.24);
   box-shadow:
     inset 0 0 12px rgba(255,210,90,.055),
@@ -7390,6 +7391,7 @@ img,svg,video,canvas{
   .detail-watch-actions .primary{width:100%;justify-content:center;}
   .detail-video-help{width:100%;justify-content:center;min-height:42px;}
 }
+.catalog-card-rating-tmdb{
   border-color:rgba(255,210,90,.24);
   box-shadow:
     inset 0 0 12px rgba(255,210,90,.055),
