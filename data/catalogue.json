@@ -1625,7 +1625,26 @@
     "homeFeatured": false,
     "cinemaRelease": true,
     "cinemaOrder": 0,
-    "cinemaHero": true
+    "cinemaHero": true,
+    "bubbleReasons": {
+      "voyager": "Pour plonger dans l'univers de Dune et son voyage vers un ailleurs de science-fiction.",
+      "frissonner": "L'aventure de Dune porte une tension épique et des enjeux intenses.",
+      "reflechir": "L'adaptation du Messie de Dune invite à penser un univers riche et ses grands enjeux.",
+      "spectacle": "L'action et la science-fiction promettent un grand spectacle à grande échelle.",
+      "emotion": "La saga met en avant les trajectoires de Paul, Chani et la famille Atreides."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance ample et immersive, si tu aimes les grandes fresques de SF qui ferment une trilogie avec du souffle.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "eleve",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
+    }
   },
   {
     "title": "Mortal Kombat II",
@@ -1810,16 +1829,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Un souhait magique qui dérape vers l'obsession installe une tension sombre et inquiétante.",
+      "reflechir": "Le film joue sur le pouvoir des souhaits et leurs conséquences, avec une idée de départ qui fait réfléchir.",
+      "emotion": "L'histoire explore un crush, le désir d'être aimé et une relation qui bascule."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de frissons où l'obsession bascule en thriller horreur, avec une idée de départ bien vicieuse qui peut te coller au siège.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "faible",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -2074,7 +2097,26 @@
     "homeFeatured": false,
     "cinemaRelease": true,
     "cinemaOrder": 3,
-    "cinemaHero": false
+    "cinemaHero": false,
+    "bubbleReasons": {
+      "voyager": "New York et l'univers de Spider-Man offrent une vraie évasion dans un monde de science-fiction et d'aventure.",
+      "frissonner": "Une nouvelle vague de crimes et une menace redoutable installent une tension continue.",
+      "reflechir": "Le film explore le poids des responsabilités et une transformation qui bouscule Peter Parker.",
+      "spectacle": "L'action de Spider-Man promet un grand spectacle et des affrontements à grande ampleur.",
+      "emotion": "Peter vit seul et s'efface de la vie de ses proches, ce qui donne un vrai enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance pleine de tension et de grand spectacle, avec un Spider-Man plus solitaire, plus adulte, et une bonne dose d'action qui ne lâche pas New York.",
+    "bubulle": {
+      "profile": {
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
+    }
   },
   {
     "title": "Super Mario Galaxy, le film",
@@ -2327,16 +2369,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La méfiance et l'argent caché installent une tension sombre autour d'une équipe de policiers.",
+      "reflechir": "Le film joue sur la méfiance, les doutes et la question de savoir à qui se fier.",
+      "spectacle": "L'action et le thriller criminel promettent un rythme tendu et des scènes de grande intensité."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue où l'on aime les flics qui doutent, les alliances qui grincent et l'argent sale qui met tout le monde au bord du faux pas.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -2455,16 +2501,19 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "reflechir": "Cette histoire vraie de guerre et de sauvetage donne matière à penser sur le courage et le choix moral.",
+      "emotion": "Le parcours d'un bureaucrate devenu héros pendant la guerre porte un fort enjeu humain et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de drame historique qui préfère l'élan d'un vrai récit de guerre à l'esbroufe, avec un héros inattendu au cœur de la Seconde Guerre mondiale.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -2720,16 +2769,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Kaboul et l'ambassade de France offrent un décor d'ailleurs en pleine crise.",
+      "frissonner": "La prise de pouvoir des Talibans et la course contre la montre créent une forte tension.",
+      "reflechir": "Le film met en scène une négociation sous pression et un dilemme de dernière chance.",
+      "spectacle": "L'évacuation en urgence et l'action au cœur du chaos promettent un vrai grand spectacle.",
+      "emotion": "Le sauvetage d'évacués et l'aide d'Eva donnent un enjeu humain très fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et nerveuse, si tu aimes les courses contre la montre en pleine guerre, avec un film qui ne lâche pas Kaboul avant le dernier convoi.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -2846,16 +2901,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Le film plonge dans la Seconde Guerre mondiale et une défense sous encerclement, avec une tension de guerre immédiate.",
+      "reflechir": "Le film met en jeu la résistance, l'entraide locale et des choix sous pression pendant le débarquement.",
+      "spectacle": "Les combats et l'encerclement par une division SS promettent une mise en scène de guerre intense.",
+      "emotion": "L'aide de la population locale et la solidarité face au danger donnent un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de guerre au long cours, quand tu as envie de suivre des parachutistes encerclés et la défense d'un village avec du souffle et de la tension.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -2975,16 +3035,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Un missile inconnu déclenche une course contre la montre pleine de tension et de mystère.",
+      "reflechir": "Le film pose une enquête et un dilemme sur l'origine de l'attaque et la réaction à adopter.",
+      "spectacle": "L'action autour d'une menace sur les États-Unis promet une montée en puissance spectaculaire.",
+      "emotion": "La crise met en jeu des décisions humaines sous une pression extrême."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et sèche, quand tu as envie d'un thriller dramatique où la course contre la montre prend vite le dessus.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3106,16 +3171,23 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le western plonge dans un village du Dakota du Sud avec une tunique ancestrale et un univers très dépaysant.",
+      "frissonner": "Le meurtre initial, les convoitises et les pouvoirs magiques installent une tension de crime et de mystère.",
+      "rire": "La comédie et le soupirant excentrique apportent une touche d'humour.",
+      "reflechir": "La quête autour d'un artéfact sacré et les intérêts croisés nourrissent une intrigue à plusieurs enjeux.",
+      "spectacle": "Le mélange crime-western et l'objet aux pouvoirs magiques promet une aventure visuelle ample.",
+      "emotion": "Plusieurs personnages cherchent un foyer, la rédemption ou un avenir meilleur pour leur enfant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance où le western, le crime et la comédie se chamaillent autour d'un butin très convoité, avec assez de marges pour les amateurs de destins qui se croisent.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3366,16 +3438,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers de la Ruska Roma et de l'Hôtel Continental donne un vrai sentiment d'ailleurs.",
+      "frissonner": "L'histoire de vengeance et les affrontements avec des tueurs à gages créent une tension sombre.",
+      "reflechir": "Le parcours d'Eve interroge vengeance, entraînement et choix face à sa mission.",
+      "spectacle": "L'action de combat et la confrontation avec John Wick promettent un grand spectacle.",
+      "emotion": "Le deuil du père et la quête d'Eve donnent un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance nerveuse et élégante, avec une héroïne formée au ballet et au combat, et juste ce qu'il faut de retrouvailles avec l'univers de John Wick.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3708,16 +3786,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un western qui transporte dans un univers de hors-la-loi et de shérifs.",
+      "frissonner": "Le bras de fer et la menace de la bande créent une tension constante.",
+      "reflechir": "Les alliances forcées et les retournements offrent matière à penser sur la survie et la confiance.",
+      "spectacle": "L'action et le décor de western promettent un grand spectacle.",
+      "emotion": "Le shérif risque de perdre sa femme et son poste, avec un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance de tension sèche, avec son duo western-action et son bras de fer qui sent la poudre plutôt que la dentelle.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3839,16 +3923,23 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le western transporte dans une petite ville du Nouveau-Mexique en 2020, avec une ambiance d'ailleurs.",
+      "frissonner": "Le conflit qui met le feu aux poudres crée une tension sombre entre le shérif, le maire et les voisins.",
+      "rire": "La présence de la comédie apporte un ton léger et des touches d'humour.",
+      "reflechir": "L'affrontement entre pouvoir local et voisins offre une matière à penser sur les rapports humains et les dilemmes.",
+      "spectacle": "Le western promet une mise en scène ample et un cadre de grand écran.",
+      "emotion": "Le basculement des voisins les uns contre les autres donne un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais Eddington pour une séance où tu veux un western qui dérape en comédie criminelle, avec Ari Aster au manège et une belle durée pour te laisser mordre par la tension.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -4103,16 +4194,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un western américain qui transporte dans une petite ville du Kentucky et un univers de hors-la-loi.",
+      "frissonner": "Le retour d'un homme recherché et une quête de vengeance installent une tension constante.",
+      "reflechir": "Le film met en jeu vengeance, cupidité et affrontement entre frères, avec de quoi alimenter la réflexion.",
+      "spectacle": "Entre action, tirs et affrontements en ville, le film promet un western très spectaculaire.",
+      "emotion": "Le passé violent du héros et le conflit entre frères donnent un enjeu humain marqué."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance nerveuse, entre western et thriller, où les règlements de comptes fusent plus vite que les bonnes intentions.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -4229,16 +4326,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une île dangereuse et des dinosaures offrent un vrai dépaysement.",
+      "frissonner": "La mission sur une île truffée de périls installe tension et mystère.",
+      "reflechir": "La quête d'ADN pour créer un médicament pose un concept à suivre.",
+      "spectacle": "Les dinosaures gigantesques et l'action promettent un grand spectacle.",
+      "emotion": "La mission et ses enjeux humains donnent une dimension touchante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance d'aventure nerveuse, entre dinosaures gigantesques, mission risquée et grand frisson de science-fiction.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -4359,16 +4462,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le western plonge dans le Montana des années 1870 et transporte dans un univers d'ailleurs.",
+      "frissonner": "Le crime, la vengeance et le personnage mystérieux installent une tension sombre et du mystère.",
+      "reflechir": "La promesse d'Henry et le piège autour d'Isaac donnent une intrigue de dilemme et de justice.",
+      "spectacle": "Le cadre de western et la quête périlleuse promettent de l'action et un grand décor.",
+      "emotion": "L'histoire père-fils et la promesse d'Henry apportent un enjeu humain fort et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais cette chevauchée si tu aimes les westerns de tension, avec une quête de vengeance et un trio qui sent la poudre dans le Montana des années 1870.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -4481,16 +4590,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Le contexte de guerre et la menace de la rafle installent une tension forte.",
+      "reflechir": "L'histoire interroge la survie, l'attente et le courage face à l'occupation.",
+      "emotion": "Le film suit une famille cachée, avec un parcours humain et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et émouvante, quand tu as envie d'un drame historique de 1942 qui tient en 93 minutes et laisse peu de répit.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "lent",
+        "complexity": "moyen",
+        "spectacle": "faible",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -4677,16 +4790,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'équipe part à Londres et traverse une grande aventure d'espionnage.",
+      "frissonner": "La course contre Gabriel et l'Entité installe une tension constante et un vrai mystère.",
+      "reflechir": "L'Entité et sa capacité à prédire les éventualités offrent un concept qui fait réfléchir.",
+      "spectacle": "L'action d'espionnage et le plan à l'échelle mondiale promettent un grand spectacle.",
+      "emotion": "L'équipe d'Ethan est directement menacée, avec un fort enjeu humain autour de leur lien."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance d'action et de tension, quand tu as envie de suivre Ethan Hunt et son équipe dans une course contre l'Entité sans regarder ta montre.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -4941,16 +5060,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le film plonge dans les Philippines de 1942 et dans un camp de prisonniers japonais.",
+      "frissonner": "La survie quotidienne et la menace de la « marche de la mort » installent une forte tension.",
+      "reflechir": "Le récit met en jeu un plan d'évasion et une mission à portée historique.",
+      "spectacle": "L'action de guerre et les combats de survie promettent un vrai grand spectacle.",
+      "emotion": "Le héros lutte pour survivre et prévenir les forces alliées, avec un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance tendue et guerrière, avec un héros qui joue sa peau minute après minute, surtout si tu aimes les récits d'évasion sous pression.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -5071,16 +5196,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La vengeance et la traque dans l'après-guerre installent une tension sombre du début à la fin.",
+      "spectacle": "L'action et le duel contre des Soviétiques promettent un film nerveux et spectaculaire.",
+      "emotion": "Le retour sur le lieu du massacre familial donne un enjeu de deuil et de reconstruction très fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et sans temps mort, si tu aimes voir un ancien soldat transformer une vengeance en traque musclée.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -5201,16 +5330,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "La survie en pleine mer propose un ailleurs isolé et une immersion en haute mer.",
+      "frissonner": "La présence d'un grand requin blanc affamé installe une tension constante.",
+      "reflechir": "La survie sur un radeau oblige à faire face à des choix urgents et concrets.",
+      "spectacle": "Le film mêle action de guerre, haute mer et affrontement avec un requin.",
+      "emotion": "De jeunes soldats livrés à eux-mêmes portent un enjeu humain de survie."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance tendue et nerveuse, si tu aimes les huis clos de survie en mer avec une bonne dose de frisson et d'action.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -5661,16 +5796,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le film vous plonge sur le front de l'Est en 1943, dans un no man's land de guerre.",
+      "frissonner": "La mission derrière les lignes et l'affrontement de l'ennemi installent une forte tension.",
+      "reflechir": "La traversée et les démons intérieurs donnent matière à penser sur le devoir et l'âme.",
+      "spectacle": "Le char Tigre et l'action de guerre promettent un grand spectacle de combat.",
+      "emotion": "L'équipage doit aussi affronter ses propres démons, pour un enjeu humain marqué."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et ample, si tu aimes la guerre filmée de l'intérieur, avec de l'action, du drame et des fantômes qui collent à l'équipage.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -5789,16 +5930,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le film plonge au cœur de la Guerre d'Irak et d'une mission à Ramadi, pour un dépaysement en zone de conflit.",
+      "frissonner": "L'embuscade, les snipers et la situation désespérée installent une forte tension.",
+      "reflechir": "La survie du peloton face à une mission qui dérape offre une matière à penser sur le devoir et l'urgence.",
+      "spectacle": "Les échanges de tirs et l'action de guerre promettent un grand spectacle tendu et intense.",
+      "emotion": "La lutte pour sauver les blessés met en avant un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et sans répit, si tu as envie de suivre un peloton coincé sous les balles et la pression qui monte à chaque minute.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6052,16 +6199,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Une course à travers une Amérique fracturée crée une tension constante et un climat sombre.",
+      "reflechir": "Le film interroge l'effondrement d'un pays et le rôle des journalistes face à l'événement.",
+      "spectacle": "La course effrénée en pleine guerre promet de l'action et une ampleur visuelle marquée.",
+      "emotion": "Les journalistes vivent une trajectoire intense au cœur d'un pays qui vacille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et nerveuse, si tu aimes les films de guerre qui suivent des journalistes au cœur d'une Amérique qui vacille.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6179,16 +6331,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un western qui emmène vers l'Ouest américain et une grande fresque d'ailleurs.",
+      "frissonner": "La guerre de Sécession et la conquête des terres installent une tension sombre.",
+      "reflechir": "Le film confronte la conquête, les peuples indigènes et la guerre contre soi-même.",
+      "spectacle": "Une grande saga de 182 minutes avec l'expansion vers l'Ouest et ses obstacles.",
+      "emotion": "La chronique suit des trajectoires humaines prises dans une guerre et une colonisation."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance de western ample et posé, si tu aimes les chroniques qui prennent le temps d'embrasser les secousses de l'Ouest américain.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "lent",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6309,16 +6467,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'Ouest américain des années 1860 offre un grand dépaysement.",
+      "frissonner": "Le maire corrompu et Weston brutalisent l'ambiance avec une vraie tension.",
+      "reflechir": "Le film interroge la liberté, l'amour et la façon de se retrouver après la guerre.",
+      "spectacle": "Le western du Nevada et l'époque de la guerre de Sécession donnent une belle ampleur.",
+      "emotion": "Vivienne et Holger traversent l'épreuve de la séparation et se redécouvrent avec émotion."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de western plus grave que poussiéreuse, où l'on suit surtout une femme solide face aux hommes du coin et aux cicatrices de la guerre.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6438,16 +6602,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Plonge dans l'Allemagne des années 1940 et les États-Unis de la Grande Dépression.",
+      "frissonner": "Le contexte de guerre et l'opposition au régime nazi installent une tension sombre.",
+      "reflechir": "Un parcours moral face au nazisme et à la résistance offre une vraie matière à penser.",
+      "emotion": "Le film suit un destin marqué par le deuil, la foi et le courage face à l'injustice."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et réflexive, si tu as envie d'un drame historique qui suit un pasteur face au nazisme, avec un vrai souffle de résistance.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -6569,16 +6738,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La mission bascule en affrontement mortel, avec une tension constante et un ennemi qui découvre l'équipe.",
+      "reflechir": "Le film pose un dilemme d'opération de sauvetage sous pression, avec 48 heures pour agir.",
+      "spectacle": "L'action militaire et la mission au sol promettent un grand spectacle tendu et explosif.",
+      "emotion": "L'enjeu de sauvetage met la pression sur l'équipe et donne un fort ressort humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et sans temps mort, si tu as envie d'un thriller de guerre où tout repose sur une mission qui dérape et un compte à rebours de 48 heures.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6699,16 +6873,23 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'action transporte dans la Seconde Guerre mondiale et une opération secrète hors du commun.",
+      "frissonner": "La mission ultrasecrète et les combats contre les nazis installent une tension constante.",
+      "rire": "La touche comique et les techniques de combat « non gentleman » donnent un ton amusé.",
+      "reflechir": "L'histoire d'une première unité spéciale et de méthodes non conventionnelles fait réfléchir.",
+      "spectacle": "L'action de guerre et l'ampleur de la mission promettent un grand spectacle.",
+      "emotion": "Le récit suit une équipe hétéroclite soudée par une mission décisive et un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de guerre qui joue les malins, entre action et comédie, avec Guy Ritchie aux commandes et une équipe de francs-tireurs bien peu conventionnelle.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6830,16 +7011,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le film emmène sur le front de la Seconde Guerre mondiale et dans l'univers du photojournalisme.",
+      "frissonner": "Le récit se confronte aux horreurs de la guerre et à une forte tension de témoignage.",
+      "reflechir": "Il invite à réfléchir au courage, aux conventions et à la façon de voir le monde.",
+      "spectacle": "Le front et le contexte de guerre donnent une ampleur visuelle marquée.",
+      "emotion": "Le parcours d'une femme hors norme porte un enjeu humain fort et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance grave et tenue, quand tu veux suivre le parcours d'une femme qui a bousculé les conventions au cœur de la guerre.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -7054,16 +7241,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La mission secrète avant le Jour J crée une tension constante dans un contexte de guerre.",
+      "reflechir": "Le film met en jeu un dilemme entre acte héroïque et mission suicide.",
+      "spectacle": "L'unité affronte une mission à haut risque avec action et enjeux de guerre.",
+      "emotion": "L'histoire insiste sur le courage, l'esprit d'équipe et le sacrifice des soldats."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et compacte, si tu aimes les missions de guerre à haut risque, les équipes sous pression et l'ambiance des jours juste avant le Jour J.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -7183,16 +7375,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La résistance en Norvège plonge dans l'époque de la Seconde Guerre mondiale.",
+      "reflechir": "Le film explore un choix de résistance qui change le destin d'un pays.",
+      "spectacle": "Le contexte de guerre promet une fresque historique à grande échelle.",
+      "emotion": "Le parcours d'un jeune Norvégien donne un fort enjeu humain au récit."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et historique, quand tu as envie d'un drame de guerre qui suit la détermination d'un jeune Norvégien face aux nazis.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -7312,16 +7509,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un récit historique qui transporte dans la Rome de l'an 303 et ses enjeux militaires et religieux.",
+      "frissonner": "La persécution et le conflit avec l'empereur installent une tension dramatique constante.",
+      "reflechir": "Le héros doit choisir entre sa foi et l'obéissance, un dilemme fort à méditer.",
+      "spectacle": "Entre batailles, honneurs militaires et armée romaine, le film promet une belle ampleur.",
+      "emotion": "Le choix entre fidélité à sa foi et soumission donne au récit un enjeu humain touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de drame historique tendue, entre batailles et dilemme de foi, si tu aimes les récits où l'honneur se frotte à l'ordre de l'empire.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -7440,16 +7643,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le film emmène de l'outback australien aux tranchées de la Grande Guerre, pour un vrai dépaysement.",
+      "frissonner": "La brutalité des tranchées crée une tension constante autour de la survie.",
+      "reflechir": "Le parcours d'un jeune homme propulsé dans la guerre invite à réfléchir au courage et au destin.",
+      "spectacle": "La guerre à grande échelle et les lignes de front promettent des scènes d'ampleur.",
+      "emotion": "Le départ de la ferme familiale et le combat pour rester en vie donnent un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de guerre en mode tranchées et tension continue, quand tu as envie de suivre un jeune Australien projeté dans la brutalité du front.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -7571,16 +7780,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La guerre et la Gestapo installent une tension sombre dans le Berlin de la Seconde Guerre mondiale.",
+      "reflechir": "Le récit pose un dilemme moral fort autour de la survie et de la collaboration.",
+      "emotion": "Le sort des parents et la trajectoire de Stella portent un enjeu humain intense."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et grave, si tu aimes les drames historiques qui te laissent avec un nœud au ventre après le générique.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -7699,16 +7912,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'Ouest américain de 1895 offre un décor de voyage et d'ailleurs.",
+      "frissonner": "La traque d'un gang dans un contexte de thriller crée une tension sombre.",
+      "reflechir": "L'alliance entre un marshal et les Amérindiens apporte une situation à penser.",
+      "spectacle": "Le western d'action promet des poursuites et une ampleur visuelle.",
+      "emotion": "L'alliance entre personnages sur un territoire commun donne un enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue, avec western et action dans l'Ouest de 1895, quand tu as envie d'un duel sous haute pression plutôt que d'un grand bol d'air.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "faible",
         "family": false
       }
     }
@@ -7830,16 +8049,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le ranch isolé et l'univers du western offrent un dépaysement immédiat.",
+      "frissonner": "La traque, la bande impitoyable et l'isolement créent une tension constante.",
+      "reflechir": "Le huis clos forcé pose un dilemme de survie et de confiance entre les personnages.",
+      "spectacle": "Le mélange western, action et braqueurs promet des affrontements nerveux et intenses.",
+      "emotion": "La survie d'une mère et de sa fille donne un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse: un western de 93 minutes, sec et tendu, où le ranch isolé devient vite un piège.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -7958,16 +8183,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Plonge dans la Bretagne celte et l'Empire romain, pour un dépaysement historique marqué.",
+      "frissonner": "La guerre et la vengeance installent une tension continue autour du destin de Boudica.",
+      "reflechir": "Le film fait réfléchir sur la vengeance, la conquête et le choc entre peuples.",
+      "spectacle": "Une guerre épique contre Rome promet de l'action et un grand souffle visuel.",
+      "emotion": "Le récit est porté par le deuil de Boudica et son lien avec son mari disparu."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et guerrière, si tu as envie d'une virée d'action historique avec une héroïne qui mène la charge contre Rome.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -8088,7 +8319,26 @@
     "homeFeatured": false,
     "cinemaRelease": false,
     "cinemaOrder": 0,
-    "cinemaHero": false
+    "cinemaHero": false,
+    "bubbleReasons": {
+      "voyager": "Le Far West et la vallée isolée offrent un vrai dépaysement d'aventure.",
+      "frissonner": "La traversée dangereuse et les éléments hostiles installent une tension constante.",
+      "reflechir": "Le parcours met à l'épreuve la détermination et la raison, de quoi nourrir la réflexion.",
+      "spectacle": "Le western promet un périple vaste et des paysages de grand air.",
+      "emotion": "Le voyage d'un jeune homme parti de Harvard donne une trajectoire humaine marquante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et poussiéreuse, si tu aimes les westerns d'aventure où la survie et la raison se frottent aux grands espaces.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
+    }
   },
   {
     "title": "John Wick : Chapitre 4",
@@ -8341,16 +8591,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le film plonge dans l'Afrique post-décolonisation et la Guerre Froide, avec un cadre historique dépaysant.",
+      "frissonner": "Le thriller installe une tension autour de rapports de force internationaux et de plans de puissants acteurs.",
+      "reflechir": "Il met en jeu un dilemme politique et moral autour de la paix, des ressources et du pouvoir.",
+      "spectacle": "Le contexte historique et géopolitique donne de l'ampleur à cette lutte menée au sommet.",
+      "emotion": "Le parcours de Dag Hammarskjöld porte un fort enjeu humain au service de la paix."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et politique, quand tu as envie d'un thriller historique qui suit un diplomate face aux puissants en pleine Guerre froide.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -8468,16 +8724,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Course mortelle autour du globe, avec une sensation d'évasion et d'ailleurs.",
+      "frissonner": "La traque d'une arme redoutable et un ennemi énigmatique créent une forte tension.",
+      "reflechir": "Le film met en jeu un dilemme de mission, de futur et de destin à protéger.",
+      "spectacle": "Action, aventure et course mondiale annoncent un grand spectacle à très grande ampleur.",
+      "emotion": "Ethan doit choisir entre sa mission et la vie de ceux qu'il aime."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance longue et tendue, si tu aimes les courses contre la montre où Ethan Hunt et son équipe n'ont pas le droit à l'erreur.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -8596,16 +8858,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'action en Afghanistan offre un décor de terrain accidenté et d'ailleurs.",
+      "frissonner": "La fuite face à des insurgés hostiles crée une tension constante.",
+      "spectacle": "Le film mêle action militaire et course-poursuite dans un cadre ample.",
+      "emotion": "La protection d'une petite fille traumatisée donne un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance tendue et compacte, si tu aimes suivre un survivant qui doit protéger une petite fille au cœur d'un terrain hostile.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -8723,16 +8990,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'action transporte dans les eaux glacées de l'Arctique et un voyage vers Mourmansk.",
+      "frissonner": "Le périlleux voyage et l'affrontement avec l'armée allemande installent une forte tension.",
+      "reflechir": "Le film met en jeu le dilemme de simples marins contraints d'affronter la guerre.",
+      "spectacle": "Le convoi en mer Arctique et les affrontements promettent une ampleur visuelle forte.",
+      "emotion": "Des marins ordinaires mettent leur vie en jeu, ce qui donne un enjeu humain touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et glaciale, quand tu as envie d'un drame de guerre où de simples marins affrontent l'Arctique plus que l'ennemi.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -9350,16 +9623,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un monde où les dinosaures font partie du quotidien offre une vraie sensation d'ailleurs et d'évasion.",
+      "frissonner": "Le thriller et les créatures les plus féroces créent une tension continue.",
+      "reflechir": "Le fragile équilibre entre humains et dinosaures donne matière à penser sur la cohabitation.",
+      "spectacle": "L'aventure avec des dinosaures promet de grandes scènes et un vrai grand spectacle.",
+      "emotion": "Le fragile équilibre humain et la présence des personnages emblématiques donnent un enjeu relationnel fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de dinosaures et de tension, quand tu veux du grand spectacle aventure-SF qui garde l'humain sous pression pendant 146 minutes.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -9729,16 +10008,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Gotham City offre un univers sombre et immersif à explorer.",
+      "frissonner": "L'enquête dans la corruption de Gotham installe une tension sombre et mystérieuse.",
+      "reflechir": "L'enquête de Batman et les indices mystérieux donnent matière à penser.",
+      "spectacle": "Le justicier affronte Gotham dans une traque intense et visuellement ample.",
+      "emotion": "Le parcours solitaire de Batman met en avant un enjeu humain et une quête de justice."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance sombre et bien tendue, si tu aimes les enquêtes de Gotham qui prennent leur temps et les justiciers solitaires.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "eleve",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -9856,16 +10141,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le western transporte dans l'Amérique d'après-guerre, avec une vraie sensation d'ailleurs.",
+      "frissonner": "Le retour de guerre traumatique et le face-à-face avec le Major Briggs installent une tension sombre.",
+      "reflechir": "Le film fait suivre un homme brisé face à sa réinsertion et à un conflit de vengeance.",
+      "spectacle": "Le cadre de western et les confrontations promettent de l'action et de l'ampleur.",
+      "emotion": "L'aide à deux enfants pour retrouver leur mère donne un fort enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance western un peu ample, avec un soldat cabossé, une quête et des comptes à régler : 140 minutes pour s'installer au saloon.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -10251,16 +10542,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un univers de métahumains et de menaces venues d'ailleurs ouvre une grande évasion fantastique.",
+      "frissonner": "La menace apocalyptique et les forces de Darkseid installent une tension sombre et continue.",
+      "reflechir": "Le film explore le sacrifice, la réunion d'une équipe et les démons du passé de chacun.",
+      "spectacle": "L'affrontement d'une ligue de héros contre une menace mondiale promet un grand spectacle d'action.",
+      "emotion": "Le récit part du sacrifice de Superman et suit des héros marqués par leur passé."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une grande séance de super-héros, quand tu as envie de t'installer longtemps et de suivre une équipe de métahumains face à une menace apocalyptique.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -11918,16 +12215,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un décor d'île perdue avec des dinosaures offre une vraie sensation d'ailleurs et d'évasion.",
+      "frissonner": "Le volcan qui se réveille et la menace des dinosaures créent une tension constante.",
+      "reflechir": "Le sauvetage des dinosaures pose un dilemme entre survie, liberté et extinction.",
+      "spectacle": "L'aventure avec des dinosaures et l'éruption promettent de grandes scènes spectaculaires.",
+      "emotion": "Owen et Claire portent un sauvetage qui donne un vrai enjeu humain à l'histoire."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance d'aventure tendue, entre dinosaures en cavale, volcan qui gronde et sauvetage sous pression.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -12045,16 +12348,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une mission qui entraîne Ethan Hunt dans une course à travers plusieurs lieux et une ambiance d'aventure.",
+      "frissonner": "La menace terroriste et la course contre la montre installent une tension continue.",
+      "reflechir": "Le film met en jeu un dilemme entre sauver son équipe et réussir la mission.",
+      "spectacle": "Les genres action et aventure promettent un grand spectacle rythmé et spectaculaire.",
+      "emotion": "L'équipe de Mission Impossible est au cœur d'un enjeu humain fort entre mission et sauvetage."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance qui file à toute allure, avec Ethan Hunt lancé dans une course contre la montre bien musclée et un duo action-aventure qui ne laisse pas souffler.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -13538,16 +13847,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un univers de super-héros et de méta-humains qui emmène ailleurs dans une aventure de science-fiction.",
+      "frissonner": "La menace inédite et l'attaque apocalyptique installent une forte tension.",
+      "reflechir": "Le film pose un dilemme sur le salut de la planète et la foi retrouvée de Bruce Wayne.",
+      "spectacle": "Une ligue de héros s'unit pour affronter un ennemi redoutable dans une grande fresque d'action.",
+      "emotion": "Le parcours de Bruce Wayne et l'altruisme de Superman donnent un enjeu humain au récit."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance de super-héros sans temps mort, avec Batman, Wonder Woman et une menace qui vise carrément la planète.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -13928,16 +14243,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un affrontement de super-héros qui plonge dans l'univers DC et ses figures emblématiques.",
+      "frissonner": "La menace qui se profile et la rivalité créent une tension sombre et continue.",
+      "reflechir": "Le film pose un dilemme sur le besoin d'un héros tout-puissant ou d'un justicier humain.",
+      "spectacle": "Entre combats de super-héros et grande menace, le film promet une ampleur visuelle impressionnante.",
+      "emotion": "Le conflit entre Batman et Superman repose sur un enjeu humain autour de la confiance et du devoir."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance super-héroïque tendue et longue, quand tu as envie d'un duel de titans entre Batman et Superman avec une menace qui gronde en arrière-plan.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -14190,16 +14511,23 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un parc géant sur une île tropicale offre une vraie sensation d'ailleurs et d'évasion.",
+      "frissonner": "Le nouvel incident et la présence de dinosaures vivants installent une tension constante.",
+      "reflechir": "Le film interroge les limites de la biotechnologie et les leçons du passé.",
+      "spectacle": "Le plus grand parc à thèmes jamais construit promet une grande ampleur visuelle et de l'action.",
+      "emotion": "Le récit évoque le décès de John Hammond et la transmission d'un héritage humain.",
+      "famille": "Un grand film d'aventure et de dinosaures peut rassembler une séance familiale."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de pur grand spectacle, entre aventure, science-fiction et frissons de parc qui déraille, quand tu veux du grand écran qui file sans trop respirer.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -14317,16 +14645,23 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une mission d'espionnage qui emmène vers des décors et une aventure à grande échelle.",
+      "frissonner": "Le Syndicat et ses attaques terroristes installent une tension constante et un mystère autour d'Ilsa Faust.",
+      "rire": "Simon Pegg apporte une touche de comédie au sein de l'équipe.",
+      "reflechir": "L'alliance avec Ilsa Faust et les liens mystérieux avec le Syndicat donnent matière à se poser des questions.",
+      "spectacle": "Action, poursuites et affrontements d'espions en font un grand film de spectacle.",
+      "emotion": "Ethan Hunt doit se débrouiller isolé puis retrouver son équipe, avec un vrai enjeu de relation et de loyauté."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance où tu veux de l'action bien tendue, avec Ethan Hunt isolé, une alliance trouble et 131 minutes qui filent sans te laisser souffler.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -14845,16 +15180,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'Ouest américain sert de décor à une aventure de western pleine de dépaysement.",
+      "rire": "La comédie domine avec un ton volontairement ridicule et des situations amusantes.",
+      "spectacle": "Le mélange western, action et aventure promet un grand show plein de mouvement.",
+      "emotion": "La quête pour sauver son père et retrouver ses frères donne un vrai enjeu familial."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance western décalée, quand tu veux un mélange d'action, d'aventure et de comédie sans trop te prendre au sérieux.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "faible",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "eleve",
+        "emotion": "faible",
         "family": false
       }
     }
@@ -15372,16 +15712,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Gotham City offre un univers sombre et immersif, avec une plongée dans l'ambiance de Batman.",
+      "frissonner": "Le complot, Bane et la menace sur Gotham créent une tension sombre et un vrai suspense.",
+      "reflechir": "Le film joue sur le symbole Batman, la chute d'un modèle et des choix moraux lourds.",
+      "spectacle": "Action ample, affrontements spectaculaires et grande mise en scène signent un grand film de super-héros.",
+      "emotion": "Batman revient malgré son exil, avec des enjeux humains forts autour de Gotham et de son image."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance tendue et sombre, si tu aimes les récits de Gotham qui montent en puissance avec du crime, du drame et un vrai duel de titans.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -15900,16 +16246,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une mission internationale plonge Ethan Hunt dans un univers d'espionnage et d'aventure.",
+      "frissonner": "Le complot terroriste mondial et la mission secrète créent une forte tension.",
+      "reflechir": "Le protocole fantôme et l'opération en secret offrent une matière à penser sur l'isolement et la loyauté.",
+      "spectacle": "L'action et l'aventure annoncent un grand spectacle nerveux et ambitieux.",
+      "emotion": "La nouvelle équipe doit se serrer les coudes pour blanchir le nom de leur organisation."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et bien tendue, quand tu as envie d'action, de suspense et d'aventure sans temps mort.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -17229,16 +17581,23 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Gotham City offre un univers urbain sombre et immersif, loin du quotidien.",
+      "frissonner": "Le Joker apporte une forte tension et une menace de chaos dans Gotham.",
+      "rire": "L'humour sordide du Joker donne une touche de rire noir au film.",
+      "reflechir": "Le duel entre Batman, le procureur et le Joker pose un vrai dilemme moral.",
+      "spectacle": "L'action et la lutte contre le crime donnent un grand spectacle intense.",
+      "emotion": "La coopération entre Batman, Gordon et Harvey Dent crée un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et nocturne, si tu aimes les affrontements de crime et de thriller où Gotham bascule face au Joker.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -17755,16 +18114,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'intrigue mène Ethan de son quotidien à une mission à Berlin et dans l'univers de l'espionnage.",
+      "frissonner": "Le kidnapping et la traque d'un trafiquant d'armes installent une forte tension.",
+      "reflechir": "Le film met en jeu le devoir, les choix d'Ethan et sa double vie entre mission et famille.",
+      "spectacle": "L'action d'espionnage et la mission de sauvetage promettent un grand spectacle.",
+      "emotion": "Ethan veut une vie tranquille auprès de Julia, et son retour en mission pèse sur leur relation."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et tendue, si tu aimes voir Ethan Hunt replonger sans hésiter dans une mission qui ne lui laisse aucun répit.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -18147,16 +18512,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers de Gotham et le parcours de Bruce Wayne offrent un vrai dépaysement.",
+      "frissonner": "L'ambiance sombre et les forces sinistres de Gotham créent une tension constante.",
+      "reflechir": "Le film explore la peur, l'injustice et le dilemme d'un homme qui devient Batman.",
+      "spectacle": "L'action et la batterie d'armes high-tech annoncent un grand spectacle visuel.",
+      "emotion": "Le deuil des parents de Bruce donne au récit un enjeu humain fort et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de super-héros plus sombre et sérieuse, avec 140 minutes de drame, de crime et d'action à Gotham.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -19998,16 +20369,23 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'île d'Isla Sorna offre une vraie escapade dans un univers de dinosaures.",
+      "frissonner": "La jungle et la présence de créatures géantes installent une tension continue.",
+      "reflechir": "Le film joue sur l'entourloupe des Kirby et la survie dans un cadre piégé.",
+      "spectacle": "Entre l'avion, l'île et les dinosaures, le film promet de l'action et du grand spectacle.",
+      "emotion": "L'histoire tourne autour de la recherche d'Eric et de l'enjeu familial des Kirby.",
+      "famille": "L'aventure autour d'un enfant disparu peut parler à une séance en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance d'aventure tendue et sans traîner, avec des dinosaures, une jungle et juste ce qu'il faut de suspense pour te garder au siège.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -20258,16 +20636,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une mission d'espionnage qui emmène l'action jusqu'à Sydney et à son laboratoire.",
+      "frissonner": "Le vol d'un virus mortel et l'infiltration d'un site sécurisé créent une forte tension.",
+      "reflechir": "Le récit repose sur un dilemme autour du virus, de l'antidote et d'une infiltration risquée.",
+      "spectacle": "L'action, l'aventure et la mise en scène de John Woo promettent un grand spectacle.",
+      "emotion": "L'intrigue mêle la mission d'Ethan Hunt à une relation passée avec Nyah Hall."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et musclée, avec Tom Cruise lancé dans une infiltration qui ne laisse pas beaucoup de répit.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -20781,16 +21165,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Gotham City et l'univers de Batman offrent une escapade vers un monde de science-fiction et d'aventure.",
+      "frissonner": "Mr. Freeze et Poison Ivy apportent une menace glaciale et un climat de tension autour de Gotham.",
+      "spectacle": "L'action, la moto turbo de Robin et l'affrontement à Gotham annoncent un grand spectacle.",
+      "emotion": "Le duo Batman et Robin met en avant une relation de partenaire qui porte l'aventure.",
+      "famille": "L'aventure de Batman et Robin peut se partager en famille grâce à ses héros connus et son ton d'action grand public."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance pop-corn assumée, entre moto turbo, froid polaire et méchants flamboyants, quand tu veux du grand spectacle sans trop te prendre au sérieux.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "faible",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "faible",
         "family": false
       }
     }
@@ -20907,16 +21297,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'île aux dinosaures offre un grand dépaysement et un vrai sentiment d'ailleurs.",
+      "frissonner": "La double expédition et la présence de dinosaures créent une tension constante.",
+      "reflechir": "Le récit interroge les choix liés au clonage et aux conséquences d'un projet scientifique.",
+      "spectacle": "L'action sur une île peuplée de dinosaures promet un grand spectacle d'aventure.",
+      "emotion": "Le retour de Malcolm est lié à sa fiancée, ce qui donne un enjeu humain au récit."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance d'aventure nerveuse, entre dinosaures en liberté et suspense à la Spielberg, quand tu veux du grand écran qui ne laisse pas souffler.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -21231,16 +21627,23 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers de Gotham et de Batman offre une plongée dans un monde de super-héros et de fantaisie.",
+      "frissonner": "La présence de Two-Face et du Riddler apporte une tension de crime et de mystère sombre.",
+      "rire": "Jim Carrey incarne le Riddler, ce qui donne une touche de comédie au film.",
+      "reflechir": "L'identité secrète de Bruce Wayne et la lutte contre le crime donnent matière à penser.",
+      "spectacle": "Le film mêle action, fantastique et affrontements de super-héros à grande ampleur.",
+      "emotion": "Le lien entre Bruce Wayne, Robin, Alfred et Gordon apporte un enjeu humain autour des relations."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance de super-héros des années 90, avec un Gotham de crime et de fantastique, quand tu veux du spectacle sans trop te prendre au sérieux.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -21619,16 +22022,22 @@
     "featured": false,
     "premium": false,
     "homeFeatured": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Gotham et ses égouts créent un univers sombre et dépaysant.",
+      "frissonner": "L'affrontement avec le Pingouin et Catwoman installe une tension sombre et mystérieuse.",
+      "reflechir": "Le film met en jeu corruption, vengeance et transformation des personnages.",
+      "spectacle": "L'action de Batman et l'univers fantastique promettent un grand spectacle.",
+      "emotion": "Les trajectoires d'Oswald et de Selina donnent une dimension humaine marquée."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance gothique et tortueuse, avec Tim Burton aux commandes, un Batman face au Pingouin et à Catwoman, quand tu veux de l'action teintée de fantastique.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
