@@ -45,6 +45,7 @@ let realtimeRatingsMovieId = '';
 let realtimeRatingsRefreshTimer = null;
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
+let viewClickSaveBusy = false;
 let commentReadCutoff = 0;
 let commentReadObserver = null;
 let commentReadSaveTimer = null;
@@ -422,6 +423,7 @@ function launchCinema(item, options = {}){
 
   frame?.scrollIntoView({behavior: options.instant ? 'auto' : 'smooth', block:'center'});
   saveViewerHistory(item.slug, 10);
+  recordMovieViewClick(item.slug);
 
   if(options.fullscreen && frame?.requestFullscreen){
     frame.requestFullscreen().catch(() => {
@@ -623,7 +625,7 @@ async function refreshCommunity(item){
     fetchComments(item.slug),
     fetchMovieRatings(item.slug),
     fetchMovieStats(item.slug),
-    recordAndFetchMovieViews(item.slug)
+    fetchMovieViews(item.slug)
   ]);
 
   currentComments = comments.online ? comments.data : getLocalComments(item.slug);
@@ -646,10 +648,7 @@ async function refreshCommunity(item){
 
   updateCommunityRatingLabel(currentComments, stats, currentRatings);
 
-  if(views.online && views.total_views){
-    const viewLabel = document.querySelector('#viewCountLabel');
-    if(viewLabel) viewLabel.textContent = `${formatNumber(views.total_views)} vue${Number(views.total_views) > 1 ? 's' : ''} totale${Number(views.total_views) > 1 ? 's' : ''}`;
-  }
+  updateMovieViewLabel(views);
 
   const moodComments = comments.online ? comments.data : getLocalComments(item.slug);
   document.querySelector('#moodLine').textContent = getMoodLine(item, moodComments);
@@ -1025,34 +1024,69 @@ async function updateOwnMainReview(commentId, rating, text){
   });
 }
 
-async function recordAndFetchMovieViews(slug){
+async function fetchMovieViews(slug){
   if(!SUPABASE_ENABLED) return {online:false, total_views:null};
 
   const table = await resolveTable('movie_views');
   if(!table) return {online:false, total_views:null};
 
-  const viewKey = `${storePrefix}:viewed:${slug}:${new Date().toISOString().slice(0,10)}`;
-  const alreadyCountedToday = localStorage.getItem(viewKey) === '1';
-
   const current = await supabaseSelect('movie_views', `movie_id=eq.${encodeURIComponent(slug)}&select=movie_id,total_views&limit=1`);
   if(!current.ok) return {online:false, total_views:null};
 
   const row = Array.isArray(current.data) ? current.data[0] : null;
-  let total = Number(row?.total_views) || 0;
+  return {online:true, total_views:Number(row?.total_views) || 0};
+}
 
-  if(!alreadyCountedToday){
-    const nextTotal = total + 1;
-    const saved = row
-      ? await supabaseUpdate('movie_views', `movie_id=eq.${encodeURIComponent(slug)}`, {total_views: nextTotal, updated_at: new Date().toISOString()})
-      : await supabaseInsert('movie_views', {movie_id: slug, total_views: nextTotal, updated_at: new Date().toISOString()});
+async function recordMovieViewClick(slug){
+  if(!slug || viewClickSaveBusy) return false;
+  if(!SUPABASE_ENABLED) return false;
 
-    if(saved){
-      total = nextTotal;
-      localStorage.setItem(viewKey, '1');
-    }
+  const viewer = currentViewer?.id ? currentViewer : await ensureViewer({silent:true});
+  if(!viewer?.id || String(viewer.id).startsWith('local-')) return false;
+
+  const today = new Date().toISOString().slice(0,10);
+  const viewKey = `${storePrefix}:view-click:${viewer.id}:${slug}:${today}`;
+  if(localStorage.getItem(viewKey) === '1'){
+    return false;
   }
 
-  return {online:true, total_views:total};
+  viewClickSaveBusy = true;
+  try{
+    const table = await resolveTable('movie_views');
+    if(!table) return false;
+
+    const current = await supabaseSelect('movie_views', `movie_id=eq.${encodeURIComponent(slug)}&select=movie_id,total_views&limit=1`);
+    if(!current.ok) return false;
+
+    const row = Array.isArray(current.data) ? current.data[0] : null;
+    const total = Number(row?.total_views) || 0;
+    const nextTotal = total + 1;
+    const payload = {total_views: nextTotal, updated_at: new Date().toISOString()};
+
+    const saved = row
+      ? await supabaseUpdate('movie_views', `movie_id=eq.${encodeURIComponent(slug)}`, payload)
+      : await supabaseInsert('movie_views', {movie_id: slug, ...payload});
+
+    if(saved){
+      localStorage.setItem(viewKey, '1');
+      updateMovieViewLabel({online:true, total_views:nextTotal});
+      return true;
+    }
+  }finally{
+    viewClickSaveBusy = false;
+  }
+
+  return false;
+}
+
+function updateMovieViewLabel(views){
+  const viewLabel = document.querySelector('#viewCountLabel');
+  if(!viewLabel || !views?.online) return;
+
+  const total = Number(views.total_views) || 0;
+  viewLabel.textContent = total > 0
+    ? `${formatNumber(total)} clic${total > 1 ? 's' : ''} sur Regarder`
+    : 'Aucun clic sur Regarder';
 }
 
 async function ensureViewer({silent=false}={}){
