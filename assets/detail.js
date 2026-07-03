@@ -47,6 +47,29 @@ async function initDetail() {
   }
 }
 
+
+async function updateDetailViewCount(slug){
+  const label = document.querySelector('#detailViewCountLabel');
+  if(!label || !slug) return;
+
+  try{
+    const result = await window.PS?.restSelect?.('movie_views', `movie_id=eq.${encodeURIComponent(slug)}&select=movie_id,total_views&limit=1`);
+    if(!result?.ok){
+      label.textContent = 'Indisponible';
+      return;
+    }
+
+    const row = Array.isArray(result.data) ? result.data[0] : null;
+    const total = Number(row?.total_views) || 0;
+    label.textContent = total > 0
+      ? `${total.toLocaleString('fr-FR')} clic${total > 1 ? 's' : ''}`
+      : '0 clic';
+  }catch(error){
+    console.warn('Compteur Regarder indisponible', error);
+    label.textContent = 'Indisponible';
+  }
+}
+
 function renderDetail(item, catalogue, isLogged=false) {
   const poster = optimizeTmdbImageUrl(item.poster || '', 'poster');
  const backdrop = optimizeTmdbImageUrl(item.backdrop || '', 'backdrop');
@@ -176,6 +199,11 @@ if (rating) badges.push(rating);
             </li>
 
             <li>
+                <span>👁️ Clics Regarder</span>
+                <strong id="detailViewCountLabel">Chargement...</strong>
+            </li>
+
+            <li>
                 <span>🎭 Genres</span>
                 <strong>${escapeHtml((item.genres || []).join(' • '))}</strong>
             </li>
@@ -233,6 +261,8 @@ ${
         : ''
     }
   `;
+
+  updateDetailViewCount(item.slug);
 
   document.querySelectorAll('[data-related-slug]').forEach(card => {
     card.addEventListener('click', () => {

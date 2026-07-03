@@ -46,6 +46,7 @@ let realtimeRatingsRefreshTimer = null;
 let reviewFormDirty = false;
 let reviewFormModeKey = '';
 let viewClickSaveBusy = false;
+let currentMovieViews = {online:false, total_views:null};
 let commentReadCutoff = 0;
 let commentReadObserver = null;
 let commentReadSaveTimer = null;
@@ -648,7 +649,7 @@ async function refreshCommunity(item){
 
   updateCommunityRatingLabel(currentComments, stats, currentRatings);
 
-  updateMovieViewLabel(views);
+  currentMovieViews = views;
 
   const moodComments = comments.online ? comments.data : getLocalComments(item.slug);
   document.querySelector('#moodLine').textContent = getMoodLine(item, moodComments);
@@ -661,6 +662,7 @@ async function refreshCommunity(item){
 
   await refreshFavoriteButton(item.slug);
   renderViewerBox();
+  updateMovieViewLabel(currentMovieViews);
   updateQuickRatingForm();
   updateReviewFormMode();
 }
@@ -1081,7 +1083,14 @@ async function recordMovieViewClick(slug){
 
 function updateMovieViewLabel(views){
   const viewLabel = document.querySelector('#viewCountLabel');
-  if(!viewLabel || !views?.online) return;
+  if(!viewLabel) return;
+
+  if(!views?.online){
+    if(!viewLabel.textContent || /Audience connectée|Chargement|Invité/.test(viewLabel.textContent)){
+      viewLabel.textContent = 'Compteur indisponible';
+    }
+    return;
+  }
 
   const total = Number(views.total_views) || 0;
   viewLabel.textContent = total > 0
