@@ -1647,6 +1647,122 @@
     }
   },
   {
+    "title": "Evil Dead Burn",
+    "slug": "evil-dead-burn",
+    "originalTitle": "Evil Dead Burn",
+    "year": "2026",
+    "releaseDate": "2026-07-07",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Thriller"
+    ],
+    "director": "Sébastien Vaniček",
+    "cast": [
+      {
+        "id": 2037046,
+        "name": "Souheila Yacoub",
+        "character": "Alice",
+        "profile_path": "/8GXQwfBQybNDwinJOQF0dGtlITj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/8GXQwfBQybNDwinJOQF0dGtlITj.jpg"
+      },
+      {
+        "id": 33310,
+        "name": "Tandi Wright",
+        "character": "Susan",
+        "profile_path": "/zluVB3mzZVlv8D013OgeQLhzNEw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zluVB3mzZVlv8D013OgeQLhzNEw.jpg"
+      },
+      {
+        "id": 1911865,
+        "name": "Hunter Doohan",
+        "character": "Joseph",
+        "profile_path": "/ihno5ut6ha8TaubQFgl5Ozco2K1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ihno5ut6ha8TaubQFgl5Ozco2K1.jpg"
+      },
+      {
+        "id": 1399806,
+        "name": "Luciane Buchanan",
+        "character": "Thya",
+        "profile_path": "/4BVfv9HE6ZipHqZO8xDlkDFBWlN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/4BVfv9HE6ZipHqZO8xDlkDFBWlN.jpg"
+      },
+      {
+        "id": 150396,
+        "name": "Erroll Shand",
+        "character": "Edgar Price",
+        "profile_path": "/75nc5lUcp1So9RTNNr08NZ0oQDG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/75nc5lUcp1So9RTNNr08NZ0oQDG.jpg"
+      },
+      {
+        "id": 1695501,
+        "name": "Maude Davey",
+        "character": "Polly",
+        "profile_path": "/gJsnWVfgcyFrTYPVvcJrvIjIH1k.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gJsnWVfgcyFrTYPVvcJrvIjIH1k.jpg"
+      },
+      {
+        "id": 3047382,
+        "name": "Victory Ndukwe",
+        "character": "",
+        "profile_path": "/fAIXv88uXtJp1dH5qoMpsZxn8w1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fAIXv88uXtJp1dH5qoMpsZxn8w1.jpg"
+      },
+      {
+        "id": 2242834,
+        "name": "George Pullar",
+        "character": "William",
+        "profile_path": "/lF86e5h2iMS8IaIuExv1p81mi7R.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lF86e5h2iMS8IaIuExv1p81mi7R.jpg"
+      },
+      {
+        "id": 4147250,
+        "name": "Greta van den Brink",
+        "character": "Jessica",
+        "profile_path": "/offeicvD1BnhZ4S0yz3C3YwxWZS.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/offeicvD1BnhZ4S0yz3C3YwxWZS.jpg"
+      },
+      {
+        "id": 5662484,
+        "name": "Keanu Karim",
+        "character": "Jared",
+        "profile_path": "/dobjH9GFqBRhYJejTUBMaHCqWmH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dobjH9GFqBRhYJejTUBMaHCqWmH.jpg"
+      }
+    ],
+    "runtime": 110,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 8,
+    "popularity": 29.2001,
+    "trailer": "x_mPdvdAKk8",
+    "videoEmbed": "",
+    "tagline": "Chaque famille a ses démons.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Evil Dead Reboot Series",
+    "studios": [
+      "New Line Cinema",
+      "Screen Gems",
+      "Ghost House Pictures"
+    ],
+    "tmdbId": 1212763,
+    "poster": "https://image.tmdb.org/t/p/w500/ttqtnATOMrhpYQeJM548oviS7m6.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/A5Tz6ogGt4VV8NESG9oWVct5bo1.jpg",
+    "overview": "Après la mort de son mari, une femme trouve du réconfort auprès de ses beaux-parents dans leur maison familiale isolée. Alors qu'un à un ils se transforment en Deadites – faisant de cette réunion un véritable enfer familial –, elle découvre que les vœux qu'elle a prononcés de son vivant perdurent… même après la mort.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": true,
+    "cinemaOrder": 3,
+    "cinemaHero": false
+  },
+  {
     "title": "Mortal Kombat II",
     "slug": "mortal-kombat-ii",
     "originalTitle": "Mortal Kombat II",
