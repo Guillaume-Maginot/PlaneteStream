@@ -6197,16 +6197,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'histoire plonge dans l'univers intense du Blue Lock et du football de haut niveau.",
+      "frissonner": "Le programme Blue Lock installe une tension sportive constante autour des meilleurs attaquants.",
+      "reflechir": "Le parcours de Nagi et le choix de suivre son talent naturel invitent à réfléchir à la motivation et au potentiel.",
+      "spectacle": "L'animation et les actions de football promettent un grand spectacle visuel.",
+      "emotion": "Le duo Nagi et Reo porte une trajectoire humaine autour d'un rêve partagé."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance nerveuse de foot animé, avec un duo Nagi-Reo qui a de quoi accrocher si tu aimes les parcours qui basculent vite.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -7276,16 +7282,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "La Seconde Guerre mondiale offre un cadre historique ailleurs, au cœur d'une mission à l'étranger.",
+      "frissonner": "La guerre, la discrimination et les conditions éprouvantes créent une tension dramatique forte.",
+      "reflechir": "Le film invite à penser la discrimination, le sexisme et le courage face aux barrières.",
+      "spectacle": "Le contexte de guerre et la mission à l'étranger donnent une ampleur historique au récit.",
+      "emotion": "Le parcours de ces femmes, unies et déterminées, porte un fort enjeu humain et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance engagée et émouvante, si tu aimes les récits de guerre où l'histoire et les combats contre la discrimination prennent le premier plan.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -10086,16 +10098,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers du football japonais offre un cadre immersif et dépaysant.",
+      "frissonner": "La compétition intense crée une tension constante entre les joueurs.",
+      "reflechir": "Le récit interroge ce qu'il faut pour devenir un attaquant hors pair.",
+      "spectacle": "Les affrontements sportifs promettent une action intense et spectaculaire.",
+      "emotion": "La quête de victoire donne un fort enjeu humain à chaque parcours."
+    },
+    "projectionnisteAdvice": "Je te conseillerais Blue Lock si tu aimes les séances nerveuses où le foot devient un duel d'ego, avec action et tension, plutôt qu'un simple match de fond de soirée.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -18673,16 +18691,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers de chasse aux démons ouvre sur un ailleurs fantastique et surnaturel.",
+      "frissonner": "La traque de démons installe une tension sombre et fantastique.",
+      "reflechir": "Le parcours de Dante, fils d'un démon et d'une humaine, apporte une idée de double héritage.",
+      "spectacle": "Les missions de Dante misent sur l'action, l'épée et les armes dans un univers fantastique.",
+      "emotion": "Le lien entre héritage humain et démoniaque donne une trajectoire personnelle forte."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse de chasse aux démons, si tu aimes l'action fantastique qui ne traîne pas et l'univers de Dante après ses rencontres avec Lady et Trish.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "faible",
         "family": false
       }
     }
@@ -19277,16 +19301,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le carnet ouvre un univers étrange entre mystère et fantastique.",
+      "frissonner": "Le carnet de mort crée une tension sombre et un mystère inquiétant.",
+      "reflechir": "Le pouvoir du carnet pose un concept fort et un dilemme moral à explorer.",
+      "emotion": "Le destin du lycéen donne un enjeu humain intense et marquant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance à suspense, avec son carnet mystérieux et son duel d'esprits qui accroche vite, surtout si tu aimes l'animation qui joue avec le mystère.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "eleve",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
