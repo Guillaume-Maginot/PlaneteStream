@@ -462,6 +462,265 @@
     }
   },
   {
+    "title": "Obsession",
+    "slug": "obsession-2",
+    "originalTitle": "Obsession",
+    "year": "2026",
+    "releaseDate": "2026-05-13",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "nouveautes",
+    "genres": [
+      "Horreur",
+      "Thriller"
+    ],
+    "director": "Curry Barker",
+    "cast": [
+      {
+        "id": 1561370,
+        "name": "Michael Johnston",
+        "character": "Bear",
+        "profile_path": "/fbpcCkBzu43kMdlXxEAMuLhseL8.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fbpcCkBzu43kMdlXxEAMuLhseL8.jpg"
+      },
+      {
+        "id": 2638587,
+        "name": "Inde Navarrette",
+        "character": "Nikki",
+        "profile_path": "/8mYBaOximzwBgXOYRzbS6eUnoMX.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/8mYBaOximzwBgXOYRzbS6eUnoMX.jpg"
+      },
+      {
+        "id": 2823609,
+        "name": "Cooper Tomlinson",
+        "character": "Ian",
+        "profile_path": "/vBMQbYT1DyWPCUp11dIiqZR9zhd.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/vBMQbYT1DyWPCUp11dIiqZR9zhd.jpg"
+      },
+      {
+        "id": 1519711,
+        "name": "Megan Lawless",
+        "character": "Sarah",
+        "profile_path": "/6qW63YEgB1qro01sM7T2HvhtFkh.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/6qW63YEgB1qro01sM7T2HvhtFkh.jpg"
+      },
+      {
+        "id": 28637,
+        "name": "Andy Richter",
+        "character": "Carter",
+        "profile_path": "/5Qr7N6TzC8cI0ULxDm6EC5GpZ4C.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5Qr7N6TzC8cI0ULxDm6EC5GpZ4C.jpg"
+      },
+      {
+        "id": 3095494,
+        "name": "Haley Fitzgerald",
+        "character": "Viola",
+        "profile_path": "/xbKqZ5Epz0IaSCPLXDnByDACw2X.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xbKqZ5Epz0IaSCPLXDnByDACw2X.jpg"
+      },
+      {
+        "id": 1352948,
+        "name": "Darin Toonder",
+        "character": "Harry",
+        "profile_path": "/bD7Y9T7Y6XwDXjGJ8Suabyt1ZGo.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/bD7Y9T7Y6XwDXjGJ8Suabyt1ZGo.jpg"
+      },
+      {
+        "id": 4030428,
+        "name": "Anthony Pavone",
+        "character": "Reggie",
+        "profile_path": "/hxiqY9gHgwXGYnXSD11Wacm5Nmi.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hxiqY9gHgwXGYnXSD11Wacm5Nmi.jpg"
+      },
+      {
+        "id": 3592074,
+        "name": "Justice",
+        "character": "Joe",
+        "profile_path": "/YFxKf2HHJvyavQf54NO5wXFOJX.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/YFxKf2HHJvyavQf54NO5wXFOJX.jpg"
+      },
+      {
+        "id": 5618033,
+        "name": "Anthony Casabianca",
+        "character": "Chris",
+        "profile_path": "/xNJUKqKQhMeyZ74erQvETr3AqV0.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xNJUKqKQhMeyZ74erQvETr3AqV0.jpg"
+      }
+    ],
+    "runtime": 108,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America, United Kingdom",
+    "language": "en",
+    "rating": 8.248,
+    "popularity": 615.5916,
+    "trailer": "TxQakwAdvdI",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/8sj8n99jpe1f\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Votre relation est toxique ? La leur est mortelle.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "",
+    "studios": [
+      "Tea Shop Productions",
+      "Under the Shell",
+      "Capstone Pictures",
+      "Blumhouse Productions"
+    ],
+    "tmdbId": 1339713,
+    "poster": "https://image.tmdb.org/t/p/w500/mDCR1frpUvGfIKksuM440VLb7X9.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/rZfmzpixLKLR3Hg2u0WgC7XLFl8.jpg",
+    "overview": "Et si vous pouviez réaliser votre rêve le plus fou ? Un jeune introverti met la main sur un objet magique capable d’exaucer n’importe quel souhait. Son crush de toujours tombe alors raide dingue de lui… jusqu’à l’obsession la plus totale. Faites attention à ce que vous souhaitez !",
+    "featured": true,
+    "premium": false,
+    "homeFeatured": true,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
+        "family": false
+      }
+    }
+  },
+  {
+    "title": "The Punisher : One Last Kill",
+    "slug": "the-punisher-one-last-kill-2",
+    "originalTitle": "The Punisher: One Last Kill",
+    "year": "2026",
+    "releaseDate": "2026-05-12",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "nouveautes",
+    "genres": [
+      "Action",
+      "Drame",
+      "Crime"
+    ],
+    "director": "Reinaldo Marcus Green",
+    "cast": [
+      {
+        "id": 19498,
+        "name": "Jon Bernthal",
+        "character": "Frank Castle",
+        "profile_path": "/o0t6EVkJOrFAjESDilZUlf46IbQ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/o0t6EVkJOrFAjESDilZUlf46IbQ.jpg"
+      },
+      {
+        "id": 212154,
+        "name": "Deborah Ann Woll",
+        "character": "Karen Page",
+        "profile_path": "/btTnyvRLXOH0pz2SLBwyKbmnFhX.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/btTnyvRLXOH0pz2SLBwyKbmnFhX.jpg"
+      },
+      {
+        "id": 555252,
+        "name": "Jason R. Moore",
+        "character": "Curtis Hoyle",
+        "profile_path": "/5VJ0dTa1aZRf3mQJrHJ56Pf42dP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5VJ0dTa1aZRf3mQJrHJ56Pf42dP.jpg"
+      },
+      {
+        "id": 80415,
+        "name": "Judith Light",
+        "character": "Ma",
+        "profile_path": "/zwgc0ZT8LNIfW7gDbuOFKNtTGIj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zwgc0ZT8LNIfW7gDbuOFKNtTGIj.jpg"
+      },
+      {
+        "id": 968851,
+        "name": "Kelli Barrett",
+        "character": "Maria Castle",
+        "profile_path": "/oFY6w4H6zEx1FDOXEXmCINnlcap.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/oFY6w4H6zEx1FDOXEXmCINnlcap.jpg"
+      },
+      {
+        "id": 74957,
+        "name": "Andre Royo",
+        "character": "Dre",
+        "profile_path": "/tJzftaUtVvZs2RkFt2iQlQ5QWEh.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tJzftaUtVvZs2RkFt2iQlQ5QWEh.jpg"
+      },
+      {
+        "id": 1218156,
+        "name": "John Douglas Thompson",
+        "character": "Old Vet",
+        "profile_path": "/ieN9RkPSnsdaXWjarOhXkl4Jofm.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ieN9RkPSnsdaXWjarOhXkl4Jofm.jpg"
+      },
+      {
+        "id": 6194326,
+        "name": "Colton Hill",
+        "character": "Colton Hill",
+        "profile_path": "",
+        "profile": ""
+      },
+      {
+        "id": 6194324,
+        "name": "Nick Koumalatsos",
+        "character": "Nick Koumalatsos",
+        "profile_path": "/oy3dWuITzLcBn1yyyzfYSMVpHK2.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/oy3dWuITzLcBn1yyyzfYSMVpHK2.jpg"
+      },
+      {
+        "id": 5243473,
+        "name": "Addie Bernthal",
+        "character": "Lisa",
+        "profile_path": "",
+        "profile": ""
+      }
+    ],
+    "runtime": 51,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 8.329,
+    "popularity": 75.7563,
+    "trailer": "0ggEuD3A-no",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/0viy5j7a26sc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "",
+    "status": "Released",
+    "homepage": "",
+    "collection": "",
+    "studios": [
+      "Marvel Studios",
+      "Kevin Feige Productions"
+    ],
+    "tmdbId": 1439930,
+    "poster": "https://image.tmdb.org/t/p/w500/74VbBYHmpjgeES1zkRo1DwHkWnE.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/qO55CD8tgVL1T4WKn6zYFFiD6lL.jpg",
+    "overview": "Alors que Frank Castle cherche un sens à sa vie au-delà de la vengeance, il replonge contre toute attente au cœur du combat.",
+    "featured": true,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
+        "family": false
+      }
+    }
+  },
+  {
     "title": "Dune : Deuxième partie",
     "slug": "dune-deuxieme-partie",
     "originalTitle": "Dune: Part Two",
@@ -1830,140 +2089,6 @@
     }
   },
   {
-    "title": "Obsession",
-    "slug": "obsession",
-    "originalTitle": "Obsession",
-    "year": "2026",
-    "releaseDate": "2026-05-13",
-    "type": "film",
-    "mediaType": "movie",
-    "category": "a-la-une",
-    "genres": [
-      "Horreur",
-      "Thriller"
-    ],
-    "director": "Curry Barker",
-    "cast": [
-      {
-        "id": 1561370,
-        "name": "Michael Johnston",
-        "character": "Bear",
-        "profile_path": "/fbpcCkBzu43kMdlXxEAMuLhseL8.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/fbpcCkBzu43kMdlXxEAMuLhseL8.jpg"
-      },
-      {
-        "id": 2638587,
-        "name": "Inde Navarrette",
-        "character": "Nikki",
-        "profile_path": "/8mYBaOximzwBgXOYRzbS6eUnoMX.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/8mYBaOximzwBgXOYRzbS6eUnoMX.jpg"
-      },
-      {
-        "id": 2823609,
-        "name": "Cooper Tomlinson",
-        "character": "Ian",
-        "profile_path": "/vBMQbYT1DyWPCUp11dIiqZR9zhd.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/vBMQbYT1DyWPCUp11dIiqZR9zhd.jpg"
-      },
-      {
-        "id": 1519711,
-        "name": "Megan Lawless",
-        "character": "Sarah",
-        "profile_path": "/6qW63YEgB1qro01sM7T2HvhtFkh.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/6qW63YEgB1qro01sM7T2HvhtFkh.jpg"
-      },
-      {
-        "id": 28637,
-        "name": "Andy Richter",
-        "character": "Carter",
-        "profile_path": "/5Qr7N6TzC8cI0ULxDm6EC5GpZ4C.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/5Qr7N6TzC8cI0ULxDm6EC5GpZ4C.jpg"
-      },
-      {
-        "id": 3095494,
-        "name": "Haley Fitzgerald",
-        "character": "Viola",
-        "profile_path": "/xbKqZ5Epz0IaSCPLXDnByDACw2X.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/xbKqZ5Epz0IaSCPLXDnByDACw2X.jpg"
-      },
-      {
-        "id": 1352948,
-        "name": "Darin Toonder",
-        "character": "Harry",
-        "profile_path": "/bD7Y9T7Y6XwDXjGJ8Suabyt1ZGo.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/bD7Y9T7Y6XwDXjGJ8Suabyt1ZGo.jpg"
-      },
-      {
-        "id": 4030428,
-        "name": "Anthony Pavone",
-        "character": "Reggie",
-        "profile_path": "/hxiqY9gHgwXGYnXSD11Wacm5Nmi.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/hxiqY9gHgwXGYnXSD11Wacm5Nmi.jpg"
-      },
-      {
-        "id": 3592074,
-        "name": "Justice",
-        "character": "Joe",
-        "profile_path": "/YFxKf2HHJvyavQf54NO5wXFOJX.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/YFxKf2HHJvyavQf54NO5wXFOJX.jpg"
-      },
-      {
-        "id": 5618033,
-        "name": "Anthony Casabianca",
-        "character": "Chris",
-        "profile_path": "/xNJUKqKQhMeyZ74erQvETr3AqV0.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/xNJUKqKQhMeyZ74erQvETr3AqV0.jpg"
-      }
-    ],
-    "runtime": 108,
-    "seasons": 0,
-    "episodes": 0,
-    "seasonsData": [],
-    "country": "United States of America, United Kingdom",
-    "language": "en",
-    "rating": 8.1,
-    "popularity": 537.8965,
-    "trailer": "TxQakwAdvdI",
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/m6mzmbnye2re\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
-    "tagline": "Votre relation est toxique ? La leur est mortelle...",
-    "status": "Released",
-    "homepage": "",
-    "collection": "Obsession Collection",
-    "studios": [
-      "Tea Shop Productions",
-      "Under the Shell",
-      "Capstone Pictures",
-      "Blumhouse Productions"
-    ],
-    "tmdbId": 1339713,
-    "poster": "https://image.tmdb.org/t/p/w500/mDCR1frpUvGfIKksuM440VLb7X9.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/r013C8Me2bZ0pUi0OWJRh0h7MzT.jpg",
-    "overview": "Et si vous pouviez réaliser votre rêve le plus fou ? Un jeune introverti met la main sur un objet magique capable d’exaucer n’importe quel souhait. Son crush de toujours tombe alors raide dingue de lui… jusqu’à l’obsession la plus totale. Faites attention à ce que vous souhaitez !",
-    "featured": false,
-    "premium": false,
-    "homeFeatured": false,
-    "cinemaRelease": false,
-    "cinemaOrder": 0,
-    "cinemaHero": false,
-    "bubbleReasons": {
-      "frissonner": "Un souhait magique qui dérape vers l'obsession installe une tension sombre et inquiétante.",
-      "reflechir": "Le film joue sur le pouvoir des souhaits et leurs conséquences, avec une idée de départ qui fait réfléchir.",
-      "emotion": "L'histoire explore un crush, le désir d'être aimé et une relation qui bascule."
-    },
-    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de frissons où l'obsession bascule en thriller horreur, avec une idée de départ bien vicieuse qui peut te coller au siège.",
-    "bubulle": {
-      "profile": {
-        "pace": "moyen",
-        "complexity": "moyen",
-        "spectacle": "faible",
-        "violence": "moyen",
-        "humour": "faible",
-        "emotion": "moyen",
-        "family": false
-      }
-    }
-  },
-  {
     "title": "Pressure",
     "slug": "pressure",
     "originalTitle": "Pressure",
@@ -2304,70 +2429,6 @@
         "humour": "eleve",
         "emotion": "moyen",
         "family": true
-      }
-    }
-  },
-  {
-    "title": "The Punisher : One Last Kill",
-    "slug": "the-punisher-one-last-kill",
-    "originalTitle": "The Punisher: One Last Kill",
-    "year": "2026",
-    "releaseDate": "2026-05-12",
-    "type": "film",
-    "mediaType": "movie",
-    "category": "series",
-    "genres": [
-      "Action",
-      "Drame",
-      "Crime"
-    ],
-    "director": "Reinaldo Marcus Green",
-    "cast": [
-      "Jon Bernthal",
-      "Deborah Ann Woll",
-      "Jason R. Moore",
-      "Judith Light",
-      "Kelli Barrett",
-      "Andre Royo"
-    ],
-    "runtime": 51,
-    "seasons": 0,
-    "episodes": 0,
-    "country": "United States of America",
-    "language": "en",
-    "rating": 8.348,
-    "popularity": 144.7455,
-    "trailer": "0ggEuD3A-no",
-    "tagline": "",
-    "status": "Released",
-    "homepage": "",
-    "collection": "",
-    "studios": [
-      "Marvel Studios",
-      "Kevin Feige Productions"
-    ],
-    "tmdbId": 1439930,
-    "poster": "https://image.tmdb.org/t/p/w500/74VbBYHmpjgeES1zkRo1DwHkWnE.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/qO55CD8tgVL1T4WKn6zYFFiD6lL.jpg",
-    "overview": "Alors que Frank Castle cherche un sens à sa vie au-delà de la vengeance, il replonge contre toute attente au cœur du combat.",
-    "featured": false,
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/2q4149be3mit\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
-    "bubbleReasons": {
-      "frissonner": "L'univers criminel et la tension du combat installent une ambiance sombre et nerveuse.",
-      "reflechir": "Le parcours de Frank Castle interroge le sens de sa vie au-delà de la vengeance.",
-      "spectacle": "L'action domine avec un héros replongé au cœur du combat.",
-      "emotion": "Le récit suit un homme en quête de sens, avec un enjeu personnel fort."
-    },
-    "projectionnisteAdvice": "Je te conseillerais celui-ci quand tu veux une séance tendue et nerveuse : un Frank Castle en quête de sens, mais qui retombe dans le combat, entre action, drame et crime.",
-    "bubulle": {
-      "profile": {
-        "pace": "rapide",
-        "complexity": "moyen",
-        "spectacle": "moyen",
-        "violence": "eleve",
-        "humour": "faible",
-        "emotion": "moyen",
-        "family": false
       }
     }
   },
@@ -3537,7 +3598,7 @@
     "rating": 7.257,
     "popularity": 21.347,
     "trailer": "FuO1fbB81pE",
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/v3bjn6w1ow4q\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/36tx1pcuh89b\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "tagline": "La vengeance a un nouveau visage.",
     "status": "Released",
     "homepage": "",
@@ -3572,7 +3633,10 @@
         "emotion": "moyen",
         "family": false
       }
-    }
+    },
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false
   },
   {
     "title": "Ça : Bienvenue à Derry",
@@ -21787,7 +21851,7 @@
     "rating": 6.176,
     "popularity": 0.4564,
     "trailer": "C9yMaLlXisg",
-    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/vt2iawm4tc5h\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/kj2jp4v9152o\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
     "tagline": "Leur monde. Leurs règles.",
     "status": "Released",
     "homepage": "",
@@ -21822,7 +21886,10 @@
         "emotion": "moyen",
         "family": false
       }
-    }
+    },
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false
   },
   {
     "title": "Le Seigneur des anneaux : La Communauté de l'anneau",

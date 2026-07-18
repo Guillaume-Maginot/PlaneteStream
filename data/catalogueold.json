@@ -1647,6 +1647,122 @@
     }
   },
   {
+    "title": "Evil Dead Burn",
+    "slug": "evil-dead-burn",
+    "originalTitle": "Evil Dead Burn",
+    "year": "2026",
+    "releaseDate": "2026-07-07",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Thriller"
+    ],
+    "director": "Sébastien Vaniček",
+    "cast": [
+      {
+        "id": 2037046,
+        "name": "Souheila Yacoub",
+        "character": "Alice",
+        "profile_path": "/8GXQwfBQybNDwinJOQF0dGtlITj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/8GXQwfBQybNDwinJOQF0dGtlITj.jpg"
+      },
+      {
+        "id": 33310,
+        "name": "Tandi Wright",
+        "character": "Susan",
+        "profile_path": "/zluVB3mzZVlv8D013OgeQLhzNEw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zluVB3mzZVlv8D013OgeQLhzNEw.jpg"
+      },
+      {
+        "id": 1911865,
+        "name": "Hunter Doohan",
+        "character": "Joseph",
+        "profile_path": "/ihno5ut6ha8TaubQFgl5Ozco2K1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ihno5ut6ha8TaubQFgl5Ozco2K1.jpg"
+      },
+      {
+        "id": 1399806,
+        "name": "Luciane Buchanan",
+        "character": "Thya",
+        "profile_path": "/4BVfv9HE6ZipHqZO8xDlkDFBWlN.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/4BVfv9HE6ZipHqZO8xDlkDFBWlN.jpg"
+      },
+      {
+        "id": 150396,
+        "name": "Erroll Shand",
+        "character": "Edgar Price",
+        "profile_path": "/75nc5lUcp1So9RTNNr08NZ0oQDG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/75nc5lUcp1So9RTNNr08NZ0oQDG.jpg"
+      },
+      {
+        "id": 1695501,
+        "name": "Maude Davey",
+        "character": "Polly",
+        "profile_path": "/gJsnWVfgcyFrTYPVvcJrvIjIH1k.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gJsnWVfgcyFrTYPVvcJrvIjIH1k.jpg"
+      },
+      {
+        "id": 3047382,
+        "name": "Victory Ndukwe",
+        "character": "",
+        "profile_path": "/fAIXv88uXtJp1dH5qoMpsZxn8w1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fAIXv88uXtJp1dH5qoMpsZxn8w1.jpg"
+      },
+      {
+        "id": 2242834,
+        "name": "George Pullar",
+        "character": "William",
+        "profile_path": "/lF86e5h2iMS8IaIuExv1p81mi7R.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lF86e5h2iMS8IaIuExv1p81mi7R.jpg"
+      },
+      {
+        "id": 4147250,
+        "name": "Greta van den Brink",
+        "character": "Jessica",
+        "profile_path": "/offeicvD1BnhZ4S0yz3C3YwxWZS.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/offeicvD1BnhZ4S0yz3C3YwxWZS.jpg"
+      },
+      {
+        "id": 5662484,
+        "name": "Keanu Karim",
+        "character": "Jared",
+        "profile_path": "/dobjH9GFqBRhYJejTUBMaHCqWmH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dobjH9GFqBRhYJejTUBMaHCqWmH.jpg"
+      }
+    ],
+    "runtime": 110,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 8,
+    "popularity": 29.2001,
+    "trailer": "x_mPdvdAKk8",
+    "videoEmbed": "",
+    "tagline": "Chaque famille a ses démons.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Evil Dead Reboot Series",
+    "studios": [
+      "New Line Cinema",
+      "Screen Gems",
+      "Ghost House Pictures"
+    ],
+    "tmdbId": 1212763,
+    "poster": "https://image.tmdb.org/t/p/w500/ttqtnATOMrhpYQeJM548oviS7m6.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/A5Tz6ogGt4VV8NESG9oWVct5bo1.jpg",
+    "overview": "Après la mort de son mari, une femme trouve du réconfort auprès de ses beaux-parents dans leur maison familiale isolée. Alors qu'un à un ils se transforment en Deadites – faisant de cette réunion un véritable enfer familial –, elle découvre que les vœux qu'elle a prononcés de son vivant perdurent… même après la mort.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": true,
+    "cinemaOrder": 3,
+    "cinemaHero": false
+  },
+  {
     "title": "Mortal Kombat II",
     "slug": "mortal-kombat-ii",
     "originalTitle": "Mortal Kombat II",
@@ -6197,16 +6313,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'histoire plonge dans l'univers intense du Blue Lock et du football de haut niveau.",
+      "frissonner": "Le programme Blue Lock installe une tension sportive constante autour des meilleurs attaquants.",
+      "reflechir": "Le parcours de Nagi et le choix de suivre son talent naturel invitent à réfléchir à la motivation et au potentiel.",
+      "spectacle": "L'animation et les actions de football promettent un grand spectacle visuel.",
+      "emotion": "Le duo Nagi et Reo porte une trajectoire humaine autour d'un rêve partagé."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance nerveuse de foot animé, avec un duo Nagi-Reo qui a de quoi accrocher si tu aimes les parcours qui basculent vite.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -7276,16 +7398,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "La Seconde Guerre mondiale offre un cadre historique ailleurs, au cœur d'une mission à l'étranger.",
+      "frissonner": "La guerre, la discrimination et les conditions éprouvantes créent une tension dramatique forte.",
+      "reflechir": "Le film invite à penser la discrimination, le sexisme et le courage face aux barrières.",
+      "spectacle": "Le contexte de guerre et la mission à l'étranger donnent une ampleur historique au récit.",
+      "emotion": "Le parcours de ces femmes, unies et déterminées, porte un fort enjeu humain et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance engagée et émouvante, si tu aimes les récits de guerre où l'histoire et les combats contre la discrimination prennent le premier plan.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -10086,16 +10214,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers du football japonais offre un cadre immersif et dépaysant.",
+      "frissonner": "La compétition intense crée une tension constante entre les joueurs.",
+      "reflechir": "Le récit interroge ce qu'il faut pour devenir un attaquant hors pair.",
+      "spectacle": "Les affrontements sportifs promettent une action intense et spectaculaire.",
+      "emotion": "La quête de victoire donne un fort enjeu humain à chaque parcours."
+    },
+    "projectionnisteAdvice": "Je te conseillerais Blue Lock si tu aimes les séances nerveuses où le foot devient un duel d'ego, avec action et tension, plutôt qu'un simple match de fond de soirée.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -18673,16 +18807,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers de chasse aux démons ouvre sur un ailleurs fantastique et surnaturel.",
+      "frissonner": "La traque de démons installe une tension sombre et fantastique.",
+      "reflechir": "Le parcours de Dante, fils d'un démon et d'une humaine, apporte une idée de double héritage.",
+      "spectacle": "Les missions de Dante misent sur l'action, l'épée et les armes dans un univers fantastique.",
+      "emotion": "Le lien entre héritage humain et démoniaque donne une trajectoire personnelle forte."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse de chasse aux démons, si tu aimes l'action fantastique qui ne traîne pas et l'univers de Dante après ses rencontres avec Lady et Trish.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "faible",
         "family": false
       }
     }
@@ -19277,16 +19417,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le carnet ouvre un univers étrange entre mystère et fantastique.",
+      "frissonner": "Le carnet de mort crée une tension sombre et un mystère inquiétant.",
+      "reflechir": "Le pouvoir du carnet pose un concept fort et un dilemme moral à explorer.",
+      "emotion": "Le destin du lycéen donne un enjeu humain intense et marquant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance à suspense, avec son carnet mystérieux et son duel d'esprits qui accroche vite, surtout si tu aimes l'animation qui joue avec le mystère.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "eleve",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
