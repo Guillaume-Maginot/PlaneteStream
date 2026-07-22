@@ -1772,6 +1772,123 @@
     }
   },
   {
+    "title": "Avengers: Doomsday",
+    "slug": "avengers-doomsday",
+    "originalTitle": "Avengers: Doomsday",
+    "year": "2026",
+    "releaseDate": "2026-12-16",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Science-Fiction",
+      "Action",
+      "Aventure"
+    ],
+    "director": "Joe Russo",
+    "cast": [
+      {
+        "id": 3223,
+        "name": "Robert Downey Jr.",
+        "character": "Victor von Doom  / Doctor Doom",
+        "profile_path": "/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
+      },
+      {
+        "id": 16828,
+        "name": "Chris Evans",
+        "character": "Steve Rogers / Captain America",
+        "profile_path": "/3bOGNsHlrswhyW79uvIHH1V43JI.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3bOGNsHlrswhyW79uvIHH1V43JI.jpg"
+      },
+      {
+        "id": 74568,
+        "name": "Chris Hemsworth",
+        "character": "Thor",
+        "profile_path": "/piQGdoIQOF3C1EI5cbYZLAW1gfj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/piQGdoIQOF3C1EI5cbYZLAW1gfj.jpg"
+      },
+      {
+        "id": 1253360,
+        "name": "Pedro Pascal",
+        "character": "Reed Richards / Mr. Fantastic",
+        "profile_path": "/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg"
+      },
+      {
+        "id": 22226,
+        "name": "Paul Rudd",
+        "character": "Scott Lang / Ant-Man",
+        "profile_path": "/6jtwNOLKy0LdsRAKwZqgYMAfd5n.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/6jtwNOLKy0LdsRAKwZqgYMAfd5n.jpg"
+      },
+      {
+        "id": 53650,
+        "name": "Anthony Mackie",
+        "character": "Sam Wilson / Captain America",
+        "profile_path": "/eZSIDrtTzhvabyjrmIITQLsjx8h.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eZSIDrtTzhvabyjrmIITQLsjx8h.jpg"
+      },
+      {
+        "id": 1373737,
+        "name": "Florence Pugh",
+        "character": "Yelena Belova",
+        "profile_path": "/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg"
+      },
+      {
+        "id": 556356,
+        "name": "Vanessa Kirby",
+        "character": "Sue Storm / The Invisible Woman",
+        "profile_path": "/tViEEsjvbhrJxWsOipUqIYjdHEb.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tViEEsjvbhrJxWsOipUqIYjdHEb.jpg"
+      },
+      {
+        "id": 21042,
+        "name": "Ebon Moss-Bachrach",
+        "character": "Ben Grimm / Thing",
+        "profile_path": "/xD8GVNayMpiTZxLfahy2DseYcQq.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xD8GVNayMpiTZxLfahy2DseYcQq.jpg"
+      },
+      {
+        "id": 986808,
+        "name": "Wyatt Russell",
+        "character": "John Walker / U.S. Agent",
+        "profile_path": "/zIldBzXdBWskPZB7x35G2hYEVDo.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zIldBzXdBWskPZB7x35G2hYEVDo.jpg"
+      }
+    ],
+    "runtime": 165,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 0,
+    "popularity": 100.4487,
+    "trailer": "b4JJHkUZsjE",
+    "videoEmbed": "",
+    "tagline": "",
+    "status": "Post Production",
+    "homepage": "",
+    "collection": "Avengers - Saga",
+    "studios": [
+      "Marvel Studios",
+      "Kevin Feige Productions",
+      "AGBO"
+    ],
+    "tmdbId": 1003596,
+    "poster": "https://image.tmdb.org/t/p/w500/bph5UiAOKLLjla10YuCyKWfKYGG.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/6KDDoTq8Vq3HuQHULzuvPiCJbMI.jpg",
+    "overview": "Les Avengers, les Wakandais, les Quatre Fantastiques, les New Avengers et les X-Men, tous héros issus de trois univers distincts se retrouvent sur une trajectoire de collision mortelle et font face à une menace existentielle sans précédent, comme ils n'en ont jamais rencontré auparavant, le Docteur Doom.",
+    "featured": false,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": true,
+    "cinemaOrder": 0,
+    "cinemaHero": false
+  },
+  {
     "title": "Dune : Troisième partie",
     "slug": "dune-troisieme-partie",
     "originalTitle": "Dune: Part Three",
