@@ -1,5 +1,136 @@
 [
   {
+    "title": "Backrooms",
+    "slug": "backrooms",
+    "originalTitle": "Backrooms",
+    "year": "2026",
+    "releaseDate": "2026-05-27",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Mystère",
+      "Science-Fiction"
+    ],
+    "director": "Kane Parsons",
+    "cast": [
+      {
+        "id": 5294,
+        "name": "Chiwetel Ejiofor",
+        "character": "Clark",
+        "profile_path": "/kq5DDnqqofoRI0t6ddtRlsJnNPT.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/kq5DDnqqofoRI0t6ddtRlsJnNPT.jpg"
+      },
+      {
+        "id": 1576786,
+        "name": "Renate Reinsve",
+        "character": "Mary",
+        "profile_path": "/q0ljTd4fyFSJKxPgmcrKtdg3HKo.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/q0ljTd4fyFSJKxPgmcrKtdg3HKo.jpg"
+      },
+      {
+        "id": 1512452,
+        "name": "Finn Bennett",
+        "character": "Bobby",
+        "profile_path": "/p4ya77nmLlhS2cyPKUZi9zVD4Mu.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/p4ya77nmLlhS2cyPKUZi9zVD4Mu.jpg"
+      },
+      {
+        "id": 1709431,
+        "name": "Lukita Maxwell",
+        "character": "Kat",
+        "profile_path": "/g5g6XxUAtSdPfsJrSoFkl7vH51d.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/g5g6XxUAtSdPfsJrSoFkl7vH51d.jpg"
+      },
+      {
+        "id": 45407,
+        "name": "Mark Duplass",
+        "character": "Phil",
+        "profile_path": "/lRDf99rAfcdqt8Cqk4LsIT7XSD2.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lRDf99rAfcdqt8Cqk4LsIT7XSD2.jpg"
+      },
+      {
+        "id": 212934,
+        "name": "Avan Jogia",
+        "character": "Naren Warne",
+        "profile_path": "/7BX0Lg39bHlgtvWZpszTr1YjTAW.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7BX0Lg39bHlgtvWZpszTr1YjTAW.jpg"
+      },
+      {
+        "id": 4848549,
+        "name": "Robert Bobroczkyi",
+        "character": "Pirate Clark",
+        "profile_path": "/3SK7NuuBKR5PSJwsQ7HO4qHIM9C.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3SK7NuuBKR5PSJwsQ7HO4qHIM9C.jpg"
+      },
+      {
+        "id": 5725467,
+        "name": "Ember Ambrose",
+        "character": "Young Mary",
+        "profile_path": "/w7h6l4ltuWaMYanGgzwyhAHGL2y.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/w7h6l4ltuWaMYanGgzwyhAHGL2y.jpg"
+      },
+      {
+        "id": 72482,
+        "name": "Krista Kosonen",
+        "character": "Nora",
+        "profile_path": "/7iW2mxbxBgV5sX2y0fSY78lewW4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/7iW2mxbxBgV5sX2y0fSY78lewW4.jpg"
+      },
+      {
+        "id": 64670,
+        "name": "Philip Granger",
+        "character": "Meterman",
+        "profile_path": "/bkrnrtSiUnumWVpAOy5QDcOePiA.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/bkrnrtSiUnumWVpAOy5QDcOePiA.jpg"
+      }
+    ],
+    "runtime": 105,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America, Canada",
+    "language": "en",
+    "rating": 7.086,
+    "popularity": 445.1714,
+    "trailer": "mTPEEk55gZo",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/tezw8xmowuqc\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Voyez jusqu'où cela va.",
+    "status": "Released",
+    "homepage": "https://backrooms.mov/",
+    "collection": "",
+    "studios": [
+      "Atomic Monster",
+      "21 Laps Entertainment",
+      "A24",
+      "Phobos"
+    ],
+    "tmdbId": 1083381,
+    "poster": "https://image.tmdb.org/t/p/w500/thQQ3BBBhGDtWm3UTtabhyDJd8U.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/2aA8iPlMCks3k131ymFBAY6FL0b.jpg",
+    "overview": "Une étrange porte apparaît dans le sous-sol d'un magasin de meubles.",
+    "featured": true,
+    "premium": true,
+    "homeFeatured": true,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
+        "family": false
+      }
+    }
+  },
+  {
     "title": "Crime 101",
     "slug": "crime-101",
     "originalTitle": "Crime 101",
@@ -126,6 +257,135 @@
         "violence": "moyen",
         "humour": "faible",
         "emotion": "moyen",
+        "family": false
+      }
+    }
+  },
+  {
+    "title": "Evil Dead Burn",
+    "slug": "evil-dead-burn-2",
+    "originalTitle": "Evil Dead Burn",
+    "year": "2026",
+    "releaseDate": "2026-07-07",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Thriller"
+    ],
+    "director": "Sébastien Vaniček",
+    "cast": [
+      {
+        "id": 2037046,
+        "name": "Souheila Yacoub",
+        "character": "Alice",
+        "profile_path": "/ljuwA97evcoadIE7VlV1AXpKi1j.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ljuwA97evcoadIE7VlV1AXpKi1j.jpg"
+      },
+      {
+        "id": 33310,
+        "name": "Tandi Wright",
+        "character": "Susan",
+        "profile_path": "/zluVB3mzZVlv8D013OgeQLhzNEw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zluVB3mzZVlv8D013OgeQLhzNEw.jpg"
+      },
+      {
+        "id": 1911865,
+        "name": "Hunter Doohan",
+        "character": "Joseph",
+        "profile_path": "/uLZmUQknSsImU6dG03F6EeXhE4g.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uLZmUQknSsImU6dG03F6EeXhE4g.jpg"
+      },
+      {
+        "id": 1399806,
+        "name": "Luciane Buchanan",
+        "character": "Thya",
+        "profile_path": "/9fTzSU4310StDoO9T0nQyGOLurn.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9fTzSU4310StDoO9T0nQyGOLurn.jpg"
+      },
+      {
+        "id": 150396,
+        "name": "Erroll Shand",
+        "character": "Edgar",
+        "profile_path": "/75nc5lUcp1So9RTNNr08NZ0oQDG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/75nc5lUcp1So9RTNNr08NZ0oQDG.jpg"
+      },
+      {
+        "id": 1695501,
+        "name": "Maude Davey",
+        "character": "Polly",
+        "profile_path": "/gJsnWVfgcyFrTYPVvcJrvIjIH1k.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gJsnWVfgcyFrTYPVvcJrvIjIH1k.jpg"
+      },
+      {
+        "id": 2242834,
+        "name": "George Pullar",
+        "character": "Will",
+        "profile_path": "/lF86e5h2iMS8IaIuExv1p81mi7R.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/lF86e5h2iMS8IaIuExv1p81mi7R.jpg"
+      },
+      {
+        "id": 3047382,
+        "name": "Victory Ndukwe",
+        "character": "Leo",
+        "profile_path": "/fAIXv88uXtJp1dH5qoMpsZxn8w1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fAIXv88uXtJp1dH5qoMpsZxn8w1.jpg"
+      },
+      {
+        "id": 5662484,
+        "name": "Keanu Karim",
+        "character": "Jared",
+        "profile_path": "/dobjH9GFqBRhYJejTUBMaHCqWmH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dobjH9GFqBRhYJejTUBMaHCqWmH.jpg"
+      },
+      {
+        "id": 62573,
+        "name": "Michael Hurst",
+        "character": "Benjamin Price (voice)",
+        "profile_path": "/tBYX46fSi8jtp196U8L7Vd37KZW.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/tBYX46fSi8jtp196U8L7Vd37KZW.jpg"
+      }
+    ],
+    "runtime": 110,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 6.8,
+    "popularity": 64.6281,
+    "trailer": "x_mPdvdAKk8",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/im0qa1r2r3um\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Chaque famille a ses démons.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Evil Dead Standalone Collection",
+    "studios": [
+      "New Line Cinema",
+      "Screen Gems",
+      "Ghost House Pictures"
+    ],
+    "tmdbId": 1212763,
+    "poster": "https://image.tmdb.org/t/p/w500/twkjKuOf4hVAmXxOwpyRy682VZR.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/A5Tz6ogGt4VV8NESG9oWVct5bo1.jpg",
+    "overview": "Après l’enterrement de son mari, Alice se rend dans la maison isolée de sa belle-famille pour partager un dernier repas à sa mémoire. Mais la réunion familiale bascule dans l’horreur lorsque ses proches se transforment, l’un après l’autre, en créatures démoniaques. Confrontée à cet enfer, Alice découvre que les vœux prononcés autrefois continuent de la lier à son mari… bien au-delà de la mort.",
+    "featured": true,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
         "family": false
       }
     }
@@ -258,6 +518,135 @@
         "violence": "moyen",
         "humour": "faible",
         "emotion": "moyen",
+        "family": false
+      }
+    }
+  },
+  {
+    "title": "L'Odyssée",
+    "slug": "l-odyssee",
+    "originalTitle": "The Odyssey",
+    "year": "2026",
+    "releaseDate": "2026-07-15",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Aventure",
+      "Action",
+      "Fantastique"
+    ],
+    "director": "Christopher Nolan",
+    "cast": [
+      {
+        "id": 1892,
+        "name": "Matt Damon",
+        "character": "Odysseus",
+        "profile_path": "/aCvBXTAR9B1qRjIRzMBYhhbm1fR.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/aCvBXTAR9B1qRjIRzMBYhhbm1fR.jpg"
+      },
+      {
+        "id": 1136406,
+        "name": "Tom Holland",
+        "character": "Telemachus",
+        "profile_path": "/xKBAaPIa1c7tzZD3Y0MhBLv4hPE.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xKBAaPIa1c7tzZD3Y0MhBLv4hPE.jpg"
+      },
+      {
+        "id": 1813,
+        "name": "Anne Hathaway",
+        "character": "Penelope",
+        "profile_path": "/nbccV2pMoyLTCeg5DQip24Eq0Jp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/nbccV2pMoyLTCeg5DQip24Eq0Jp.jpg"
+      },
+      {
+        "id": 11288,
+        "name": "Robert Pattinson",
+        "character": "Antinous",
+        "profile_path": "/3qZ09UE7lN6AtorfXFRYpEtSY93.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3qZ09UE7lN6AtorfXFRYpEtSY93.jpg"
+      },
+      {
+        "id": 1227717,
+        "name": "Himesh Patel",
+        "character": "Eurylochus",
+        "profile_path": "/4mfOQgnwmewNURfQApyyHxt1qUF.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/4mfOQgnwmewNURfQApyyHxt1qUF.jpg"
+      },
+      {
+        "id": 5723,
+        "name": "John Leguizamo",
+        "character": "Eumaeus",
+        "profile_path": "/kwYCdxTlDh9zauUCg4mp2XTCQTw.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/kwYCdxTlDh9zauUCg4mp2XTCQTw.jpg"
+      },
+      {
+        "id": 6885,
+        "name": "Charlize Theron",
+        "character": "Calypso",
+        "profile_path": "/gd7ShD0yt4bsR2STeQ19KQ6hvXL.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gd7ShD0yt4bsR2STeQ19KQ6hvXL.jpg"
+      },
+      {
+        "id": 1978406,
+        "name": "Travis Scott",
+        "character": "Bard",
+        "profile_path": "/eBdm7HQS6lLGg4BocgfoJ5qB9yp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eBdm7HQS6lLGg4BocgfoJ5qB9yp.jpg"
+      },
+      {
+        "id": 1154054,
+        "name": "Corey Hawkins",
+        "character": "Polybus",
+        "profile_path": "/wRt0Bc0chN5BSjvYzmg2evgqNzp.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wRt0Bc0chN5BSjvYzmg2evgqNzp.jpg"
+      },
+      {
+        "id": 84706,
+        "name": "Jarreth J. Merz",
+        "character": "Leodes",
+        "profile_path": "/ze8WDEujZmTXdCLcUy0IaymwlcS.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ze8WDEujZmTXdCLcUy0IaymwlcS.jpg"
+      }
+    ],
+    "runtime": 173,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United Kingdom, United States of America",
+    "language": "en",
+    "rating": 7.9,
+    "popularity": 937.0796,
+    "trailer": "9YGuN8sQpL0",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/d2blekdpfu15\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Défiez les dieux.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "",
+    "studios": [
+      "Universal Pictures",
+      "Syncopy"
+    ],
+    "tmdbId": 1368337,
+    "poster": "https://image.tmdb.org/t/p/w500/5WzPybmv7J9lwfRfhHpuk0pySNc.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/r57L2UBLPKcHdZQYg8tagv9XqK2.jpg",
+    "overview": "Vingt ans après son départ pour la guerre de Troie, le roi Ulysse rentre enfin à Ithaque, mais son voyage est parsemé d'aventures et d'épreuves.",
+    "featured": true,
+    "premium": true,
+    "homeFeatured": false,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
         "family": false
       }
     }
@@ -721,6 +1110,135 @@
     }
   },
   {
+    "title": "Toy Story 5",
+    "slug": "toy-story-5",
+    "originalTitle": "Toy Story 5",
+    "year": "2026",
+    "releaseDate": "2026-06-17",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Animation",
+      "Familial",
+      "Comédie",
+      "Aventure"
+    ],
+    "director": "Andrew Stanton",
+    "cast": [
+      {
+        "id": 31,
+        "name": "Tom Hanks",
+        "character": "Woody (voice)",
+        "profile_path": "/oFvZoKI6lvU03n4YoNGAll9rkas.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/oFvZoKI6lvU03n4YoNGAll9rkas.jpg"
+      },
+      {
+        "id": 12898,
+        "name": "Tim Allen",
+        "character": "Buzz Lightyear (voice)",
+        "profile_path": "/woWhZzFILVhYMAvsPL171HjMY0y.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/woWhZzFILVhYMAvsPL171HjMY0y.jpg"
+      },
+      {
+        "id": 3234,
+        "name": "Joan Cusack",
+        "character": "Jessie (voice)",
+        "profile_path": "/59UIeHZFYrKyP20lXqijtfTXglO.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/59UIeHZFYrKyP20lXqijtfTXglO.jpg"
+      },
+      {
+        "id": 1260481,
+        "name": "Greta Lee",
+        "character": "Lilypad (voice)",
+        "profile_path": "/6SydTis4XUcovlwIGskT59JowLX.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/6SydTis4XUcovlwIGskT59JowLX.jpg"
+      },
+      {
+        "id": 81200,
+        "name": "Conan O'Brien",
+        "character": "Smarty Pants (voice)",
+        "profile_path": "/deRbViPut0t80miscBpP2DhBJU5.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/deRbViPut0t80miscBpP2DhBJU5.jpg"
+      },
+      {
+        "id": 64342,
+        "name": "Craig Robinson",
+        "character": "Atlas (voice)",
+        "profile_path": "/mTyTrOWUSOBJMOlDpnd4OYx7FlJ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/mTyTrOWUSOBJMOlDpnd4OYx7FlJ.jpg"
+      },
+      {
+        "id": 206869,
+        "name": "Shelby Rabara",
+        "character": "Snappy (voice)",
+        "profile_path": "/ouMiEKlhCj2LFKEQtI6fGRMDemF.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ouMiEKlhCj2LFKEQtI6fGRMDemF.jpg"
+      },
+      {
+        "id": 25147,
+        "name": "Tony Hale",
+        "character": "Forky (voice)",
+        "profile_path": "/ar4uapp4w5wMkThZcqWUNMSTO8z.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ar4uapp4w5wMkThZcqWUNMSTO8z.jpg"
+      },
+      {
+        "id": 5374940,
+        "name": "Scarlett Spears",
+        "character": "Bonnie (voice)",
+        "profile_path": "/h0loJ4v3wbUfUA6dxUYv7B6fET1.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/h0loJ4v3wbUfUA6dxUYv7B6fET1.jpg"
+      },
+      {
+        "id": 19487,
+        "name": "Jay Hernandez",
+        "character": "Bonnie’s Dad (voice)",
+        "profile_path": "/rh4pzTAJvy0i84HYV4xZxCXuXgV.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/rh4pzTAJvy0i84HYV4xZxCXuXgV.jpg"
+      }
+    ],
+    "runtime": 102,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 7.415,
+    "popularity": 366.4723,
+    "trailer": "MyDnut4pLQI",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/xd9uayw2qe3m\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Que la partie commence.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Toy Story - Saga",
+    "studios": [
+      "Pixar"
+    ],
+    "tmdbId": 1084244,
+    "poster": "https://image.tmdb.org/t/p/w500/b2bt3UomRX41rHHZmIsSNmXzidU.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/qjTqY5coNiz6sVtPng40IzltsoN.jpg",
+    "overview": "Buzz, Woody, Jessie et le reste de la bande verront leur travail remis en question lorsqu'ils découvriront que ce qui obsède les enfants d'aujourd'hui s’appelle… l'électronique !",
+    "featured": true,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
+        "family": false
+      }
+    }
+  },
+  {
     "title": "Dune : Deuxième partie",
     "slug": "dune-deuxieme-partie",
     "originalTitle": "Dune: Part Two",
@@ -1113,6 +1631,133 @@
     }
   },
   {
+    "title": "The Sadness",
+    "slug": "the-sadness",
+    "originalTitle": "哭悲",
+    "year": "2021",
+    "releaseDate": "2021-01-22",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Thriller"
+    ],
+    "director": "Rob Jabbaz",
+    "cast": [
+      {
+        "id": 2407771,
+        "name": "朱軒洋",
+        "character": "Jim",
+        "profile_path": "/dWCVwm3MecRuo9nNnxAMwbbIyVD.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/dWCVwm3MecRuo9nNnxAMwbbIyVD.jpg"
+      },
+      {
+        "id": 2874730,
+        "name": "雷嘉汭",
+        "character": "Kat",
+        "profile_path": "/gnd2t2Ya9AfAKAlOovqXZbMVXp2.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/gnd2t2Ya9AfAKAlOovqXZbMVXp2.jpg"
+      },
+      {
+        "id": 2889663,
+        "name": "王自強",
+        "character": "Business Man",
+        "profile_path": "/3Y5dNXJnM6zZpmrQPPXUsniAwiA.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/3Y5dNXJnM6zZpmrQPPXUsniAwiA.jpg"
+      },
+      {
+        "id": 2896620,
+        "name": "陳映如",
+        "character": "Molly",
+        "profile_path": "/rzCPFtMrR4vZO3ORojPk3gJbKTj.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/rzCPFtMrR4vZO3ORojPk3gJbKTj.jpg"
+      },
+      {
+        "id": 2298208,
+        "name": "藍葦華",
+        "character": "Dr. Alan Wong",
+        "profile_path": "/rqJjuV8DCxCoGkteinJECz4p6AK.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/rqJjuV8DCxCoGkteinJECz4p6AK.jpg"
+      },
+      {
+        "id": 1473997,
+        "name": "邱彥翔",
+        "character": "Mr. Lin",
+        "profile_path": "/9i9BrKZMjCmOJwbqHfFMJ4HdWxP.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9i9BrKZMjCmOJwbqHfFMJ4HdWxP.jpg"
+      },
+      {
+        "id": 3491259,
+        "name": "黃略耕",
+        "character": "Kevin / MRT Employee",
+        "profile_path": "/oetVPX69HCsmodxRIbmjjtuv45m.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/oetVPX69HCsmodxRIbmjjtuv45m.jpg"
+      },
+      {
+        "id": 1260978,
+        "name": "蔡昌憲",
+        "character": "Warren Liu",
+        "profile_path": "/hLKscapHezzzTLo7l2dSWw6XoXH.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/hLKscapHezzzTLo7l2dSWw6XoXH.jpg"
+      },
+      {
+        "id": 3300391,
+        "name": "周之民",
+        "character": "Old Woman",
+        "profile_path": "/v3Cp0c9t6SL0rECzLk2LQDk6o6k.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/v3Cp0c9t6SL0rECzLk2LQDk6o6k.jpg"
+      },
+      {
+        "id": 5676010,
+        "name": "蔡岸龍",
+        "character": "President",
+        "profile_path": "",
+        "profile": ""
+      }
+    ],
+    "runtime": 100,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "Taiwan",
+    "language": "zh",
+    "rating": 6.841,
+    "popularity": 6.6662,
+    "trailer": "bruL7L1elTs",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/uk4qf7acudal\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "",
+    "status": "Released",
+    "homepage": "",
+    "collection": "",
+    "studios": [
+      "Machi Xcelsior Studios"
+    ],
+    "tmdbId": 776797,
+    "poster": "https://image.tmdb.org/t/p/w500/bC34TLKRjg7OHhADXhUaSORaARf.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/1McO40rFBnUSz0EB2EwYQlUv9LV.jpg",
+    "overview": "Après un an de lutte contre une pandémie aux symptômes bénins, une nation finit par baisser sa garde. C'est alors que le virus mute spontanément, donnant naissance à un fléau qui altère l'esprit. Les rues se déchaînent dans la violence et la dépravation, les personnes infectées étant poussées à commettre les actes les plus cruels et les plus horribles qu'elles n'auraient jamais pu imaginer...",
+    "featured": true,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
+        "family": false
+      }
+    }
+  },
+  {
     "title": "Malnazidos",
     "slug": "malnazidos",
     "originalTitle": "Malnazidos",
@@ -1452,6 +2097,261 @@
     }
   },
   {
+    "title": "Contracted : Phase II",
+    "slug": "contracted-phase-ii",
+    "originalTitle": "Contracted: Phase II",
+    "year": "2015",
+    "releaseDate": "2015-07-05",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Thriller"
+    ],
+    "director": "Josh Forbes",
+    "cast": [
+      {
+        "id": 1186713,
+        "name": "Matt Mercer",
+        "character": "Riley",
+        "profile_path": "/qhNnCjYsC7K1nDQe7GQ9Qamzost.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/qhNnCjYsC7K1nDQe7GQ9Qamzost.jpg"
+      },
+      {
+        "id": 77775,
+        "name": "Marianna Palka",
+        "character": "Crystal Young",
+        "profile_path": "/eKoaLx0P81SuQu8toLIO3O0IwDr.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/eKoaLx0P81SuQu8toLIO3O0IwDr.jpg"
+      },
+      {
+        "id": 583456,
+        "name": "Morgan Peter Brown",
+        "character": "BJ",
+        "profile_path": "/yiW7f1KfhUIce80dgO7c7uEV6Hd.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yiW7f1KfhUIce80dgO7c7uEV6Hd.jpg"
+      },
+      {
+        "id": 1441215,
+        "name": "Anna Lore",
+        "character": "Harper",
+        "profile_path": "/zNurGVtAxvVGnpgyG9kvBUG4nVf.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/zNurGVtAxvVGnpgyG9kvBUG4nVf.jpg"
+      },
+      {
+        "id": 935483,
+        "name": "Laurel Vail",
+        "character": "Brenda",
+        "profile_path": "/u4CNO8dqY4LBhxl5Qwcbhx6GVTu.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/u4CNO8dqY4LBhxl5Qwcbhx6GVTu.jpg"
+      },
+      {
+        "id": 53891,
+        "name": "Najarra Townsend",
+        "character": "Samantha",
+        "profile_path": "/9XCcoiea3wOTwzdclR1O9BKNU48.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9XCcoiea3wOTwzdclR1O9BKNU48.jpg"
+      },
+      {
+        "id": 86923,
+        "name": "Caroline Williams",
+        "character": "Sam's Mom",
+        "profile_path": "/m6FRiLEHlDw1pDkzreBUCd0YJiA.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/m6FRiLEHlDw1pDkzreBUCd0YJiA.jpg"
+      },
+      {
+        "id": 984377,
+        "name": "Peter Cilella",
+        "character": "James",
+        "profile_path": "/ltIdtNgn3XXxNJ2whQUQUT3y2UL.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/ltIdtNgn3XXxNJ2whQUQUT3y2UL.jpg"
+      },
+      {
+        "id": 61115,
+        "name": "John Ennis",
+        "character": "Special Agent Dalton",
+        "profile_path": "/xWbZVmk6hwrSl2NfRNTm7XJphRo.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/xWbZVmk6hwrSl2NfRNTm7XJphRo.jpg"
+      },
+      {
+        "id": 18262,
+        "name": "Richard Riehle",
+        "character": "Deuce Gelman",
+        "profile_path": "/wgjBsgpzRvardVXZhNGixSw63g2.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/wgjBsgpzRvardVXZhNGixSw63g2.jpg"
+      }
+    ],
+    "runtime": 78,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 5.362,
+    "popularity": 1.273,
+    "trailer": "E_XRvF9BHEs",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/isbkg6tfjbap\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Contracted - Saga",
+    "studios": [
+      "BoulderLight Pictures"
+    ],
+    "tmdbId": 345468,
+    "poster": "https://image.tmdb.org/t/p/w500/jTFrI6BWcFDwBaXT2fPjQAb8amt.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/bQOhQ4Ch6Yjr4gqlwPTeuiAiZtl.jpg",
+    "overview": "Riley lutte contre les atroces symptômes du mystérieux virus zombie que Samantha lui a transmis et part à la recherche de l'homme qui l'a contaminée.",
+    "featured": true,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
+        "family": false
+      }
+    }
+  },
+  {
+    "title": "Contracted",
+    "slug": "contracted",
+    "originalTitle": "Contracted",
+    "year": "2013",
+    "releaseDate": "2013-07-07",
+    "type": "film",
+    "mediaType": "movie",
+    "category": "a-la-une",
+    "genres": [
+      "Horreur",
+      "Thriller"
+    ],
+    "director": "Eric England",
+    "cast": [
+      {
+        "id": 53891,
+        "name": "Najarra Townsend",
+        "character": "Samantha",
+        "profile_path": "/9XCcoiea3wOTwzdclR1O9BKNU48.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/9XCcoiea3wOTwzdclR1O9BKNU48.jpg"
+      },
+      {
+        "id": 86923,
+        "name": "Caroline Williams",
+        "character": "Sam's Mom",
+        "profile_path": "/m6FRiLEHlDw1pDkzreBUCd0YJiA.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/m6FRiLEHlDw1pDkzreBUCd0YJiA.jpg"
+      },
+      {
+        "id": 1186711,
+        "name": "Katie Stegeman",
+        "character": "Nikki",
+        "profile_path": "/yUHYveM347lQxlpLkK7sn8MwRJs.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/yUHYveM347lQxlpLkK7sn8MwRJs.jpg"
+      },
+      {
+        "id": 1186712,
+        "name": "Alice Macdonald",
+        "character": "Alice",
+        "profile_path": "/5jgWbGSEyz5vNQRti8zgMouZbaK.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/5jgWbGSEyz5vNQRti8zgMouZbaK.jpg"
+      },
+      {
+        "id": 1186713,
+        "name": "Matt Mercer",
+        "character": "Riley",
+        "profile_path": "/qhNnCjYsC7K1nDQe7GQ9Qamzost.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/qhNnCjYsC7K1nDQe7GQ9Qamzost.jpg"
+      },
+      {
+        "id": 83858,
+        "name": "Simon Barrett",
+        "character": "BJ",
+        "profile_path": "/fGRXfx4dXSmMMBjhWAnotdMXcq4.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/fGRXfx4dXSmMMBjhWAnotdMXcq4.jpg"
+      },
+      {
+        "id": 1186714,
+        "name": "Ruben Pla",
+        "character": "Doctor",
+        "profile_path": "/iYdAE5VrBd2HKMy0mHcZypsuRXG.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/iYdAE5VrBd2HKMy0mHcZypsuRXG.jpg"
+      },
+      {
+        "id": 63240,
+        "name": "Dave Holmes",
+        "character": "Therapist",
+        "profile_path": "/uxgCpmW7qboAKdPjcqXfJlwl6xU.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/uxgCpmW7qboAKdPjcqXfJlwl6xU.jpg"
+      },
+      {
+        "id": 968697,
+        "name": "Celia Finkelstein",
+        "character": "Woman #1",
+        "profile_path": "/90HE8ZpeCZ5soeCyagnUjWq0ODJ.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/90HE8ZpeCZ5soeCyagnUjWq0ODJ.jpg"
+      },
+      {
+        "id": 1246891,
+        "name": "Charley Koontz",
+        "character": "Zain",
+        "profile_path": "/aUgUrJkVkXsZr8axwgXqtnKaMJM.jpg",
+        "profile": "https://image.tmdb.org/t/p/w185/aUgUrJkVkXsZr8axwgXqtnKaMJM.jpg"
+      }
+    ],
+    "runtime": 83,
+    "seasons": 0,
+    "episodes": 0,
+    "seasonsData": [],
+    "country": "United States of America",
+    "language": "en",
+    "rating": 5.365,
+    "popularity": 1.0448,
+    "trailer": "sGDks_3Qo2I",
+    "videoEmbed": "<iframe width=\"600\" height=\"480\" src=\"https://playmogo.com/e/ba7dmh8wuhw0\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe>",
+    "tagline": "Ce n'est pas votre coup d'un soir classique.",
+    "status": "Released",
+    "homepage": "",
+    "collection": "Contracted - Saga",
+    "studios": [
+      "BoulderLight Pictures",
+      "Southern Fried Films"
+    ],
+    "tmdbId": 204349,
+    "poster": "https://image.tmdb.org/t/p/w500/3Be1XlwkmJ9CLBND35ww2Pg3Qs.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/9ZU024IGapsV7Rle7haBIZy6eBh.jpg",
+    "overview": "Après une aventure d'un soir, une jeune femme se trouve atteinte d'un mal inquiétant. Ce n'est pas une maladie sexuellement transmissible... c'est bien pire que ça.",
+    "featured": true,
+    "premium": false,
+    "homeFeatured": false,
+    "cinemaRelease": false,
+    "cinemaOrder": 0,
+    "cinemaHero": false,
+    "bubbleReasons": {},
+    "projectionnisteAdvice": "",
+    "bubulle": {
+      "profile": {
+        "pace": "",
+        "complexity": "",
+        "spectacle": "",
+        "violence": "",
+        "humour": "",
+        "emotion": "",
+        "family": false
+      }
+    }
+  },
+  {
     "title": "Grave Encounters 2",
     "slug": "grave-encounters-2",
     "originalTitle": "Grave Encounters 2",
@@ -1770,123 +2670,6 @@
         "family": false
       }
     }
-  },
-  {
-    "title": "Avengers: Doomsday",
-    "slug": "avengers-doomsday",
-    "originalTitle": "Avengers: Doomsday",
-    "year": "2026",
-    "releaseDate": "2026-12-16",
-    "type": "film",
-    "mediaType": "movie",
-    "category": "a-la-une",
-    "genres": [
-      "Science-Fiction",
-      "Action",
-      "Aventure"
-    ],
-    "director": "Joe Russo",
-    "cast": [
-      {
-        "id": 3223,
-        "name": "Robert Downey Jr.",
-        "character": "Victor von Doom  / Doctor Doom",
-        "profile_path": "/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
-      },
-      {
-        "id": 16828,
-        "name": "Chris Evans",
-        "character": "Steve Rogers / Captain America",
-        "profile_path": "/3bOGNsHlrswhyW79uvIHH1V43JI.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/3bOGNsHlrswhyW79uvIHH1V43JI.jpg"
-      },
-      {
-        "id": 74568,
-        "name": "Chris Hemsworth",
-        "character": "Thor",
-        "profile_path": "/piQGdoIQOF3C1EI5cbYZLAW1gfj.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/piQGdoIQOF3C1EI5cbYZLAW1gfj.jpg"
-      },
-      {
-        "id": 1253360,
-        "name": "Pedro Pascal",
-        "character": "Reed Richards / Mr. Fantastic",
-        "profile_path": "/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg"
-      },
-      {
-        "id": 22226,
-        "name": "Paul Rudd",
-        "character": "Scott Lang / Ant-Man",
-        "profile_path": "/6jtwNOLKy0LdsRAKwZqgYMAfd5n.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/6jtwNOLKy0LdsRAKwZqgYMAfd5n.jpg"
-      },
-      {
-        "id": 53650,
-        "name": "Anthony Mackie",
-        "character": "Sam Wilson / Captain America",
-        "profile_path": "/eZSIDrtTzhvabyjrmIITQLsjx8h.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/eZSIDrtTzhvabyjrmIITQLsjx8h.jpg"
-      },
-      {
-        "id": 1373737,
-        "name": "Florence Pugh",
-        "character": "Yelena Belova",
-        "profile_path": "/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/1Uvfh7xL4U2evkhs0M3C7BbBYFf.jpg"
-      },
-      {
-        "id": 556356,
-        "name": "Vanessa Kirby",
-        "character": "Sue Storm / The Invisible Woman",
-        "profile_path": "/tViEEsjvbhrJxWsOipUqIYjdHEb.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/tViEEsjvbhrJxWsOipUqIYjdHEb.jpg"
-      },
-      {
-        "id": 21042,
-        "name": "Ebon Moss-Bachrach",
-        "character": "Ben Grimm / Thing",
-        "profile_path": "/xD8GVNayMpiTZxLfahy2DseYcQq.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/xD8GVNayMpiTZxLfahy2DseYcQq.jpg"
-      },
-      {
-        "id": 986808,
-        "name": "Wyatt Russell",
-        "character": "John Walker / U.S. Agent",
-        "profile_path": "/zIldBzXdBWskPZB7x35G2hYEVDo.jpg",
-        "profile": "https://image.tmdb.org/t/p/w185/zIldBzXdBWskPZB7x35G2hYEVDo.jpg"
-      }
-    ],
-    "runtime": 165,
-    "seasons": 0,
-    "episodes": 0,
-    "seasonsData": [],
-    "country": "United States of America",
-    "language": "en",
-    "rating": 0,
-    "popularity": 100.4487,
-    "trailer": "b4JJHkUZsjE",
-    "videoEmbed": "",
-    "tagline": "",
-    "status": "Post Production",
-    "homepage": "",
-    "collection": "Avengers - Saga",
-    "studios": [
-      "Marvel Studios",
-      "Kevin Feige Productions",
-      "AGBO"
-    ],
-    "tmdbId": 1003596,
-    "poster": "https://image.tmdb.org/t/p/w500/bph5UiAOKLLjla10YuCyKWfKYGG.jpg",
-    "backdrop": "https://image.tmdb.org/t/p/w1280/6KDDoTq8Vq3HuQHULzuvPiCJbMI.jpg",
-    "overview": "Les Avengers, les Wakandais, les Quatre Fantastiques, les New Avengers et les X-Men, tous héros issus de trois univers distincts se retrouvent sur une trajectoire de collision mortelle et font face à une menace existentielle sans précédent, comme ils n'en ont jamais rencontré auparavant, le Docteur Doom.",
-    "featured": false,
-    "premium": false,
-    "homeFeatured": false,
-    "cinemaRelease": true,
-    "cinemaOrder": 0,
-    "cinemaHero": false
   },
   {
     "title": "Dune : Troisième partie",
