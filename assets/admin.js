@@ -321,6 +321,10 @@ function buildCatalogueEntry(item) {
   return {
     title: item.title,
     slug: uniqueSlug(item.slug),
+    // Métadonnées internes Planète Stream : elles permettent à l'accueil de
+    // distinguer la date d'ajout de la date de sortie du film.
+    addedAt: new Date().toISOString(),
+    addedOrder: getNextAddedOrder(),
     originalTitle: item.originalTitle || '',
     year: item.year || '',
     releaseDate: item.releaseDate || '',
@@ -1842,6 +1846,13 @@ function sortDraft() {
     if ((b.featured ? 1 : 0) !== (a.featured ? 1 : 0)) return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
     return String(b.year || '').localeCompare(String(a.year || '')) || String(a.title || '').localeCompare(String(b.title || ''));
   });
+}
+
+function getNextAddedOrder() {
+  return draft.reduce((highest, entry) => {
+    const order = Number(entry?.addedOrder || 0);
+    return Number.isFinite(order) ? Math.max(highest, order) : highest;
+  }, 0) + 1;
 }
 
 function refreshVisibleResults() {

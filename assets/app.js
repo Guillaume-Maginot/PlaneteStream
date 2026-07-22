@@ -50,6 +50,8 @@ function normalizeCatalogue(){
   state.catalogue = state.catalogue.map((item, index) => ({
     ...item,
     _index: index,
+    _addedAt: parseAddedAt(item.addedAt),
+    _addedOrder: Number(item.addedOrder) || 0,
     _year: Number(item.year || (item.releaseDate || '').slice(0,4)) || 0,
     _rating: Number(item.rating) || 0,
     _popularity: Number(item.popularity) || 0,
@@ -481,7 +483,23 @@ function sortByTitle(a,b){
 }
 
 function sortByLatest(a,b){
+  const aHasAdditionDate = a._addedAt > 0;
+  const bHasAdditionDate = b._addedAt > 0;
+
+  // Les contenus horodatés passent avant l'historique, puis sont classés selon
+  // leur véritable ajout au catalogue. L'ordre explicite départage les imports
+  // réalisés dans une même seconde.
+  if(aHasAdditionDate !== bHasAdditionDate) return bHasAdditionDate - aHasAdditionDate;
+  if(aHasAdditionDate && a._addedAt !== b._addedAt) return b._addedAt - a._addedAt;
+  if((a._addedOrder || 0) !== (b._addedOrder || 0)) return (b._addedOrder || 0) - (a._addedOrder || 0);
+
+  // Compatibilité avec les anciennes fiches qui ne possèdent pas encore de date.
   return (b._index || 0) - (a._index || 0) || sortByTitle(a,b);
+}
+
+function parseAddedAt(value){
+  const timestamp = Date.parse(String(value || ''));
+  return Number.isNaN(timestamp) ? 0 : timestamp;
 }
 
 function sortByRating(a,b){
