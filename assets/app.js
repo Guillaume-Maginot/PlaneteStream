@@ -300,13 +300,11 @@ function render(){
   // Tri général lisible : A → Z pour les rails éditoriaux et le catalogue.
   // Les mangas ont leur propre rail d'accueil et leur propre catalogue : ils ne remontent pas dans le catalogue général.
   const premium = standardCatalogue.filter(i => i.premium && i.featured).sort(sortByRecentYear).slice(0,1);
-  const featured = standardCatalogue.filter(i => i.featured).sort(sortByTitle).slice(0,10);
   const latest = [...standardCatalogue].sort(sortByLatest).slice(0,10);
   const latestManga = [...mangaCatalogue].sort(sortByLatest).slice(0,10);
   const topRated = [...standardCatalogue].sort(sortByRating).slice(0,10);
 
   mountPremium('#premiumGrid', premium);
-  mount('#featuredGrid', featured);
   mount('#latestGrid', latest);
   mount('#latestMangaGrid', latestManga);
   mount('#topRatedGrid', topRated);
@@ -315,7 +313,6 @@ function render(){
   renderCataloguePagination(pagination);
 
   document.querySelector('#premiumSection').style.display = browsing && premium.length ? 'block' : 'none';
-  document.querySelector('#featuredSection').style.display = browsing && featured.length ? 'block' : 'none';
   document.querySelector('#latestSection').style.display = browsing ? 'block' : 'none';
   document.querySelector('#latestMangaSection').style.display = browsing && latestManga.length ? 'block' : 'none';
   document.querySelector('#topRatedSection').style.display = browsing ? 'block' : 'none';
