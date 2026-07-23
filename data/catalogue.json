@@ -118,16 +118,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une porte étrange ouvre sur un ailleurs mystérieux qui invite à l'évasion.",
+      "frissonner": "L'ambiance d'horreur et de mystère promet une tension et des frissons.",
+      "reflechir": "Le point de départ autour d'une porte mystérieuse donne matière à penser.",
+      "spectacle": "Le mélange horreur, mystère et science-fiction suggère un univers visuel marquant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance où l'on aime se laisser happer par le mystère, avec une bonne dose d'horreur et de science-fiction autour d'une porte qui ne promet rien de rassurant.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "faible",
         "family": false
       }
     }
@@ -378,16 +383,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Une réunion familiale vire à l'horreur avec une ambiance de tension et de créatures démoniaques.",
+      "reflechir": "Le film interroge les vœux passés et leur lien qui dépasse la mort.",
+      "spectacle": "L'horreur se déploie dans une maison isolée avec une montée en intensité visuelle.",
+      "emotion": "Le deuil d'Alice et la réunion autour de la mémoire du mari donnent un enjeu humain fort.",
+      "famille": "La dimension familiale est présente, mais dans un cadre d'horreur."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de frissons bien serrés, quand tu veux un huis clos d'horreur qui part en vrille et ne te lâche pas pendant 110 minutes.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -641,16 +652,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un grand voyage d'aventures mène Ulysse d'un ailleurs à l'autre jusqu'à Ithaque.",
+      "frissonner": "Les épreuves du retour créent une tension constante sur la route d'Ulysse.",
+      "reflechir": "Le retour du roi après vingt ans invite à penser au devoir et au destin.",
+      "spectacle": "L'aventure et l'action promettent une grande ampleur visuelle et des scènes spectaculaires.",
+      "emotion": "Le retour d'Ulysse et ses liens avec Télémaque et Pénélope portent un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une grande séance de voyage épique, si tu as envie de te laisser embarquer 173 minutes entre aventure, action et fantastique.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -970,16 +987,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Un objet magique et une obsession qui bascule créent une tension sombre et inquiétante.",
+      "reflechir": "Le souhait exaucé pose une idée forte sur les conséquences de ce qu'on désire.",
+      "emotion": "L'histoire explore un crush devenu obsession et ses effets sur un jeune introverti."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance de frissons avec un goût de désir qui dérape, quand tu veux un thriller horrifique qui joue avec les vœux et leurs mauvaises surprises.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -1099,16 +1120,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "L'univers de crime et de vengeance installe une tension sombre et continue.",
+      "reflechir": "Le parcours de Frank Castle interroge le sens de sa vie au-delà de la vengeance.",
+      "spectacle": "Le film mêle action et combat pour un spectacle intense.",
+      "emotion": "Le questionnement de Frank Castle donne une trajectoire humaine centrée sur sa quête de sens."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et nerveuse, avec un Frank Castle qui cherche autre chose que la vengeance, avant de replonger dans le combat.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -1230,16 +1256,24 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'univers animé de Toy Story emmène dans un monde d'aventure et d'imagination.",
+      "rire": "La comédie et les personnages emblématiques promettent un ton léger et amusant.",
+      "fatigue": "L'animation et l'ambiance familiale en font une séance facile et reposante.",
+      "reflechir": "Le film pose l'idée de l'évolution des jouets face à l'électronique des enfants.",
+      "spectacle": "L'aventure animée promet un grand spectacle visuel et beaucoup de mouvement.",
+      "emotion": "La bande de jouets voit son rôle remis en question, ce qui touche à leur lien et à leur place.",
+      "famille": "L'animation familiale convient parfaitement à une séance avec les enfants."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance familiale pleine d'aventure et de malice, surtout si tu aimes retrouver Buzz, Woody et Jessie face aux gadgets qui bousculent les jouets.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "faible",
+        "spectacle": "moyen",
+        "violence": "faible",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -1751,16 +1785,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Une pandémie qui mute en fléau violent crée une tension sombre et un climat d'horreur.",
+      "reflechir": "Le film interroge la dérive d'une société face à un virus qui altère l'esprit.",
+      "spectacle": "Les rues basculent dans une violence déchaînée, portée par un chaos très visuel."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de choc, si tu aimes l'horreur qui ne lâche rien et un thriller où la rue bascule vite dans la violence.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -2219,16 +2257,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Un virus zombie mystérieux et une traque nourrissent une tension horrifique constante.",
+      "reflechir": "La recherche de l'homme qui l'a contaminée apporte une intrigue de mystère et de poursuite.",
+      "emotion": "Riley lutte pour survivre à une contamination qui bouleverse son parcours personnel."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une courte séance d'horreur tendue, si tu aimes suivre un virus zombie et une traque qui tourne au thriller.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -2349,16 +2391,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Une descente horrifique et tendue autour d'un mal inquiétant après une aventure d'un soir.",
+      "reflechir": "Le point de départ intrigue avec une menace énigmatique qui pousse à s'interroger sur ce qui arrive.",
+      "emotion": "Le récit suit une jeune femme confrontée à une épreuve personnelle très difficile."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de frissons nerveux et courte, si tu aimes l'horreur qui attaque vite avec une idée bien dérangeante.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "faible",
+        "spectacle": "faible",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -2799,16 +2845,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Le récit embarque un groupe de jeunes vers la Méditerranée, pour une aventure située ailleurs.",
+      "reflechir": "Le film confronte les convictions des personnages à la loi et à la justice, avec un vrai dilemme à penser.",
+      "emotion": "La mission autour de réfugiés crée un enjeu humain fort et une trajectoire touchante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et humaine, quand tu as envie d'un drame qui met les convictions à l'épreuve sans faire de bruit.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "faible",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -2932,16 +2982,24 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un univers fantastique au Pays des Merveilles invite à l'évasion et au dépaysement.",
+      "frissonner": "Le Chapelier fou et la capture de la Reine de cœur apportent une tension de conte.",
+      "fatigue": "Son ambiance familiale et fantastique en fait une séance facile et douce à suivre.",
+      "reflechir": "Le changement du passé crée une idée de conséquence et de dilemme à explorer.",
+      "spectacle": "L'action pour sauver le Pays des Merveilles promet un grand spectacle fantastique.",
+      "emotion": "L'équipe soudée autour de Red, Chloe et leurs proches donne un enjeu familial touchant.",
+      "famille": "Le mélange fantastique et familial en fait une histoire adaptée à une séance avec enfants."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance familiale qui aime les mondes fantastiques et les retrouvailles, avec assez de malice pour embarquer petits et grands au Pays des Merveilles.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3062,16 +3120,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un film de science-fiction qui ouvre sur un ailleurs et l'idée de ne pas être seuls.",
+      "frissonner": "Le thriller et la question de découvrir l'inconnu installent une tension mystérieuse.",
+      "reflechir": "Le concept de révélation et de preuve invite à réfléchir à une grande idée.",
+      "spectacle": "La science-fiction portée par Steven Spielberg promet une belle ampleur visuelle."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et curieuse, quand tu as envie d'un thriller de science-fiction qui joue avec la peur de ne pas être seuls.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3324,7 +3387,24 @@
     "homeFeatured": false,
     "cinemaRelease": true,
     "cinemaOrder": 3,
-    "cinemaHero": false
+    "cinemaHero": false,
+    "bubbleReasons": {
+      "frissonner": "L'horreur et le thriller créent une tension sombre dans une maison familiale isolée.",
+      "reflechir": "Le film joue sur les vœux du vivant qui persistent après la mort, avec un concept intrigant.",
+      "emotion": "Le deuil et la relation avec les beaux-parents donnent un enjeu humain et familial fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de frissons en vase clos, quand tu veux voir une réunion familiale virer au cauchemar avec une bonne dose de thriller.",
+    "bubulle": {
+      "profile": {
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
+        "family": false
+      }
+    }
   },
   {
     "title": "Golden Kamui : La prison d'Abashiri",
@@ -3446,16 +3526,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'aventure mène jusqu'à la prison d'Abashiri et ouvre un cadre d'ailleurs.",
+      "frissonner": "Le mystère des prisonniers tatoués et l'identité des alliés entretiennent une forte tension.",
+      "reflechir": "Le film pose un vrai jeu de piste autour de Noppera-bô et de qui est ami ou ennemi.",
+      "spectacle": "La bataille féroce et l'action d'aventure promettent un grand spectacle.",
+      "emotion": "Les enjeux humains du conflit et des alliances donnent une trajectoire intense."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance tendue et pleine d'aventure, quand tu as envie de suivre une bataille où amis et ennemis se mélangent jusqu'à Abashiri.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3578,16 +3664,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Le mélange comédie-thriller installe une tension autour d'une vengeance et d'un héritage à conquérir.",
+      "rire": "La comédie apporte un ton humoristique à cette histoire d'héritage familial.",
+      "reflechir": "Le récit joue sur un dilemme d'héritage et une vengeance familiale qui fait réfléchir.",
+      "emotion": "La vengeance de Becket part d'un rejet familial et de la mort de sa mère."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance où tu aimes quand la comédie grince et que le thriller s'amuse à tourner les couteaux dans la famille.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3708,16 +3799,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'objet maudit aztèque ouvre sur un ailleurs ancien et mystérieux.",
+      "frissonner": "Le Sifflet de la Mort attire une menace terrifiante et une tension surnaturelle.",
+      "reflechir": "Le concept du sifflet maudit et des morts futures donne une idée forte à penser.",
+      "spectacle": "La traque par des morts futures promet une montée de tension visuelle et d'horreur.",
+      "emotion": "Un groupe d'élèves inadaptés face à leur destin crée un enjeu humain touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais Le Sifflet si tu aimes frissonner avec un mystère maudit et une chasse aux morts futures, parfait pour une séance nocturne où tu n'as pas peur d'entendre le sifflet.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3840,16 +3937,23 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'histoire emmène sur Eternia, une planète natale de fantasy et de science-fiction.",
+      "frissonner": "Le règne de Skeletor et la lutte pour sauver son monde installent une tension continue.",
+      "reflechir": "Le parcours d'Adam interroge son destin et l'acceptation de sa vraie nature.",
+      "spectacle": "L'action, la fantasy et la science-fiction annoncent un grand film de spectacle.",
+      "emotion": "Adam doit sauver son monde et les gens qu'il aime, avec un vrai enjeu personnel.",
+      "famille": "L'aventure héroïque et ses alliés en font un film qui peut se partager en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une grande séance d'aventure SF-fantastique, avec 143 minutes pour se laisser embarquer à Eternia aux côtés d'Adam, Teela et Duncan.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -3973,16 +4077,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La guerre et l'occupation installent une tension sombre et un climat de danger.",
+      "reflechir": "Le film pose un dilemme moral autour de la paix, de la collaboration et des choix en temps de guerre.",
+      "spectacle": "L'histoire couvre une vaste période historique et des événements à grande échelle.",
+      "emotion": "Le destin de Jean et de sa fille Corinne donne un fort enjeu humain et familial.",
+      "famille": "Le genre familial laisse penser à une séance accessible en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance au long cours, quand tu veux un drame d'époque qui laisse respirer l'Histoire et les choix de famille, sans rien bâcler.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "lent",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "eleve",
         "family": false
       }
     }
@@ -4172,16 +4282,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "La virée en van crée un cadre de voyage qui bascule vers l'ailleurs.",
+      "frissonner": "La présence démoniaque et le cauchemar annoncé installent une tension inquiétante.",
+      "reflechir": "Le huis clos sur la route et la présence du Passager donnent matière à penser.",
+      "spectacle": "Le scénario promet une course-poursuite tendue sur une autoroute isolée.",
+      "emotion": "Le film suit un jeune couple confronté ensemble à une épreuve terrifiante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance tendue en fin de soirée : 94 minutes d'horreur-thriller, avec un van qui vire au cauchemar sur une route isolée, ça promet un bon frisson sans détour.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -4436,16 +4552,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "L'ambiance mélange horreur et retour d'un tueur masqué, avec une tension constamment présente.",
+      "rire": "La comédie est au cœur du film et l'humour parodie les codes de l'horreur.",
+      "reflechir": "Le film joue avec les franchises d'horreur et leurs codes, de quoi nourrir la réflexion.",
+      "spectacle": "Le retour d'un tueur masqué promet une mise en scène de genre avec du rythme et de l'ampleur."
+    },
+    "projectionnisteAdvice": "Je te conseillerais ça pour une séance de frissons qui rigole, avec les héros de la saga de retour et un tueur masqué qui n'épargne aucune franchise d'horreur.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "faible",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "eleve",
+        "emotion": "faible",
         "family": false
       }
     }
@@ -4568,16 +4689,23 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une survie sur une île déserte offre un vrai sentiment d'ailleurs et d'évasion.",
+      "frissonner": "Le crash, l'isolement et les conditions extrêmes installent une tension de survie.",
+      "rire": "La comédie et le duo opposé promettent un ton drôle et plein de répliques.",
+      "reflechir": "Le film joue sur la coopération forcée, les rancunes et un dilemme de survie.",
+      "spectacle": "Le crash d'avion et la survie en milieu hostile annoncent une mise en scène ample.",
+      "emotion": "L'isolement oblige deux collègues à dépasser leurs rancunes et à évoluer ensemble."
+    },
+    "projectionnisteAdvice": "Je te conseillerais cette séance si tu aimes les survivals qui grincent, entre horreur, thriller et comédie, avec un duo coincé sur une île et des rancunes à raviver.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -4909,16 +5037,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une aventure dans la galaxie de Star Wars, entre la nouvelle République et les seigneurs de guerre impériaux.",
+      "reflechir": "Le film interroge la protection de la République naissante face aux restes de l'Empire.",
+      "spectacle": "Un film d'action et d'aventure de science-fiction à grande échelle dans la galaxie.",
+      "emotion": "Le duo Din Djarin et Grogu apporte une relation centrale et touchante.",
+      "famille": "L'aventure de Din Djarin et du jeune Grogu convient à une séance en famille."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance de galaxie en vadrouille, entre action, aventure et SF, quand tu as envie de suivre Din Djarin et Grogu sur grand écran.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -5439,16 +5573,23 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'intrigue ouvre sur un monde de pouvoir et de clans rivaux, avec une chasse à l'homme à grande échelle.",
+      "frissonner": "La chasse à l'homme, l'attaque sans merci et les familles prêtes à tout installent une tension continue.",
+      "rire": "La présence de comédie apporte une touche d'humour au cœur de ce thriller horrifique.",
+      "reflechir": "Le film joue sur un affrontement pour le pouvoir et un choix qui décidera qui régnera sur tout.",
+      "spectacle": "La lutte entre quatre familles rivales et la quête du Trône du Conseil promettent une ampleur très visuelle.",
+      "emotion": "Grace doit protéger sa sœur retrouvée, ce qui donne un enjeu familial fort à son combat."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance nerveuse et malicieuse, entre chasse à l'homme, horreur et humour noir, avec juste ce qu'il faut de survie en famille.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -5974,16 +6115,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Un thriller criminel où l'enlèvement et la corruption installent une tension constante.",
+      "reflechir": "L'histoire confronte un ancien soldat à un choix moral et à un monde de corruption.",
+      "spectacle": "L'action et le parcours de Levon Cade promettent un film nerveux et spectaculaire.",
+      "emotion": "La quête pour sauver la fille de son patron, vue comme sa famille, porte l'émotion."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-là pour une séance nerveuse où Jason Statham mène la danse, entre action, crime et thriller, quand tu veux un film qui file droit sans faire de manières.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6244,16 +6390,23 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'Amazonie offre un décor d'aventure dépaysant et un vrai sentiment d'ailleurs.",
+      "frissonner": "La présence d'un serpent géant et le piège mortel installent une tension de peur.",
+      "rire": "La comédie et le ton chaotique promettent des moments drôles.",
+      "reflechir": "Le projet de remake en plein tournage apporte un concept original à suivre.",
+      "spectacle": "L'Amazonie et l'apparition d'un serpent géant promettent une aventure ample et spectaculaire.",
+      "emotion": "L'amitié d'enfance de Doug et Griff donne un fil humain au récit."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance qui aime mélanger frisson et second degré, avec une virée en Amazonie qui tourne vite au chaos.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "faible",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "eleve",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -6637,16 +6790,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Le film installe une tension forte autour d'une mère traquée par un ex violent.",
+      "reflechir": "Le dilemme de Kiki entre protection et survie donne matière à penser.",
+      "spectacle": "L'action et le suspense promettent un rythme nerveux et tendu.",
+      "emotion": "Le parcours d'une mère qui veut protéger sa fille porte un enjeu humain fort."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et nerveuse : un action-thriller ramassé de 90 minutes, avec une mère prête à tout pour protéger sa fille.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -7224,16 +7382,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "La jungle colombienne offre un décor d'ailleurs pour une aventure loin du quotidien.",
+      "frissonner": "La chasse au trésor en jungle crée une tension constante avec un danger qui rôde.",
+      "reflechir": "La quête des barils d'argent pose une chasse au but trouble et une vraie matière à penser.",
+      "spectacle": "L'action dans la jungle annonce une aventure ample et visuelle.",
+      "emotion": "Le groupe de vétérans et d'anciens détenus donne une trajectoire humaine et marquée."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et musclée, avec une chasse au trésor qui tourne vite au piège dans la jungle colombienne.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -7756,16 +7920,20 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Le trafic de fentanyl et les crimes associés installent une tension sombre et continue.",
+      "reflechir": "Le film soulève des enjeux sur la drogue, les gangs et leurs conséquences sur le marché.",
+      "spectacle": "Le récit de trafic à grande échelle promet un cadre tendu et une forte intensité dramatique."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et sombre, si tu aimes les polars qui collent au réel et les récits de crime où chaque minute pèse lourd.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -8485,16 +8653,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "La planète Genna et l'univers des Yautja offrent un vrai dépaysement de science-fiction.",
+      "frissonner": "La traque du Kalisk et la nature hostile créent une tension de survie.",
+      "reflechir": "Le parcours de Dek interroge la valeur, le courage et la place d'un paria.",
+      "spectacle": "L'action, les créatures et le cadre de science-fiction promettent un grand spectacle.",
+      "emotion": "Le sacrifice de Kwei et la quête de Dek donnent un enjeu familial et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celle-ci pour une séance de chasse tendue et sauvage, entre action, SF et aventure, où le jeune paria Dek cherche à faire ses preuves sur une planète qui ne lui fera aucun cadeau.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -9490,16 +9664,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un univers de science-fiction et d'aventure qui emmène ailleurs.",
+      "frissonner": "Une mission à haut risque et un piège redoutable installent une forte tension.",
+      "reflechir": "Le groupe doit affronter son passé et choisir entre déchirure et rédemption.",
+      "spectacle": "L'action et l'aventure promettent un grand spectacle visuel.",
+      "emotion": "Des laissés-pour-compte se confrontent à leur passé dans une quête de rédemption."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance musclée où l'action et les tensions d'un groupe cabossé font mouche, surtout si tu aimes les missions à haut risque et les alliances pas très nettes.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "moyen",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -9621,16 +9801,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Un univers de science-fiction qui ouvre sur un ailleurs numérique et futuriste.",
+      "frissonner": "La traque d'un supersoldat et d'une soldate virtuelle installe une tension constante.",
+      "reflechir": "Le film joue avec l'IA, la conscience et le passage entre monde virtuel et réel.",
+      "spectacle": "L'action de science-fiction promet un grand spectacle et des affrontements impressionnants.",
+      "emotion": "Le lien avec la mémoire de sa sœur et l'apprentissage de la compassion donnent un vrai enjeu humain."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance de SF/action bien tendue, avec une IA qui déboule dans le réel et des enjeux plus sensibles qu'un simple duel de programmes.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -9753,16 +9939,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "La fuite en zone de conflit installe une tension continue et un danger permanent.",
+      "reflechir": "Le film met en jeu un dilemme de survie sans soutien militaire dans un contexte géopolitique tendu.",
+      "spectacle": "L'hélicoptère écrasé et la lutte pour s'en sortir promettent une action soutenue.",
+      "emotion": "Des survivants doivent s'entraider pour protéger un civil et tenir ensemble dans l'épreuve."
+    },
+    "projectionnisteAdvice": "Je te conseillerais Valiant One pour une séance tendue et nerveuse, avec son cocktail guerre-thriller-action et ses 86 minutes qui vont droit au but.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "eleve",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -10020,16 +10211,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "Une amitié avec un extraterrestre ouvre sur un ailleurs de science-fiction.",
+      "frissonner": "Le mystère et la science-fiction installent une tension intrigante.",
+      "reflechir": "Le lien avec un extraterrestre donne matière à penser sur l'amitié et l'inconnu.",
+      "spectacle": "L'aventure et la science-fiction promettent un univers visuel ample.",
+      "emotion": "L'histoire d'amitié entre une adolescente et un extraterrestre peut être touchante."
+    },
+    "projectionnisteAdvice": "Je te conseillerais Xeno pour une séance où tu as envie d'aventure et de mystère, avec une touche de science-fiction et un lien inattendu qui peut toucher en plein cœur.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "moyen",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -12276,16 +12473,21 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "frissonner": "Un thriller de crime et de corruption qui installe une tension sombre autour d'une affaire injuste.",
+      "reflechir": "Une enquête sur un complot et une erreur judiciaire qui donne matière à penser sur la justice.",
+      "spectacle": "L'action portée par Donnie Yen promet un film nerveux et spectaculaire.",
+      "emotion": "Le sort d'un jeune homme pauvre accusé à tort crée un enjeu humain fort et touchant."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance tendue et nerveuse, entre action et affaire judiciaire, si tu aimes voir Donnie Yen remonter un complot jusqu'à la justice.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "moyen",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
@@ -12545,16 +12747,22 @@
     "cinemaRelease": false,
     "cinemaOrder": 0,
     "cinemaHero": false,
-    "bubbleReasons": {},
-    "projectionnisteAdvice": "",
+    "bubbleReasons": {
+      "voyager": "L'intrigue d'espionnage entraîne dans un monde d'agents et d'organisation secrète.",
+      "frissonner": "Le film mêle tension, mystère autour du Heart et course contre une menace cachée.",
+      "reflechir": "L'IA Heart et la couverture de Rachel Stone posent un vrai dilemme de loyauté et de système.",
+      "spectacle": "L'action d'espionnage et la mission de terrain annoncent un film de grand spectacle.",
+      "emotion": "Rachel Stone agit pour sauver son équipe, avec un engagement humain fort au cœur du récit."
+    },
+    "projectionnisteAdvice": "Je te conseillerais celui-ci pour une séance d'action tendue, avec espionnage, IA et poursuite de traîtres, quand tu veux un thriller musclé qui ne laisse pas trop souffler.",
     "bubulle": {
       "profile": {
-        "pace": "",
-        "complexity": "",
-        "spectacle": "",
-        "violence": "",
-        "humour": "",
-        "emotion": "",
+        "pace": "rapide",
+        "complexity": "moyen",
+        "spectacle": "eleve",
+        "violence": "moyen",
+        "humour": "faible",
+        "emotion": "moyen",
         "family": false
       }
     }
